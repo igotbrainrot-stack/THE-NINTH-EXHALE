@@ -1,0 +1,21 @@
+{
+  "project": "THE NINTH EXHALE",
+  "build": "06.4",
+  "created_utc": "2026-11-17",
+  "status": "Four original Runway image tasks completed and viewable in Runway workspace; their raw PNG bytes have NOT been committed to GitHub.",
+  "files_expected": [
+    "covenant.png",
+    "coil.png",
+    "nail.png",
+    "choir.png"
+  ],
+  "runway_tasks": {
+    "covenant": "f5cb8737-e6e3-419e-9e23-e1afbc3054ad",
+    "coil": "474cc950-d1ac-4f82-a580-ae5651b5b0fc",
+    "nail": "8e8765a7-6de2-4bb4-a873-2dfceda56731",
+    "choir": "ab45c5ce-083e-4c22-aff0-c5577fcaf66c"
+  },
+  "game_integration": "The complete local Build 06.4 ZIP contains Godot 4 source, deterministic weapon animation code, transparent interim sprites, an importer for these four Runway source exports, manual QA, preview and 72 source/data checks. Those binary assets and code are staged locally, not GitHub-hosted until the publish script pushes a feature branch.",
+  "game_repo": "https://github.com/igotbrainrot-stack/THE-NINTH-EXHALE",
+  "important": "Do not claim files are present in GitHub until those exact files appear in the repository tree. A task-id index is not a binary upload."
+}
