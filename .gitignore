@@ -1,0 +1,6 @@
+.godot/
+*.tmp
+*.log
+__pycache__/
+user_saves/
+.DS_Store
