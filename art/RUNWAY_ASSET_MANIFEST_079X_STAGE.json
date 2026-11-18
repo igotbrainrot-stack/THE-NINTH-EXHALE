@@ -1,0 +1,14 @@
+{
+  "build": "07.9X",
+  "status": "incremental asset/source staging; GitHub default branch currently lacks 07.9C base project",
+  "assets": [
+    {
+      "path": "assets/fx/civic_muzzle_burst_079x.png",
+      "origin": "procedural original, generated within 07.9X",
+      "runtime_reference": "scripts/game_ui.gd",
+      "runway": false
+    }
+  ],
+  "runway_exports_bundled": [],
+  "next_step": "Commit full 07.9X source project after existing GitHub repository baseline has been brought up to 07.9C; complete ZIP supplied in ChatGPT"
+}
