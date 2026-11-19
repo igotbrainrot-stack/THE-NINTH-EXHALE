@@ -1,6 +1,36 @@
+# Godot 4 generated resources and local editor state
 .godot/
+.import/
 *.tmp
 *.log
-__pycache__/
-user_saves/
+*.bak
+*.swp
 .DS_Store
+Thumbs.db
+
+# local Python caches and test environments
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+*.py[cod]
+
+# generated build packages, not source assets
+*.zip
+*.7z
+*.tar
+*.tar.gz
+/builds/
+/dist/
+/exports/
+/tmp/
+/temp/
+
+# Avoid committing Godot executables; game source/assets are NOT ignored
+/Godot_v*.x86_64
+/Godot_v*.x86_64.zip
+
+# local secrets
+.env
+.env.*
+!.env.example
