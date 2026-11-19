@@ -16,15 +16,15 @@ func _ready() -> void:
     # Build 08.1: authored finishes replace unlit default-grey test primitives.
     var rotor_iron := StandardMaterial3D.new()
     rotor_iron.albedo_color = Color("#495854")
-    rotor_iron.metallic = 0.65
+    rotor_iron.metallic = 0.2
     rotor_iron.roughness = 0.56
     var rotor_copper := StandardMaterial3D.new()
     rotor_copper.albedo_color = Color("#9a714e")
-    rotor_copper.metallic = 0.65
+    rotor_copper.metallic = 0.2
     rotor_copper.roughness = 0.59
     var rotor_guard := StandardMaterial3D.new()
     rotor_guard.albedo_color = Color("#738681")
-    rotor_guard.metallic = 0.55
+    rotor_guard.metallic = 0.18
     rotor_guard.roughness = 0.63
     for i in range(locations.size()):
         var rotor := Node3D.new()

@@ -45,7 +45,7 @@ func _paint(colour: Color, metallic: float = 0.0, texture_path: String = "") -> 
     var m := StandardMaterial3D.new()
     m.albedo_color = colour
     m.roughness = 0.81 if metallic < 0.35 else 0.55
-    m.metallic = metallic
+    m.metallic = minf(metallic, 0.2) # see CHANGELOG: no reflection source, so high metallic renders black
     m.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
     if texture_path != "" and ResourceLoader.exists(texture_path):
         m.albedo_texture = load(texture_path)

@@ -23,17 +23,21 @@ Verified on 2026-11-19 with Godot 4.4.1 stable (Linux x86_64):
 | `res://tests/godot_witness_threat_085.tscn` (headless) | 14/14 witness checks |
 | Title screen start (headless) | no script errors |
 | Rendered capture of each district | all 8 render with HUD and weapon |
+| `res://tests/godot_codefix_regressions.tscn` (headless, exits 1 on failure) | 32/32 code-fix regression checks, clean exit |
 
 **Not yet playtested by a person.** No full F5 playthrough, ending playthrough, audio check or frame-time measurement has been done on this build. The last build confirmed playable by hand was Build 03.
 
-Known issues: see `docs/builds/BUILD_085_OPEN_ISSUES.md`. Godot also reports `16 resources still in use at exit` (an ObjectDB leak warning) on every run.
+Known issues: see `docs/builds/BUILD_085_OPEN_ISSUES.md`. The old `16 resources still in use at exit` warning is fixed for every in-game quit path (menu, window close, tests); Godot's own `--quit-after` developer flag bypasses the game's quit handling and can still print it.
 
 Run the engine checks with an isolated `HOME`, because the witness test writes a temporary save:
 
 ```
 HOME=$(mktemp -d) godot --headless --path . res://tests/godot_scene_smoke_084.tscn
 HOME=$(mktemp -d) godot --headless --path . res://tests/godot_witness_threat_085.tscn
+HOME=$(mktemp -d) godot --headless --path . res://tests/godot_codefix_regressions.tscn
 ```
+
+Quit the game from code with `Music.request_quit()`, not `get_tree().quit()`: it stops every audio player first, which is what prevents the exit leak.
 
 ## Layout
 

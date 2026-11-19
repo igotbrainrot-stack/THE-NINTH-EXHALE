@@ -23,7 +23,7 @@ func _ready() -> void:
     body_mesh.mesh = geometry
     var steel := StandardMaterial3D.new()
     steel.albedo_color = Color("#555b51")
-    steel.metallic = 0.45
+    steel.metallic = 0.18
     steel.roughness = 0.38
     steel.albedo_texture = load("res://assets/textures/pressure_vessel_067.png")
     steel.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
