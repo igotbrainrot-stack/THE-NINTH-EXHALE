@@ -227,7 +227,14 @@ func change_zone(zone_id: String) -> bool:
     if zone_id == "barracks": default_position = [-22.0,0.15,8.0]
     var known_position: Array = state["zone_positions"].get(zone_id,default_position)
     state["player_pos"] = known_position.duplicate()
-    state["yaw"] = 0.0
+    # Default spawns are authored for yaw 0. A remembered position is where Ninth
+    # left the district, normally facing its transfer gate, so turn around to face
+    # back into the district instead of a hard-coded world -Z (often a wall).
+    var known_yaws: Dictionary = state.get("zone_yaws",{})
+    if state["zone_positions"].has(zone_id) and known_yaws.has(zone_id):
+        state["yaw"] = wrapf(float(known_yaws[zone_id]) + PI, -PI, PI)
+    else:
+        state["yaw"] = 0.0
     state["pitch"] = 0.0
     record_event("travel:%d" % state["events"].size(),"physical_district_transfer",{"to":zone_id})
     save_attempt()
@@ -827,6 +834,11 @@ func fail_attempt(cause: String, witnessed: bool) -> void:
             "sootworks": zone_name = "Sootworks"
             "basilica": zone_name = "Flood Basilica"
             "ashmarket": zone_name = "Ashmarket"
+            "orchard": zone_name = "Glass Orchard"
+            "barracks": zone_name = "Quiet Barracks"
+            "core": zone_name = "the Central Archives"
+            "assembly": zone_name = "the Public Assembly"
+            "lift": zone_name = "the Freight Lift"
         var death_record := {"attempt_id":str(state["attempt_id"]),"site":zone_name, "cause":cause}
         profile["failed_deaths"].append(death_record)
         state["nix_archived_failures"].append(death_record)
@@ -859,6 +871,23 @@ func save_attempt() -> bool:
 func has_saved_active() -> bool:
     var loaded = read_json(SAVE_PATH)
     return loaded is Dictionary and int(loaded.get("schema",0)) == 1 and loaded.get("status","") == "active"
+
+## The last attempt on disk, if it ended in a committed, witnessed death that has
+## not yet been reconstructed (starting any other attempt overwrites it).
+func failed_attempt_awaiting_reprint() -> Dictionary:
+    var loaded = read_json(SAVE_PATH)
+    if not (loaded is Dictionary): return {}
+    if int(loaded.get("schema",0)) != 1 or str(loaded.get("status","")) != "failed": return {}
+    var record = loaded.get("nix_archived_failures",[])
+    if not (record is Array) or record.is_empty(): return {}
+    return loaded
+
+## Loads that failed attempt so start_new(..., true) inherits Nix's witnessed record.
+func load_failed_chain_for_reprint() -> bool:
+    var loaded: Dictionary = failed_attempt_awaiting_reprint()
+    if loaded.is_empty(): return false
+    state = loaded
+    return true
 
 func load_attempt() -> bool:
     var loaded = read_json(SAVE_PATH)
@@ -967,8 +996,14 @@ func choose_attribute_075(stat_name: String) -> bool:
     # The source is the finite level-up point, not extra XP or a resource.
     var next_index: int = int(state["attribute_milestones_075"].size())-int(state["unspent_attribute_points"])+1
     if not record_event("rpg.attribute_choice_075.%s" % next_index, "level_attribute_allocation", {"stat":stat_name,"value":int(state["attributes"][stat_name])+1}): return false
+    var health_cap_before: int = max_health()
+    var breath_cap_before: int = max_breath()
     state["attributes"][stat_name] = int(state["attributes"][stat_name])+1
     state["unspent_attribute_points"] = int(state["unspent_attribute_points"])-1
+    # A higher cap also raises current HP/Breath by the same amount.
+    state["health"] = int(state["health"]) + maxi(0, max_health() - health_cap_before)
+    state["breath"] = int(state["breath"]) + maxi(0, max_breath() - breath_cap_before)
+    state_changed.emit()
     save_attempt()
     return true
 

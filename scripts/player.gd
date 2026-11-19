@@ -150,12 +150,28 @@ func select_weapon(id: String) -> void:
         weapon_message.emit(str(WeaponCatalog.spec(id)["name"])+" / EQUIPPED")
 
 
+const ACTION_AUDIO_VOICES: int = 8
+var _action_voices: Array[AudioStreamPlayer] = []
+var _action_voice_next: int = 0
+
+## Round-robin pool of non-positional players. Previously each shot created a new
+## AudioStreamPlayer freed on `finished`, which also leaked a node whenever a
+## stream failed to load (it never finishes).
 func _play_action_audio(file_name: String, loudness: float = -8.0) -> void:
-    var sound := AudioStreamPlayer.new()
-    sound.stream = load("res://assets/audio/" + file_name)
+    var stream: AudioStream = load("res://assets/audio/" + file_name) as AudioStream
+    if stream == null:
+        push_warning("Missing action audio: " + file_name)
+        return
+    if _action_voices.is_empty():
+        for i in range(ACTION_AUDIO_VOICES):
+            var voice := AudioStreamPlayer.new()
+            voice.name = "ActionVoice%d" % i
+            add_child(voice)
+            _action_voices.append(voice)
+    var sound: AudioStreamPlayer = _action_voices[_action_voice_next]
+    _action_voice_next = (_action_voice_next + 1) % ACTION_AUDIO_VOICES
+    sound.stream = stream
     sound.volume_db = loudness
-    add_child(sound)
-    sound.finished.connect(sound.queue_free)
     sound.play()
 
 func intervene() -> void:
@@ -349,6 +365,8 @@ func capture_position() -> void:
         Game.state["zone_positions"][str(Game.state.get("zone","hearth"))]=Game.state["player_pos"].duplicate()
     Game.state["yaw"]=rotation.y
     Game.state["pitch"]=pitch
+    if not Game.state.has("zone_yaws"): Game.state["zone_yaws"] = {}
+    Game.state["zone_yaws"][str(Game.state.get("zone","hearth"))]=rotation.y
 
 func restore_position() -> void:
     # World replacement and F9 restore must discard transient per-frame state.

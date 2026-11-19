@@ -40,4 +40,4 @@ func _run() -> void:
         var reloaded: Node = scene.world.get_node_or_null(node_name)
         _assert_ok(is_instance_valid(reloaded) and bool(reloaded.get_meta("threatened_085",false)),zone_name+" threatened state restored")
     print("WITNESS_085_END")
-    get_tree().quit()
+    Music.request_quit()

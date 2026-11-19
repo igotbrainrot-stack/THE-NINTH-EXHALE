@@ -166,7 +166,7 @@ func _field_sprite(display: String, file_name: String, location: Vector3, size: 
 func _decorate_flood() -> void:
     var brass := StandardMaterial3D.new()
     brass.albedo_color = Color("#6e8076")
-    brass.metallic = 0.38
+    brass.metallic = 0.2
     brass.roughness = 0.6
     for x in [-22.5,-16.5,-10.5,-4.5,6.0,12.0,18.0,23.0]:
         var column := MeshInstance3D.new()
