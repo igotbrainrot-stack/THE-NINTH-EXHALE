@@ -1,33 +1,42 @@
 # THE NINTH EXHALE
 
-Original retro-style first-person RPG / roguelite set in Vesper, developed in Godot 4.
+An original industrial-civic horror FPS/RPG developed in **Godot 4.4.1**.
 
-## Current development status
+> **Repository state (19 November 2026):** the playable **Build 08.5** exists as a separate complete project archive, but **has NOT yet been committed to this GitHub repository**. This repository is a staging/recovery skeleton until the complete source and binary assets are imported and verified. Do not treat the current tree as runnable.
 
-**Source build:** 06.3 graphics integration (Hearth Nine, Sootworks, Flood Basilica). The source build is being staged for publication; this repository is **not yet a verified playable release**. The last user-confirmed working build was 03. An engine runtime test is still required for later builds.
+## Current complete build
 
-## Artwork
+**Build 08.5 — Witness Response (Godot tested)** is the current authoritative project archive. It contains Godot scenes, gameplay scripts, art/audio, tests, and design records. Ask the project owner for `The_Ninth_Exhale_Build_085_WITNESS_RESPONSE_GODOT_TESTED.zip`, then follow [the import guide](docs/BUILD_085_IMPORT_GUIDE.md).
 
-Original art is authored specifically for this project. The most recent graphics package includes:
-- Five 512×512 environment materials from generated originals: ward enamel, ward floor, Sootworks panel, Sootworks floor, Basilica stone.
-- Four-direction character sprites: Sela Vale, Brin Harker, Sister Ossa, Oren and the municipal clerk.
-- Three visual identities for encounter hostiles: office enforcer, Millwright and Cantor.
-- Twenty-seven standee environmental fixtures placed across the three areas.
-- A reworked first-person Covenant Pistol.
-- Original high-resolution creation sources and manifest for reproducible import.
-- Separately generated original Runway artworks with their task IDs in the project's Runway asset manifest (the Runway-hosted assets are **not** automatically present in this repository).
+The project preserves the five founding offices, independent Writ quorum, non-coercive Rootkin hearing, finite resources, public assembly, and four endings. Godot 4.4.1 headless startup, eight-zone smoke tests and witness tests were performed on the packaged build; full graphical playthrough is not yet certified.
 
-The creation-source PNGs and playable Godot project will be considered **uploaded** only after GitHub's tree lists those actual files. This README makes no claim that external artwork is already checked in.
+## Repository layout after full import
 
-## Release discipline
+| Path | Purpose |
+| --- | --- |
+| `project.godot` | Godot entry point |
+| `scenes/` | Scene definitions |
+| `scripts/` | Game logic, state and actors |
+| `assets/` | Runtime sprites, materials, audio and UI |
+| `data/` | Narrative/game data |
+| `tests/` | Regression and Godot smoke tests |
+| `art/` | Provenance and production sources |
+| `docs/` | Game bible, change logs and QA |
+| `tools/` | Developer utilities |
 
-- `main`: reproducible, verified baseline only.
-- Feature branches for engine systems, artwork, quests and content.
-- Do not commit Unity/Unreal/DOOM/Fallout/Pokémon/BioShock assets, or unrelated artwork.
-- Preserve the two-channel Lumen Engine, three distinct Writs for full-game progression, and ethical Echoform hearing.
-- Generated source and runtime exports belong under `art/production_sources/` and `assets/` respectively.
-- The artwork is newly generated for this project and still requires a human visual/IP review.
+## Build and test after import
 
-## Start locally
+1. Install Godot **4.4.1**.
+2. From the project root run `godot --headless --editor --path . --quit` to import resources.
+3. Run `godot --path .` to open the project.
+4. Read the latest `BUILD_085_QA.md` and tests before claiming gameplay certification.
 
-After the Godot project source is committed, import `project.godot` using Godot 4.x and use F5 to test. Source-level test checks do not substitute for engine runtime testing.
+## Preservation / collaboration
+
+- **Do not merge** a partial import over the game without review.
+- Do not rewrite or remove the foundational game bible, run-state constraints, asset provenance, or four endings.
+- Use a feature branch and draft pull request for large imports.
+- Do not commit `.godot/` caches, temporary exports, local test outputs, ZIPs, or installed engine binaries.
+- Preserve original art/audio rights and provenance; include only assets available for redistribution.
+
+See [repository status](docs/REPOSITORY_STATUS_20261119.md) and [Build 08.5 import guide](docs/BUILD_085_IMPORT_GUIDE.md).
