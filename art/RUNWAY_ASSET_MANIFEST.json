@@ -1,0 +1,44 @@
+{
+  "build": "07.9X source-level kinetic pass",
+  "new_assets": [
+    {
+      "path": "assets/fx/civic_muzzle_burst_079x.png",
+      "origin": "original deterministic procedural PIL authored in this build",
+      "size_bytes": 1868,
+      "runtime_reference": "scripts/game_ui.gd",
+      "runway": false
+    }
+  ],
+  "reuse": [
+    {
+      "path": "assets/sprites/enemies_074/*.png",
+      "origin": "prior atlas packs (Runway-derived assets documented in original project)",
+      "code": "scripts/enemy.gd"
+    },
+    {
+      "path": "assets/sprites/npc_idle_072/*.png",
+      "origin": "prior 07.2 art packs",
+      "code": "scripts/directional_npc_sprite.gd"
+    }
+  ],
+  "runway_checked": [
+    {
+      "kind": "audio",
+      "name": "Ninth Exhale _ Basilica acoustic pulse",
+      "task_id": "e5a9a5d8-f6a4-4362-80c2-3f9f51edcf3a",
+      "status": "exists in connected Runway; export blocked here; NOT bundled"
+    },
+    {
+      "kind": "audio",
+      "name": "Ninth Exhale _ Foundry pressure cycle",
+      "task_id": "9457e19b-73bf-4667-98a2-d36a5209d2ad",
+      "status": "exists in connected Runway; export blocked here; NOT bundled"
+    }
+  ],
+  "github": {
+    "branch": "feature/079x-kinetic-combat-20261118",
+    "status": "new original muzzle animation PNG staged on branch at 7eca6acbdc7e206aa23aa6ac1df32ccfdcebf23d; complete game source NOT pushed",
+    "commit": "7eca6acbdc7e206aa23aa6ac1df32ccfdcebf23d"
+  },
+  "caution": "No claimed Runway generation or integration in this milestone."
+}

@@ -1,0 +1,134 @@
+{
+  "sela": {
+    "reference_task_id": "a15483cd-709a-4e49-8a5a-2e548e635191",
+    "description": "Competent middle-aged woman medic with pale cloth surgical apron, faded blue-gray clinic coat and small brass cuff filtration tether, tired expression, loose dark hair.",
+    "new_task_id": "170d60cf-9f97-41aa-90b3-bc68fc1fa6f2",
+    "status": "Generation complete in connected Runway workspace; original PNG not embedded in this source archive"
+  },
+  "brin": {
+    "reference_task_id": "b3a57977-c920-4017-b610-4dcf64e932c7",
+    "description": "Short broad older factory labourer, goggles on brow, quilted soot-stained olive jacket, visibly six-fingered mechanical right-hand prosthesis, heavy leather boots.",
+    "new_task_id": "9936b369-377f-4a65-a141-6678eb0f7987",
+    "status": "Generation complete in connected Runway workspace; original PNG not embedded in this source archive"
+  },
+  "ossa": {
+    "reference_task_id": "79fb4b7e-084c-4309-aaac-ab0f6a5da654",
+    "description": "Adult Flood Basilica civic attendant, practical dark green salt-worn layered robes with detachable rectangular copper voice-box under her neck, uncovered face, waterproof utility boots.",
+    "new_task_id": "31ec16bf-024f-44ec-b0d2-dadc857afffe",
+    "status": "Generation complete in connected Runway workspace; original PNG not embedded in this source archive"
+  },
+  "oren": {
+    "reference_task_id": "a56f61c5-6d7a-4e9e-b8e7-12ca4a18add1",
+    "description": "Male air-maintenance worker in repaired olive utility coat, one shoulder visibly higher, repaired forearm splint, dark practical trousers and worn iron key ring.",
+    "new_task_id": "89c6e85e-caab-41e4-9b40-b4411b80da45",
+    "status": "Generation complete in connected Runway workspace; original PNG not embedded in this source archive"
+  },
+  "clerk": {
+    "reference_task_id": "fd3c9c05-b806-47c5-bdb6-1c8f3c3b8c70",
+    "description": "Middle-aged municipal requisitions records clerk in faded olive paperwork vest, narrow work spectacles, hinged receipt clips and waist card compartments, weary expression.",
+    "new_task_id": "1d91d896-3e8f-4a61-b0e4-62598757f90e",
+    "status": "Generation complete in connected Runway workspace; original PNG not embedded in this source archive"
+  },
+  "sentry": {
+    "reference_task_id": "08e04dd9-52d1-4846-826b-4219acf44b66",
+    "description": "Four-legged waist-high inspection crawler, square pale enamel pressure bellows body, four jointed brass legs, broken intake shutter, tiny black glass sensor.",
+    "new_task_id": "48447d14-c3e1-4ec3-bf6b-ec2cb99d9296",
+    "status": "Generation complete in connected Runway workspace; original PNG not embedded in this source archive"
+  },
+  "enforcer": {
+    "reference_task_id": "f200e985-8e21-4c84-886c-362d032b1fb1",
+    "description": "Human civic requisition enforcer with grey-green work duster, squared smoked goggles, asymmetrical municipal shoulder guard, heavy boots and low-tech service baton.",
+    "new_task_id": "c5532aa7-ec6d-4ea8-9a5f-8cfc412e0180",
+    "status": "Generation complete in connected Runway workspace; original PNG not embedded in this source archive"
+  },
+  "millwright": {
+    "reference_task_id": "801d69fe-8518-43f3-b8f2-8687412e9040",
+    "description": "Large civilian factory mechanical pressure frame operated by a weary person, hydraulic legs, irregular soot-black plating and copper pressure cylinder; non-military.",
+    "new_task_id": "105f1263-ed2a-4905-8194-dbbe7bd0523c",
+    "status": "Generation complete in connected Runway workspace; original PNG not embedded in this source archive"
+  },
+  "cantor": {
+    "reference_task_id": "b005c780-2b5c-4fd3-9cde-7c86f60b5922",
+    "description": "Wiry choir signal worker with battered copper acoustic waveguides around torso and worn salt-dark green civic work robes, very human tired face.",
+    "new_task_id": "df6d987e-6fe7-4aa2-81aa-3ee9b3b6dec7",
+    "status": "Generation complete in connected Runway workspace; original PNG not embedded in this source archive"
+  },
+  "edda_machine": {
+    "reference_task_id": "cd0635f9-a474-48f0-9e92-4ce44e9894a2",
+    "description": "Autonomous triage regulator, floor-walking three-legged medical machine with ivory enamel shell, brass pressure indicator reed, square queue shutters and hinged feet.",
+    "new_task_id": "abf8dfc4-c9a7-46ad-a239-99cd3a52c8b6",
+    "status": "Generation complete in connected Runway workspace; original PNG not embedded in this source archive"
+  },
+  "pressure_mite": {
+    "reference_task_id": "b43ef69b-9714-4c20-b569-5ee11e22741b",
+    "description": "Knee-high six-legged intake siphon mite machine with cracked cream ceramic vessel, thin needle legs and very long brass pressure feelers.",
+    "new_task_id": "3524d0b0-1928-4f19-b909-c527f074a102",
+    "status": "Generation complete in connected Runway workspace; original PNG not embedded in this source archive"
+  },
+  "registry_bailiff": {
+    "reference_task_id": "34c95596-677e-462f-9109-82363eac7f55",
+    "description": "Stocky human public registry guard with asymmetrical stacked paper-docket shield, dark overalls, brass rectangular bureau helmet and worn shoes.",
+    "new_task_id": "49f4c880-7e67-4681-9256-1350398e8f5e",
+    "status": "Generation complete in connected Runway workspace; original PNG not embedded in this source archive"
+  },
+  "vent_whistler": {
+    "reference_task_id": "5f97904a-f8bb-4346-bbe1-5518edf27704",
+    "description": "Low floor-standing acoustic pressure turret of stacked tapered porcelain breathing horns, rubber bellows and squat metal tripod base.",
+    "new_task_id": "06dba7c2-8a88-4b10-bf3b-4010ada61044",
+    "status": "Generation complete in connected Runway workspace; original PNG not embedded in this source archive"
+  },
+  "rivet_courier": {
+    "reference_task_id": "e0d3997e-177a-4ef6-8d36-c6a7f2bd12a4",
+    "description": "Fast slender wheeled industrial parts delivery automaton, offset rivet blank feed chute, mismatched wheeled legs and a hanging yellow cloth safety pennant.",
+    "new_task_id": "0b1c8323-b994-4fa6-8ca4-3df4d2d34b32",
+    "status": "Generation complete in connected Runway workspace; original PNG not embedded in this source archive"
+  },
+  "slag_sifter": {
+    "reference_task_id": "cb7335bb-9e1b-4f9a-948b-ebcb6c1fd3b2",
+    "description": "Broad crawling furnace ash-sorter, gray hopper torso on short tracks, orange rust-scarred edges and vertical white filter sack trailing behind.",
+    "new_task_id": "05ac6187-0531-4ff4-b848-c9dbf5d058ed",
+    "status": "Generation complete in connected Runway workspace; original PNG not embedded in this source archive"
+  },
+  "chain_hauler": {
+    "reference_task_id": "8410cd9b-222b-4437-b422-26493cca634f",
+    "description": "Tall asymmetric cargo-hauling frame, one massive counterweight arm, chain spool across high shoulders, broad boots and U-shaped industrial transport hook.",
+    "new_task_id": "7d0a2e40-82f9-45c0-9d3a-4a3fa2b899b3",
+    "status": "Generation complete in connected Runway workspace; original PNG not embedded in this source archive"
+  },
+  "choir_reed": {
+    "reference_task_id": "f0e88654-027d-4c27-b13b-9372e730a01b",
+    "description": "Very slim two-legged acoustic signal mast with four unequal brass reed ducts, slate-green bellows body and small amber signal lamp.",
+    "new_task_id": "f5d8cf1c-b9b1-44da-9668-bdb69649183a",
+    "status": "Generation complete in connected Runway workspace; original PNG not embedded in this source archive"
+  },
+  "saltbound_porter": {
+    "reference_task_id": "3bf61745-2947-4bd1-9847-0d1d369105ed",
+    "description": "Tall tragically burdened human flood-worker in teal rain canvas and salt-crusted waterproof clothing, clear salt-damaged faceplate and coiled hose over shoulder.",
+    "new_task_id": "0dae978a-ed1d-477e-b8e1-3424921d596c",
+    "status": "Generation complete in connected Runway workspace; original PNG not embedded in this source archive"
+  },
+  "sluice_beadle": {
+    "reference_task_id": "bc1d1c2a-990e-461e-8475-14deb8357384",
+    "description": "Broad hydraulic watergate machine, thick rectangular floodgate torso, two heavy wide stabilizer legs, stubby exposed copper hydraulic arms, narrow vertical gauge slit.",
+    "new_task_id": "df725669-e4ca-4e69-8b81-97f8ba3d2166",
+    "status": "Generation complete in connected Runway workspace; original PNG not embedded in this source archive"
+  },
+  "triage_warden": {
+    "reference_task_id": "5b8727db-ad85-47c0-b889-4dc0c160588a",
+    "description": "Slim mechanical medical service mannequin with off-white enamel plating, long articulated arms and folded translucent privacy-partition screens.",
+    "new_task_id": "b9ca9805-fd45-4b6a-a1e7-9571bb76d481",
+    "status": "Generation complete in connected Runway workspace; original PNG not embedded in this source archive"
+  },
+  "bell_wretch": {
+    "reference_task_id": "1857db79-9466-49d9-bf82-860b98f03db8",
+    "description": "Civic acoustic Echoform with asymmetrical empty-bodied bronze bell shells, translucent salt-gray vibrating membrane, thin dangling signal reeds, not captive.",
+    "new_task_id": "e45ea2c6-3173-48e5-8300-b2df511b2a49",
+    "status": "Generation complete in connected Runway workspace; original PNG not embedded in this source archive"
+  },
+  "rootkin": {
+    "reference_task_id": "678186a5-30c4-4085-832f-8a0bc7243201",
+    "description": "Small gentle public-loaner voluntary Echoform, root-fibre twig limbs, round pale ceramic botanical bud head and pale green resin botanical plates.",
+    "new_task_id": "5738e3a7-6795-482e-85e9-b94a169e9857",
+    "status": "Generation complete in connected Runway workspace; original PNG not embedded in this source archive"
+  }
+}

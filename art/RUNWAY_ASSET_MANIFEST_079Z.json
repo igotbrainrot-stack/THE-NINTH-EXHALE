@@ -1,0 +1,8 @@
+{
+  "build": "07.9Z",
+  "based_on": "07.9Y",
+  "runway_exports_new": [],
+  "previous_manifest": "RUNWAY_ASSET_MANIFEST_079Y.json",
+  "status": "No new Runway file bytes imported; all original legacy assets retained. Gameplay code changed only.",
+  "integration_checks": "Pending actual Godot runtime inspection."
+}

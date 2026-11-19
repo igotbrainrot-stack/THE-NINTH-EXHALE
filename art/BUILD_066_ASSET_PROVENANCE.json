@@ -1,0 +1,26 @@
+{
+  "project": "The Ninth Exhale",
+  "build": "06.6",
+  "status": "embedded in the attached Godot source project",
+  "generated_in_this_build": {
+    "author": "Original local deterministic procedural synthesizer, no external samples",
+    "generator": "art/tools/generate_sfx_066.py",
+    "audio_paths": [
+      "assets/audio/pressure_warning.wav",
+      "assets/audio/metal_hit.wav",
+      "assets/audio/covenant_fire.wav",
+      "assets/audio/coil_fire.wav",
+      "assets/audio/nail_fire.wav",
+      "assets/audio/choir_fire.wav",
+      "assets/audio/mechanical_reload.wav",
+      "assets/audio/valve_steam.wav"
+    ]
+  },
+  "artwork": "Existing original Godot scene, textures, in-conversation art, and selected runtime NPC/weapon assets are inherited unchanged from Build 06.5. No new Runway PNGs are claimed as physically embedded.",
+  "runway_source_registers": [
+    "art/RUNWAY_BATCH_MANIFEST.json",
+    "art/WEAPON_RUNWAY_064_MANIFEST.json",
+    "art/INTRO_RUNWAY_065_MANIFEST.json"
+  ],
+  "copyright_notice": "Original material generated for this project; editorial originality is not legal clearance."
+}

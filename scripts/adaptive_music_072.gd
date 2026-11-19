@@ -1,0 +1,116 @@
+extends Node
+## The Ninth Exhale 07.2 — original ambient + combat soundtrack director.
+## Four looped streams, fading continuously. No combat music when a story-only
+## official stands nearby unless that official is actually hostile.
+## Persists between district scene loads; never modifies campaign/save state.
+
+const MUSIC = {
+    "hearth": "res://assets/music/hearth_night_intake.ogg",
+    "sootworks": "res://assets/music/sootworks_service_debt.ogg",
+    "basilica": "res://assets/music/basilica_submerged_choir.ogg",
+    "ashmarket": "res://assets/music/ashmarket_bonded_hours.ogg",
+    "orchard": "res://assets/music/orchard_wet_lattice_077.ogg",
+    "barracks": "res://assets/music/barracks_order_zero_077.ogg", # original procedural 07.5 district score
+    "lift": "res://assets/music/hearth_night_intake.ogg",
+    "core": "res://assets/music/core_first_signature_076.ogg",
+    "assembly": "res://assets/music/core_first_signature_076.ogg",
+    "combat": "res://assets/music/pressure_breach_combat.ogg"
+}
+const AMBIENT_GAIN: float = 0.30
+const COMBAT_GAIN: float = 0.43
+const CROSSFADE_TIME: float = 2.2
+const COMBAT_ENGAGE_DISTANCE: float = 23.0
+const AUTO_THREAT_DISTANCE: float = 13.0
+const CALM_DELAY: float = 7.0
+
+var listener: Node3D = null
+var tracks: Dictionary = {}
+var gains: Dictionary = {}
+var combat_hold: float = 0.0
+var active_combat: bool = false
+var muted: bool = false
+var user_music_volume: float = 0.70
+var last_zone: String = "hearth"
+
+func _ready() -> void:
+    process_mode = Node.PROCESS_MODE_ALWAYS
+    for key in ["hearth","sootworks","basilica","ashmarket","orchard","barracks","core","assembly","combat"]:
+        var path: String = str(MUSIC[key])
+        if not ResourceLoader.exists(path):
+            push_warning("Missing music layer: " + path)
+            continue
+        var track := AudioStreamPlayer.new()
+        track.name = "Original music / " + key
+        track.stream = load(path)
+        # Ogg sample looping is set on the stream, avoiding restart crackle.
+        if track.stream is AudioStreamOggVorbis:
+            track.stream.loop = true
+        track.bus = "Master"
+        track.volume_db = -72.0
+        add_child(track)
+        track.play()
+        tracks[key] = track
+        gains[key] = 0.0
+
+func set_listener(target: Node3D) -> void:
+    listener = target
+    if target == null:
+        combat_hold = 0.0
+        active_combat = false
+
+func toggle_mute() -> void:
+    muted = not muted
+
+func set_music_volume(value: float) -> void:
+    user_music_volume = clampf(value,0.0,1.0)
+
+func _zone_key() -> String:
+    if not Game.has_attempt():
+        return "assembly" if str(Game.state.get("status","")) == "completed" else "hearth"
+    var zone: String = str(Game.state.get("zone","hearth"))
+    return zone if zone in ["hearth","sootworks","basilica","ashmarket","orchard","barracks","core","assembly"] else "hearth"
+
+func _combat_threat_nearby() -> bool:
+    if not Game.has_attempt() or not is_instance_valid(listener): return false
+    # The player has already been defeated or is in a dialogue/menu.
+    if not bool(listener.get("active")): return false
+    for enemy in get_tree().get_nodes_in_group("hostile"):
+        if not is_instance_valid(enemy) or not (enemy is Node3D):
+            continue
+        var foe: Node3D = enemy as Node3D
+        var hp: int = int(foe.get("hp"))
+        if hp <= 0: continue
+        var distance: float = listener.global_position.distance_to(foe.global_position)
+        var is_fighting: bool = bool(foe.get("hostile"))
+        # Optional autonomous hazards wake on proximity. Story officials do not.
+        var wake: float = float(foe.get("wake_distance"))
+        if is_fighting and distance <= COMBAT_ENGAGE_DISTANCE:
+            return true
+        if wake > 0.0 and distance <= minf(wake + 1.0,AUTO_THREAT_DISTANCE):
+            return true
+    return false
+
+func _process(delta: float) -> void:
+    var zone: String = _zone_key()
+    if last_zone != zone:
+        last_zone = zone
+        combat_hold = 0.0
+        active_combat = false
+    if _combat_threat_nearby():
+        combat_hold = CALM_DELAY
+        active_combat = true
+    else:
+        combat_hold = maxf(0.0,combat_hold - delta)
+        if combat_hold <= 0.0: active_combat = false
+    var transition_speed: float = delta / CROSSFADE_TIME
+    for key in tracks.keys():
+        var track: AudioStreamPlayer = tracks[key]
+        var is_ambient: bool = str(key) == zone and not active_combat
+        var is_battle: bool = str(key) == "combat" and active_combat
+        var target: float = AMBIENT_GAIN if is_ambient else (COMBAT_GAIN if is_battle else 0.0)
+        var current: float = float(gains[key])
+        current = move_toward(current,target,transition_speed * COMBAT_GAIN)
+        gains[key] = current
+        var gain: float = current * user_music_volume * (0.0 if muted else 1.0)
+        track.volume_db = linear_to_db(maxf(0.0001,gain))
+        if not track.playing: track.play()

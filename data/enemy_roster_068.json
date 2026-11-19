@@ -1,0 +1,331 @@
+{
+  "build": "06.8",
+  "original_combat_types": 5,
+  "new_combat_types": 10,
+  "combat_enemies": [
+    {
+      "id": "sentry",
+      "name": "Faulty Intake Filter Crawler",
+      "zone": "hearth",
+      "hp": 32,
+      "interval": 2.8,
+      "attack": "rush",
+      "move": "rush",
+      "speed": 3.7,
+      "reach": 2.0,
+      "wake": 9,
+      "damage": 4,
+      "pos": [
+        -17.2,
+        0.15,
+        9
+      ],
+      "rank": 0,
+      "runway_task_id": "08e04dd9-52d1-4846-826b-4219acf44b66",
+      "sprite_origin": "Runway original source turnaround"
+    },
+    {
+      "id": "enforcer",
+      "name": "Requisition Enforcer",
+      "zone": "hearth",
+      "hp": 70,
+      "interval": 2.25,
+      "attack": "line",
+      "move": "guard",
+      "speed": 2.1,
+      "reach": 10.5,
+      "wake": 0,
+      "damage": 9,
+      "pos": [
+        18,
+        0.15,
+        0
+      ],
+      "rank": 0,
+      "runway_task_id": "f200e985-8e21-4c84-886c-362d032b1fb1",
+      "sprite_origin": "Runway original source turnaround"
+    },
+    {
+      "id": "millwright",
+      "name": "Millwright Power Frame",
+      "zone": "sootworks",
+      "hp": 125,
+      "interval": 2.8,
+      "attack": "heavy",
+      "move": "boss",
+      "speed": 1.25,
+      "reach": 10.5,
+      "wake": 0,
+      "damage": 12,
+      "pos": [
+        14,
+        0.15,
+        -3
+      ],
+      "rank": 0,
+      "runway_task_id": "801d69fe-8518-43f3-b8f2-8687412e9040",
+      "sprite_origin": "Runway original source turnaround"
+    },
+    {
+      "id": "cantor",
+      "name": "Cantor Signal Keeper",
+      "zone": "basilica",
+      "hp": 125,
+      "interval": 2.45,
+      "attack": "signal",
+      "move": "boss",
+      "speed": 1.6,
+      "reach": 10.5,
+      "wake": 0,
+      "damage": 8,
+      "pos": [
+        14,
+        0.15,
+        5
+      ],
+      "rank": 0,
+      "runway_task_id": "b005c780-2b5c-4fd3-9cde-7c86f60b5922",
+      "sprite_origin": "Runway original source turnaround"
+    },
+    {
+      "id": "edda_machine",
+      "name": "Edda Triage Regulator",
+      "zone": "lift",
+      "hp": 90,
+      "interval": 2.4,
+      "attack": "heavy",
+      "move": "boss",
+      "speed": 1.5,
+      "reach": 10.5,
+      "wake": 0,
+      "damage": 10,
+      "pos": [
+        7,
+        0.15,
+        3
+      ],
+      "rank": 0,
+      "runway_task_id": "cd0635f9-a474-48f0-9e92-4ce44e9894a2",
+      "sprite_origin": "Runway original source turnaround"
+    },
+    {
+      "id": "pressure_mite",
+      "name": "Pressure Mite",
+      "zone": "hearth",
+      "hp": 20,
+      "interval": 2.05,
+      "attack": "rush",
+      "move": "flanker",
+      "speed": 3.5,
+      "reach": 1.55,
+      "wake": 7,
+      "damage": 5,
+      "pos": [
+        -3,
+        0.15,
+        -5
+      ],
+      "rank": 1,
+      "runway_task_id": "b43ef69b-9714-4c20-b569-5ee11e22741b",
+      "sprite_origin": "Runway original source turnaround"
+    },
+    {
+      "id": "registry_bailiff",
+      "name": "Registry Bailiff",
+      "zone": "hearth",
+      "hp": 62,
+      "interval": 3.1,
+      "attack": "line",
+      "move": "shield",
+      "speed": 1.4,
+      "reach": 8.2,
+      "wake": 7,
+      "damage": 7,
+      "pos": [
+        7,
+        0.15,
+        10
+      ],
+      "rank": 2,
+      "runway_task_id": "34c95596-677e-462f-9109-82363eac7f55",
+      "sprite_origin": "Runway original source turnaround"
+    },
+    {
+      "id": "vent_whistler",
+      "name": "Vent Whistler",
+      "zone": "hearth",
+      "hp": 40,
+      "interval": 3.35,
+      "attack": "signal",
+      "move": "turret",
+      "speed": 0,
+      "reach": 10.2,
+      "wake": 9,
+      "damage": 5,
+      "pos": [
+        13,
+        0.15,
+        -11
+      ],
+      "rank": 3,
+      "runway_task_id": "5f97904a-f8bb-4346-bbe1-5518edf27704",
+      "sprite_origin": "Runway original source turnaround"
+    },
+    {
+      "id": "rivet_courier",
+      "name": "Rivet Courier",
+      "zone": "sootworks",
+      "hp": 32,
+      "interval": 1.85,
+      "attack": "line",
+      "move": "skirmish",
+      "speed": 3.4,
+      "reach": 10,
+      "wake": 12,
+      "damage": 5,
+      "pos": [
+        -8,
+        0.15,
+        -2
+      ],
+      "rank": 1,
+      "runway_task_id": "e0d3997e-177a-4ef6-8d36-c6a7f2bd12a4",
+      "sprite_origin": "Runway original source turnaround"
+    },
+    {
+      "id": "slag_sifter",
+      "name": "Slag Sifter",
+      "zone": "sootworks",
+      "hp": 75,
+      "interval": 3.8,
+      "attack": "heavy",
+      "move": "siege",
+      "speed": 1.0,
+      "reach": 9.0,
+      "wake": 9,
+      "damage": 8,
+      "pos": [
+        18,
+        0.15,
+        -14
+      ],
+      "rank": 2,
+      "runway_task_id": "cb7335bb-9e1b-4f9a-948b-ebcb6c1fd3b2",
+      "sprite_origin": "Runway original source turnaround"
+    },
+    {
+      "id": "chain_hauler",
+      "name": "Chain Hauler",
+      "zone": "sootworks",
+      "hp": 88,
+      "interval": 3.3,
+      "attack": "pull",
+      "move": "control",
+      "speed": 1.5,
+      "reach": 8.5,
+      "wake": 10,
+      "damage": 5,
+      "pos": [
+        6,
+        0.15,
+        11
+      ],
+      "rank": 3,
+      "runway_task_id": "8410cd9b-222b-4437-b422-26493cca634f",
+      "sprite_origin": "Runway original source turnaround"
+    },
+    {
+      "id": "choir_reed",
+      "name": "Choir Reed",
+      "zone": "basilica",
+      "hp": 36,
+      "interval": 2.05,
+      "attack": "signal",
+      "move": "skirmish",
+      "speed": 2.8,
+      "reach": 9.5,
+      "wake": 9,
+      "damage": 5,
+      "pos": [
+        7,
+        0.15,
+        -4
+      ],
+      "rank": 1,
+      "runway_task_id": "f0e88654-027d-4c27-b13b-9372e730a01b",
+      "sprite_origin": "Runway original source turnaround"
+    },
+    {
+      "id": "saltbound_porter",
+      "name": "Saltbound Porter",
+      "zone": "basilica",
+      "hp": 68,
+      "interval": 2.8,
+      "attack": "rush",
+      "move": "flanker",
+      "speed": 2.1,
+      "reach": 2.2,
+      "wake": 8,
+      "damage": 7,
+      "pos": [
+        -11,
+        0.15,
+        11
+      ],
+      "rank": 2,
+      "runway_task_id": "3bf61745-2947-4bd1-9847-0d1d369105ed",
+      "sprite_origin": "Runway original source turnaround"
+    },
+    {
+      "id": "sluice_beadle",
+      "name": "Sluice Beadle",
+      "zone": "basilica",
+      "hp": 82,
+      "interval": 3.15,
+      "attack": "heavy",
+      "move": "shield",
+      "speed": 1.2,
+      "reach": 8.0,
+      "wake": 8,
+      "damage": 8,
+      "pos": [
+        17,
+        0.15,
+        9
+      ],
+      "rank": 3,
+      "runway_task_id": "bc1d1c2a-990e-461e-8475-14deb8357384",
+      "sprite_origin": "Runway original source turnaround"
+    },
+    {
+      "id": "triage_warden",
+      "name": "Triage Warden",
+      "zone": "lift",
+      "hp": 88,
+      "interval": 3.4,
+      "attack": "signal",
+      "move": "shield",
+      "speed": 1.5,
+      "reach": 9.3,
+      "wake": 8,
+      "damage": 7,
+      "pos": [
+        -3,
+        0.15,
+        -2
+      ],
+      "rank": 1,
+      "runway_task_id": "5b8727db-ad85-47c0-b889-4dc0c160588a",
+      "sprite_origin": "Runway original source turnaround"
+    }
+  ],
+  "hearing_only": [
+    "bell_wretch",
+    "rootkin"
+  ],
+  "runway_hearing_tasks": {
+    "bell_wretch": "1857db79-9466-49d9-bf82-860b98f03db8",
+    "rootkin": "678186a5-30c4-4085-832f-8a0bc7243201"
+  },
+  "sprite_status": "Render requested via Runway; image outputs are only marked integrated after source PNG export and atlas validation"
+}

@@ -1,0 +1,9 @@
+{
+  "source": "assets/sprites/enemies_073",
+  "outputs": "assets/sprites/enemies_074",
+  "figures": 17,
+  "directions": 8,
+  "animation_frames_per_direction": 12,
+  "process": "material contrast, edge highlight, subtle industrial wear, 1px contrast outline",
+  "truthfulness": "Derived from 07.3 low-poly 3D turntables, not the external Runway paintings."
+}

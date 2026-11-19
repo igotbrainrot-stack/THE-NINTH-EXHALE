@@ -1,0 +1,38 @@
+{
+  "build": "08.1",
+  "origin": "original locally generated procedural materials; no external Runway artwork claimed or imported",
+  "integration": "scripts/industrial_art_pass_081.gd",
+  "assets": [
+    {
+      "godot_path": "res://assets/textures/architectural_081/basilica_salt_wash_081.png",
+      "sha256": "37d71249e5e3e4f0169afd4ca8e1c23a7dfaa18e428fd24b49e5128cd2a46fb5",
+      "source": "deterministic original procedural texture generated locally",
+      "verified": "PNG structure and dimensions; Godot live rendering unverified"
+    },
+    {
+      "godot_path": "res://assets/textures/architectural_081/cast_iron_rivets_081.png",
+      "sha256": "d3f2edc4857226c731f32f69a50550c7325224ce187d60a0efaaad1632cce8b5",
+      "source": "deterministic original procedural texture generated locally",
+      "verified": "PNG structure and dimensions; Godot live rendering unverified"
+    },
+    {
+      "godot_path": "res://assets/textures/architectural_081/oxidized_forge_081.png",
+      "sha256": "ce983b0a362b5f228c97e27694a4e83322ebe2b72081b3c8ec17fc3d2446b9a1",
+      "source": "deterministic original procedural texture generated locally",
+      "verified": "PNG structure and dimensions; Godot live rendering unverified"
+    },
+    {
+      "godot_path": "res://assets/textures/architectural_081/patinated_copper_081.png",
+      "sha256": "2aa87da356df0a3b84b7fb548b07118dba4e1639c8bb07a9b78e5215a328332d",
+      "source": "deterministic original procedural texture generated locally",
+      "verified": "PNG structure and dimensions; Godot live rendering unverified"
+    },
+    {
+      "godot_path": "res://assets/textures/architectural_081/ward_crazed_enamel_081.png",
+      "sha256": "12d2da4b63b49ddf9e0b63d49d55b7e10b79a9d8af3100a72627ab2d5daa909c",
+      "source": "deterministic original procedural texture generated locally",
+      "verified": "PNG structure and dimensions; Godot live rendering unverified"
+    }
+  ],
+  "runway_exports_integrated": []
+}

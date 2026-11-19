@@ -1,0 +1,19 @@
+test_all_preloaded_resources_exist (__main__.ProjectSourceValidation.test_all_preloaded_resources_exist) ... ok
+test_canon_documents_present (__main__.ProjectSourceValidation.test_canon_documents_present) ... ok
+test_character_presets_and_levels (__main__.ProjectSourceValidation.test_character_presets_and_levels) ... ok
+test_first_location_physically_built_as_collidable_source (__main__.ProjectSourceValidation.test_first_location_physically_built_as_collidable_source) ... ok
+test_gdscript_parentheses_and_quote_structure (__main__.ProjectSourceValidation.test_gdscript_parentheses_and_quote_structure) ... ok
+test_interaction_ids_all_have_dispatch (__main__.ProjectSourceValidation.test_interaction_ids_all_have_dispatch) ... ok
+test_lung_has_four_valid_routes (__main__.ProjectSourceValidation.test_lung_has_four_valid_routes) ... ok
+test_master_inventory_counts (__main__.ProjectSourceValidation.test_master_inventory_counts) ... ok
+test_player_and_pistol_logic_source (__main__.ProjectSourceValidation.test_player_and_pistol_logic_source) ... ok
+test_procedural_placeholder_art_is_original_generated_files (__main__.ProjectSourceValidation.test_procedural_placeholder_art_is_original_generated_files) ... ok
+test_source_does_not_import_obsolete_creature_moves (__main__.ProjectSourceValidation.test_source_does_not_import_obsolete_creature_moves) ... ok
+test_stable_quest_id_does_not_invent_second_cipher (__main__.ProjectSourceValidation.test_stable_quest_id_does_not_invent_second_cipher) ... ok
+test_state_save_and_provenance_guards (__main__.ProjectSourceValidation.test_state_save_and_provenance_guards) ... ok
+test_technical_ids_are_unique (__main__.ProjectSourceValidation.test_technical_ids_are_unique) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.040s
+
+OK

@@ -1,0 +1,7 @@
+Build 06.5 static/source validation executed 2026-11-17
+69 Python unittest source/regression checks PASS
+14 project data/structure validations PASS
+Authored intake collision-geometry flood-fill PASS (gate closed versus open reachability)
+Zip integrity PASS (206 files; package created)
+Godot GDScript compiler/runtime: NOT RUN / Godot executable unavailable in this container
+No full campaign was built or tested.

@@ -1,0 +1,435 @@
+actor_id,category,state,status,implementation_evidence,godot_verified
+sentry,enemy,idle,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+sentry,enemy,move,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+sentry,enemy,talk,not applicable,,no
+sentry,enemy,listen,not applicable,,no
+sentry,enemy,alert,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+sentry,enemy,aim_windup,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+sentry,enemy,shoot_attack,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+sentry,enemy,reload,not applicable,,no
+sentry,enemy,cover,not applicable,,no
+sentry,enemy,hurt,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+sentry,enemy,stagger,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+sentry,enemy,death,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+sentry,enemy,corpse,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+sentry,enemy,hearing_response,not applicable,,no
+enforcer,enemy,idle,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+enforcer,enemy,move,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+enforcer,enemy,talk,not applicable,,no
+enforcer,enemy,listen,not applicable,,no
+enforcer,enemy,alert,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+enforcer,enemy,aim_windup,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+enforcer,enemy,shoot_attack,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+enforcer,enemy,reload,missing,,no
+enforcer,enemy,cover,missing,,no
+enforcer,enemy,hurt,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+enforcer,enemy,stagger,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+enforcer,enemy,death,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+enforcer,enemy,corpse,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+enforcer,enemy,hearing_response,not applicable,,no
+millwright,enemy,idle,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+millwright,enemy,move,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+millwright,enemy,talk,not applicable,,no
+millwright,enemy,listen,not applicable,,no
+millwright,enemy,alert,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+millwright,enemy,aim_windup,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+millwright,enemy,shoot_attack,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+millwright,enemy,reload,not applicable,,no
+millwright,enemy,cover,missing,,no
+millwright,enemy,hurt,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+millwright,enemy,stagger,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+millwright,enemy,death,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+millwright,enemy,corpse,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+millwright,enemy,hearing_response,not applicable,,no
+cantor,enemy,idle,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+cantor,enemy,move,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+cantor,enemy,talk,not applicable,,no
+cantor,enemy,listen,not applicable,,no
+cantor,enemy,alert,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+cantor,enemy,aim_windup,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+cantor,enemy,shoot_attack,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+cantor,enemy,reload,not applicable,,no
+cantor,enemy,cover,not applicable,,no
+cantor,enemy,hurt,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+cantor,enemy,stagger,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+cantor,enemy,death,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+cantor,enemy,corpse,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+cantor,enemy,hearing_response,not applicable,,no
+edda_machine,enemy,idle,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+edda_machine,enemy,move,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+edda_machine,enemy,talk,not applicable,,no
+edda_machine,enemy,listen,not applicable,,no
+edda_machine,enemy,alert,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+edda_machine,enemy,aim_windup,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+edda_machine,enemy,shoot_attack,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+edda_machine,enemy,reload,not applicable,,no
+edda_machine,enemy,cover,not applicable,,no
+edda_machine,enemy,hurt,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+edda_machine,enemy,stagger,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+edda_machine,enemy,death,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+edda_machine,enemy,corpse,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+edda_machine,enemy,hearing_response,not applicable,,no
+pressure_mite,enemy,idle,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+pressure_mite,enemy,move,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+pressure_mite,enemy,talk,not applicable,,no
+pressure_mite,enemy,listen,not applicable,,no
+pressure_mite,enemy,alert,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+pressure_mite,enemy,aim_windup,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+pressure_mite,enemy,shoot_attack,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+pressure_mite,enemy,reload,not applicable,,no
+pressure_mite,enemy,cover,not applicable,,no
+pressure_mite,enemy,hurt,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+pressure_mite,enemy,stagger,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+pressure_mite,enemy,death,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+pressure_mite,enemy,corpse,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+pressure_mite,enemy,hearing_response,not applicable,,no
+registry_bailiff,enemy,idle,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+registry_bailiff,enemy,move,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+registry_bailiff,enemy,talk,not applicable,,no
+registry_bailiff,enemy,listen,not applicable,,no
+registry_bailiff,enemy,alert,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+registry_bailiff,enemy,aim_windup,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+registry_bailiff,enemy,shoot_attack,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+registry_bailiff,enemy,reload,missing,,no
+registry_bailiff,enemy,cover,missing,,no
+registry_bailiff,enemy,hurt,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+registry_bailiff,enemy,stagger,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+registry_bailiff,enemy,death,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+registry_bailiff,enemy,corpse,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+registry_bailiff,enemy,hearing_response,not applicable,,no
+vent_whistler,enemy,idle,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+vent_whistler,enemy,move,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+vent_whistler,enemy,talk,not applicable,,no
+vent_whistler,enemy,listen,not applicable,,no
+vent_whistler,enemy,alert,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+vent_whistler,enemy,aim_windup,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+vent_whistler,enemy,shoot_attack,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+vent_whistler,enemy,reload,not applicable,,no
+vent_whistler,enemy,cover,not applicable,,no
+vent_whistler,enemy,hurt,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+vent_whistler,enemy,stagger,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+vent_whistler,enemy,death,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+vent_whistler,enemy,corpse,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+vent_whistler,enemy,hearing_response,not applicable,,no
+rivet_courier,enemy,idle,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+rivet_courier,enemy,move,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+rivet_courier,enemy,talk,not applicable,,no
+rivet_courier,enemy,listen,not applicable,,no
+rivet_courier,enemy,alert,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+rivet_courier,enemy,aim_windup,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+rivet_courier,enemy,shoot_attack,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+rivet_courier,enemy,reload,not applicable,,no
+rivet_courier,enemy,cover,not applicable,,no
+rivet_courier,enemy,hurt,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+rivet_courier,enemy,stagger,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+rivet_courier,enemy,death,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+rivet_courier,enemy,corpse,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+rivet_courier,enemy,hearing_response,not applicable,,no
+slag_sifter,enemy,idle,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+slag_sifter,enemy,move,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+slag_sifter,enemy,talk,not applicable,,no
+slag_sifter,enemy,listen,not applicable,,no
+slag_sifter,enemy,alert,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+slag_sifter,enemy,aim_windup,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+slag_sifter,enemy,shoot_attack,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+slag_sifter,enemy,reload,not applicable,,no
+slag_sifter,enemy,cover,not applicable,,no
+slag_sifter,enemy,hurt,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+slag_sifter,enemy,stagger,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+slag_sifter,enemy,death,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+slag_sifter,enemy,corpse,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+slag_sifter,enemy,hearing_response,not applicable,,no
+chain_hauler,enemy,idle,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+chain_hauler,enemy,move,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+chain_hauler,enemy,talk,not applicable,,no
+chain_hauler,enemy,listen,not applicable,,no
+chain_hauler,enemy,alert,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+chain_hauler,enemy,aim_windup,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+chain_hauler,enemy,shoot_attack,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+chain_hauler,enemy,reload,not applicable,,no
+chain_hauler,enemy,cover,not applicable,,no
+chain_hauler,enemy,hurt,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+chain_hauler,enemy,stagger,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+chain_hauler,enemy,death,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+chain_hauler,enemy,corpse,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+chain_hauler,enemy,hearing_response,not applicable,,no
+choir_reed,enemy,idle,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+choir_reed,enemy,move,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+choir_reed,enemy,talk,not applicable,,no
+choir_reed,enemy,listen,not applicable,,no
+choir_reed,enemy,alert,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+choir_reed,enemy,aim_windup,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+choir_reed,enemy,shoot_attack,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+choir_reed,enemy,reload,not applicable,,no
+choir_reed,enemy,cover,not applicable,,no
+choir_reed,enemy,hurt,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+choir_reed,enemy,stagger,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+choir_reed,enemy,death,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+choir_reed,enemy,corpse,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+choir_reed,enemy,hearing_response,not applicable,,no
+saltbound_porter,enemy,idle,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+saltbound_porter,enemy,move,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+saltbound_porter,enemy,talk,not applicable,,no
+saltbound_porter,enemy,listen,not applicable,,no
+saltbound_porter,enemy,alert,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+saltbound_porter,enemy,aim_windup,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+saltbound_porter,enemy,shoot_attack,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+saltbound_porter,enemy,reload,not applicable,,no
+saltbound_porter,enemy,cover,not applicable,,no
+saltbound_porter,enemy,hurt,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+saltbound_porter,enemy,stagger,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+saltbound_porter,enemy,death,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+saltbound_porter,enemy,corpse,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+saltbound_porter,enemy,hearing_response,not applicable,,no
+sluice_beadle,enemy,idle,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+sluice_beadle,enemy,move,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+sluice_beadle,enemy,talk,not applicable,,no
+sluice_beadle,enemy,listen,not applicable,,no
+sluice_beadle,enemy,alert,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+sluice_beadle,enemy,aim_windup,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+sluice_beadle,enemy,shoot_attack,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+sluice_beadle,enemy,reload,not applicable,,no
+sluice_beadle,enemy,cover,not applicable,,no
+sluice_beadle,enemy,hurt,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+sluice_beadle,enemy,stagger,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+sluice_beadle,enemy,death,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+sluice_beadle,enemy,corpse,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+sluice_beadle,enemy,hearing_response,not applicable,,no
+triage_warden,enemy,idle,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+triage_warden,enemy,move,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+triage_warden,enemy,talk,not applicable,,no
+triage_warden,enemy,listen,not applicable,,no
+triage_warden,enemy,alert,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+triage_warden,enemy,aim_windup,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+triage_warden,enemy,shoot_attack,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+triage_warden,enemy,reload,not applicable,,no
+triage_warden,enemy,cover,not applicable,,no
+triage_warden,enemy,hurt,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+triage_warden,enemy,stagger,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+triage_warden,enemy,death,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+triage_warden,enemy,corpse,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+triage_warden,enemy,hearing_response,not applicable,,no
+collector,enemy,idle,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+collector,enemy,move,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+collector,enemy,talk,not applicable,,no
+collector,enemy,listen,not applicable,,no
+collector,enemy,alert,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+collector,enemy,aim_windup,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+collector,enemy,shoot_attack,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+collector,enemy,reload,missing,,no
+collector,enemy,cover,not applicable,,no
+collector,enemy,hurt,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+collector,enemy,stagger,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+collector,enemy,death,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+collector,enemy,corpse,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+collector,enemy,hearing_response,not applicable,,no
+gardener,enemy,idle,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+gardener,enemy,move,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+gardener,enemy,talk,not applicable,,no
+gardener,enemy,listen,not applicable,,no
+gardener,enemy,alert,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+gardener,enemy,aim_windup,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+gardener,enemy,shoot_attack,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+gardener,enemy,reload,not applicable,,no
+gardener,enemy,cover,not applicable,,no
+gardener,enemy,hurt,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+gardener,enemy,stagger,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+gardener,enemy,death,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+gardener,enemy,corpse,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+gardener,enemy,hearing_response,not applicable,,no
+commandant,enemy,idle,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+commandant,enemy,move,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+commandant,enemy,talk,not applicable,,no
+commandant,enemy,listen,not applicable,,no
+commandant,enemy,alert,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+commandant,enemy,aim_windup,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+commandant,enemy,shoot_attack,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+commandant,enemy,reload,missing,,no
+commandant,enemy,cover,not applicable,,no
+commandant,enemy,hurt,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+commandant,enemy,stagger,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+commandant,enemy,death,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+commandant,enemy,corpse,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+commandant,enemy,hearing_response,not applicable,,no
+core_actuator,enemy,idle,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+core_actuator,enemy,move,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+core_actuator,enemy,talk,not applicable,,no
+core_actuator,enemy,listen,not applicable,,no
+core_actuator,enemy,alert,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+core_actuator,enemy,aim_windup,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+core_actuator,enemy,shoot_attack,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+core_actuator,enemy,reload,not applicable,,no
+core_actuator,enemy,cover,not applicable,,no
+core_actuator,enemy,hurt,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+core_actuator,enemy,stagger,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+core_actuator,enemy,death,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+core_actuator,enemy,corpse,in progress,scripts/enemy.gd; existing 12-cell eight-direction atlas; ephemeral corpse,no
+core_actuator,enemy,hearing_response,not applicable,,no
+brin,npc,idle,in progress,scripts/directional_npc_sprite.gd; existing four-frame strip,no
+brin,npc,move,missing,,no
+brin,npc,talk,in progress,scripts/directional_npc_sprite.gd; existing four-frame strip,no
+brin,npc,listen,in progress,scripts/directional_npc_sprite.gd; existing four-frame strip,no
+brin,npc,alert,missing,,no
+brin,npc,aim_windup,not applicable,,no
+brin,npc,shoot_attack,not applicable,,no
+brin,npc,reload,not applicable,,no
+brin,npc,cover,not applicable,,no
+brin,npc,hurt,in progress,scripts/directional_npc_sprite.gd; existing four-frame strip,no
+brin,npc,stagger,not applicable,,no
+brin,npc,death,missing,,no
+brin,npc,corpse,missing,,no
+brin,npc,hearing_response,not applicable,,no
+ossa,npc,idle,in progress,scripts/directional_npc_sprite.gd; existing four-frame strip,no
+ossa,npc,move,missing,,no
+ossa,npc,talk,in progress,scripts/directional_npc_sprite.gd; existing four-frame strip,no
+ossa,npc,listen,in progress,scripts/directional_npc_sprite.gd; existing four-frame strip,no
+ossa,npc,alert,missing,,no
+ossa,npc,aim_windup,not applicable,,no
+ossa,npc,shoot_attack,not applicable,,no
+ossa,npc,reload,not applicable,,no
+ossa,npc,cover,not applicable,,no
+ossa,npc,hurt,in progress,scripts/directional_npc_sprite.gd; existing four-frame strip,no
+ossa,npc,stagger,not applicable,,no
+ossa,npc,death,missing,,no
+ossa,npc,corpse,missing,,no
+ossa,npc,hearing_response,not applicable,,no
+sela,npc,idle,in progress,scripts/directional_npc_sprite.gd; existing four-frame strip,no
+sela,npc,move,missing,,no
+sela,npc,talk,missing,,no
+sela,npc,listen,missing,,no
+sela,npc,alert,missing,,no
+sela,npc,aim_windup,not applicable,,no
+sela,npc,shoot_attack,not applicable,,no
+sela,npc,reload,not applicable,,no
+sela,npc,cover,not applicable,,no
+sela,npc,hurt,missing,,no
+sela,npc,stagger,not applicable,,no
+sela,npc,death,missing,,no
+sela,npc,corpse,missing,,no
+sela,npc,hearing_response,not applicable,,no
+oren,npc,idle,in progress,scripts/directional_npc_sprite.gd; existing four-frame strip,no
+oren,npc,move,missing,,no
+oren,npc,talk,missing,,no
+oren,npc,listen,missing,,no
+oren,npc,alert,missing,,no
+oren,npc,aim_windup,not applicable,,no
+oren,npc,shoot_attack,not applicable,,no
+oren,npc,reload,not applicable,,no
+oren,npc,cover,not applicable,,no
+oren,npc,hurt,missing,,no
+oren,npc,stagger,not applicable,,no
+oren,npc,death,missing,,no
+oren,npc,corpse,missing,,no
+oren,npc,hearing_response,not applicable,,no
+clerk,npc,idle,in progress,scripts/directional_npc_sprite.gd; existing four-frame strip,no
+clerk,npc,move,missing,,no
+clerk,npc,talk,missing,,no
+clerk,npc,listen,missing,,no
+clerk,npc,alert,missing,,no
+clerk,npc,aim_windup,not applicable,,no
+clerk,npc,shoot_attack,not applicable,,no
+clerk,npc,reload,not applicable,,no
+clerk,npc,cover,not applicable,,no
+clerk,npc,hurt,missing,,no
+clerk,npc,stagger,not applicable,,no
+clerk,npc,death,missing,,no
+clerk,npc,corpse,missing,,no
+clerk,npc,hearing_response,not applicable,,no
+venn,npc,idle,missing,,no
+venn,npc,move,missing,,no
+venn,npc,talk,missing,,no
+venn,npc,listen,missing,,no
+venn,npc,alert,missing,,no
+venn,npc,aim_windup,not applicable,,no
+venn,npc,shoot_attack,not applicable,,no
+venn,npc,reload,not applicable,,no
+venn,npc,cover,not applicable,,no
+venn,npc,hurt,missing,,no
+venn,npc,stagger,not applicable,,no
+venn,npc,death,missing,,no
+venn,npc,corpse,missing,,no
+venn,npc,hearing_response,not applicable,,no
+kest,npc,idle,missing,,no
+kest,npc,move,missing,,no
+kest,npc,talk,missing,,no
+kest,npc,listen,missing,,no
+kest,npc,alert,missing,,no
+kest,npc,aim_windup,not applicable,,no
+kest,npc,shoot_attack,not applicable,,no
+kest,npc,reload,not applicable,,no
+kest,npc,cover,not applicable,,no
+kest,npc,hurt,missing,,no
+kest,npc,stagger,not applicable,,no
+kest,npc,death,missing,,no
+kest,npc,corpse,missing,,no
+kest,npc,hearing_response,not applicable,,no
+rootkin,echoform,idle,in progress,"scripts/physical_hearing_079.gd; state-based ring, not true creature frame animation",no
+rootkin,echoform,move,missing,,no
+rootkin,echoform,talk,missing,,no
+rootkin,echoform,listen,missing,,no
+rootkin,echoform,alert,missing,,no
+rootkin,echoform,aim_windup,not applicable,,no
+rootkin,echoform,shoot_attack,not applicable,,no
+rootkin,echoform,reload,not applicable,,no
+rootkin,echoform,cover,not applicable,,no
+rootkin,echoform,hurt,missing,,no
+rootkin,echoform,stagger,missing,,no
+rootkin,echoform,death,missing,,no
+rootkin,echoform,corpse,missing,,no
+rootkin,echoform,hearing_response,in progress,"scripts/physical_hearing_079.gd; state-based ring, not true creature frame animation",no
+covenant_viewmodel,first_person_weapon,idle,in progress,scripts/game_ui.gd; existing weapon pose and new muzzle/recoil viewmodel,no
+covenant_viewmodel,first_person_weapon,move,in progress,scripts/game_ui.gd; existing weapon pose and new muzzle/recoil viewmodel,no
+covenant_viewmodel,first_person_weapon,talk,not applicable,,no
+covenant_viewmodel,first_person_weapon,listen,not applicable,,no
+covenant_viewmodel,first_person_weapon,alert,not applicable,,no
+covenant_viewmodel,first_person_weapon,aim_windup,missing,,no
+covenant_viewmodel,first_person_weapon,shoot_attack,in progress,scripts/game_ui.gd; existing weapon pose and new muzzle/recoil viewmodel,no
+covenant_viewmodel,first_person_weapon,reload,in progress,scripts/game_ui.gd; existing weapon pose and new muzzle/recoil viewmodel,no
+covenant_viewmodel,first_person_weapon,cover,not applicable,,no
+covenant_viewmodel,first_person_weapon,hurt,not applicable,,no
+covenant_viewmodel,first_person_weapon,stagger,not applicable,,no
+covenant_viewmodel,first_person_weapon,death,not applicable,,no
+covenant_viewmodel,first_person_weapon,corpse,not applicable,,no
+covenant_viewmodel,first_person_weapon,hearing_response,not applicable,,no
+coil_viewmodel,first_person_weapon,idle,in progress,scripts/game_ui.gd; existing weapon pose and new muzzle/recoil viewmodel,no
+coil_viewmodel,first_person_weapon,move,in progress,scripts/game_ui.gd; existing weapon pose and new muzzle/recoil viewmodel,no
+coil_viewmodel,first_person_weapon,talk,not applicable,,no
+coil_viewmodel,first_person_weapon,listen,not applicable,,no
+coil_viewmodel,first_person_weapon,alert,not applicable,,no
+coil_viewmodel,first_person_weapon,aim_windup,missing,,no
+coil_viewmodel,first_person_weapon,shoot_attack,in progress,scripts/game_ui.gd; existing weapon pose and new muzzle/recoil viewmodel,no
+coil_viewmodel,first_person_weapon,reload,in progress,scripts/game_ui.gd; existing weapon pose and new muzzle/recoil viewmodel,no
+coil_viewmodel,first_person_weapon,cover,not applicable,,no
+coil_viewmodel,first_person_weapon,hurt,not applicable,,no
+coil_viewmodel,first_person_weapon,stagger,not applicable,,no
+coil_viewmodel,first_person_weapon,death,not applicable,,no
+coil_viewmodel,first_person_weapon,corpse,not applicable,,no
+coil_viewmodel,first_person_weapon,hearing_response,not applicable,,no
+nail_viewmodel,first_person_weapon,idle,in progress,scripts/game_ui.gd; existing weapon pose and new muzzle/recoil viewmodel,no
+nail_viewmodel,first_person_weapon,move,in progress,scripts/game_ui.gd; existing weapon pose and new muzzle/recoil viewmodel,no
+nail_viewmodel,first_person_weapon,talk,not applicable,,no
+nail_viewmodel,first_person_weapon,listen,not applicable,,no
+nail_viewmodel,first_person_weapon,alert,not applicable,,no
+nail_viewmodel,first_person_weapon,aim_windup,missing,,no
+nail_viewmodel,first_person_weapon,shoot_attack,in progress,scripts/game_ui.gd; existing weapon pose and new muzzle/recoil viewmodel,no
+nail_viewmodel,first_person_weapon,reload,in progress,scripts/game_ui.gd; existing weapon pose and new muzzle/recoil viewmodel,no
+nail_viewmodel,first_person_weapon,cover,not applicable,,no
+nail_viewmodel,first_person_weapon,hurt,not applicable,,no
+nail_viewmodel,first_person_weapon,stagger,not applicable,,no
+nail_viewmodel,first_person_weapon,death,not applicable,,no
+nail_viewmodel,first_person_weapon,corpse,not applicable,,no
+nail_viewmodel,first_person_weapon,hearing_response,not applicable,,no
+choir_viewmodel,first_person_weapon,idle,in progress,scripts/game_ui.gd; existing weapon pose and new muzzle/recoil viewmodel,no
+choir_viewmodel,first_person_weapon,move,in progress,scripts/game_ui.gd; existing weapon pose and new muzzle/recoil viewmodel,no
+choir_viewmodel,first_person_weapon,talk,not applicable,,no
+choir_viewmodel,first_person_weapon,listen,not applicable,,no
+choir_viewmodel,first_person_weapon,alert,not applicable,,no
+choir_viewmodel,first_person_weapon,aim_windup,missing,,no
+choir_viewmodel,first_person_weapon,shoot_attack,in progress,scripts/game_ui.gd; existing weapon pose and new muzzle/recoil viewmodel,no
+choir_viewmodel,first_person_weapon,reload,in progress,scripts/game_ui.gd; existing weapon pose and new muzzle/recoil viewmodel,no
+choir_viewmodel,first_person_weapon,cover,not applicable,,no
+choir_viewmodel,first_person_weapon,hurt,not applicable,,no
+choir_viewmodel,first_person_weapon,stagger,not applicable,,no
+choir_viewmodel,first_person_weapon,death,not applicable,,no
+choir_viewmodel,first_person_weapon,corpse,not applicable,,no
+choir_viewmodel,first_person_weapon,hearing_response,not applicable,,no

@@ -1,0 +1,14 @@
+{
+  "build": "07.9Y",
+  "new_runway_assets_imported": [],
+  "retained_assets": "All existing 07.9X project audio and sprite files",
+  "new_procedural_assets": [],
+  "new_code_effects": [
+    "scripts/enemy.gd role-tinted 3D shot streak via existing scripts/combat_tracer_079x.gd"
+  ],
+  "runway_tasks_known_not_bundled": [
+    "e5a9a5d8-f6a4-4362-80c2-3f9f51edcf3a",
+    "9457e19b-73bf-4667-98a2-d36a5209d2ad"
+  ],
+  "repository": "feature/079x-kinetic-combat-20261118 only stages previous new FX and script; full 07.9Y project not pushed"
+}

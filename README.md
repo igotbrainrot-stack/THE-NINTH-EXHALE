@@ -1,33 +1,56 @@
 # THE NINTH EXHALE
 
-Original retro-style first-person RPG / roguelite set in Vesper, developed in Godot 4.
+Original retro-style first-person RPG / roguelite set in the city of Vesper, built in **Godot 4.4** (GL Compatibility renderer, 640×400 internal resolution).
 
-## Current development status
+**Current build: 08.5 — Witness Response.** This is the complete, runnable Godot project.
 
-**Source build:** 06.3 graphics integration (Hearth Nine, Sootworks, Flood Basilica). The source build is being staged for publication; this repository is **not yet a verified playable release**. The last user-confirmed working build was 03. An engine runtime test is still required for later builds.
+## Run it
 
-## Artwork
+1. Install Godot 4.4.x (standard, not .NET), or put the Godot executable next to `launch_linux.sh`.
+2. Linux: `./launch_linux.sh`. Any OS: open `project.godot` in the Godot Project Manager and press **F5**.
 
-Original art is authored specifically for this project. The most recent graphics package includes:
-- Five 512×512 environment materials from generated originals: ward enamel, ward floor, Sootworks panel, Sootworks floor, Basilica stone.
-- Four-direction character sprites: Sela Vale, Brin Harker, Sister Ossa, Oren and the municipal clerk.
-- Three visual identities for encounter hostiles: office enforcer, Millwright and Cantor.
-- Twenty-seven standee environmental fixtures placed across the three areas.
-- A reworked first-person Covenant Pistol.
-- Original high-resolution creation sources and manifest for reproducible import.
-- Separately generated original Runway artworks with their task IDs in the project's Runway asset manifest (the Runway-hosted assets are **not** automatically present in this repository).
+Controls: WASD + mouse to move and look · LMB fire · R reload · 2–5 switch weapon · E interact · F / right-click intervene · TAB or ESC opens the dossier.
 
-The creation-source PNGs and playable Godot project will be considered **uploaded** only after GitHub's tree lists those actual files. This README makes no claim that external artwork is already checked in.
+## Status
 
-## Release discipline
+Verified on 2026-11-19 with Godot 4.4.1 stable (Linux x86_64):
 
-- `main`: reproducible, verified baseline only.
-- Feature branches for engine systems, artwork, quests and content.
-- Do not commit Unity/Unreal/DOOM/Fallout/Pokémon/BioShock assets, or unrelated artwork.
-- Preserve the two-channel Lumen Engine, three distinct Writs for full-game progression, and ethical Echoform hearing.
-- Generated source and runtime exports belong under `art/production_sources/` and `assets/` respectively.
-- The artwork is newly generated for this project and still requires a human visual/IP review.
+| Check | Result |
+|---|---|
+| `python3 -m unittest discover -s tests -p 'test_*.py'` | 267 passed |
+| `python3 tests/validate_project.py` | 14 passed |
+| `res://tests/godot_scene_smoke_084.tscn` (headless) | all 8 districts load |
+| `res://tests/godot_witness_threat_085.tscn` (headless) | 14/14 witness checks |
+| Title screen start (headless) | no script errors |
+| Rendered capture of each district | all 8 render with HUD and weapon |
 
-## Start locally
+**Not yet playtested by a person.** No full F5 playthrough, ending playthrough, audio check or frame-time measurement has been done on this build. The last build confirmed playable by hand was Build 03.
 
-After the Godot project source is committed, import `project.godot` using Godot 4.x and use F5 to test. Source-level test checks do not substitute for engine runtime testing.
+Known issues: see `docs/builds/BUILD_085_OPEN_ISSUES.md`. Godot also reports `16 resources still in use at exit` (an ObjectDB leak warning) on every run.
+
+Run the engine checks with an isolated `HOME`, because the witness test writes a temporary save:
+
+```
+HOME=$(mktemp -d) godot --headless --path . res://tests/godot_scene_smoke_084.tscn
+HOME=$(mktemp -d) godot --headless --path . res://tests/godot_witness_threat_085.tscn
+```
+
+## Layout
+
+| Path | Contents |
+|---|---|
+| `project.godot`, `scenes/`, `scripts/` | Godot project, scenes and GDScript |
+| `assets/` | Runtime assets: textures, sprites, weapons, UI, FX, audio, music, cinematics |
+| `art/` | Production source art (`production_sources/`), previews, import tools and Runway provenance manifests |
+| `data/` | Game data: master IDs, enemy roster, reference catalogue |
+| `tests/` | Python source tests and Godot headless test scenes |
+| `tools/` | Asset generation scripts |
+| `docs/` | Design docs (`MASTER_GAME_BIBLE_FINAL.md` is the source of truth). Ignored by the Godot importer. |
+| `docs/builds/` | Per-build changelogs, QA reports, open issues and checksum manifests, Build 02 → 08.5 |
+
+## Rules
+
+- `main` holds the current runnable build. Do larger work on feature branches and merge once the tests above pass.
+- Keep the two-channel Lumen Engine, the three distinct Writs for full-game progression and the ethical Echoform hearing.
+- Art is original to this project. Do not add assets from Unity, Unreal, DOOM, Fallout, Pokémon, BioShock or any other third-party game. Generated art still needs a human visual/IP review (`docs/PROTECTED_ORIGINALITY_REGISTER.md`).
+- Runway task IDs and provenance are recorded in `art/*RUNWAY*` manifests. A task ID is not an imported asset; only files present in this repo are in the game.

@@ -1,0 +1,232 @@
+{
+  "format": "079X-source-asset-audit",
+  "tested": "PNG headers, availability, 768x768 4x3 layout only; not art continuity or engine rendering",
+  "roster": [
+    {
+      "actor": "sentry",
+      "present_full_atlas": 8,
+      "issues": [],
+      "paths": {
+        "1": "assets/sprites/enemies_074/sentry_1.png",
+        "2": "assets/sprites/enemies_074/sentry_2.png",
+        "3": "assets/sprites/enemies_074/sentry_3.png",
+        "4": "assets/sprites/enemies_074/sentry_4.png",
+        "5": "assets/sprites/enemies_074/sentry_5.png",
+        "6": "assets/sprites/enemies_074/sentry_6.png",
+        "7": "assets/sprites/enemies_074/sentry_7.png",
+        "8": "assets/sprites/enemies_074/sentry_8.png"
+      }
+    },
+    {
+      "actor": "enforcer",
+      "present_full_atlas": 8,
+      "issues": [],
+      "paths": {
+        "1": "assets/sprites/enemies_074/enforcer_1.png",
+        "2": "assets/sprites/enemies_074/enforcer_2.png",
+        "3": "assets/sprites/enemies_074/enforcer_3.png",
+        "4": "assets/sprites/enemies_074/enforcer_4.png",
+        "5": "assets/sprites/enemies_074/enforcer_5.png",
+        "6": "assets/sprites/enemies_074/enforcer_6.png",
+        "7": "assets/sprites/enemies_074/enforcer_7.png",
+        "8": "assets/sprites/enemies_074/enforcer_8.png"
+      }
+    },
+    {
+      "actor": "millwright",
+      "present_full_atlas": 8,
+      "issues": [],
+      "paths": {
+        "1": "assets/sprites/enemies_074/millwright_1.png",
+        "2": "assets/sprites/enemies_074/millwright_2.png",
+        "3": "assets/sprites/enemies_074/millwright_3.png",
+        "4": "assets/sprites/enemies_074/millwright_4.png",
+        "5": "assets/sprites/enemies_074/millwright_5.png",
+        "6": "assets/sprites/enemies_074/millwright_6.png",
+        "7": "assets/sprites/enemies_074/millwright_7.png",
+        "8": "assets/sprites/enemies_074/millwright_8.png"
+      }
+    },
+    {
+      "actor": "cantor",
+      "present_full_atlas": 8,
+      "issues": [],
+      "paths": {
+        "1": "assets/sprites/enemies_074/cantor_1.png",
+        "2": "assets/sprites/enemies_074/cantor_2.png",
+        "3": "assets/sprites/enemies_074/cantor_3.png",
+        "4": "assets/sprites/enemies_074/cantor_4.png",
+        "5": "assets/sprites/enemies_074/cantor_5.png",
+        "6": "assets/sprites/enemies_074/cantor_6.png",
+        "7": "assets/sprites/enemies_074/cantor_7.png",
+        "8": "assets/sprites/enemies_074/cantor_8.png"
+      }
+    },
+    {
+      "actor": "edda_machine",
+      "present_full_atlas": 8,
+      "issues": [],
+      "paths": {
+        "1": "assets/sprites/enemies_074/edda_machine_1.png",
+        "2": "assets/sprites/enemies_074/edda_machine_2.png",
+        "3": "assets/sprites/enemies_074/edda_machine_3.png",
+        "4": "assets/sprites/enemies_074/edda_machine_4.png",
+        "5": "assets/sprites/enemies_074/edda_machine_5.png",
+        "6": "assets/sprites/enemies_074/edda_machine_6.png",
+        "7": "assets/sprites/enemies_074/edda_machine_7.png",
+        "8": "assets/sprites/enemies_074/edda_machine_8.png"
+      }
+    },
+    {
+      "actor": "pressure_mite",
+      "present_full_atlas": 8,
+      "issues": [],
+      "paths": {
+        "1": "assets/sprites/enemies_074/pressure_mite_1.png",
+        "2": "assets/sprites/enemies_074/pressure_mite_2.png",
+        "3": "assets/sprites/enemies_074/pressure_mite_3.png",
+        "4": "assets/sprites/enemies_074/pressure_mite_4.png",
+        "5": "assets/sprites/enemies_074/pressure_mite_5.png",
+        "6": "assets/sprites/enemies_074/pressure_mite_6.png",
+        "7": "assets/sprites/enemies_074/pressure_mite_7.png",
+        "8": "assets/sprites/enemies_074/pressure_mite_8.png"
+      }
+    },
+    {
+      "actor": "registry_bailiff",
+      "present_full_atlas": 8,
+      "issues": [],
+      "paths": {
+        "1": "assets/sprites/enemies_074/registry_bailiff_1.png",
+        "2": "assets/sprites/enemies_074/registry_bailiff_2.png",
+        "3": "assets/sprites/enemies_074/registry_bailiff_3.png",
+        "4": "assets/sprites/enemies_074/registry_bailiff_4.png",
+        "5": "assets/sprites/enemies_074/registry_bailiff_5.png",
+        "6": "assets/sprites/enemies_074/registry_bailiff_6.png",
+        "7": "assets/sprites/enemies_074/registry_bailiff_7.png",
+        "8": "assets/sprites/enemies_074/registry_bailiff_8.png"
+      }
+    },
+    {
+      "actor": "vent_whistler",
+      "present_full_atlas": 8,
+      "issues": [],
+      "paths": {
+        "1": "assets/sprites/enemies_074/vent_whistler_1.png",
+        "2": "assets/sprites/enemies_074/vent_whistler_2.png",
+        "3": "assets/sprites/enemies_074/vent_whistler_3.png",
+        "4": "assets/sprites/enemies_074/vent_whistler_4.png",
+        "5": "assets/sprites/enemies_074/vent_whistler_5.png",
+        "6": "assets/sprites/enemies_074/vent_whistler_6.png",
+        "7": "assets/sprites/enemies_074/vent_whistler_7.png",
+        "8": "assets/sprites/enemies_074/vent_whistler_8.png"
+      }
+    },
+    {
+      "actor": "rivet_courier",
+      "present_full_atlas": 8,
+      "issues": [],
+      "paths": {
+        "1": "assets/sprites/enemies_074/rivet_courier_1.png",
+        "2": "assets/sprites/enemies_074/rivet_courier_2.png",
+        "3": "assets/sprites/enemies_074/rivet_courier_3.png",
+        "4": "assets/sprites/enemies_074/rivet_courier_4.png",
+        "5": "assets/sprites/enemies_074/rivet_courier_5.png",
+        "6": "assets/sprites/enemies_074/rivet_courier_6.png",
+        "7": "assets/sprites/enemies_074/rivet_courier_7.png",
+        "8": "assets/sprites/enemies_074/rivet_courier_8.png"
+      }
+    },
+    {
+      "actor": "slag_sifter",
+      "present_full_atlas": 8,
+      "issues": [],
+      "paths": {
+        "1": "assets/sprites/enemies_074/slag_sifter_1.png",
+        "2": "assets/sprites/enemies_074/slag_sifter_2.png",
+        "3": "assets/sprites/enemies_074/slag_sifter_3.png",
+        "4": "assets/sprites/enemies_074/slag_sifter_4.png",
+        "5": "assets/sprites/enemies_074/slag_sifter_5.png",
+        "6": "assets/sprites/enemies_074/slag_sifter_6.png",
+        "7": "assets/sprites/enemies_074/slag_sifter_7.png",
+        "8": "assets/sprites/enemies_074/slag_sifter_8.png"
+      }
+    },
+    {
+      "actor": "chain_hauler",
+      "present_full_atlas": 8,
+      "issues": [],
+      "paths": {
+        "1": "assets/sprites/enemies_074/chain_hauler_1.png",
+        "2": "assets/sprites/enemies_074/chain_hauler_2.png",
+        "3": "assets/sprites/enemies_074/chain_hauler_3.png",
+        "4": "assets/sprites/enemies_074/chain_hauler_4.png",
+        "5": "assets/sprites/enemies_074/chain_hauler_5.png",
+        "6": "assets/sprites/enemies_074/chain_hauler_6.png",
+        "7": "assets/sprites/enemies_074/chain_hauler_7.png",
+        "8": "assets/sprites/enemies_074/chain_hauler_8.png"
+      }
+    },
+    {
+      "actor": "choir_reed",
+      "present_full_atlas": 8,
+      "issues": [],
+      "paths": {
+        "1": "assets/sprites/enemies_074/choir_reed_1.png",
+        "2": "assets/sprites/enemies_074/choir_reed_2.png",
+        "3": "assets/sprites/enemies_074/choir_reed_3.png",
+        "4": "assets/sprites/enemies_074/choir_reed_4.png",
+        "5": "assets/sprites/enemies_074/choir_reed_5.png",
+        "6": "assets/sprites/enemies_074/choir_reed_6.png",
+        "7": "assets/sprites/enemies_074/choir_reed_7.png",
+        "8": "assets/sprites/enemies_074/choir_reed_8.png"
+      }
+    },
+    {
+      "actor": "saltbound_porter",
+      "present_full_atlas": 8,
+      "issues": [],
+      "paths": {
+        "1": "assets/sprites/enemies_074/saltbound_porter_1.png",
+        "2": "assets/sprites/enemies_074/saltbound_porter_2.png",
+        "3": "assets/sprites/enemies_074/saltbound_porter_3.png",
+        "4": "assets/sprites/enemies_074/saltbound_porter_4.png",
+        "5": "assets/sprites/enemies_074/saltbound_porter_5.png",
+        "6": "assets/sprites/enemies_074/saltbound_porter_6.png",
+        "7": "assets/sprites/enemies_074/saltbound_porter_7.png",
+        "8": "assets/sprites/enemies_074/saltbound_porter_8.png"
+      }
+    },
+    {
+      "actor": "sluice_beadle",
+      "present_full_atlas": 8,
+      "issues": [],
+      "paths": {
+        "1": "assets/sprites/enemies_074/sluice_beadle_1.png",
+        "2": "assets/sprites/enemies_074/sluice_beadle_2.png",
+        "3": "assets/sprites/enemies_074/sluice_beadle_3.png",
+        "4": "assets/sprites/enemies_074/sluice_beadle_4.png",
+        "5": "assets/sprites/enemies_074/sluice_beadle_5.png",
+        "6": "assets/sprites/enemies_074/sluice_beadle_6.png",
+        "7": "assets/sprites/enemies_074/sluice_beadle_7.png",
+        "8": "assets/sprites/enemies_074/sluice_beadle_8.png"
+      }
+    },
+    {
+      "actor": "triage_warden",
+      "present_full_atlas": 8,
+      "issues": [],
+      "paths": {
+        "1": "assets/sprites/enemies_074/triage_warden_1.png",
+        "2": "assets/sprites/enemies_074/triage_warden_2.png",
+        "3": "assets/sprites/enemies_074/triage_warden_3.png",
+        "4": "assets/sprites/enemies_074/triage_warden_4.png",
+        "5": "assets/sprites/enemies_074/triage_warden_5.png",
+        "6": "assets/sprites/enemies_074/triage_warden_6.png",
+        "7": "assets/sprites/enemies_074/triage_warden_7.png",
+        "8": "assets/sprites/enemies_074/triage_warden_8.png"
+      }
+    }
+  ],
+  "missing_or_wrong": []
+}

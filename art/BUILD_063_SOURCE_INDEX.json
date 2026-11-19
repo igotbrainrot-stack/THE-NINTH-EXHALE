@@ -1,0 +1,104 @@
+{
+  "generation": "Original in-conversation illustrations (not Runway hosted originals). Runway art available separately by task ID in RUNWAY_BATCH_MANIFEST.json",
+  "file_count": 14,
+  "files": [
+    {
+      "name": "basilica_props",
+      "source": "assistant-generated original image for The Ninth Exhale",
+      "path": "art/production_sources/new_pass/basilica_props.png",
+      "sha256": "6d80bdb2cc5d7d97417c728b0fad1681c62548cde473105f48da5ecf2e3e4c5e",
+      "size_bytes": 2247938
+    },
+    {
+      "name": "basilica_stone",
+      "source": "assistant-generated original image for The Ninth Exhale",
+      "path": "art/production_sources/new_pass/basilica_stone.png",
+      "sha256": "c11cd17276d6f224c76ef2ffd4b40a7f619d6ffb72c7715b3774e7f7e8eb2962",
+      "size_bytes": 3584374
+    },
+    {
+      "name": "brin",
+      "source": "assistant-generated original image for The Ninth Exhale",
+      "path": "art/production_sources/new_pass/brin.png",
+      "sha256": "ecb3a88d9f611af7c04c2f892cfa3f733499d6b2a8c91c2f63fd7a794a68a6a7",
+      "size_bytes": 1785589
+    },
+    {
+      "name": "clerk",
+      "source": "assistant-generated original image for The Ninth Exhale",
+      "path": "art/production_sources/new_pass/clerk.png",
+      "sha256": "8c63a0a82e5a207583d02cc8d74ffb5a00a0e1886f1ebe75a97582d96759e825",
+      "size_bytes": 1785843
+    },
+    {
+      "name": "covenant_pistol",
+      "source": "assistant-generated original image for The Ninth Exhale",
+      "path": "art/production_sources/new_pass/covenant_pistol.png",
+      "sha256": "49f5e73b6eb6f6a51e3c081310cdaa8a6cd06a60b34f7eb6ed6dc79c22d26d3d",
+      "size_bytes": 1588739
+    },
+    {
+      "name": "hearth_props",
+      "source": "assistant-generated original image for The Ninth Exhale",
+      "path": "art/production_sources/new_pass/hearth_props.png",
+      "sha256": "7abe110dd53fdfaf07fd88555fcec104c1a79395349afda38cd677bd0b2a9dc9",
+      "size_bytes": 2302705
+    },
+    {
+      "name": "oren",
+      "source": "assistant-generated original image for The Ninth Exhale",
+      "path": "art/production_sources/new_pass/oren.png",
+      "sha256": "db9fb38402c0879d6c57939a95afc69664f0fafd77e0ecf6273538a8f0f5b585",
+      "size_bytes": 1686806
+    },
+    {
+      "name": "ossa",
+      "source": "assistant-generated original image for The Ninth Exhale",
+      "path": "art/production_sources/new_pass/ossa.png",
+      "sha256": "fcc73987a269761e86790683b6588ddb106a33966972e55dd080c55aac1b6ef7",
+      "size_bytes": 1758899
+    },
+    {
+      "name": "sela",
+      "source": "assistant-generated original image for The Ninth Exhale",
+      "path": "art/production_sources/new_pass/sela.png",
+      "sha256": "9e089d7d88b4730728f56b9e8fe30af9ff3c0844b8831142c3fc9ae9a07e5273",
+      "size_bytes": 1684275
+    },
+    {
+      "name": "soot_floor",
+      "source": "assistant-generated original image for The Ninth Exhale",
+      "path": "art/production_sources/new_pass/soot_floor.png",
+      "sha256": "ab95947fc17cd1a178b68cc94458947bc701c89b5d13f49f451068c4a6786aac",
+      "size_bytes": 3313337
+    },
+    {
+      "name": "soot_wall",
+      "source": "assistant-generated original image for The Ninth Exhale",
+      "path": "art/production_sources/new_pass/soot_wall.png",
+      "sha256": "ef35913989bfdfec30acb1a3a4fe770f5b5858557da380e5447f752690799435",
+      "size_bytes": 3167445
+    },
+    {
+      "name": "sootworks_props",
+      "source": "assistant-generated original image for The Ninth Exhale",
+      "path": "art/production_sources/new_pass/sootworks_props.png",
+      "sha256": "99bfa4518d4da5532fd0a7f89abb401bccd770196ab18201c82b2bf5b59d4b5e",
+      "size_bytes": 2382356
+    },
+    {
+      "name": "ward_enamel",
+      "source": "assistant-generated original image for The Ninth Exhale",
+      "path": "art/production_sources/new_pass/ward_enamel.png",
+      "sha256": "c561af11d12a09fab91f971c4cebbc0ceae5678daa0fc47bd642e3aa8c81ab2b",
+      "size_bytes": 3255440
+    },
+    {
+      "name": "ward_floor",
+      "source": "assistant-generated original image for The Ninth Exhale",
+      "path": "art/production_sources/new_pass/ward_floor.png",
+      "sha256": "8d8aa7bed00f50803a0d1083a6b141e4ba46201fba2c3c7b9c70fbdf93bd3aed",
+      "size_bytes": 2635315
+    }
+  ]
+}

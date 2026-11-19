@@ -1,0 +1,245 @@
+{
+  "build": "07.3",
+  "active_actor_count": 22,
+  "active_npc_count": 5,
+  "active_enemy_hearing_count": 17,
+  "directions_per_actor": 8,
+  "direction_map": [
+    "1 full front",
+    "2 front left 45 degrees",
+    "3 true left profile 90 degrees",
+    "4 rear left 135 degrees",
+    "5 full back 180 degrees",
+    "6 rear right 225 degrees",
+    "7 true right profile 270 degrees",
+    "8 front right 315 degrees"
+  ],
+  "angle_zero": "one universal display graphic, not a facing",
+  "latest_runway_original_count": 22,
+  "latest_runway_original_status": "completed in connected Runway workspace; awaiting export/visual audit",
+  "active_npc_type": "existing separately illustrated high-fidelity painted sprites validated as nonduplicate",
+  "active_enemy_type": "locally re-rendered original 3D maquettes from eight independent physical camera directions; lower-fidelity interim art pending Runway exports",
+  "animation_status": "existing 12 motion proxy stages per enemy direction retained, NOT individually painted walk/attack cycles",
+  "actors": {
+    "sela": {
+      "category": "civilian_painted",
+      "active_direction_files": 8,
+      "active_directory": "assets/sprites/directional8",
+      "min_pairwise_mean_rgb_delta": 5.245,
+      "front_back_delta": 5.54,
+      "runway_regeneration_task_id": "ee4b4fe3-a191-4abf-aed2-8bc36330baaa",
+      "runway_source_embedded": false,
+      "source_3d_turntable": "art/production_sources/turntable_073/sela_8way_TRUE_3d.png"
+    },
+    "brin": {
+      "category": "civilian_painted",
+      "active_direction_files": 8,
+      "active_directory": "assets/sprites/directional8",
+      "min_pairwise_mean_rgb_delta": 10.991,
+      "front_back_delta": 14.924,
+      "runway_regeneration_task_id": "4a9d635a-d89e-4e35-a9ac-5f09938707ed",
+      "runway_source_embedded": false,
+      "source_3d_turntable": "art/production_sources/turntable_073/brin_8way_TRUE_3d.png"
+    },
+    "ossa": {
+      "category": "civilian_painted",
+      "active_direction_files": 8,
+      "active_directory": "assets/sprites/directional8",
+      "min_pairwise_mean_rgb_delta": 7.37,
+      "front_back_delta": 13.894,
+      "runway_regeneration_task_id": "6747aefb-0a8b-458c-b8aa-ed35c43fa9c3",
+      "runway_source_embedded": false,
+      "source_3d_turntable": "art/production_sources/turntable_073/ossa_8way_TRUE_3d.png"
+    },
+    "oren": {
+      "category": "civilian_painted",
+      "active_direction_files": 8,
+      "active_directory": "assets/sprites/directional8",
+      "min_pairwise_mean_rgb_delta": 6.395,
+      "front_back_delta": 9.039,
+      "runway_regeneration_task_id": "6a73e252-0468-4d3c-b67d-fe4e1525d0d0",
+      "runway_source_embedded": false,
+      "source_3d_turntable": "art/production_sources/turntable_073/oren_8way_TRUE_3d.png"
+    },
+    "clerk": {
+      "category": "civilian_painted",
+      "active_direction_files": 8,
+      "active_directory": "assets/sprites/directional8",
+      "min_pairwise_mean_rgb_delta": 7.898,
+      "front_back_delta": 13.116,
+      "runway_regeneration_task_id": "0d9eb191-56e1-49b3-8167-ca424c3c3da5",
+      "runway_source_embedded": false,
+      "source_3d_turntable": "art/production_sources/turntable_073/clerk_8way_TRUE_3d.png"
+    },
+    "sentry": {
+      "category": "3d_turntable_interim",
+      "active_direction_files": 8,
+      "active_directory": "assets/sprites/enemies_073",
+      "min_pairwise_mean_rgb_delta": 4.648,
+      "front_back_delta": 4.648,
+      "runway_regeneration_task_id": "25d61d2a-9ced-4eb8-b3ac-ecb10057e5d8",
+      "runway_source_embedded": false,
+      "source_3d_turntable": "art/production_sources/turntable_073/sentry_8way_TRUE_3d.png"
+    },
+    "enforcer": {
+      "category": "3d_turntable_interim",
+      "active_direction_files": 8,
+      "active_directory": "assets/sprites/enemies_073",
+      "min_pairwise_mean_rgb_delta": 3.325,
+      "front_back_delta": 3.325,
+      "runway_regeneration_task_id": "e78a89dc-5468-484b-b736-5023cb04f2ca",
+      "runway_source_embedded": false,
+      "source_3d_turntable": "art/production_sources/turntable_073/enforcer_8way_TRUE_3d.png"
+    },
+    "millwright": {
+      "category": "3d_turntable_interim",
+      "active_direction_files": 8,
+      "active_directory": "assets/sprites/enemies_073",
+      "min_pairwise_mean_rgb_delta": 4.6,
+      "front_back_delta": 7.366,
+      "runway_regeneration_task_id": "c67a0692-8cdc-4168-b1a1-f9758dd5263a",
+      "runway_source_embedded": false,
+      "source_3d_turntable": "art/production_sources/turntable_073/millwright_8way_TRUE_3d.png"
+    },
+    "cantor": {
+      "category": "3d_turntable_interim",
+      "active_direction_files": 8,
+      "active_directory": "assets/sprites/enemies_073",
+      "min_pairwise_mean_rgb_delta": 3.496,
+      "front_back_delta": 3.586,
+      "runway_regeneration_task_id": "fcb39529-4846-4cf1-9fa0-62e1b83cd57c",
+      "runway_source_embedded": false,
+      "source_3d_turntable": "art/production_sources/turntable_073/cantor_8way_TRUE_3d.png"
+    },
+    "edda_machine": {
+      "category": "3d_turntable_interim",
+      "active_direction_files": 8,
+      "active_directory": "assets/sprites/enemies_073",
+      "min_pairwise_mean_rgb_delta": 4.781,
+      "front_back_delta": 10.76,
+      "runway_regeneration_task_id": "656d462b-931b-4b36-9ba0-713f2c43f3fd",
+      "runway_source_embedded": false,
+      "source_3d_turntable": "art/production_sources/turntable_073/edda_machine_8way_TRUE_3d.png"
+    },
+    "pressure_mite": {
+      "category": "3d_turntable_interim",
+      "active_direction_files": 8,
+      "active_directory": "assets/sprites/enemies_073",
+      "min_pairwise_mean_rgb_delta": 2.831,
+      "front_back_delta": 2.831,
+      "runway_regeneration_task_id": "ea8de416-9574-4ed0-9651-b81d75735b3a",
+      "runway_source_embedded": false,
+      "source_3d_turntable": "art/production_sources/turntable_073/pressure_mite_8way_TRUE_3d.png"
+    },
+    "registry_bailiff": {
+      "category": "3d_turntable_interim",
+      "active_direction_files": 8,
+      "active_directory": "assets/sprites/enemies_073",
+      "min_pairwise_mean_rgb_delta": 5.977,
+      "front_back_delta": 13.683,
+      "runway_regeneration_task_id": "5942fd54-9ed9-4b5f-b334-57c5ded065e1",
+      "runway_source_embedded": false,
+      "source_3d_turntable": "art/production_sources/turntable_073/registry_bailiff_8way_TRUE_3d.png"
+    },
+    "vent_whistler": {
+      "category": "3d_turntable_interim",
+      "active_direction_files": 8,
+      "active_directory": "assets/sprites/enemies_073",
+      "min_pairwise_mean_rgb_delta": 7.034,
+      "front_back_delta": 8.259,
+      "runway_regeneration_task_id": "d2105f6a-2040-4064-b2f4-ff65539cb94c",
+      "runway_source_embedded": false,
+      "source_3d_turntable": "art/production_sources/turntable_073/vent_whistler_8way_TRUE_3d.png"
+    },
+    "rivet_courier": {
+      "category": "3d_turntable_interim",
+      "active_direction_files": 8,
+      "active_directory": "assets/sprites/enemies_073",
+      "min_pairwise_mean_rgb_delta": 6.542,
+      "front_back_delta": 9.578,
+      "runway_regeneration_task_id": "e71b30be-ee59-47d3-b8c1-c9b81b9b313d",
+      "runway_source_embedded": false,
+      "source_3d_turntable": "art/production_sources/turntable_073/rivet_courier_8way_TRUE_3d.png"
+    },
+    "slag_sifter": {
+      "category": "3d_turntable_interim",
+      "active_direction_files": 8,
+      "active_directory": "assets/sprites/enemies_073",
+      "min_pairwise_mean_rgb_delta": 5.837,
+      "front_back_delta": 5.837,
+      "runway_regeneration_task_id": "19a49272-369f-415d-99ad-d0e8992053da",
+      "runway_source_embedded": false,
+      "source_3d_turntable": "art/production_sources/turntable_073/slag_sifter_8way_TRUE_3d.png"
+    },
+    "chain_hauler": {
+      "category": "3d_turntable_interim",
+      "active_direction_files": 8,
+      "active_directory": "assets/sprites/enemies_073",
+      "min_pairwise_mean_rgb_delta": 5.082,
+      "front_back_delta": 11.04,
+      "runway_regeneration_task_id": "3c30d0b6-b1a3-4949-869f-e0574721d0c7",
+      "runway_source_embedded": false,
+      "source_3d_turntable": "art/production_sources/turntable_073/chain_hauler_8way_TRUE_3d.png"
+    },
+    "choir_reed": {
+      "category": "3d_turntable_interim",
+      "active_direction_files": 8,
+      "active_directory": "assets/sprites/enemies_073",
+      "min_pairwise_mean_rgb_delta": 3.583,
+      "front_back_delta": 4.598,
+      "runway_regeneration_task_id": "87d63ca4-f62c-47ca-a60a-7ca846f6b6df",
+      "runway_source_embedded": false,
+      "source_3d_turntable": "art/production_sources/turntable_073/choir_reed_8way_TRUE_3d.png"
+    },
+    "saltbound_porter": {
+      "category": "3d_turntable_interim",
+      "active_direction_files": 8,
+      "active_directory": "assets/sprites/enemies_073",
+      "min_pairwise_mean_rgb_delta": 4.282,
+      "front_back_delta": 11.09,
+      "runway_regeneration_task_id": "259fe6ba-bc1c-4db9-83b6-8f954d6e1671",
+      "runway_source_embedded": false,
+      "source_3d_turntable": "art/production_sources/turntable_073/saltbound_porter_8way_TRUE_3d.png"
+    },
+    "sluice_beadle": {
+      "category": "3d_turntable_interim",
+      "active_direction_files": 8,
+      "active_directory": "assets/sprites/enemies_073",
+      "min_pairwise_mean_rgb_delta": 3.668,
+      "front_back_delta": 6.735,
+      "runway_regeneration_task_id": "bac544fd-435e-4d2b-9c8a-b98df3b145d4",
+      "runway_source_embedded": false,
+      "source_3d_turntable": "art/production_sources/turntable_073/sluice_beadle_8way_TRUE_3d.png"
+    },
+    "triage_warden": {
+      "category": "3d_turntable_interim",
+      "active_direction_files": 8,
+      "active_directory": "assets/sprites/enemies_073",
+      "min_pairwise_mean_rgb_delta": 2.699,
+      "front_back_delta": 3.933,
+      "runway_regeneration_task_id": "050452fe-36a0-48d0-9ce3-ba51f5bf7696",
+      "runway_source_embedded": false,
+      "source_3d_turntable": "art/production_sources/turntable_073/triage_warden_8way_TRUE_3d.png"
+    },
+    "bell_wretch": {
+      "category": "3d_turntable_interim",
+      "active_direction_files": 8,
+      "active_directory": "assets/sprites/enemies_073",
+      "min_pairwise_mean_rgb_delta": 3.522,
+      "front_back_delta": 7.069,
+      "runway_regeneration_task_id": "116b71e1-d108-4cc9-a691-36905ab9c3e7",
+      "runway_source_embedded": false,
+      "source_3d_turntable": "art/production_sources/turntable_073/bell_wretch_8way_TRUE_3d.png"
+    },
+    "rootkin": {
+      "category": "3d_turntable_interim",
+      "active_direction_files": 8,
+      "active_directory": "assets/sprites/enemies_073",
+      "min_pairwise_mean_rgb_delta": 5.186,
+      "front_back_delta": 5.221,
+      "runway_regeneration_task_id": "fcbc36c1-bcaa-4c79-847b-f41614ae453f",
+      "runway_source_embedded": false,
+      "source_3d_turntable": "art/production_sources/turntable_073/rootkin_8way_TRUE_3d.png"
+    }
+  }
+}

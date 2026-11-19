@@ -1,0 +1,15 @@
+{
+  "project": "The Ninth Exhale",
+  "build": "06.5",
+  "runway_generations": {
+    "intake_filter_crawler": "cb711625-61e5-4bff-98b2-b4654bb78604",
+    "reprint_backdrop": "c22eb1eb-d84a-4a7f-aead-6a55e79a87cc",
+    "eddas_clinical_governor": "df5f7157-1c1a-4a9e-bbb5-845a2e9e0004"
+  },
+  "status": "Runway art generated in connected workspace but raw PNGs not in this ZIP; project-specific fallback crawler drawing and earlier ward painting are embedded in Godot.",
+  "runtime_art_sources": {
+    "sentry_front.png": "Original procedural game-ready fallback drawn locally (not the Runway output)",
+    "hearth_reprint_backdrop.png": "Previously generated Hearth Nine scene painting",
+    "edda.png": "Cropped and edited from prior original requisition-clerk artwork; interim placeholder while Runway Edda export pending"
+  }
+}

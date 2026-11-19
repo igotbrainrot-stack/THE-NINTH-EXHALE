@@ -1,6 +1,16 @@
+# Godot
 .godot/
 *.tmp
 *.log
-__pycache__/
 user_saves/
+!docs/builds/*.log
+
+# Godot executable placed beside launch_linux.sh
+/Godot_v4*
+
+# Python
+__pycache__/
+*.pyc
+
+# OS
 .DS_Store

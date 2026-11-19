@@ -1,0 +1,9 @@
+{
+  "build": "07.6",
+  "sources": {
+    "world_materials": "Deterministic Pillow procedural original; seed 760017",
+    "core_actuator": "Original 07.4 Edda triage machine geometry recoloured and given a civic status plate, eight genuinely separate directional base atlases",
+    "music": "Deterministic original synthesized stems; no third-party sampling"
+  },
+  "note": "Procedural graphics remain production placeholders; human in-engine art review outstanding."
+}

@@ -1,0 +1,106 @@
+{
+  "build": "07.5",
+  "note": "Hashes of selected new/updated code and game assets, not a claim of engine playtest",
+  "files": {
+    "scripts/ashmarket_builder.gd": {
+      "sha256": "78dd5c3ffb2a0f3aaaba16e07eb3089dc40d9d425ef0af656718c25942a8cb1d",
+      "bytes": 6989
+    },
+    "scripts/run_state.gd": {
+      "sha256": "c79c60401d469dc4670acc557a0abbc028a14128ffdcfe5506b089fb6aa40cda",
+      "bytes": 65287
+    },
+    "scripts/main.gd": {
+      "sha256": "e29e8df5ef2ce93bf98d450685a67fd4727db4c8d31b46c094fce862151a3edf",
+      "bytes": 94150
+    },
+    "scripts/game_ui.gd": {
+      "sha256": "421335632ffbe3ae17704cde0b24aea400240b9634a5d81959ad221633e76dcc",
+      "bytes": 33644
+    },
+    "scripts/enemy.gd": {
+      "sha256": "c726e91e59dd4fedcc9600c06f685e1ac766b3fb8b52b29f25813a2eadb33525",
+      "bytes": 15695
+    },
+    "scripts/world_builder.gd": {
+      "sha256": "831268f37e6547750a911cd32313417aa0c75a1a527c4f2f94933d73eccded14",
+      "bytes": 10673
+    },
+    "scripts/sootworks_builder.gd": {
+      "sha256": "79c424c4f6360fbbc500ba0756ef899344c12808efcda8b4b225678c73a0a87a",
+      "bytes": 7007
+    },
+    "scripts/basilica_builder.gd": {
+      "sha256": "a760beca2900e4d52e30857e9a3bf1153211ef5137dedd33e5bb1c2061c540d1",
+      "bytes": 10539
+    },
+    "scripts/district_mood_074.gd": {
+      "sha256": "3e6264b55730e3a3d4816c80c738faf6993dc990591c4c8fb2391bdc3911f990",
+      "bytes": 4776
+    },
+    "scripts/adaptive_music_072.gd": {
+      "sha256": "b43c71a26e3e519ed624df1389931290f17ccfbb7130b4dd89fc99339ddd92df",
+      "bytes": 4553
+    },
+    "art/tools/generate_ashmarket_art_075.py": {
+      "sha256": "0fd2a54c609c3b31271316c71db9bc864bfeebb5f3275f894ac4c267612c8023",
+      "bytes": 4345
+    },
+    "art/tools/generate_ashmarket_music_075.py": {
+      "sha256": "b2ff9ba9f169ede936ec1f3a89a7260bc18d9974d8a68ca4f177716d73a85b53",
+      "bytes": 2981
+    },
+    "tests/test_build075_ashmarket.py": {
+      "sha256": "079a89b933caa30f4cecfa00772d81f55cc502a174655f2422e8cf94e25f97b6",
+      "bytes": 7681
+    },
+    "assets/textures/ashmarket_floor_075.png": {
+      "sha256": "f819c7dd94f571d48bcef2a63eebb3783613590bb21532a8411b8630c4916d05",
+      "bytes": 238467
+    },
+    "assets/textures/ashmarket_ledger_wall_075.png": {
+      "sha256": "7cb091fee2ac9446055a538d411ad24496db7aaea6a7484974d7d79725e1eb54",
+      "bytes": 196472
+    },
+    "assets/textures/ashmarket_awning_075.png": {
+      "sha256": "f50303e9941a844799a98780e043a9ca62a14c166dfc9fc6950c9d244c61fd59",
+      "bytes": 207070
+    },
+    "assets/music/ashmarket_bonded_hours.ogg": {
+      "sha256": "4ad94b80037ac0daf45a6dab662958547dd808ae66a0345bc7ad9471345b5ff0",
+      "bytes": 170071
+    },
+    "assets/sprites/enemies_075/collector_1.png": {
+      "sha256": "05655298b5251cc1dfec691b49be3f407e262a4f64b5acc789d69064032dae87",
+      "bytes": 311186
+    },
+    "assets/sprites/enemies_075/collector_2.png": {
+      "sha256": "9716b88aac2f350cc8131d83affcb03e179c0485e0bac657840c97bbb79e352d",
+      "bytes": 310777
+    },
+    "assets/sprites/enemies_075/collector_3.png": {
+      "sha256": "fa9a39bb559aa78bf42cdba7982f10e47b78905d66706f2f053d292d66fe930d",
+      "bytes": 218167
+    },
+    "assets/sprites/enemies_075/collector_4.png": {
+      "sha256": "4d1303abcc6afa0324d11007d5e00a5947da64746010b435449376430d5f6fbf",
+      "bytes": 309951
+    },
+    "assets/sprites/enemies_075/collector_5.png": {
+      "sha256": "b614ac710908a1786e5ff97e82a09a2f68060e41d2463718f044021357737120",
+      "bytes": 297091
+    },
+    "assets/sprites/enemies_075/collector_6.png": {
+      "sha256": "f08d51df318691cf362b7ddef3027b56876b802475d363b2d089d96029f869e8",
+      "bytes": 293471
+    },
+    "assets/sprites/enemies_075/collector_7.png": {
+      "sha256": "e0e46ab13669437ba182a87c0048f48822566bd0f36455d759825520d1970361",
+      "bytes": 209064
+    },
+    "assets/sprites/enemies_075/collector_8.png": {
+      "sha256": "30784ed7b6be49d80c922d27ea1076cff83edff4c3f64fda6eb47714909052c3",
+      "bytes": 314344
+    }
+  }
+}

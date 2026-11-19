@@ -1,0 +1,10 @@
+{
+  "Runway_generated_original_tracks": {
+    "hearth_night_intake": "7ea21163-a98a-4b39-b55b-c8c41ac3755f",
+    "sootworks_service_debt": "e3b7b7b4-6dcb-4586-b6fb-476553a8e08c",
+    "pressure_breach_combat": "38efe738-adab-4fd9-b8e5-29832fecf933",
+    "basilica_submerged_choir": "5b529627-26dc-435d-8ec8-f9777c8ef56d"
+  },
+  "built_in_fallbacks": "Sample-free deterministic loops authored in art/tools/generate_original_phonk_072.py and included under assets/music/*.ogg",
+  "asset_status": "Runway originals are in connected Runway workspace; local embedded OGG files are separately composed playable substitutes, NOT Runway exports"
+}

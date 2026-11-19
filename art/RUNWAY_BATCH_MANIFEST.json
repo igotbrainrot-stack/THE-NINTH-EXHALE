@@ -1,155 +1,113 @@
 {
-  "project": "THE NINTH EXHALE",
-  "revision": "06.3",
-  "sources": "Connected Runway workspace; exact task identifiers",
-  "warning": "This JSON is only a provenance register. Images are NOT committed until the actual PNG files appear in GitHub repository tree.",
+  "source": "User connected Runway workspace. 2026-11-17. Tasks submitted for generation; check completed status in Runway. Not embedded as remote originals in this ZIP.",
+  "notes": "Task IDs identify exact original image outputs in Runway; the remote output URLs are not embedded in public source control. Original Nail Storm render task f7b68206-c651-469b-b47a-32a2861647fc was blocked by provider moderation; replaced with a neutral construction-riveter concept submitted as d74e2c6f-596c-438d-8b5f-f91c8dd20561.",
+  "usage": "Export each asset from Runway (Recent Assets), rename to the label + .png in one directory, run art/tools/import_runway_batch.py --source that_directory.",
   "assets": [
     {
       "label": "ward_enamel",
       "task_id": "bd226591-da0f-4f89-865f-13cd140ef254",
-      "type": "texture",
-      "status": "Generated in Runway; source PNG not yet committed",
-      "license_review": "pending"
+      "destination": "texture"
     },
     {
       "label": "ward_floor",
       "task_id": "a6162a44-e69c-48bd-b834-81ac1f3109a7",
-      "type": "texture",
-      "status": "Generated in Runway; source PNG not yet committed",
-      "license_review": "pending"
+      "destination": "texture"
     },
     {
       "label": "ward_ceiling",
       "task_id": "1e2a9aa3-d76a-4f94-91ec-4a15d5add10e",
-      "type": "texture",
-      "status": "Generated in Runway; source PNG not yet committed",
-      "license_review": "pending"
+      "destination": "texture"
     },
     {
       "label": "soot_wall",
       "task_id": "3c92504a-236e-4ff0-bd30-107f325273bf",
-      "type": "texture",
-      "status": "Generated in Runway; source PNG not yet committed",
-      "license_review": "pending"
+      "destination": "texture"
     },
     {
       "label": "soot_floor",
       "task_id": "724edbb8-130c-423a-8a84-3c54af1dd297",
-      "type": "texture",
-      "status": "Generated in Runway; source PNG not yet committed",
-      "license_review": "pending"
+      "destination": "texture"
     },
     {
       "label": "soot_furnace",
       "task_id": "487f3b23-de86-40e8-8418-2b70821942ca",
-      "type": "texture",
-      "status": "Generated in Runway; source PNG not yet committed",
-      "license_review": "pending"
+      "destination": "texture"
     },
     {
       "label": "basilica_stone",
       "task_id": "bca465c6-1c23-4bc5-84f1-4efe65b65f6d",
-      "type": "texture",
-      "status": "Generated in Runway; source PNG not yet committed",
-      "license_review": "pending"
+      "destination": "texture"
     },
     {
       "label": "basilica_floor",
       "task_id": "0e94afeb-5a31-4bab-a287-4587d10f721c",
-      "type": "texture",
-      "status": "Generated in Runway; source PNG not yet committed",
-      "license_review": "pending"
+      "destination": "texture"
     },
     {
       "label": "sela",
       "task_id": "a15483cd-709a-4e49-8a5a-2e548e635191",
-      "type": "sprite-sheet",
-      "status": "Generated in Runway; source PNG not yet committed",
-      "license_review": "pending"
+      "destination": "sprite-sheet"
     },
     {
       "label": "brin",
       "task_id": "b3a57977-c920-4017-b610-4dcf64e932c7",
-      "type": "sprite-sheet",
-      "status": "Generated in Runway; source PNG not yet committed",
-      "license_review": "pending"
+      "destination": "sprite-sheet"
     },
     {
       "label": "ossa",
       "task_id": "79fb4b7e-084c-4309-aaac-ab0f6a5da654",
-      "type": "sprite-sheet",
-      "status": "Generated in Runway; source PNG not yet committed",
-      "license_review": "pending"
+      "destination": "sprite-sheet"
     },
     {
       "label": "oren",
       "task_id": "a56f61c5-6d7a-4e9e-b8e7-12ca4a18add1",
-      "type": "sprite-sheet",
-      "status": "Generated in Runway; source PNG not yet committed",
-      "license_review": "pending"
+      "destination": "sprite-sheet"
     },
     {
       "label": "clerk",
       "task_id": "fd3c9c05-b806-47c5-bdb6-1c8f3c3b8c70",
-      "type": "sprite-sheet",
-      "status": "Generated in Runway; source PNG not yet committed",
-      "license_review": "pending"
+      "destination": "sprite-sheet"
     },
     {
       "label": "covenant_pistol",
       "task_id": "1f07871a-64e7-4ac6-9a49-96836d9da019",
-      "type": "equipment",
-      "status": "Generated in Runway; source PNG not yet committed",
-      "license_review": "pending"
+      "destination": "equipment"
     },
     {
       "label": "coil_shotgun",
       "task_id": "62369f80-c563-46a1-a82d-288432154c56",
-      "type": "equipment",
-      "status": "Generated in Runway; source PNG not yet committed",
-      "license_review": "pending"
+      "destination": "equipment"
     },
     {
       "label": "nail_storm",
       "task_id": "d74e2c6f-596c-438d-8b5f-f91c8dd20561",
-      "type": "equipment",
-      "status": "Generated in Runway; source PNG not yet committed",
-      "license_review": "pending"
+      "destination": "equipment",
+      "note": "Equipment visual design is a benign construction-riveter study; item gameplay name unchanged."
     },
     {
       "label": "choirbreaker",
       "task_id": "5f7a3dc2-e0a2-40ed-80f0-a370ec6d4a0b",
-      "type": "equipment",
-      "status": "Generated in Runway; source PNG not yet committed",
-      "license_review": "pending"
+      "destination": "equipment"
     },
     {
       "label": "cinder_lung",
       "task_id": "4d338a8f-59db-4abc-8d0d-7a5afcf5299e",
-      "type": "equipment",
-      "status": "Generated in Runway; source PNG not yet committed",
-      "license_review": "pending"
+      "destination": "equipment"
     },
     {
       "label": "hearthkeeper_armour",
       "task_id": "bf5c55b4-a259-4e3f-9f11-784c84a3b404",
-      "type": "equipment",
-      "status": "Generated in Runway; source PNG not yet committed",
-      "license_review": "pending"
+      "destination": "equipment"
     },
     {
       "label": "brass_union_armour",
       "task_id": "55df2caf-f1c4-4ea5-8b01-cd885b160624",
-      "type": "equipment",
-      "status": "Generated in Runway; source PNG not yet committed",
-      "license_review": "pending"
+      "destination": "equipment"
     },
     {
       "label": "ninth_turnaround",
       "task_id": "5a4931c3-11bd-4827-9ec7-5e00e207e2fd",
-      "type": "sprite-sheet",
-      "status": "Generated in Runway; source PNG not yet committed",
-      "license_review": "pending"
+      "destination": "sprite-sheet"
     }
   ]
 }

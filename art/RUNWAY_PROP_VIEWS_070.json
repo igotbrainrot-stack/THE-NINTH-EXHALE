@@ -1,0 +1,26 @@
+{
+  "project": "THE NINTH EXHALE",
+  "build": "07.0",
+  "purpose": "Original production concept references for full-volume 3D furniture; four directional views per prop type",
+  "runway_workspace": "IGotBrainRot",
+  "task_status": "Four 2K image tasks completed in Runway. Source PNG bytes are NOT embedded in this ZIP; do not claim they are.",
+  "model": "gpt-image-2.5-flare",
+  "sources": [
+    {"key":"clinic_gurney", "task_id":"803189ab-f5ae-41f1-b915-3439d767bd05", "role":"Four-view structural reference for real 3D clinic cot"},
+    {"key":"foundry_workbench", "task_id":"ecead41c-c88b-4ac2-94dc-e2d9be507597", "role":"Four-view structural reference for real 3D foundry bench"},
+    {"key":"basilica_bench", "task_id":"b285068b-b37f-4218-b011-c82d8dc67fdf", "role":"Four-view structural reference for real 3D choir bench"},
+    {"key":"pressure_console", "task_id":"d9f20d87-0b4a-455a-8fda-4370fb750b8b", "role":"Four-view structural reference for real 3D civic pressure console"}
+  ],
+  "embedded_sources": {
+    "mesh_script": "scripts/prop_mesh_070.gd",
+    "textures": [
+      "assets/textures/ward_linen.png",
+      "assets/textures/ward_enamel_v4.png",
+      "assets/textures/requisition_steel.png",
+      "assets/textures/furnace_iron.png",
+      "assets/textures/basilica_stone_v4.png",
+      "assets/textures/basilica_paper.png"
+    ],
+    "physical_geometry": "Godot BoxMesh / CylinderMesh procedural objects; fixed in world space; materials tile across sides"
+  }
+}

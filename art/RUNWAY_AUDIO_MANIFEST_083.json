@@ -1,0 +1,70 @@
+{
+  "build": "08.3",
+  "producer": "local procedural WAV fallback, not Runway media",
+  "integrated": true,
+  "runtime_script": "scripts/actor_voice_083.gd",
+  "runway_tasks_generated_external_only": {
+    "npc": "ea9e09a1-c650-4653-876a-2b797fbab8d5",
+    "mechanical": "550078cf-d09e-4e2e-b88a-4136d4e4e387",
+    "organic": "995831bf-e03c-4a16-b478-f7734aa4e6b3"
+  },
+  "note": "Runway MP3 exports could not be downloaded through this execution environment; external task outputs are not counted as bundled.",
+  "bundled": [
+    {
+      "path": "assets/audio/actor_083/mechanical_alert.wav",
+      "sha256": "a31b19987a554017d384f1fd197e6400549e3eb9dee92c674fec06ea5d7fda47"
+    },
+    {
+      "path": "assets/audio/actor_083/mechanical_attack.wav",
+      "sha256": "7425c9aa5c175f10f40eb1a6a575224552fe62ce48f4ded920d08fba77728be4"
+    },
+    {
+      "path": "assets/audio/actor_083/mechanical_death.wav",
+      "sha256": "03cb91f410c79cc10d06ab65f048aa232b7460877c7e2cf0545d543f8d502c86"
+    },
+    {
+      "path": "assets/audio/actor_083/mechanical_hurt.wav",
+      "sha256": "bfd10f0c1743b2ae12ab03d6ba303604c63efc0b0d7e39f7ed567a7d0f2df83b"
+    },
+    {
+      "path": "assets/audio/actor_083/mechanical_windup.wav",
+      "sha256": "cc4d0ae07ee00d0f71cfcfe106c0bf2a7a2332e30f441dddf2d4a86a4cf39ea5"
+    },
+    {
+      "path": "assets/audio/actor_083/npc_grunt_0.wav",
+      "sha256": "13a9b9e17d35a8627d9b074e82666c72380ca86fe284b7fe954d858f58b56d59"
+    },
+    {
+      "path": "assets/audio/actor_083/npc_grunt_1.wav",
+      "sha256": "8bf716f3ee38acd4570e60aea41e1239051c888ccbcfc67aed8f46c04a9d6743"
+    },
+    {
+      "path": "assets/audio/actor_083/npc_grunt_2.wav",
+      "sha256": "189f2bea497016613af853ab79e8d1b6e07593119af6fd7eb9e60a0766ded0b3"
+    },
+    {
+      "path": "assets/audio/actor_083/npc_grunt_3.wav",
+      "sha256": "669862157435f24af0a27f38a32e8822288b1dca7b48ecb98fe8b72c0dd8f13f"
+    },
+    {
+      "path": "assets/audio/actor_083/organic_alert.wav",
+      "sha256": "57bdd22706292d19e9111b31a5e066ffa8a0e9c630834755da14677d887697b7"
+    },
+    {
+      "path": "assets/audio/actor_083/organic_attack.wav",
+      "sha256": "61baf54c0694bf860d897d7c6e77499299a1840cb84e09c2f2e86cf7f1ce5fac"
+    },
+    {
+      "path": "assets/audio/actor_083/organic_death.wav",
+      "sha256": "12422b555a3e658058712e421b31fda7d2b8c3ba69d471528a60b75380457322"
+    },
+    {
+      "path": "assets/audio/actor_083/organic_hurt.wav",
+      "sha256": "e21aaa6e7aa10270041211ae0fd6a2e4daffd5fe01a3c5e5231b21118dacaa59"
+    },
+    {
+      "path": "assets/audio/actor_083/organic_windup.wav",
+      "sha256": "919b751d5c01eeb959c95f293a2e43ccfc88ab9272ed36d9973977ede6676545"
+    }
+  ]
+}

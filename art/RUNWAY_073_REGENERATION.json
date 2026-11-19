@@ -1,0 +1,175 @@
+{
+  "project": "THE NINTH EXHALE",
+  "build": "07.3",
+  "viewing_angle_order": [
+    "1 full front",
+    "2 front left 45 degrees",
+    "3 true left profile 90 degrees",
+    "4 rear left 135 degrees",
+    "5 full back 180 degrees",
+    "6 rear right 225 degrees",
+    "7 true right profile 270 degrees",
+    "8 front right 315 degrees"
+  ],
+  "0": "one universal billboard only, never a ninth perspective",
+  "source_status": "22 original Runway regeneration jobs finished in workspace; raw PNGs not embedded in ZIP; export to replace interim 3D fallback",
+  "characters": {
+    "sela": {
+      "runway_task_id": "ee4b4fe3-a191-4abf-aed2-8bc36330baaa",
+      "source_filename": "sela.png",
+      "status": "complete_in_runway_external",
+      "embedded_in_game": false,
+      "sprite_mode": "8-view still sheet, not full hand-animated locomotion"
+    },
+    "brin": {
+      "runway_task_id": "4a9d635a-d89e-4e35-a9ac-5f09938707ed",
+      "source_filename": "brin.png",
+      "status": "complete_in_runway_external",
+      "embedded_in_game": false,
+      "sprite_mode": "8-view still sheet, not full hand-animated locomotion"
+    },
+    "ossa": {
+      "runway_task_id": "6747aefb-0a8b-458c-b8aa-ed35c43fa9c3",
+      "source_filename": "ossa.png",
+      "status": "complete_in_runway_external",
+      "embedded_in_game": false,
+      "sprite_mode": "8-view still sheet, not full hand-animated locomotion"
+    },
+    "oren": {
+      "runway_task_id": "6a73e252-0468-4d3c-b67d-fe4e1525d0d0",
+      "source_filename": "oren.png",
+      "status": "complete_in_runway_external",
+      "embedded_in_game": false,
+      "sprite_mode": "8-view still sheet, not full hand-animated locomotion"
+    },
+    "clerk": {
+      "runway_task_id": "0d9eb191-56e1-49b3-8167-ca424c3c3da5",
+      "source_filename": "clerk.png",
+      "status": "complete_in_runway_external",
+      "embedded_in_game": false,
+      "sprite_mode": "8-view still sheet, not full hand-animated locomotion"
+    },
+    "sentry": {
+      "runway_task_id": "25d61d2a-9ced-4eb8-b3ac-ecb10057e5d8",
+      "source_filename": "sentry.png",
+      "status": "complete_in_runway_external",
+      "embedded_in_game": false,
+      "sprite_mode": "8-view still sheet, not full hand-animated locomotion"
+    },
+    "enforcer": {
+      "runway_task_id": "e78a89dc-5468-484b-b736-5023cb04f2ca",
+      "source_filename": "enforcer.png",
+      "status": "complete_in_runway_external",
+      "embedded_in_game": false,
+      "sprite_mode": "8-view still sheet, not full hand-animated locomotion"
+    },
+    "millwright": {
+      "runway_task_id": "c67a0692-8cdc-4168-b1a1-f9758dd5263a",
+      "source_filename": "millwright.png",
+      "status": "complete_in_runway_external",
+      "embedded_in_game": false,
+      "sprite_mode": "8-view still sheet, not full hand-animated locomotion"
+    },
+    "cantor": {
+      "runway_task_id": "fcb39529-4846-4cf1-9fa0-62e1b83cd57c",
+      "source_filename": "cantor.png",
+      "status": "complete_in_runway_external",
+      "embedded_in_game": false,
+      "sprite_mode": "8-view still sheet, not full hand-animated locomotion"
+    },
+    "edda_machine": {
+      "runway_task_id": "656d462b-931b-4b36-9ba0-713f2c43f3fd",
+      "source_filename": "edda_machine.png",
+      "status": "complete_in_runway_external",
+      "embedded_in_game": false,
+      "sprite_mode": "8-view still sheet, not full hand-animated locomotion"
+    },
+    "pressure_mite": {
+      "runway_task_id": "ea8de416-9574-4ed0-9651-b81d75735b3a",
+      "source_filename": "pressure_mite.png",
+      "status": "complete_in_runway_external",
+      "embedded_in_game": false,
+      "sprite_mode": "8-view still sheet, not full hand-animated locomotion"
+    },
+    "registry_bailiff": {
+      "runway_task_id": "5942fd54-9ed9-4b5f-b334-57c5ded065e1",
+      "source_filename": "registry_bailiff.png",
+      "status": "complete_in_runway_external",
+      "embedded_in_game": false,
+      "sprite_mode": "8-view still sheet, not full hand-animated locomotion"
+    },
+    "vent_whistler": {
+      "runway_task_id": "d2105f6a-2040-4064-b2f4-ff65539cb94c",
+      "source_filename": "vent_whistler.png",
+      "status": "complete_in_runway_external",
+      "embedded_in_game": false,
+      "sprite_mode": "8-view still sheet, not full hand-animated locomotion"
+    },
+    "rivet_courier": {
+      "runway_task_id": "e71b30be-ee59-47d3-b8c1-c9b81b9b313d",
+      "source_filename": "rivet_courier.png",
+      "status": "complete_in_runway_external",
+      "embedded_in_game": false,
+      "sprite_mode": "8-view still sheet, not full hand-animated locomotion"
+    },
+    "slag_sifter": {
+      "runway_task_id": "19a49272-369f-415d-99ad-d0e8992053da",
+      "source_filename": "slag_sifter.png",
+      "status": "complete_in_runway_external",
+      "embedded_in_game": false,
+      "sprite_mode": "8-view still sheet, not full hand-animated locomotion"
+    },
+    "chain_hauler": {
+      "runway_task_id": "3c30d0b6-b1a3-4949-869f-e0574721d0c7",
+      "source_filename": "chain_hauler.png",
+      "status": "complete_in_runway_external",
+      "embedded_in_game": false,
+      "sprite_mode": "8-view still sheet, not full hand-animated locomotion"
+    },
+    "choir_reed": {
+      "runway_task_id": "87d63ca4-f62c-47ca-a60a-7ca846f6b6df",
+      "source_filename": "choir_reed.png",
+      "status": "complete_in_runway_external",
+      "embedded_in_game": false,
+      "sprite_mode": "8-view still sheet, not full hand-animated locomotion"
+    },
+    "saltbound_porter": {
+      "runway_task_id": "259fe6ba-bc1c-4db9-83b6-8f954d6e1671",
+      "source_filename": "saltbound_porter.png",
+      "status": "complete_in_runway_external",
+      "embedded_in_game": false,
+      "sprite_mode": "8-view still sheet, not full hand-animated locomotion"
+    },
+    "sluice_beadle": {
+      "runway_task_id": "bac544fd-435e-4d2b-9c8a-b98df3b145d4",
+      "source_filename": "sluice_beadle.png",
+      "status": "complete_in_runway_external",
+      "embedded_in_game": false,
+      "sprite_mode": "8-view still sheet, not full hand-animated locomotion"
+    },
+    "triage_warden": {
+      "runway_task_id": "050452fe-36a0-48d0-9ce3-ba51f5bf7696",
+      "source_filename": "triage_warden.png",
+      "status": "complete_in_runway_external",
+      "embedded_in_game": false,
+      "sprite_mode": "8-view still sheet, not full hand-animated locomotion"
+    },
+    "bell_wretch": {
+      "runway_task_id": "116b71e1-d108-4cc9-a691-36905ab9c3e7",
+      "source_filename": "bell_wretch.png",
+      "status": "complete_in_runway_external",
+      "embedded_in_game": false,
+      "sprite_mode": "8-view still sheet, not full hand-animated locomotion"
+    },
+    "rootkin": {
+      "runway_task_id": "fcbc36c1-bcaa-4c79-847b-f41614ae453f",
+      "source_filename": "rootkin.png",
+      "status": "complete_in_runway_external",
+      "embedded_in_game": false,
+      "sprite_mode": "8-view still sheet, not full hand-animated locomotion"
+    }
+  },
+  "fallback": "all 22 have original 3D turntable source sheets; 17 enemy/hearing figures use full-view game PNG atlases, five NPCs retain individually painted 07.2 8-way assets until approved replacement",
+  "import_command": "python3 art/tools/import_runway_true_eight_073.py --source /folder/with/22/exported/PNGs",
+  "copyright": "Original in-project designs only; no third-party game artwork."
+}

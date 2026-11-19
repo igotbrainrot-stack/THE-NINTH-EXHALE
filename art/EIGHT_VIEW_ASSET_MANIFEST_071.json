@@ -1,0 +1,70 @@
+{
+  "build": "07.1",
+  "rotation_0": "single universal billboard view; not an extra angle",
+  "angle_order": {
+    "1": "front",
+    "2": "diagonal_left_front",
+    "3": "left",
+    "4": "diagonal_left_back",
+    "5": "back",
+    "6": "diagonal_right_back",
+    "7": "right",
+    "8": "diagonal_right_front"
+  },
+  "cell_pixels": {
+    "enemies": [
+      192,
+      256
+    ],
+    "npc": [
+      192,
+      280
+    ]
+  },
+  "enemy_atlas_grid": [
+    4,
+    3
+  ],
+  "enemy_animation_frames": 12,
+  "actor_count": 17,
+  "enemy_atlas_count": 136,
+  "npc_count": 5,
+  "npc_card_count": 40,
+  "new_eight_view_art": {
+    "actor": "brin",
+    "source": "art/production_sources/brin_eight_view_imagegen_071.png",
+    "directions": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ]
+  },
+  "provenance": "Brin 1..8 individually illustrated; other NPC and enemy diagonals 2,4,6,8 are provisional optical-flow-guided primary-source warps of existing original cardinal frames, NOT separately painted and NOT exported from Runway.",
+  "source_provenance": "Legacy enemy cardinal frames remain exactly original in assets/sprites/enemies_068. Object furniture is full 3D geometry and uses infinitely many real viewing angles.",
+  "enemy_ids": [
+    "bell_wretch",
+    "cantor",
+    "chain_hauler",
+    "choir_reed",
+    "edda_machine",
+    "enforcer",
+    "millwright",
+    "pressure_mite",
+    "registry_bailiff",
+    "rivet_courier",
+    "rootkin",
+    "saltbound_porter",
+    "sentry",
+    "slag_sifter",
+    "sluice_beadle",
+    "triage_warden",
+    "vent_whistler"
+  ],
+  "synthesis_method": "Single-source perspective warping guided by optical flow to next cardinal pose. No two-image ghost overlay; visual diagonals are still provisional.",
+  "uses_opencv": true
+}

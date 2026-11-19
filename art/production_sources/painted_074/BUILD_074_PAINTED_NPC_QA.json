@@ -1,0 +1,12 @@
+{
+  "sela": {
+    "views": 8,
+    "size": "192x280",
+    "min_pairwise_RGBA_difference": 13.31
+  },
+  "brin": {
+    "views": 8,
+    "size": "192x280",
+    "min_pairwise_RGBA_difference": 13.89
+  }
+}

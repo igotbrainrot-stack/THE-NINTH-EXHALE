@@ -1,0 +1,160 @@
+{
+  "build": "07.3",
+  "method": "3D orthographic turntables, 8 original views per entity; separate from Runway commissioned hand paintings",
+  "actors": {
+    "sela": {
+      "produced": 8,
+      "source_method": "real fixed-camera 3D turntable, 45 degree increments",
+      "min_silhouette_difference": 0.0039,
+      "front_back_difference": 0.0039,
+      "source_sheet": "art/production_sources/turntable_073/sela_8way_TRUE_3d.png"
+    },
+    "brin": {
+      "produced": 8,
+      "source_method": "real fixed-camera 3D turntable, 45 degree increments",
+      "min_silhouette_difference": 0.0062,
+      "front_back_difference": 0.0062,
+      "source_sheet": "art/production_sources/turntable_073/brin_8way_TRUE_3d.png"
+    },
+    "ossa": {
+      "produced": 8,
+      "source_method": "real fixed-camera 3D turntable, 45 degree increments",
+      "min_silhouette_difference": 0.0033,
+      "front_back_difference": 0.0033,
+      "source_sheet": "art/production_sources/turntable_073/ossa_8way_TRUE_3d.png"
+    },
+    "oren": {
+      "produced": 8,
+      "source_method": "real fixed-camera 3D turntable, 45 degree increments",
+      "min_silhouette_difference": 0.0072,
+      "front_back_difference": 0.0072,
+      "source_sheet": "art/production_sources/turntable_073/oren_8way_TRUE_3d.png"
+    },
+    "clerk": {
+      "produced": 8,
+      "source_method": "real fixed-camera 3D turntable, 45 degree increments",
+      "min_silhouette_difference": 0.0055,
+      "front_back_difference": 0.0055,
+      "source_sheet": "art/production_sources/turntable_073/clerk_8way_TRUE_3d.png"
+    },
+    "sentry": {
+      "produced": 8,
+      "source_method": "real fixed-camera 3D turntable, 45 degree increments",
+      "min_silhouette_difference": 0.0026,
+      "front_back_difference": 0.0026,
+      "source_sheet": "art/production_sources/turntable_073/sentry_8way_TRUE_3d.png"
+    },
+    "enforcer": {
+      "produced": 8,
+      "source_method": "real fixed-camera 3D turntable, 45 degree increments",
+      "min_silhouette_difference": 0.0072,
+      "front_back_difference": 0.0072,
+      "source_sheet": "art/production_sources/turntable_073/enforcer_8way_TRUE_3d.png"
+    },
+    "millwright": {
+      "produced": 8,
+      "source_method": "real fixed-camera 3D turntable, 45 degree increments",
+      "min_silhouette_difference": 0.0531,
+      "front_back_difference": 0.0674,
+      "source_sheet": "art/production_sources/turntable_073/millwright_8way_TRUE_3d.png"
+    },
+    "cantor": {
+      "produced": 8,
+      "source_method": "real fixed-camera 3D turntable, 45 degree increments",
+      "min_silhouette_difference": 0.0052,
+      "front_back_difference": 0.0052,
+      "source_sheet": "art/production_sources/turntable_073/cantor_8way_TRUE_3d.png"
+    },
+    "edda_machine": {
+      "produced": 8,
+      "source_method": "real fixed-camera 3D turntable, 45 degree increments",
+      "min_silhouette_difference": 0.0114,
+      "front_back_difference": 0.0114,
+      "source_sheet": "art/production_sources/turntable_073/edda_machine_8way_TRUE_3d.png"
+    },
+    "pressure_mite": {
+      "produced": 8,
+      "source_method": "real fixed-camera 3D turntable, 45 degree increments",
+      "min_silhouette_difference": 0.002,
+      "front_back_difference": 0.002,
+      "source_sheet": "art/production_sources/turntable_073/pressure_mite_8way_TRUE_3d.png"
+    },
+    "registry_bailiff": {
+      "produced": 8,
+      "source_method": "real fixed-camera 3D turntable, 45 degree increments",
+      "min_silhouette_difference": 0.0592,
+      "front_back_difference": 0.1742,
+      "source_sheet": "art/production_sources/turntable_073/registry_bailiff_8way_TRUE_3d.png"
+    },
+    "vent_whistler": {
+      "produced": 8,
+      "source_method": "real fixed-camera 3D turntable, 45 degree increments",
+      "min_silhouette_difference": 0.0537,
+      "front_back_difference": 0.068,
+      "source_sheet": "art/production_sources/turntable_073/vent_whistler_8way_TRUE_3d.png"
+    },
+    "rivet_courier": {
+      "produced": 8,
+      "source_method": "real fixed-camera 3D turntable, 45 degree increments",
+      "min_silhouette_difference": 0.1562,
+      "front_back_difference": 0.2689,
+      "source_sheet": "art/production_sources/turntable_073/rivet_courier_8way_TRUE_3d.png"
+    },
+    "slag_sifter": {
+      "produced": 8,
+      "source_method": "real fixed-camera 3D turntable, 45 degree increments",
+      "min_silhouette_difference": 0.0033,
+      "front_back_difference": 0.0033,
+      "source_sheet": "art/production_sources/turntable_073/slag_sifter_8way_TRUE_3d.png"
+    },
+    "chain_hauler": {
+      "produced": 8,
+      "source_method": "real fixed-camera 3D turntable, 45 degree increments",
+      "min_silhouette_difference": 0.0977,
+      "front_back_difference": 0.2715,
+      "source_sheet": "art/production_sources/turntable_073/chain_hauler_8way_TRUE_3d.png"
+    },
+    "choir_reed": {
+      "produced": 8,
+      "source_method": "real fixed-camera 3D turntable, 45 degree increments",
+      "min_silhouette_difference": 0.0208,
+      "front_back_difference": 0.0244,
+      "source_sheet": "art/production_sources/turntable_073/choir_reed_8way_TRUE_3d.png"
+    },
+    "saltbound_porter": {
+      "produced": 8,
+      "source_method": "real fixed-camera 3D turntable, 45 degree increments",
+      "min_silhouette_difference": 0.0719,
+      "front_back_difference": 0.1055,
+      "source_sheet": "art/production_sources/turntable_073/saltbound_porter_8way_TRUE_3d.png"
+    },
+    "sluice_beadle": {
+      "produced": 8,
+      "source_method": "real fixed-camera 3D turntable, 45 degree increments",
+      "min_silhouette_difference": 0.0007,
+      "front_back_difference": 0.0007,
+      "source_sheet": "art/production_sources/turntable_073/sluice_beadle_8way_TRUE_3d.png"
+    },
+    "triage_warden": {
+      "produced": 8,
+      "source_method": "real fixed-camera 3D turntable, 45 degree increments",
+      "min_silhouette_difference": 0.0065,
+      "front_back_difference": 0.0065,
+      "source_sheet": "art/production_sources/turntable_073/triage_warden_8way_TRUE_3d.png"
+    },
+    "bell_wretch": {
+      "produced": 8,
+      "source_method": "real fixed-camera 3D turntable, 45 degree increments",
+      "min_silhouette_difference": 0.0378,
+      "front_back_difference": 0.1113,
+      "source_sheet": "art/production_sources/turntable_073/bell_wretch_8way_TRUE_3d.png"
+    },
+    "rootkin": {
+      "produced": 8,
+      "source_method": "real fixed-camera 3D turntable, 45 degree increments",
+      "min_silhouette_difference": 0.0443,
+      "front_back_difference": 0.0518,
+      "source_sheet": "art/production_sources/turntable_073/rootkin_8way_TRUE_3d.png"
+    }
+  }
+}

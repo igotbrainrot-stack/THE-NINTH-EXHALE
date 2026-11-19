@@ -1,0 +1,214 @@
+{
+  "atlas_format": "4x3 each 192x256 RGBA",
+  "directions": [
+    "front",
+    "left",
+    "right",
+    "back"
+  ],
+  "frames": [
+    "idle",
+    "walk_a",
+    "walk_b",
+    "walk_c",
+    "windup_a",
+    "windup_b",
+    "attack_a",
+    "attack_b",
+    "hurt",
+    "death_a",
+    "death_b",
+    "death_c"
+  ],
+  "art": [
+    {
+      "id": "sentry",
+      "provenance": "Build 06.7 author sprite",
+      "runway_source_path": null,
+      "atlas_files": [
+        "assets/sprites/enemies_068/sentry_front.png",
+        "assets/sprites/enemies_068/sentry_left.png",
+        "assets/sprites/enemies_068/sentry_right.png",
+        "assets/sprites/enemies_068/sentry_back.png"
+      ]
+    },
+    {
+      "id": "enforcer",
+      "provenance": "Build 06.7 author sprite",
+      "runway_source_path": null,
+      "atlas_files": [
+        "assets/sprites/enemies_068/enforcer_front.png",
+        "assets/sprites/enemies_068/enforcer_left.png",
+        "assets/sprites/enemies_068/enforcer_right.png",
+        "assets/sprites/enemies_068/enforcer_back.png"
+      ]
+    },
+    {
+      "id": "millwright",
+      "provenance": "Build 06.7 author sprite",
+      "runway_source_path": null,
+      "atlas_files": [
+        "assets/sprites/enemies_068/millwright_front.png",
+        "assets/sprites/enemies_068/millwright_left.png",
+        "assets/sprites/enemies_068/millwright_right.png",
+        "assets/sprites/enemies_068/millwright_back.png"
+      ]
+    },
+    {
+      "id": "cantor",
+      "provenance": "Build 06.7 author sprite",
+      "runway_source_path": null,
+      "atlas_files": [
+        "assets/sprites/enemies_068/cantor_front.png",
+        "assets/sprites/enemies_068/cantor_left.png",
+        "assets/sprites/enemies_068/cantor_right.png",
+        "assets/sprites/enemies_068/cantor_back.png"
+      ]
+    },
+    {
+      "id": "edda_machine",
+      "provenance": "Original vector-painted interim (Runway source pending export)",
+      "runway_source_path": null,
+      "atlas_files": [
+        "assets/sprites/enemies_068/edda_machine_front.png",
+        "assets/sprites/enemies_068/edda_machine_left.png",
+        "assets/sprites/enemies_068/edda_machine_right.png",
+        "assets/sprites/enemies_068/edda_machine_back.png"
+      ]
+    },
+    {
+      "id": "pressure_mite",
+      "provenance": "Original vector-painted interim (Runway source pending export)",
+      "runway_source_path": null,
+      "atlas_files": [
+        "assets/sprites/enemies_068/pressure_mite_front.png",
+        "assets/sprites/enemies_068/pressure_mite_left.png",
+        "assets/sprites/enemies_068/pressure_mite_right.png",
+        "assets/sprites/enemies_068/pressure_mite_back.png"
+      ]
+    },
+    {
+      "id": "registry_bailiff",
+      "provenance": "Original vector-painted interim (Runway source pending export)",
+      "runway_source_path": null,
+      "atlas_files": [
+        "assets/sprites/enemies_068/registry_bailiff_front.png",
+        "assets/sprites/enemies_068/registry_bailiff_left.png",
+        "assets/sprites/enemies_068/registry_bailiff_right.png",
+        "assets/sprites/enemies_068/registry_bailiff_back.png"
+      ]
+    },
+    {
+      "id": "vent_whistler",
+      "provenance": "Original vector-painted interim (Runway source pending export)",
+      "runway_source_path": null,
+      "atlas_files": [
+        "assets/sprites/enemies_068/vent_whistler_front.png",
+        "assets/sprites/enemies_068/vent_whistler_left.png",
+        "assets/sprites/enemies_068/vent_whistler_right.png",
+        "assets/sprites/enemies_068/vent_whistler_back.png"
+      ]
+    },
+    {
+      "id": "rivet_courier",
+      "provenance": "Original vector-painted interim (Runway source pending export)",
+      "runway_source_path": null,
+      "atlas_files": [
+        "assets/sprites/enemies_068/rivet_courier_front.png",
+        "assets/sprites/enemies_068/rivet_courier_left.png",
+        "assets/sprites/enemies_068/rivet_courier_right.png",
+        "assets/sprites/enemies_068/rivet_courier_back.png"
+      ]
+    },
+    {
+      "id": "slag_sifter",
+      "provenance": "Original vector-painted interim (Runway source pending export)",
+      "runway_source_path": null,
+      "atlas_files": [
+        "assets/sprites/enemies_068/slag_sifter_front.png",
+        "assets/sprites/enemies_068/slag_sifter_left.png",
+        "assets/sprites/enemies_068/slag_sifter_right.png",
+        "assets/sprites/enemies_068/slag_sifter_back.png"
+      ]
+    },
+    {
+      "id": "chain_hauler",
+      "provenance": "Original vector-painted interim (Runway source pending export)",
+      "runway_source_path": null,
+      "atlas_files": [
+        "assets/sprites/enemies_068/chain_hauler_front.png",
+        "assets/sprites/enemies_068/chain_hauler_left.png",
+        "assets/sprites/enemies_068/chain_hauler_right.png",
+        "assets/sprites/enemies_068/chain_hauler_back.png"
+      ]
+    },
+    {
+      "id": "choir_reed",
+      "provenance": "Original vector-painted interim (Runway source pending export)",
+      "runway_source_path": null,
+      "atlas_files": [
+        "assets/sprites/enemies_068/choir_reed_front.png",
+        "assets/sprites/enemies_068/choir_reed_left.png",
+        "assets/sprites/enemies_068/choir_reed_right.png",
+        "assets/sprites/enemies_068/choir_reed_back.png"
+      ]
+    },
+    {
+      "id": "saltbound_porter",
+      "provenance": "Original vector-painted interim (Runway source pending export)",
+      "runway_source_path": null,
+      "atlas_files": [
+        "assets/sprites/enemies_068/saltbound_porter_front.png",
+        "assets/sprites/enemies_068/saltbound_porter_left.png",
+        "assets/sprites/enemies_068/saltbound_porter_right.png",
+        "assets/sprites/enemies_068/saltbound_porter_back.png"
+      ]
+    },
+    {
+      "id": "sluice_beadle",
+      "provenance": "Original vector-painted interim (Runway source pending export)",
+      "runway_source_path": null,
+      "atlas_files": [
+        "assets/sprites/enemies_068/sluice_beadle_front.png",
+        "assets/sprites/enemies_068/sluice_beadle_left.png",
+        "assets/sprites/enemies_068/sluice_beadle_right.png",
+        "assets/sprites/enemies_068/sluice_beadle_back.png"
+      ]
+    },
+    {
+      "id": "triage_warden",
+      "provenance": "Original vector-painted interim (Runway source pending export)",
+      "runway_source_path": null,
+      "atlas_files": [
+        "assets/sprites/enemies_068/triage_warden_front.png",
+        "assets/sprites/enemies_068/triage_warden_left.png",
+        "assets/sprites/enemies_068/triage_warden_right.png",
+        "assets/sprites/enemies_068/triage_warden_back.png"
+      ]
+    },
+    {
+      "id": "bell_wretch",
+      "provenance": "Build 06.7 author sprite",
+      "runway_source_path": null,
+      "atlas_files": [
+        "assets/sprites/enemies_068/bell_wretch_front.png",
+        "assets/sprites/enemies_068/bell_wretch_left.png",
+        "assets/sprites/enemies_068/bell_wretch_right.png",
+        "assets/sprites/enemies_068/bell_wretch_back.png"
+      ]
+    },
+    {
+      "id": "rootkin",
+      "provenance": "Build 06.7 author sprite",
+      "runway_source_path": null,
+      "atlas_files": [
+        "assets/sprites/enemies_068/rootkin_front.png",
+        "assets/sprites/enemies_068/rootkin_left.png",
+        "assets/sprites/enemies_068/rootkin_right.png",
+        "assets/sprites/enemies_068/rootkin_back.png"
+      ]
+    }
+  ],
+  "runway_raw_embedded_count": 0,
+  "claim": "Atlases are runtime-ready. When Runway raw PNGs are absent, see provenance for embedded-author-sprite versus procedurally painted interim. No external Runway image is falsely claimed as embedded."
+}

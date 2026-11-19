@@ -1,0 +1,43 @@
+test_brin_four_stage_order_and_actual_evidence (test_build04_sootworks.SootworksSourceContracts.test_brin_four_stage_order_and_actual_evidence) ... ok
+test_distinct_real_sector_and_collision (test_build04_sootworks.SootworksSourceContracts.test_distinct_real_sector_and_collision) ... ok
+test_every_sootworks_console_has_interaction_case (test_build04_sootworks.SootworksSourceContracts.test_every_sootworks_console_has_interaction_case) ... ok
+test_labour_writ_unique_and_recoverable_after_keeper_death (test_build04_sootworks.SootworksSourceContracts.test_labour_writ_unique_and_recoverable_after_keeper_death) ... ok
+test_millwright_enemy_state_does_not_overwrite_hearth_guard (test_build04_sootworks.SootworksSourceContracts.test_millwright_enemy_state_does_not_overwrite_hearth_guard) ... ok
+test_save_load_resumes_zone_and_older_build03_save (test_build04_sootworks.SootworksSourceContracts.test_save_load_resumes_zone_and_older_build03_save) ... ok
+test_tradeoffs_and_one_time_supply (test_build04_sootworks.SootworksSourceContracts.test_tradeoffs_and_one_time_supply) ... ok
+test_bounded_3d_detail_drawcalls (test_build05_art_pass.ArtPassTests.test_bounded_3d_detail_drawcalls) ... ok
+test_material_files_and_pixel_sprite (test_build05_art_pass.ArtPassTests.test_material_files_and_pixel_sprite) ... ok
+test_no_canon_or_interaction_replacement (test_build05_art_pass.ArtPassTests.test_no_canon_or_interaction_replacement) ... ok
+test_runway_provenance_and_importer_are_present (test_build05_art_pass.ArtPassTests.test_runway_provenance_and_importer_are_present) ... ok
+test_structural_detail_in_both_worlds (test_build05_art_pass.ArtPassTests.test_structural_detail_in_both_worlds) ... ok
+test_enforcer_raycast_destination_has_explicit_static_type (test_gdscript_typing.TestReportedTypeIssue.test_enforcer_raycast_destination_has_explicit_static_type) ... ok
+test_game_scene_still_references_enemy (test_gdscript_typing.TestReportedTypeIssue.test_game_scene_still_references_enemy) ... ok
+test_launcher_exists_and_is_executable (test_startup_structure.Startup.test_launcher_exists_and_is_executable) ... ok
+test_live_scene_still_loads_player_and_game (test_startup_structure.Startup.test_live_scene_still_loads_player_and_game) ... ok
+test_no_broken_script_references (test_startup_structure.Startup.test_no_broken_script_references) ... ok
+test_project_has_visible_main_scene (test_startup_structure.Startup.test_project_has_visible_main_scene) ... ok
+test_start_event_actually_changes_scenes (test_startup_structure.Startup.test_start_event_actually_changes_scenes) ... ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 0.031s
+
+OK
+test_all_preloaded_resources_exist (__main__.ProjectSourceValidation.test_all_preloaded_resources_exist) ... ok
+test_canon_documents_present (__main__.ProjectSourceValidation.test_canon_documents_present) ... ok
+test_character_presets_and_levels (__main__.ProjectSourceValidation.test_character_presets_and_levels) ... ok
+test_first_location_physically_built_as_collidable_source (__main__.ProjectSourceValidation.test_first_location_physically_built_as_collidable_source) ... ok
+test_gdscript_parentheses_and_quote_structure (__main__.ProjectSourceValidation.test_gdscript_parentheses_and_quote_structure) ... ok
+test_interaction_ids_all_have_dispatch (__main__.ProjectSourceValidation.test_interaction_ids_all_have_dispatch) ... ok
+test_lung_has_four_valid_routes (__main__.ProjectSourceValidation.test_lung_has_four_valid_routes) ... ok
+test_master_inventory_counts (__main__.ProjectSourceValidation.test_master_inventory_counts) ... ok
+test_player_and_pistol_logic_source (__main__.ProjectSourceValidation.test_player_and_pistol_logic_source) ... ok
+test_procedural_placeholder_art_is_original_generated_files (__main__.ProjectSourceValidation.test_procedural_placeholder_art_is_original_generated_files) ... ok
+test_source_does_not_import_obsolete_creature_moves (__main__.ProjectSourceValidation.test_source_does_not_import_obsolete_creature_moves) ... ok
+test_stable_quest_id_does_not_invent_second_cipher (__main__.ProjectSourceValidation.test_stable_quest_id_does_not_invent_second_cipher) ... ok
+test_state_save_and_provenance_guards (__main__.ProjectSourceValidation.test_state_save_and_provenance_guards) ... ok
+test_technical_ids_are_unique (__main__.ProjectSourceValidation.test_technical_ids_are_unique) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.040s
+
+OK

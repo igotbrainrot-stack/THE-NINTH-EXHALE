@@ -1,0 +1,1561 @@
+{
+  "schema": "ninth-exhale-v6-static-inventory-1",
+  "status": "source-authored look/lore + provisional weapon stats",
+  "weapons": [
+    {
+      "name": "Covenant Pistol",
+      "source_cells": [
+        "**1. Covenant Pistol** · sidearm / Ledger Slugs",
+        "Squared blackened-steel revolver with a cathedral-door cylinder, red wax seal beside the hammer and a short ivory grip scratched with tiny signatures; tall angular muzzle flash",
+        "Accurate reliable opening weapon; alt-fire marks an enemy's weak point, increasing follow-up ammo recovery",
+        "Issued to Last Office clerks so that an execution could be described as contract enforcement; guaranteed initial firearm"
+      ],
+      "provisional_stats": {
+        "name": "Covenant Pistol",
+        "ammo": "Ledger Slugs",
+        "type": "Kinetic",
+        "damage": 24,
+        "interval_s": 0.42,
+        "magazine": 6,
+        "reload_s": 1.8,
+        "range_m": 24,
+        "stagger": 8,
+        "recoil": 0.8,
+        "notes": "starter / Last Office; mark weak point +10% next hit; valid on counters",
+        "mods": "Witness Seal, Exaction Spring"
+      }
+    },
+    {
+      "name": "Coil Shotgun",
+      "source_cells": [
+        "**2. Coil Shotgun** · heavy / Coil Shells",
+        "Twin copper rails clamped around a sawed-off iron barrel, huge cream ceramic insulator, hand-operated sliding breech, dangling blue diagnostic cable",
+        "Devastating close cone; perfect-timing pump fires a narrow penetrator blast; high stagger, slow reload",
+        "Salvaged from storm shutters after the White Quiet; first found in checkpoints or Sootworks"
+      ],
+      "provisional_stats": {
+        "name": "Coil Shotgun",
+        "ammo": "Coil Shells",
+        "type": "Kinetic",
+        "damage": 64,
+        "interval_s": 1.05,
+        "magazine": 2,
+        "reload_s": 1.6,
+        "range_m": 9,
+        "stagger": 35,
+        "recoil": 2.0,
+        "notes": "checkpoints / foundry; 8 pellets × 8, precise pump on timed input",
+        "mods": "Crowd Brake, Glass Choke"
+      }
+    },
+    {
+      "name": "Nail Storm",
+      "source_cells": [
+        "**3. Nail Storm** · heavy / Rivet Belts",
+        "Boxy riveter with four offset square barrels, spinning orange belt-drum, exposed piston rod and a safety label that has been scratched away",
+        "Sustained automatic suppression; builds heat; can pin small enemies to walls and recover ammo from shattered armour",
+        "The Brass Union designed it to build housing, then used it to dismantle its masters; Sootworks stock"
+      ],
+      "provisional_stats": {
+        "name": "Nail Storm",
+        "ammo": "Rivet Belts",
+        "type": "Kinetic",
+        "damage": 8,
+        "interval_s": 0.085,
+        "magazine": 60,
+        "reload_s": 2.5,
+        "range_m": 15,
+        "stagger": 3,
+        "recoil": 1.3,
+        "notes": "Sootworks; heat 3/shot, overheat at 90, cool 18/s",
+        "mods": "Chain of Wages, Cradle Clamp"
+      }
+    },
+    {
+      "name": "Saw Lance",
+      "source_cells": [
+        "**4. Saw Lance** · melee / pressure charge",
+        "Telescoping iron mining pole with **two reciprocating, opposed shear jaws**, a black pressure clutch and flattened toothed plates; no rotating chain",
+        "Reach-melee combo, grapple-hook finisher, overheat and bleeding; recovers Breath on staggered targets",
+        "The first miners cut the Engine's foundation with these; common foundry find"
+      ],
+      "provisional_stats": {
+        "name": "Saw Lance",
+        "ammo": "Pressure Cartridges",
+        "type": "Shear",
+        "damage": 32,
+        "interval_s": 0.65,
+        "magazine": 0,
+        "reload_s": 0.0,
+        "range_m": 3,
+        "stagger": 28,
+        "recoil": 0.5,
+        "notes": "foundry; normal slash free, charged jaw press 1 pressure cartridge",
+        "mods": "Mercy Brake, Grinder Crown"
+      }
+    },
+    {
+      "name": "Volt Rifle",
+      "source_cells": [
+        "**5. Volt Rifle** · rifle / Voltaic Cells",
+        "Lengthy olive-painted carbine with paired glass vacuum tubes, two buzzing copper electrodes and a folding triangular stock; electric arcs flash between prongs",
+        "Mid-range precision burst; alt-fire chains through electrical enemies; interrupts machinery",
+        "Developed to restrain malfunctioning memory pumps without destroying expensive labour; barracks technicians"
+      ],
+      "provisional_stats": {
+        "name": "Volt Rifle",
+        "ammo": "Voltaic Cells",
+        "type": "Arc",
+        "damage": 28,
+        "interval_s": 0.28,
+        "magazine": 12,
+        "reload_s": 2.0,
+        "range_m": 27,
+        "stagger": 12,
+        "recoil": 1.4,
+        "notes": "Barracks; alt fire chains through connected live machinery for +1 cell",
+        "mods": "Blue Testament, Fulgur Fork"
+      }
+    },
+    {
+      "name": "Bone Mortar",
+      "source_cells": [
+        "**6. Bone Mortar** · launcher / Ossuary Pods",
+        "Compact industrial ceramic compression drum, sealed rectangular waste-ejector muzzle and a pair of padded bracing handles; biomaterial remains sealed inside the numbered pods",
+        "Slow explosive arcing shots; leaves fragments that deny territory; strong vs clustered hordes",
+        "Crafted from biomaterial reclaimed by the city's corpse recyclers; black-market dealer or rare boss"
+      ],
+      "provisional_stats": {
+        "name": "Bone Mortar",
+        "ammo": "Ossuary Pods",
+        "type": "Blast",
+        "damage": 90,
+        "interval_s": 1.35,
+        "magazine": 3,
+        "reload_s": 2.8,
+        "range_m": 22,
+        "stagger": 45,
+        "recoil": 2.2,
+        "notes": "recycler / rare boss; blast radius 3.0m, hurt allied apparatus",
+        "mods": "Mother’s Casket, Grave Splitter"
+      }
+    },
+    {
+      "name": "Censer Flamer",
+      "source_cells": [
+        "**7. Censer Flamer** · heavy / Censer Fuel",
+        "Incense burner fixed beneath a vented iron nozzle, three punctured brass fuel canisters, tarnished silver devotional plates and a blue-orange pilot flame",
+        "Short-range cone, persistent Ember floor hazards; exposes stealth Echoforms, but risks burning evidence",
+        "Priests once used cleansing smoke to conceal the smell of memory harvesting; Basilica cache"
+      ],
+      "provisional_stats": {
+        "name": "Censer Flamer",
+        "ammo": "Censer Fuel",
+        "type": "Ember",
+        "damage": 6,
+        "interval_s": 0.1,
+        "magazine": 80,
+        "reload_s": 2.4,
+        "range_m": 7,
+        "stagger": 4,
+        "recoil": 0.4,
+        "notes": "Basilica; a 0.1 s pulse spends 1 fuel, floor hazard 2s",
+        "mods": "Saint’s Wick, Penance Vent"
+      }
+    },
+    {
+      "name": "Harpoon Injector",
+      "source_cells": [
+        "**8. Harpoon Injector** · rifle / Harpoon Spurs",
+        "Pneumatic industrial spear gun with thick white medical syringes in a rotating chamber, teal glass pressure gauge, twin hooks around the muzzle",
+        "Pierces armour, pins mobile targets; alternate shot pulls loose objects or extracts an enemy's temporary buff",
+        "Designed for tranquilising and relocating dangerous printed organisms; Orchard surgical annex"
+      ],
+      "provisional_stats": {
+        "name": "Harpoon Injector",
+        "ammo": "Harpoon Spurs",
+        "type": "Puncture",
+        "damage": 52,
+        "interval_s": 0.9,
+        "magazine": 4,
+        "reload_s": 2.5,
+        "range_m": 23,
+        "stagger": 28,
+        "recoil": 2.2,
+        "notes": "Orchard; pulls unanchored objects; elite foes resist pull",
+        "mods": "Mercy Needle, Trawl Barbs"
+      }
+    },
+    {
+      "name": "Hush Carbine",
+      "source_cells": [
+        "**9. Hush Carbine** · rifle / Waking Tape",
+        "Compact black SMG whose side-fed cassette spools under an amber window, padded barrel shroud and little tuning-fork sights",
+        "Fast low-flash sonic projectiles; disrupts Choir shields and Echoform commands; relatively low raw damage",
+        "Secret Last Office crowd-control weapon using stolen lullabies as ammunition; restricted kiosk"
+      ],
+      "provisional_stats": {
+        "name": "Hush Carbine",
+        "ammo": "Waking Tape",
+        "type": "Sonic",
+        "damage": 11,
+        "interval_s": 0.12,
+        "magazine": 36,
+        "reload_s": 2.2,
+        "range_m": 20,
+        "stagger": 6,
+        "recoil": 1.0,
+        "notes": "Last Office; quiet fire, interrupts sonic shields",
+        "mods": "Quiet Hours, Choir Throat"
+      }
+    },
+    {
+      "name": "Cinder Launcher",
+      "source_cells": [
+        "**10. Cinder Launcher** · launcher / Cinder Casks",
+        "Squat shoulder-thrown furnace tube, triangular iron cage around the exhaust, red-painted release latch and scorched canvas wrap; glaring oval hot core",
+        "Area firebomb, chargeable cluster shot; destroys organic growth but damages neutral objects if careless",
+        "Emergency burn-off device converted into riot artillery; Sootworks and fallen siege crews"
+      ],
+      "provisional_stats": {
+        "name": "Cinder Launcher",
+        "ammo": "Cinder Casks",
+        "type": "Ember/Blast",
+        "damage": 100,
+        "interval_s": 1.6,
+        "magazine": 2,
+        "reload_s": 3.0,
+        "range_m": 24,
+        "stagger": 48,
+        "recoil": 2.5,
+        "notes": "Sootworks; radius 3.5m, burns stored evidence if hit",
+        "mods": "Heat Bloom, Salvage Cage"
+      }
+    },
+    {
+      "name": "Widow's Toll",
+      "source_cells": [
+        "**11. Widow's Toll** · rare sidearm / Waking Tape",
+        "An elderly bronze handbell split lengthwise and mounted on a black pistol grip; a small porcelain shoe hangs from the trigger guard; barrel is a dark open throat",
+        "High sonic stagger and grief-mark debuff; forced captures suffer loyalty strain nearby",
+        "Iona's altered mourning bell, obtained by coercive reunion or exploitation; the ringing sounds briefly like a child calling home"
+      ],
+      "provisional_stats": {
+        "name": "Widow’s Toll",
+        "ammo": "Waking Tape",
+        "type": "Sonic",
+        "damage": 36,
+        "interval_s": 0.62,
+        "magazine": 5,
+        "reload_s": 2.0,
+        "range_m": 18,
+        "stagger": 34,
+        "recoil": 1.7,
+        "notes": "Iona branch; debuff grief signal for 4s",
+        "mods": "none — named quest weapon"
+      }
+    },
+    {
+      "name": "Surgeon's Mercy",
+      "source_cells": [
+        "**12. Surgeon's Mercy** · rare sidearm / Ledger Slugs",
+        "Slender pearl-handled surgical bolt pistol, four tiny crimson capillaries along the slide, silver thumb-rest and clean white steel wedge-shaped sight",
+        "Weak-point precision shots convert a fraction of damage into healing for one nearby ally/Echoform; modest damage",
+        "Sela's surgically freed hand fitted its trigger; earned by ending her forced treatments"
+      ],
+      "provisional_stats": {
+        "name": "Surgeon’s Mercy",
+        "ammo": "Ledger Slugs",
+        "type": "Puncture",
+        "damage": 19,
+        "interval_s": 0.32,
+        "magazine": 8,
+        "reload_s": 2.1,
+        "range_m": 23,
+        "stagger": 10,
+        "recoil": 0.6,
+        "notes": "Sela branch; weak point transfers 20% dealt damage to present ally, cap 12 heal / 4s",
+        "mods": "none — named quest weapon"
+      }
+    },
+    {
+      "name": "Penance Fang",
+      "source_cells": [
+        "**13. Penance Fang** · rare melee / pressure charge",
+        "Curved motorised trench blade with chipped olive enamel, broad saw teeth, prison tally marks and Kest's old dog tag wired into the handle",
+        "Heavy bleed and an armour-splitting execute; increases faction fear and reduces some nonlethal dialogue modifiers",
+        "Built from Kest-07's imposed obedience; gained by wiping his identity or forcing him into servitude"
+      ],
+      "provisional_stats": {
+        "name": "Penance Fang",
+        "ammo": "Pressure Cartridges",
+        "type": "Shear",
+        "damage": 46,
+        "interval_s": 0.85,
+        "magazine": 0,
+        "reload_s": 0.0,
+        "range_m": 3,
+        "stagger": 38,
+        "recoil": 0.8,
+        "notes": "Kest branch; bleed 4/s for 4s on charged hit; 1 cartridge",
+        "mods": "none — named quest weapon"
+      }
+    },
+    {
+      "name": "Debt Collector's Smile",
+      "source_cells": [
+        "**14. Debt Collector's Smile** · rare sidearm / Ledger Slugs",
+        "Six-chamber dark chrome handgun shaped like a grinning receipt dispenser, white paper ribbon feeding under the barrel and gold tally dots on the grip",
+        "Enormous close critical damage; every fifth lethal hit adds corruption that complicates civilian dealings",
+        "The Pale Ledger's predatory investment in Ninth's future; gained by signing the cruel prophecy"
+      ],
+      "provisional_stats": {
+        "name": "Debt Collector’s Smile",
+        "ammo": "Ledger Slugs",
+        "type": "Kinetic",
+        "damage": 51,
+        "interval_s": 0.65,
+        "magazine": 6,
+        "reload_s": 2.5,
+        "range_m": 14,
+        "stagger": 22,
+        "recoil": 2.3,
+        "notes": "Pale Ledger branch; +25% weak-point critical, 5th lethal hit records scandal",
+        "mods": "none — named quest weapon"
+      }
+    },
+    {
+      "name": "Choirbreaker",
+      "source_cells": [
+        "**15. Choirbreaker** · rare rifle / Waking Tape",
+        "Boxy cancellation projector with staggered rectangular acoustic waveguides, one fabric-wrapped damping handle and a white pressure index; no ceremonial organ-pipe barrel",
+        "Focused Sonic line shot; interrupts sonic bosses and can subdue a distressed Echoform without killing it",
+        "Ossa made it by dismantling the forced choir's control bell, obtained through rescue and public exposure"
+      ],
+      "provisional_stats": {
+        "name": "Choirbreaker",
+        "ammo": "Waking Tape",
+        "type": "Sonic",
+        "damage": 30,
+        "interval_s": 0.44,
+        "magazine": 12,
+        "reload_s": 2.2,
+        "range_m": 28,
+        "stagger": 17,
+        "recoil": 1.0,
+        "notes": "Ossa branch; silence forced choir emitters for 3s",
+        "mods": "none — named quest weapon"
+      }
+    },
+    {
+      "name": "Ferryman's Hook",
+      "source_cells": [
+        "**16. Ferryman's Hook** · rare rifle / Harpoon Spurs",
+        "Rust-red harpoon gun with boat-hook bayonet, oilskin-wrapped barrel and six brass ferry fare rings that clatter on every shot",
+        "Hooks stunned foes across cover and pulls Ninth towards anchor points; coercive use damages Resolve in dialogue",
+        "Perrin's tool converted to an instrument of abduction, gained by selling passengers to the ferry system"
+      ],
+      "provisional_stats": {
+        "name": "Ferryman’s Hook",
+        "ammo": "Harpoon Spurs",
+        "type": "Puncture",
+        "damage": 42,
+        "interval_s": 1.1,
+        "magazine": 3,
+        "reload_s": 2.7,
+        "range_m": 21,
+        "stagger": 22,
+        "recoil": 2.2,
+        "notes": "Perrin branch; yank only lighter targets or pre-marked rail anchor",
+        "mods": "none — named quest weapon"
+      }
+    }
+  ],
+  "weapon_mods": [
+    {
+      "weapon": "Covenant Pistol",
+      "name": "Witness Seal",
+      "effect": "weak-point mark extends from 3 to 5 s; revealed target is not evidence itself"
+    },
+    {
+      "weapon": "Covenant Pistol",
+      "name": "Exaction Spring",
+      "effect": "shot interval 0.42→0.34 s; recoil ×1.22"
+    },
+    {
+      "weapon": "Coil Shotgun",
+      "name": "Crowd Brake",
+      "effect": "stagger +35%, spread cone +25%, effective range 9→6 m"
+    },
+    {
+      "weapon": "Coil Shotgun",
+      "name": "Glass Choke",
+      "effect": "replace pellet shot with one 56-damage penetrator; range 9→19 m"
+    },
+    {
+      "weapon": "Nail Storm",
+      "name": "Chain of Wages",
+      "effect": "20% chance on eligible defeated debt enforcer to return 2 Rivets, max 12/district; Brass Union hostility +1"
+    },
+    {
+      "weapon": "Nail Storm",
+      "name": "Cradle Clamp",
+      "effect": "while sliding spread ×0.72; swap time +0.12 s"
+    },
+    {
+      "weapon": "Saw Lance",
+      "name": "Mercy Brake",
+      "effect": "staggered humanoid finisher is nonlethal; Breath restored 18→12"
+    },
+    {
+      "weapon": "Saw Lance",
+      "name": "Grinder Crown",
+      "effect": "rotating *abrasive collar* outside opposed reciprocating shear jaws; heavy-armour damage ×1.25; heat +5 per charged strike; no chain blade"
+    },
+    {
+      "weapon": "Volt Rifle",
+      "name": "Blue Testament",
+      "effect": "arc chaining to a marked allied machine repairs up to 5 local integrity per district; extra cell cost 1"
+    },
+    {
+      "weapon": "Volt Rifle",
+      "name": "Fulgur Fork",
+      "effect": "chain targets +1, total cell use per alt shot 2→3"
+    },
+    {
+      "weapon": "Bone Mortar",
+      "name": "Mother's Casket",
+      "effect": "blast radius 3.0→2.1 m, heal a protected ally 8 HP if within 2 m (once per 6 s)"
+    },
+    {
+      "weapon": "Bone Mortar",
+      "name": "Grave Splitter",
+      "effect": "add four 7-damage splinters, each affects a target at most once"
+    },
+    {
+      "weapon": "Censer Flamer",
+      "name": "Saint's Wick",
+      "effect": "removes one weak Mnemonic field per 30 fuel spent; sustained direct damage -10%"
+    },
+    {
+      "weapon": "Censer Flamer",
+      "name": "Penance Vent",
+      "effect": "flame range 7→10 m; self-heat accrues +1 per fuel"
+    },
+    {
+      "weapon": "Harpoon Injector",
+      "name": "Mercy Needle",
+      "effect": "alt consumes 2 spurs and heals cooperating Echoform 14 strain, no enemy damage"
+    },
+    {
+      "weapon": "Harpoon Injector",
+      "name": "Trawl Barbs",
+      "effect": "object pull strength ×1.5, target inflicted scar social consequence when used on civilians"
+    },
+    {
+      "weapon": "Hush Carbine",
+      "name": "Quiet Hours",
+      "effect": "enemy-alert radius ×0.65, stagger ×0.80"
+    },
+    {
+      "weapon": "Hush Carbine",
+      "name": "Choir Throat",
+      "effect": "sonic shield disruption +30%, noise alert radius ×1.50"
+    },
+    {
+      "weapon": "Cinder Launcher",
+      "name": "Heat Bloom",
+      "effect": "ignite up to 4 growth tiles for 4 s; collateral risk +1 if civilian fixtures hit"
+    },
+    {
+      "weapon": "Cinder Launcher",
+      "name": "Salvage Cage",
+      "effect": "radius 3.5→2.4 m, 6 fragments ×8 damage, one hit/target"
+    }
+  ],
+  "ammunition": [
+    {
+      "name": "Ledger Slugs",
+      "source_cells": [
+        "**Ledger Slugs**",
+        "Stubby black brass cartridges with a white signature strip around each base; pre-war clerks stamped legal approvals onto bullet casings; sidearms use them."
+      ]
+    },
+    {
+      "name": "Coil Shells",
+      "source_cells": [
+        "**Coil Shells**",
+        "Fat ivory ceramic shells with twin copper contact rails; storm-worker charges now power shotgun bursts."
+      ]
+    },
+    {
+      "name": "Rivet Belts",
+      "source_cells": [
+        "**Rivet Belts**",
+        "Heavy linked strips of rust-red industrial nails with the old Brass Union crest stamped on the links; automatic Nail Storm feed."
+      ]
+    },
+    {
+      "name": "Pressure Cartridges",
+      "source_cells": [
+        "**Pressure Cartridges**",
+        "Pale brass aerosol cylinders with a red pressure needle; used to recharge Saw Lance/Penance Fang motor assistance; basic slashes still work at zero charge."
+      ]
+    },
+    {
+      "name": "Voltaic Cells",
+      "source_cells": [
+        "**Voltaic Cells**",
+        "Blue-green translucent batteries inside black steel finger cages, warm to the touch and faintly singing; Volt Rifle power source."
+      ]
+    },
+    {
+      "name": "Ossuary Pods",
+      "source_cells": [
+        "**Ossuary Pods**",
+        "White egg-shaped bone capsules, wax-sealed and numbered on black labels; the city's recycled remains now become Bone Mortar projectiles."
+      ]
+    },
+    {
+      "name": "Censer Fuel",
+      "source_cells": [
+        "**Censer Fuel**",
+        "Narrow copper flasks with a burning orange wick on their label; formerly sanctified disinfectant, now flamer ammunition."
+      ]
+    },
+    {
+      "name": "Harpoon Spurs",
+      "source_cells": [
+        "**Harpoon Spurs**",
+        "Silver darts in a three-tine hinged rack, with long green thread trailing from each tip; supplied to the Injector and Ferryman's Hook."
+      ]
+    },
+    {
+      "name": "Waking Tape",
+      "source_cells": [
+        "**Waking Tape**",
+        "Tiny black cassette coils with cream paper labels listing unknown children's names; recorded memory patterns become Sonic projectiles."
+      ]
+    },
+    {
+      "name": "Cinder Casks",
+      "source_cells": [
+        "**Cinder Casks**",
+        "Miniature thick-walled red cylinders capped with a conical steel fuse; furnace residue burns fiercely when shattered by the launcher."
+      ]
+    }
+  ],
+  "armour_sets": [
+    {
+      "name": "Hearthkeeper Rags",
+      "source_cells": [
+        "**1. Hearthkeeper Rags** · shelter volunteers",
+        "**Filter Hood:** oatmeal canvas cowl with two yellowed breathing discs and blue stitched initials",
+        "**Refuge Smock:** thick off-white quilted torso with red stitch repairs, small copper air gauge and rib straps",
+        "**Shelter Boots:** black rubber industrial boots with extra patched knees and a dangling air hose",
+        "More Breath from medical pickups; low armour; the first piece of clothing Ninth remembers wearing"
+      ]
+    },
+    {
+      "name": "Brass Union Rig",
+      "source_cells": [
+        "**2. Brass Union Rig** · foundry workers",
+        "**Welder Brow:** square soot-dark iron brow guard with green observation slit and a melted crest",
+        "**Rivet Harness:** wide yellow-brown leather suspenders over copper-reinforced breastplate, a hammer loop at the hip",
+        "**Furnace Chaps:** overlapping black heat plates on knees and shins, red canvas tied around ankles",
+        "Heat resistance; bonus stagger while sliding; every patch was sewn after a strike or strikebreaking raid"
+      ]
+    },
+    {
+      "name": "Broker's Mourning Suit",
+      "source_cells": [
+        "**3. Broker's Mourning Suit** · Ashmarket enforcers",
+        "**Receipt Visor:** narrow black silk veil pinned across a silver counting-eye",
+        "**Mourner's Coat:** tailored charcoal coat with pale contract slips sewn like scales inside the lapels",
+        "**Auction Gaiters:** tall burgundy leather boots with little price tags attached at the rear heel",
+        "Discounts from compliant traders, reduced tolerance from rescued citizens; designed to make collection look ceremonial"
+      ]
+    },
+    {
+      "name": "Last Lamp Vestments",
+      "source_cells": [
+        "**4. Last Lamp Vestments** · Basilica guards",
+        "**Censer Halo:** bent copper ring above a padded white skull cap, ash-black holes from earlier bolts",
+        "**Reliquary Cuirass:** tarnished gold chest plates over bottle-green choir cloth, a pair of open speaker grilles at ribs",
+        "**Drowned Slacks:** dark sea-green leggings wrapped in silver pipe insulation, rust stains at cuffs",
+        "Resistance to Sonic status and shallow-water slowdown; built from decommissioned hymn machinery"
+      ]
+    },
+    {
+      "name": "Glass Pruner Coat",
+      "source_cells": [
+        "**5. Glass Pruner Coat** · Orchard researchers",
+        "**Lens Wreath:** interlocking triangular glass lenses in a rubber cap, one lens opaque violet",
+        "**Pruner Mantle:** faded olive surgeon's coat over a translucent ribbed resin vest, blue resin spills at seams",
+        "**Glass Treads:** broad rubber boots lined with pearl scales, triangular cleats inset into soles",
+        "Less Puncture from glass shards and higher Insight when examining plant evidence; designed to survive living conservatories"
+      ]
+    },
+    {
+      "name": "Last Office Plate",
+      "source_cells": [
+        "**6. Last Office Plate** · military police",
+        "**White Enamel Helm:** large bucket-shaped ivory helmet with black rectangular mouth slot and asymmetrical red tally marks",
+        "**Order Breastplate:** green ceramic slabs riveted to dark ballistic cloth, shoulder badge stamped with a scratched-out name",
+        "**Checkpoint Greaves:** high matte-black shin braces with deep red boot straps, worn square toes",
+        "Better heavy-weapon stability and Impact defence; reduces citizen trust when entering settlements armed"
+      ]
+    },
+    {
+      "name": "Reprint Shroud",
+      "source_cells": [
+        "**7. Reprint Shroud** · failed printed bodies",
+        "**Null Mask:** smooth smoke-grey faceplate with one round lens and a vertical white seam down the centre",
+        "**Seam Mantle:** long torn grey drape threaded with violet surgical sutures, sections of internal framework exposed",
+        "**Blank Feet:** pale brace-legged walking apparatus with black stitch marks and mismatched heel heights",
+        "Faster recovery from Mnemonic status, lower max physical armour; recovered from bodies the machine discarded"
+      ]
+    },
+    {
+      "name": "Architect's Burden",
+      "source_cells": [
+        "**8. Architect's Burden** · Engine core engineers",
+        "**Measure Crown:** brass caliper-shaped frame arching above the head, six small numbered lenses, black cloth veil behind",
+        "**Charter Carapace:** heavy brown leather and white enamel breastpiece, filled with brass rulers, legal seals and thin cables",
+        "**Foundation Boots:** squat iron-toed shoes with carved centimetre markings and grease-black gaiters",
+        "Adds a Tech contextual dialogue option and reduces damage from traps; its seams conceal the architect's original confession"
+      ]
+    }
+  ],
+  "unique_armour": [
+    {
+      "name": "Recall Plate",
+      "source_cells": [
+        "**Recall Plate** · full set overlay / Kest's good ending",
+        "Olive-and-ivory armour visibly engraved with the names of recovered soldiers across helmet, chest and greaves; moderate protection and one nonlethal stand-down command per barracks visit; Kest refuses to have the names polished away. Occupies three armour slots."
+      ]
+    },
+    {
+      "name": "Salt Pilgrim Greaves",
+      "source_cells": [
+        "**Salt Pilgrim Greaves** · legs / Perrin's self-sacrifice route",
+        "White-salt-crusted thigh-high oilskin waders, cracked black boots and seven little ferry tickets folded into the seams; remove water slowdown and cause the boots to leave bright wet footprints in dark corridors."
+      ]
+    },
+    {
+      "name": "Salt-Sewn Hood",
+      "source_cells": [
+        "**Salt-Sewn Hood** · head / Ossa's ruined outcome",
+        "Dark grey funeral hood with sea-salt crystals along the face opening and a brass bell clapper instead of a throat clasp; reveals distant ghost-whisper hints but imposes -1 Speech while worn because the living recoil from it."
+      ]
+    }
+  ],
+  "common_relics": [
+    {
+      "name": "Copper Witness",
+      "source_cells": [
+        "**Copper Witness**",
+        "Coin-sized oval mirror under brown tarnish, in which a person's reflection arrives half a second late; made for inspectors of memory loss",
+        "Reveals forged witness statements and fake door signs in some areas"
+      ]
+    },
+    {
+      "name": "Red Thread Spool",
+      "source_cells": [
+        "**Red Thread Spool**",
+        "Tiny pewter spool wound with crimson thread and one black knot; burial seamstress tradition",
+        "Slightly improves companion rescue speed and reveals a trail left by missing NPCs"
+      ]
+    },
+    {
+      "name": "Cinder Rosary",
+      "source_cells": [
+        "**Cinder Rosary**",
+        "Seven coarse charcoal beads on copper wire, one bead always smouldering; worn by air-filter workers",
+        "Minor Ember resistance and better salvage chance from furnace kills"
+      ]
+    },
+    {
+      "name": "Blank Signet",
+      "source_cells": [
+        "**Blank Signet**",
+        "Thin silver ring with an empty square seal and a sharp interior edge; an administrator's attempt to erase rank",
+        "Better anonymity at Last Office checks; mild merchant suspicion in Ashmarket"
+      ]
+    },
+    {
+      "name": "Glass Psalm",
+      "source_cells": [
+        "**Glass Psalm**",
+        "Triangular blue glass flake suspended in a wire cage; piece of the first false sun",
+        "Amplifies Echoform Glass attacks slightly, increases Sonic vulnerability"
+      ]
+    },
+    {
+      "name": "Rivet Psalm",
+      "source_cells": [
+        "**Rivet Psalm**",
+        "Steel union token shaped like three interlocking nails, punched through the centre",
+        "Small Force boost on heavy equipment interactions; miners recognise it"
+      ]
+    },
+    {
+      "name": "Dead Battery",
+      "source_cells": [
+        "**Dead Battery**",
+        "Obsolete square cell with red and yellow poles bound by cloth; known to work only when nobody watches",
+        "One automatic temporary ward after lethal Arc damage, then recharges between districts"
+      ]
+    },
+    {
+      "name": "Hearth Photo",
+      "source_cells": [
+        "**Hearth Photo**",
+        "Small sepia picture under cloudy celluloid showing a family with the faces rubbed away",
+        "Reduces NPC fear if Ninth arrives unarmed; provides no combat bonus"
+      ]
+    },
+    {
+      "name": "Moth Glass",
+      "source_cells": [
+        "**Moth Glass**",
+        "Curved bronze lens containing a preserved translucent moth wing",
+        "Briefly reveals hidden Echoforms and secret nursery passages"
+      ]
+    },
+    {
+      "name": "Bone Tally",
+      "source_cells": [
+        "**Bone Tally**",
+        "Five ivory counters on a black loop, each with a different death date",
+        "Increases recovery after a close-range finisher, small susceptibility to Mnemonic attacks"
+      ]
+    },
+    {
+      "name": "Chorus Plug",
+      "source_cells": [
+        "**Chorus Plug**",
+        "Copper ear insert with a cross-cut black rubber seal and blue identification bead",
+        "Resists Dissonance but reduces distance of sound-based secret clues"
+      ]
+    },
+    {
+      "name": "Train Nail",
+      "source_cells": [
+        "**Train Nail**",
+        "A bent nickel-steel rail spike wrapped in salt-white twine",
+        "Shows the nearest unlocked route toward a rail station, not a main quest shortcut"
+      ]
+    }
+  ],
+  "named_relics_tools": [
+    {
+      "name": "Namesake Locket",
+      "source_cells": [
+        "**Namesake Locket** · relic",
+        "Oval dirty-gold locket that opens onto two tiny uneven photographs, joined by a single red hair",
+        "Nearby lost-identity evidence glows faint amber; obtained by respecting Iona and her daughter's choices"
+      ]
+    },
+    {
+      "name": "Broker's Chit",
+      "source_cells": [
+        "**Broker's Chit** · relic",
+        "Rectangular bone voucher with clipped corners, black ink signature and a still-wet red price stamp",
+        "Improves black-market trades but reduces recruitment trust; Iona exploit path"
+      ]
+    },
+    {
+      "name": "Brin's Torque",
+      "source_cells": [
+        "**Brin's Torque** · relic",
+        "Thick iron neck-ring split at the hinge, stamped with payroll numbers and repaired by six brass finger-shaped rivets",
+        "Improves repairs, unlocks cover-plate crafting if Brin survives; union liberation reward"
+      ]
+    },
+    {
+      "name": "Union Rivet Kit",
+      "source_cells": [
+        "**Union Rivet Kit** · utility consumable",
+        "Red folded canvas roll containing eight brass rivets and a stubby yellow punch",
+        "Reroll two offered gun-mod choices once; negotiated strike outcome"
+      ]
+    },
+    {
+      "name": "Black Shift Badge",
+      "source_cells": [
+        "**Black Shift Badge** · relic",
+        "Coal-black enamel clock disc, hands welded at 03:17, hanging from a broken chain",
+        "Ember resistance, worse lawful merchant prices; recovered from Boiler Penitent Brin"
+      ]
+    },
+    {
+      "name": "Reliquary Tag",
+      "source_cells": [
+        "**Reliquary Tag** · relic",
+        "Two white enamel soldier ID tags joined back-to-back so neither name can be read",
+        "Reveals sealed military maintenance doors; Kest killed path"
+      ]
+    },
+    {
+      "name": "Drowned Canticle",
+      "source_cells": [
+        "**Drowned Canticle** · relic",
+        "Silver tongue from an enormous bell in a transparent water vial; hums when held near a mouth",
+        "Grants an acoustic ward, makes silent faction enforcers suspicious; Ossa exploit path"
+      ]
+    },
+    {
+      "name": "White Ledger",
+      "source_cells": [
+        "**White Ledger** · relic",
+        "Bright white pocket accounts book with transparent pages and blood-red ruled margins",
+        "Stronger direct healing, but healing consumes a small temporary memory reserve; Sela automation path"
+      ]
+    },
+    {
+      "name": "Consent Bell",
+      "source_cells": [
+        "**Consent Bell** · field tool",
+        "Small bronze handbell lined with violet felt and a silk knot around the handle",
+        "Enables voluntary Echoform recruitment dialogue and higher initial loyalty; Venn rescue path"
+      ]
+    },
+    {
+      "name": "Cage Clamp",
+      "source_cells": [
+        "**Cage Clamp** · field tool",
+        "Heavy black three-prong wrist trap with yellow caution stripes and purple sparking contacts",
+        "Immediate forced Echoform binding; lower loyalty and higher chance of refusal; Venn exploit path"
+      ]
+    },
+    {
+      "name": "Broken Cocoon",
+      "source_cells": [
+        "**Broken Cocoon** · relic",
+        "Dry grey cocoon under green glass, torn open from the inside",
+        "Reveals rare Echoform spawn marks, starts recruited creatures with lower morale; Venn abandon path"
+      ]
+    },
+    {
+      "name": "Fare Token",
+      "source_cells": [
+        "**Fare Token** · relic",
+        "Green oxidised ferry coin, one face showing a boat, the other a child's scratched height mark",
+        "Adds one free district travel link and supports evacuation capacity; Perrin repair route"
+      ]
+    },
+    {
+      "name": "Unwritten Page",
+      "source_cells": [
+        "**Unwritten Page** · relic",
+        "Blank yellowed paper pinned between two pieces of glass, handwriting briefly appears only while turning it",
+        "Detects one false objective or deceptive prediction per run; Pale Ledger refused route"
+      ]
+    },
+    {
+      "name": "Carbon Key",
+      "source_cells": [
+        "**Carbon Key** · field tool",
+        "Flat graphite-black key with duplicating-paper teeth and a small pale receipt spool",
+        "Opens one optional archive lock without ammunition or Tech requirement; Pale Ledger tricked route"
+      ]
+    },
+    {
+      "name": "Resonance Bell",
+      "source_cells": [
+        "**Resonance Bell** · default field tool",
+        "Rusty palm-size brass bell with concentric red enamel rings, pale cotton handle and visible hairline cracks",
+        "Guaranteed recruit/negotiation interface for Echoforms, regardless of Venn's presence; slower than Consent Bell but never blocks progression"
+      ]
+    },
+    {
+      "name": "Censer Probe",
+      "source_cells": [
+        "**Censer Probe** · common field tool",
+        "Blunt steel screwdriver with incense holes along its shaft and a tiny emerald indicator lamp",
+        "Tests air filters and disarms one class of pressure traps; available from Hearth Nine"
+      ]
+    }
+  ],
+  "consumables": [
+    {
+      "name": "Breath Ampoule",
+      "source_cells": [
+        "**Breath Ampoule**",
+        "Pear-shaped cobalt glass vial wrapped in coarse white gauze, containing blue effervescent liquid; condensed fresh air manufactured in Hearth Nine from a failing filter",
+        "Restores a moderate amount of Ninth's Breath/health; common, reliably stocked in shelter"
+      ]
+    },
+    {
+      "name": "Printed Flesh Wrap",
+      "source_cells": [
+        "**Printed Flesh Wrap**",
+        "Rectangular salmon-coloured biopaper in a folded medical tin, with fine blue blood-vessel lines; grown from discarded reprint material",
+        "Heal over several seconds and remove a light wound; disabled briefly when hit"
+      ]
+    },
+    {
+      "name": "Triage Vapour",
+      "source_cells": [
+        "**Triage Vapour**",
+        "Small rusty inhaler fitted with ivory double nozzles and a green warning stencil; once administered to workers during furnace accidents",
+        "Immediate modest healing and brief movement recovery, but increases visual distortion"
+      ]
+    },
+    {
+      "name": "Graft Soup",
+      "source_cells": [
+        "**Graft Soup**",
+        "Sealed dented metal ration can, grey handwritten label and a spoon taped to its side; laboratory leftovers from nutrient-grown replacement organs",
+        "Large out-of-combat healing plus temporary increased maximum Breath; mild Mnemonic strain"
+      ]
+    },
+    {
+      "name": "Sister's Thimble",
+      "source_cells": [
+        "**Sister's Thimble**",
+        "Little silver thimble full of dark red resin, lid stamped with a candle; covert medicine shared by Basilica lay sisters",
+        "Removes one serious status and grants short Sonic defence; uncommon"
+      ]
+    },
+    {
+      "name": "Last Ration",
+      "source_cells": [
+        "**Last Ration**",
+        "Dry tan biscuit wrapped in an old timetable, tied with red thread, smells of copper and burnt sugar",
+        "Small healing and one Resolve boost during the next NPC dialogue; found with refugees"
+      ]
+    },
+    {
+      "name": "Adrenal Bell",
+      "source_cells": [
+        "**Adrenal Bell**",
+        "Thumb-sized copper ampoule with ringing ceramic pellet trapped in its neck; illegal Last Office combat stimulant",
+        "Faster sprint and weapon swap for a few seconds, then a temporary stamina deficit"
+      ]
+    },
+    {
+      "name": "Salt Charge",
+      "source_cells": [
+        "**Salt Charge**",
+        "Rough white cylinder bound in black tar paper with a blue wax fuse; engineers used salt explosions to suppress unstable memory fog",
+        "Area anti-Husk damage and clears cursed surfaces; low direct damage to humans"
+      ]
+    },
+    {
+      "name": "Glass Flechette",
+      "source_cells": [
+        "**Glass Flechette**",
+        "Cracked crystal orb packed with bright triangular fragments, held by crossed copper wire; harvested from Orchard machinery",
+        "Explodes into short-range Puncture shards, effective against lightly armoured clusters"
+      ]
+    },
+    {
+      "name": "Cinder Bottle",
+      "source_cells": [
+        "**Cinder Bottle**",
+        "Thick brown medicine bottle containing orange sludge and a cloth wick, dripped wax sealing the neck; improvised picket weapon",
+        "Creates persistent Ember floor hazard; can burn NPC evidence and supplies if careless"
+      ]
+    },
+    {
+      "name": "Screaming Ribbon",
+      "source_cells": [
+        "**Screaming Ribbon**",
+        "Long strip of yellow tape wound round a serrated bone spool, faint black handwritten names along its edge; broadcast waste from the Basilica",
+        "Throws a sonic decoy that draws sound-hunting enemies and disrupts weak Choir shields"
+      ]
+    },
+    {
+      "name": "Discharge Canister",
+      "source_cells": [
+        "**Discharge Canister**",
+        "Ribbed cyan-black grenade with two brass screw terminals and a flashing red bead; decommissioned battery failsafe",
+        "Short Arc stun against machines, can power an emergency terminal once if thrown carefully"
+      ]
+    },
+    {
+      "name": "Containment Staple",
+      "source_cells": [
+        "**Containment Staple**",
+        "Palm-length black spring-loaded staple gun strip, violet pins tied in three bundles; designed by Last Office creature handlers",
+        "One forced capture attempt against a weakened recruitable Echoform, with loyalty penalty and risk of eventual revolt"
+      ]
+    },
+    {
+      "name": "Echo Feed",
+      "source_cells": [
+        "**Echo Feed**",
+        "Sachet of grey granular powder with childlike doodles printed in pale blue; engineered nutrition for memory organisms",
+        "Restores a moderate amount of Echoform endurance between duels"
+      ]
+    },
+    {
+      "name": "Gauze Cocoon",
+      "source_cells": [
+        "**Gauze Cocoon**",
+        "Folded cream-coloured fibrous mesh ball with little copper pins around the edges; adopted from surgical emergency shelters",
+        "Revives one unravelled Echoform with low endurance after a battle, not during a boss's decisive turn"
+      ]
+    },
+    {
+      "name": "Reset Resin",
+      "source_cells": [
+        "**Reset Resin**",
+        "Teal dropper bottle containing thick translucent fluid, suspended silver particles moving uphill; accidental by-product of reprint chemistry",
+        "Clears one Echoform debuff or one temporary move-lock"
+      ]
+    },
+    {
+      "name": "Truce Wafer",
+      "source_cells": [
+        "**Truce Wafer**",
+        "Thin blue square biscuit sealed in transparent film with a hand-shaped sigil; used by early ethical tamers",
+        "During a duel offers a single extra non-coercive negotiation attempt, not a guaranteed catch"
+      ]
+    },
+    {
+      "name": "Imprint Dye",
+      "source_cells": [
+        "**Imprint Dye**",
+        "Two tiny conjoined ampoules, one ember-orange, one violet, tied by grey string; illicit Orchard horticulture experiment",
+        "Changes one Echoform's cosmetic imprint route within its unlocked legal variants, never overrides consent history"
+      ]
+    },
+    {
+      "name": "Archive Solvent",
+      "source_cells": [
+        "**Archive Solvent**",
+        "Flat green bottle with black-paper-wrapped stopper and red measurement lines; used by clerks to dissolve paper locks",
+        "Exposes one hidden archive layer or removes a document seal; alternative Tech check remains possible"
+      ]
+    },
+    {
+      "name": "False Papers",
+      "source_cells": [
+        "**False Papers**",
+        "Creased buff identity folio with faded photograph window, two competing signatures and a fresh crimson stamp",
+        "Supports one disguise/deception check; can be detected by high-ranking Last Office staff"
+      ]
+    },
+    {
+      "name": "Transit Chit",
+      "source_cells": [
+        "**Transit Chit**",
+        "Small punched blue card with zigzag silver stripe and oily finger marks; workers' rationed permission to travel",
+        "Opens an optional fast-travel gate, does not replace the three Writs"
+      ]
+    },
+    {
+      "name": "Canal Lamp",
+      "source_cells": [
+        "**Canal Lamp**",
+        "Squat yellow paraffin lamp with caged green glass chimney, dripping black handle insulation; found on submerged ferry docks",
+        "Reveals reflected signs and submerged path markings for one region; burns out after use"
+      ]
+    },
+    {
+      "name": "Spare Fuse",
+      "source_cells": [
+        "**Spare Fuse**",
+        "White ceramic plug capped with heavy copper tips and handwritten repair date; found in every maintenance shed",
+        "Restarts one local power board or trap circuit; allows a resource-driven alternate route"
+      ]
+    }
+  ],
+  "echoforms": [
+    {
+      "name": "Cindermoth",
+      "source_cells": [
+        "**Cindermoth** · Ember",
+        "Hand-sized black moth enlarged to dog scale, scalloped bronze wings with little eye-like holes, thorax glowing like coal, twelve-frame wingbeat leaving ember pixels",
+        "Born from the memory of a child watching the first sunrise; evasive support; found in Orchard ash vents",
+        "Ash Wing, Lantern Flicker, Scorch Kiss, Ember Shelter"
+      ]
+    },
+    {
+      "name": "Boiler Calf",
+      "source_cells": [
+        "**Boiler Calf** · Ember",
+        "Low cattle-like furnace with ivory rib grate, chimney horns exhaling flat grey sprite smoke, piston knees, burning-red eye vents",
+        "Printed from the memory of a factory animal that never existed; slow area bruiser; Sootworks boilers",
+        "Furnace Kick, Steam Shield, Cinder Charge, Last Whistle"
+      ]
+    },
+    {
+      "name": "Rootkin",
+      "source_cells": [
+        "**Rootkin** · Growth",
+        "Loping deer-shaped cluster of pale roots with a human hand in place of one antler, luminous moss joints and dripping dark soil",
+        "Remembers an impossible childhood garden; healing/binding; Glass Orchard nursery",
+        "Root Lash, Quiet Bloom, Pollen Veil, Grasping Floor"
+      ]
+    },
+    {
+      "name": "Cradle Wasp",
+      "source_cells": [
+        "**Cradle Wasp** · Growth",
+        "Wasp the size of a terrier, striped abdomen made of nursery blankets, six stiff needle legs and gauze wings",
+        "Formed from memories of lost childcare; quick debuff/tactical reposition; orphanage annex",
+        "Needle Dance, Swaddling Fog, Memory Sap, Cradle Guard"
+      ]
+    },
+    {
+      "name": "Mirror Jackal",
+      "source_cells": [
+        "**Mirror Jackal** · Glass",
+        "Transparent long-snouted hound with internal silver skeleton and flat triangular facets; its reflection is animated a frame late",
+        "Built from a stolen wedding portrait; speed, counterattack and false doubles; Orchard glass tunnels",
+        "Shard Bite, Mirror Step, Refraction, Thin Ice"
+      ]
+    },
+    {
+      "name": "Prism Eel",
+      "source_cells": [
+        "**Prism Eel** · Glass",
+        "Floating eel in a segmented crystal tube, gold teeth visible through glass, tiny coloured light flashes in the ribs",
+        "Once a mirror's memory of the sea; piercing special damage; flooded industrial ducts",
+        "Prism Bolt, Splinter Current, Clear Skin, Glass Wake"
+      ]
+    },
+    {
+      "name": "Spool Hound",
+      "source_cells": [
+        "**Spool Hound** · Wire",
+        "Three-legged steel terrier with braided copper body, cassette-reel flanks and a sparking antenna tail",
+        "Leaks recorded guard-dog commands; anti-Choir disruptor; barracks transmitter rooms",
+        "Current Fang, Static Bark, Cable Snare, Overwind"
+      ]
+    },
+    {
+      "name": "Suture Mite",
+      "source_cells": [
+        "**Suture Mite** · Wire",
+        "Beetle-bodied surgical stapler, spindly chrome limbs, a row of fine red-lit sutures down its shell",
+        "Reprints last words as electrical pulses; utility and defensive debuff; hospital train",
+        "Staple Bite, Patch Circuit, Electrode Flare, False Pulse"
+      ]
+    },
+    {
+      "name": "Bell Wretch",
+      "source_cells": [
+        "**Bell Wretch** · Choir",
+        "Pale frog-like body with swollen bell-shaped throat, tuning forks growing through shoulders, throat inflates before sonic attack",
+        "A hymn remembered after the singers died; ranged control; Flood Basilica",
+        "Chime Crush, Dissonant Note, Choir Shield, Toll of Three"
+      ]
+    },
+    {
+      "name": "Hush Heron",
+      "source_cells": [
+        "**Hush Heron** · Choir",
+        "Tall, skinless bird with porcelain mask-face, tubular throat, black lace flight feathers and tiny red foot-bells",
+        "Recalls moments of silence before executions; precise disabling attacks; drowned crypt",
+        "Silence Spear, Unsaid Verse, Wing of Mercy, Requiem"
+      ]
+    },
+    {
+      "name": "Name Leech",
+      "source_cells": [
+        "**Name Leech** · Husk",
+        "Fleshy grey slug with human handwriting across translucent skin, short grasping teeth, a little receipt dangling from its jaw",
+        "Consumes titles and labels; durable attrition; Ashmarket archive drains",
+        "Unname, Memory Siphon, Husk Coil, Borrowed Skin"
+      ]
+    },
+    {
+      "name": "Grief Stag",
+      "source_cells": [
+        "**Grief Stag** · Husk",
+        "Broad-shouldered skeletal elk clad in moth-eaten overcoat cloth, candles in antlers, jaw opens sideways in three frames",
+        "A family's collective memory of someone nobody can identify; terminal boss-capable tank; abandoned rail",
+        "Grief Horn, Funeral Step, Borrowed Cry, Mercy Break"
+      ]
+    }
+  ],
+  "quest_objects": [
+    {
+      "name": "Cinder Lung",
+      "source_cells": [
+        "**1. Cinder Lung**",
+        "Two braced pressure bellows around a sealed translucent blue **correction cassette**, stamped with the competing ward’s allocation claim; its pumps use electricity, while its mnemonic patterns independently stabilise the local boundary",
+        "Guaranteed Act I target, installed in Hearth Nine, opens Writ hunt"
+      ]
+    },
+    {
+      "name": "Writ of Trade",
+      "source_cells": [
+        "**2. Writ of Trade**",
+        "Black-gold metal certificate the size of a hand, notched like a coin, one ruby accounting seal and microscopic price columns; authorises memory commerce",
+        "One of five possible final access tokens"
+      ]
+    },
+    {
+      "name": "Writ of Labour",
+      "source_cells": [
+        "**3. Writ of Labour**",
+        "Crooked six-sided iron plate with soot-worn tally marks and a chain-link handle; founded by a workers' coalition later stripped of authority",
+        "One of five possible final access tokens"
+      ]
+    },
+    {
+      "name": "Writ of Growth",
+      "source_cells": [
+        "**4. Writ of Growth**",
+        "Palm-sized milky glass tile with a green shoot alive inside the material and a carved human thumbprint; authorises biological reconstruction",
+        "One of five possible final access tokens"
+      ]
+    },
+    {
+      "name": "Writ of Faith",
+      "source_cells": [
+        "**5. Writ of Faith**",
+        "Long tapering silver noteplate with nine deep sound grooves and a green patina, used as a tuning instrument in sacred rites",
+        "One of five possible final access tokens"
+      ]
+    },
+    {
+      "name": "Writ of Defence",
+      "source_cells": [
+        "**6. Writ of Defence**",
+        "Thick white enamel cartridge of sealed military dispatches, red wax bearing a crossed-out general's name; gave the first army emergency powers",
+        "One of five possible final access tokens"
+      ]
+    },
+    {
+      "name": "Emergency Rail Charter",
+      "source_cells": [
+        "**7. Emergency Rail Charter**",
+        "Folded black linen blueprint with thin luminous white rails and an attached brass switch key; proof that evacuation was planned before the Engine's cruelty became routine",
+        "Automatically discovered in final chamber in every run; ensures the Liberation route is always legible"
+      ]
+    },
+    {
+      "name": "The Architect's Confession",
+      "source_cells": [
+        "**8. The Architect's Confession**",
+        "One-inch copper wire spool threaded through a square wooden card, the first three turns stained black; the original architect knowingly approved forced harvesting",
+        "Mandatory endgame reveal; unlocks unique Custodian arguments"
+      ]
+    },
+    {
+      "name": "Pressure Seal Diagram",
+      "source_cells": [
+        "**9. Pressure Seal Diagram**",
+        "Crinkled yellow engineering drawing with triangular repair stamps and Perrin's handwritten depth measurements; fixes the ferry's memory-consuming pump",
+        "Optional Perrin ending and evacuation bonus"
+      ]
+    },
+    {
+      "name": "Payroll Cylinder",
+      "source_cells": [
+        "**10. Payroll Cylinder**",
+        "Thick striped brass cylinder engraved with decades of workers' names; no date ever advances past the city's first reconstruction",
+        "Brin's quest evidence, enables legal testimony or mutiny"
+      ]
+    },
+    {
+      "name": "Original Hymn Wafer",
+      "source_cells": [
+        "**11. Original Hymn Wafer**",
+        "Octagonal green wax recording disc in a broken bell-shaped sleeve; the sacred hymn is an operating instruction misremembered as scripture",
+        "Ossa evidence; can change Basilica Writ method if acquired"
+      ]
+    },
+    {
+      "name": "Orchard Root Seed",
+      "source_cells": [
+        "**12. Orchard Root Seed**",
+        "Walnut-size transparent seed containing a curled blue shoot and a faint human silhouette; survives without harvested memories",
+        "Optional True Dawn ingredient; guaranteed discoverable if the player elects to search restoration clues"
+      ]
+    },
+    {
+      "name": "Deep Heat Survey",
+      "source_cells": [
+        "**13. Deep Heat Survey**",
+        "Military field map printed on dark linen, geothermal vents marked with pale blue circles and three tiny evacuation passages",
+        "Optional True Dawn ingredient and extra rail safety information"
+      ]
+    },
+    {
+      "name": "Governor's Maintenance Cipher",
+      "source_cells": [
+        "**14. Governor's Maintenance Cipher**",
+        "Brass punch card with blue notches and an unsealed handwritten consent field; documents how to use geothermal current for the pumps while the living seed supplies slowly calibrated nonhuman boundary-correction patterns",
+        "Optional True Dawn ingredient, revealed by optional restoration lead chain"
+      ]
+    }
+  ],
+  "local_storylets": [
+    {
+      "district": "Ashmarket",
+      "title": "The Borrowed Verdict",
+      "hook": "An innocent porter carries a borrowed criminal record; the person who sold it wants it back.",
+      "helped": "You proved the porter did not commit the crime and erased the fraudulent sentence.",
+      "exploited": "You resold the forged sentence and collected a broker bounty."
+    },
+    {
+      "district": "Ashmarket",
+      "title": "The Price of Rain",
+      "hook": "A broker owns the only rainwater tank in the district.",
+      "helped": "You broke the monopoly and distributed the water.",
+      "exploited": "You took a share and made the hungry pay."
+    },
+    {
+      "district": "Ashmarket",
+      "title": "The Fifth Customer",
+      "hook": "Five strangers claim to be the same person.",
+      "helped": "You reunited their fractured identities.",
+      "exploited": "You sold their separate bodies to the highest bidders."
+    },
+    {
+      "district": "Ashmarket",
+      "title": "The Honest Thief",
+      "hook": "A pickpocket stole a contract that enslaves her brother.",
+      "helped": "You voided the contract and hid them both.",
+      "exploited": "You returned the contract for a bounty."
+    },
+    {
+      "district": "Sootworks",
+      "title": "A Strike of Hands",
+      "hook": "The machines have taken the union's hands but demand the workers keep working.",
+      "helped": "You organised a dangerous rescue and armed the union.",
+      "exploited": "You traded the union's location for a reinforced gun."
+    },
+    {
+      "district": "Sootworks",
+      "title": "The Last Shift",
+      "hook": "A worker has clocked in for ninety years without permission to leave.",
+      "helped": "You erased the contract and led him home.",
+      "exploited": "You sold his remaining work-years."
+    },
+    {
+      "district": "Sootworks",
+      "title": "Warm Iron",
+      "hook": "A child hides inside a furnace because the street is colder.",
+      "helped": "You found safe shelter for the child.",
+      "exploited": "You turned the child over to factory security."
+    },
+    {
+      "district": "Sootworks",
+      "title": "Boiler Saint",
+      "hook": "A furnace speaks in the voice of a dead engineer.",
+      "helped": "You shut it down and released its trapped minds.",
+      "exploited": "You made it build a weapon using those minds."
+    },
+    {
+      "district": "Glass Orchard",
+      "title": "The Tree That Calls Mother",
+      "hook": "A tree calls every passer-by by their mother's voice.",
+      "helped": "You freed the identities grafted into its branches.",
+      "exploited": "You harvested the voices as ammunition."
+    },
+    {
+      "district": "Glass Orchard",
+      "title": "Green in the Dark",
+      "hook": "A seed may survive beyond the dead sky.",
+      "helped": "You carried it to the evacuation tunnels.",
+      "exploited": "You fed it into your weapon for an instant power surge."
+    },
+    {
+      "district": "Glass Orchard",
+      "title": "The Missing Harvest",
+      "hook": "A horticulturist claims a crop has been replaced by copies of her son.",
+      "helped": "You helped identify and protect the surviving child.",
+      "exploited": "You gave the copies to the laboratory."
+    },
+    {
+      "district": "Glass Orchard",
+      "title": "A Beautiful Lie",
+      "hook": "A blind painter offers proof that the real sky still exists outside the city.",
+      "helped": "You protected her maps and shared them.",
+      "exploited": "You burned the maps to curry favour with the authorities."
+    },
+    {
+      "district": "Flood Basilica",
+      "title": "The Drowned Choir",
+      "hook": "The choir is kept alive in jars to sing through the night.",
+      "helped": "You freed its singers and gave them breathing masks.",
+      "exploited": "You increased their output to earn the clergy's favour."
+    },
+    {
+      "district": "Flood Basilica",
+      "title": "A Confession for Sale",
+      "hook": "A priest sells absolution by deleting memories of crimes.",
+      "helped": "You restored the records to their victims.",
+      "exploited": "You bought the records and blackmailed the guilty."
+    },
+    {
+      "district": "Flood Basilica",
+      "title": "Saint Without a Face",
+      "hook": "The statue of a saint contains a living prisoner.",
+      "helped": "You opened it and freed the prisoner.",
+      "exploited": "You left the prisoner as a beacon for the district."
+    },
+    {
+      "district": "Flood Basilica",
+      "title": "The Last Funeral",
+      "hook": "A grieving mother asks for one honest burial.",
+      "helped": "You carried the body to dry ground.",
+      "exploited": "You sold the corpse to a recycler."
+    },
+    {
+      "district": "Quiet Barracks",
+      "title": "The Unfired Gun",
+      "hook": "An execution squad refuses to shoot its oldest member.",
+      "helped": "You secured the prisoner's release.",
+      "exploited": "You carried out the order for military supplies."
+    },
+    {
+      "district": "Quiet Barracks",
+      "title": "Deserter at the Gate",
+      "hook": "A deserter carries a route to safe underground caverns.",
+      "helped": "You hid the deserter and copied the map.",
+      "exploited": "You handed the deserter over for a heavy weapon."
+    },
+    {
+      "district": "Quiet Barracks",
+      "title": "The Nameless Platoon",
+      "hook": "Twenty soldiers cannot remember why they are fighting.",
+      "helped": "You restored their memories and disarmed them.",
+      "exploited": "You sent them into a lethal attack as a diversion."
+    },
+    {
+      "district": "Quiet Barracks",
+      "title": "Signal Zero",
+      "hook": "A radio repeats orders from a war that ended decades ago.",
+      "helped": "You shut down the broadcast and freed the listeners.",
+      "exploited": "You redirected the orders against a rival faction."
+    }
+  ],
+  "major_npcs": [
+    {
+      "name": "Iona Pell",
+      "initial_premise": "A mother arrives with a porcelain shoe and a receipt for her daughter's memories.",
+      "outcomes": [
+        "You uncover the original deed, tell Iona the truth and let her daughter decide whether they will meet. Iona entrusts you with the Namesake Locket.",
+        "You secure Iona a fragile reunion through forged recollections. She gives you the bell that once summoned her daughter, but the daughter starts fearing the sound.",
+        "You sell the deed to a broker. Iona disappears, and you gain the Broker's Chit while families begin treating you as a debt collector."
+      ],
+      "epilogues": [
+        "The daughter decides whether to contact Iona, without the Engine deciding for her.",
+        "An artificial reunion lasts only until the first contradictory memory is spoken.",
+        "The market keeps another name, and a bell rings inside an empty passenger car."
+      ]
+    },
+    {
+      "name": "Brin Harker",
+      "initial_premise": "A mechanic shows you a time card stamped with ninety-one years of consecutive shifts.",
+      "outcomes": [
+        "You restore the original payroll record, coordinate a safe strike and free the workers. Brin builds you Brin's Torque.",
+        "You negotiate a partial walkout; a union repair-kit is yours, but many workers remain bound to the furnace.",
+        "You inform the Millwright of the strike. You acquire the Chain of Wages, and Brin is chained to the next shift."
+      ],
+      "epilogues": [
+        "Brin installs repairs on the refugee train.",
+        "Brin repairs a few carriages while the factory keeps most of its workers.",
+        "The foundry whistle can still be heard from the abandoned rail."
+      ]
+    },
+    {
+      "name": "Kest-07",
+      "initial_premise": "A masked veteran carries a warrant from a cycle in which Ninth supposedly killed him.",
+      "outcomes": [
+        "You uncover the reprint records and persuade Kest to testify. He entrusts you with the Recall Plate memorial armour.",
+        "You erase his memory of wrongdoing in return for an obedient soldier and the Penance Fang.",
+        "You kill Kest in a checkpoint duel and take his Reliquary Tag."
+      ],
+      "epilogues": [
+        "Recovered veterans begin calling one another by name.",
+        "An immaculate guard walks the city without knowing whom he serves.",
+        "The veteran names are written on a memorial that nobody dares read."
+      ]
+    },
+    {
+      "name": "Sister Ossa",
+      "initial_premise": "A singer with a copper voice-box asks for the one missing note in the Basilica hymn.",
+      "outcomes": [
+        "You expose the false hymn and free the living singers. Ossa hands you the Choirbreaker.",
+        "You amplify the choir to hold back monsters, acquiring the Drowned Canticle while the singers lose themselves.",
+        "You leave Ossa to a collapsing crypt; the Salt-Sewn Hood is recovered from the water."
+      ],
+      "epilogues": [
+        "Ossa leads survivors with her natural voice.",
+        "The bells ring though no singers are left to consent.",
+        "One silent hood is pinned to the memorial wall."
+      ]
+    },
+    {
+      "name": "Dr Sela Vale",
+      "initial_premise": "The shelter doctor admits her hands sometimes move before she chooses to move them.",
+      "outcomes": [
+        "You uncover the forged medical consent forms and sever the Engine fibres in Sela's arms. She gives you Surgeon's Mercy.",
+        "You accept the offer to automate the clinic. Sela's White Ledger heals faster, but spends patients' memories.",
+        "You destroy the clinic to stop involuntary experiments, losing its medical services and taking Clean Scalpels."
+      ],
+      "epilogues": [
+        "Sela treats evacuees with her own uncommanded hands.",
+        "A bright spotless clinic remains, with patients who cannot remember being treated.",
+        "The shelter survives, but its medicine shelves are empty."
+      ]
+    },
+    {
+      "name": "Venn-of-Glass",
+      "initial_premise": "A young keeper carries a cage that opens inward; a frightened Echoform refuses the government staple.",
+      "outcomes": [
+        "You help rescue the nursery and recruit Cindermoth freely. Venn entrusts you with the Consent Bell.",
+        "You take a Cage Clamp and force frightened creatures to obey, gaining instant power but losing their trust.",
+        "You leave the nursery to the wardens and recover a Broken Cocoon from the abandoned cages."
+      ],
+      "epilogues": [
+        "Venn opens a sanctuary for creatures no one owns.",
+        "The fighting pits are full, but the creatures turn away when they hear your footsteps.",
+        "A cocoon dries beside the last abandoned cage."
+      ]
+    },
+    {
+      "name": "Old Perrin",
+      "initial_premise": "A ferryman keeps bringing his boat back with one fewer passenger and refuses to say why.",
+      "outcomes": [
+        "You repair the memory-consuming pump. Perrin gives you a Fare Token and adds a carriage to the final train.",
+        "You pay the fare with a piece of your own run-specific history and earn Salt Pilgrim Greaves.",
+        "You sell passengers to the ferry, obtaining Ferryman's Hook but losing a refuge carriage."
+      ],
+      "epilogues": [
+        "The emergency rail carries one more group of survivors.",
+        "Perrin remembers your face, but you forget a passage of your own story.",
+        "The spare passenger car never arrives."
+      ]
+    },
+    {
+      "name": "The Pale Ledger",
+      "initial_premise": "A paper-faced clerk hands you a bill for a crime you have not committed.",
+      "outcomes": [
+        "You expose the forged prophecy and tear up the contract. The Ledger yields an Unwritten Page.",
+        "You trick the clerk into owing its own debt and claim a Carbon Key for the locked archives.",
+        "You sign over a stranger's future for Debt Collector's Smile, a weapon that feeds on broken promises."
+      ],
+      "epilogues": [
+        "A civilian the Ledger marked for death leaves the city alive.",
+        "The Ledger seals its own accounts in a locked room.",
+        "Somebody else lives with the price of a weapon you chose to carry."
+      ]
+    }
+  ],
+  "district_names": [
+    "Ashmarket",
+    "Sootworks",
+    "Glass Orchard",
+    "Flood Basilica",
+    "Quiet Barracks"
+  ],
+  "civic_hearing_commands": [
+    "press",
+    "attune",
+    "brace",
+    "observe",
+    "withdraw"
+  ]
+}

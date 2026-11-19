@@ -1,0 +1,215 @@
+{
+  "sela": {
+    "source": "art/production_sources/sela_4view_source.png",
+    "views": [
+      {
+        "view": "front",
+        "file": "assets/sprites/directional/sela_front.png",
+        "canvas": [
+          192,
+          280
+        ],
+        "sprite_shape": [
+          93,
+          249
+        ]
+      },
+      {
+        "view": "left",
+        "file": "assets/sprites/directional/sela_left.png",
+        "canvas": [
+          192,
+          280
+        ],
+        "sprite_shape": [
+          59,
+          249
+        ]
+      },
+      {
+        "view": "right",
+        "file": "assets/sprites/directional/sela_right.png",
+        "canvas": [
+          192,
+          280
+        ],
+        "sprite_shape": [
+          61,
+          254
+        ]
+      },
+      {
+        "view": "back",
+        "file": "assets/sprites/directional/sela_back.png",
+        "canvas": [
+          192,
+          280
+        ],
+        "sprite_shape": [
+          92,
+          253
+        ]
+      }
+    ],
+    "original_quadrant_shapes": {
+      "front": [
+        226,
+        602
+      ],
+      "left": [
+        143,
+        601
+      ],
+      "right": [
+        149,
+        612
+      ],
+      "back": [
+        222,
+        611
+      ]
+    }
+  },
+  "brin": {
+    "source": "art/production_sources/brin_4view_source.png",
+    "views": [
+      {
+        "view": "front",
+        "file": "assets/sprites/directional/brin_front.png",
+        "canvas": [
+          192,
+          280
+        ],
+        "sprite_shape": [
+          99,
+          253
+        ]
+      },
+      {
+        "view": "left",
+        "file": "assets/sprites/directional/brin_left.png",
+        "canvas": [
+          192,
+          280
+        ],
+        "sprite_shape": [
+          62,
+          253
+        ]
+      },
+      {
+        "view": "right",
+        "file": "assets/sprites/directional/brin_right.png",
+        "canvas": [
+          192,
+          280
+        ],
+        "sprite_shape": [
+          62,
+          254
+        ]
+      },
+      {
+        "view": "back",
+        "file": "assets/sprites/directional/brin_back.png",
+        "canvas": [
+          192,
+          280
+        ],
+        "sprite_shape": [
+          98,
+          253
+        ]
+      }
+    ],
+    "original_quadrant_shapes": {
+      "front": [
+        237,
+        600
+      ],
+      "left": [
+        148,
+        600
+      ],
+      "right": [
+        147,
+        602
+      ],
+      "back": [
+        233,
+        600
+      ]
+    }
+  },
+  "ossa": {
+    "source": "art/production_sources/ossa_4view_source.png",
+    "views": [
+      {
+        "view": "front",
+        "file": "assets/sprites/directional/ossa_front.png",
+        "canvas": [
+          192,
+          280
+        ],
+        "sprite_shape": [
+          94,
+          253
+        ]
+      },
+      {
+        "view": "left",
+        "file": "assets/sprites/directional/ossa_left.png",
+        "canvas": [
+          192,
+          280
+        ],
+        "sprite_shape": [
+          71,
+          254
+        ]
+      },
+      {
+        "view": "right",
+        "file": "assets/sprites/directional/ossa_right.png",
+        "canvas": [
+          192,
+          280
+        ],
+        "sprite_shape": [
+          74,
+          252
+        ]
+      },
+      {
+        "view": "back",
+        "file": "assets/sprites/directional/ossa_back.png",
+        "canvas": [
+          192,
+          280
+        ],
+        "sprite_shape": [
+          93,
+          251
+        ]
+      }
+    ],
+    "original_quadrant_shapes": {
+      "front": [
+        225,
+        606
+      ],
+      "left": [
+        172,
+        607
+      ],
+      "right": [
+        178,
+        604
+      ],
+      "back": [
+        224,
+        600
+      ]
+    }
+  }
+}

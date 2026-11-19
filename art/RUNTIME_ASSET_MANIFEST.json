@@ -1,0 +1,94 @@
+{
+  "source": "original image-generation art created for The Ninth Exhale by the user/assistant",
+  "tiles": {
+    "ward_enamel": "assets/textures/ward_enamel_v4.png",
+    "ward_floor": "assets/textures/ward_floor_v4.png",
+    "soot_wall": "assets/textures/soot_wall_v4.png",
+    "soot_floor": "assets/textures/soot_floor_v4.png",
+    "basilica_stone": "assets/textures/basilica_stone_v4.png"
+  },
+  "npcs": {
+    "sela": [
+      "assets/sprites/directional/sela_front.png",
+      "assets/sprites/directional/sela_right.png",
+      "assets/sprites/directional/sela_left.png",
+      "assets/sprites/directional/sela_back.png"
+    ],
+    "brin": [
+      "assets/sprites/directional/brin_front.png",
+      "assets/sprites/directional/brin_right.png",
+      "assets/sprites/directional/brin_left.png",
+      "assets/sprites/directional/brin_back.png"
+    ],
+    "ossa": [
+      "assets/sprites/directional/ossa_front.png",
+      "assets/sprites/directional/ossa_right.png",
+      "assets/sprites/directional/ossa_left.png",
+      "assets/sprites/directional/ossa_back.png"
+    ],
+    "oren": [
+      "assets/sprites/directional/oren_front.png",
+      "assets/sprites/directional/oren_right.png",
+      "assets/sprites/directional/oren_left.png",
+      "assets/sprites/directional/oren_back.png"
+    ],
+    "clerk": [
+      "assets/sprites/directional/clerk_front.png",
+      "assets/sprites/directional/clerk_right.png",
+      "assets/sprites/directional/clerk_left.png",
+      "assets/sprites/directional/clerk_back.png"
+    ]
+  },
+  "props": {
+    "hearth": [
+      "assets/sprites/props/hearth_01.png",
+      "assets/sprites/props/hearth_02.png",
+      "assets/sprites/props/hearth_03.png",
+      "assets/sprites/props/hearth_04.png",
+      "assets/sprites/props/hearth_05.png",
+      "assets/sprites/props/hearth_06.png",
+      "assets/sprites/props/hearth_07.png",
+      "assets/sprites/props/hearth_08.png",
+      "assets/sprites/props/hearth_09.png"
+    ],
+    "sootworks": [
+      "assets/sprites/props/sootworks_01.png",
+      "assets/sprites/props/sootworks_02.png",
+      "assets/sprites/props/sootworks_03.png",
+      "assets/sprites/props/sootworks_04.png",
+      "assets/sprites/props/sootworks_05.png",
+      "assets/sprites/props/sootworks_06.png",
+      "assets/sprites/props/sootworks_07.png",
+      "assets/sprites/props/sootworks_08.png",
+      "assets/sprites/props/sootworks_09.png"
+    ],
+    "basilica": [
+      "assets/sprites/props/basilica_01.png",
+      "assets/sprites/props/basilica_02.png",
+      "assets/sprites/props/basilica_03.png",
+      "assets/sprites/props/basilica_04.png",
+      "assets/sprites/props/basilica_05.png",
+      "assets/sprites/props/basilica_06.png",
+      "assets/sprites/props/basilica_07.png",
+      "assets/sprites/props/basilica_08.png",
+      "assets/sprites/props/basilica_09.png"
+    ]
+  },
+  "weapon": "assets/sprites/covenant_pistol.png",
+  "build_070_prop_geometry": {
+    "implementation": "scripts/prop_mesh_070.gd",
+    "placements": "scripts/art_detail.gd / decorate_population()",
+    "profiles_per_district": 9,
+    "districts": [
+      "hearth",
+      "sootworks",
+      "basilica"
+    ],
+    "total_authored_placements": 66,
+    "render_kind": "genuine_mesh_3d_no_billboard",
+    "shading": "bundled_original_painted_triplanar_materials",
+    "notes": "The 27 original PNGs in props are retained as historical source art, NOT rendered as full-object planes by Build 07.0.",
+    "runway_provenance": "art/RUNWAY_PROP_VIEWS_070.json",
+    "new_prop_collision": false
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "project": "THE NINTH EXHALE",
+  "build": "07.9 Gameplay First",
+  "runway_task_note": "Runway-generated original audio available in connected workspace only, not included in Godot source archive.",
+  "runway_generated_external": [
+    {
+      "role": "Sootworks pressure-cycle ambience/impact",
+      "task_id": "9457e19b-73bf-4667-98a2-d36a5209d2ad",
+      "output": "audio",
+      "status": "completed / unimported"
+    },
+    {
+      "role": "Flood Basilica acoustic pressure pulse",
+      "task_id": "e5a9a5d8-f6a4-4362-80c2-3f9f51edcf3a",
+      "output": "audio",
+      "status": "completed / unimported"
+    }
+  ],
+  "embedded_original_sfx": [
+    "assets/audio/arc_discharge_079.wav",
+    "assets/audio/forge_exhaust_079.wav",
+    "assets/audio/basilica_reed_079.wav"
+  ],
+  "embedded_original_texture": [
+    "assets/textures/pressure_docket_079.png"
+  ],
+  "source_generators": [
+    "art/tools/generate_gameplay_sfx_079.py",
+    "art/tools/generate_pressure_decal_079.py"
+  ],
+  "copyright": "Original generated for this project; human originality review remains recommended.",
+  "in_engine_test": "not executed"
+}

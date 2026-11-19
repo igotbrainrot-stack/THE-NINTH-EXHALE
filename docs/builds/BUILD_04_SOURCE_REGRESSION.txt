@@ -1,0 +1,19 @@
+test_brin_four_stage_order_and_actual_evidence (test_build04_sootworks.SootworksSourceContracts.test_brin_four_stage_order_and_actual_evidence) ... ok
+test_distinct_real_sector_and_collision (test_build04_sootworks.SootworksSourceContracts.test_distinct_real_sector_and_collision) ... ok
+test_every_sootworks_console_has_interaction_case (test_build04_sootworks.SootworksSourceContracts.test_every_sootworks_console_has_interaction_case) ... ok
+test_labour_writ_unique_and_recoverable_after_keeper_death (test_build04_sootworks.SootworksSourceContracts.test_labour_writ_unique_and_recoverable_after_keeper_death) ... ok
+test_millwright_enemy_state_does_not_overwrite_hearth_guard (test_build04_sootworks.SootworksSourceContracts.test_millwright_enemy_state_does_not_overwrite_hearth_guard) ... ok
+test_save_load_resumes_zone_and_older_build03_save (test_build04_sootworks.SootworksSourceContracts.test_save_load_resumes_zone_and_older_build03_save) ... ok
+test_tradeoffs_and_one_time_supply (test_build04_sootworks.SootworksSourceContracts.test_tradeoffs_and_one_time_supply) ... ok
+test_enforcer_raycast_destination_has_explicit_static_type (test_gdscript_typing.TestReportedTypeIssue.test_enforcer_raycast_destination_has_explicit_static_type) ... ok
+test_game_scene_still_references_enemy (test_gdscript_typing.TestReportedTypeIssue.test_game_scene_still_references_enemy) ... ok
+test_launcher_exists_and_is_executable (test_startup_structure.Startup.test_launcher_exists_and_is_executable) ... ok
+test_live_scene_still_loads_player_and_game (test_startup_structure.Startup.test_live_scene_still_loads_player_and_game) ... ok
+test_no_broken_script_references (test_startup_structure.Startup.test_no_broken_script_references) ... ok
+test_project_has_visible_main_scene (test_startup_structure.Startup.test_project_has_visible_main_scene) ... ok
+test_start_event_actually_changes_scenes (test_startup_structure.Startup.test_start_event_actually_changes_scenes) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.013s
+
+OK

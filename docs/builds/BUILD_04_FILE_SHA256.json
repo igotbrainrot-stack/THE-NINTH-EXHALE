@@ -1,0 +1,255 @@
+{
+  "build": "04",
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 45,
+      "sha256": "6e52605e22d17ef5f7fe1a98a03a46b866808d48c416bf1775ce99d7a3f3d31a"
+    },
+    {
+      "path": "README.md",
+      "bytes": 7770,
+      "sha256": "bdad27d47e5a4c87a0a14933510ff021efe3471c2ed435d309c9547364498914"
+    },
+    {
+      "path": "assets/sprites/brin.png",
+      "bytes": 976,
+      "sha256": "ec4204dad2a697ad7000cf16563cf7fa3ce1a5fc7453752035cc34ed88d06bf6"
+    },
+    {
+      "path": "assets/sprites/clerk.png",
+      "bytes": 913,
+      "sha256": "8d3a1d169befd68e90b3d2ba6039c27a23e6e8ad5d164db79af959134308c90f"
+    },
+    {
+      "path": "assets/sprites/covenant_pistol.png",
+      "bytes": 1209,
+      "sha256": "5ef22166dc83ef2a9006c88a3d33bdb7182515c8af9e860505140c949a0672ac"
+    },
+    {
+      "path": "assets/sprites/enforcer_0.png",
+      "bytes": 913,
+      "sha256": "bc9a44efc1efc26615ff136d5a3d1d79c5eb4be23233ff2b176da975b0abf15b"
+    },
+    {
+      "path": "assets/sprites/enforcer_1.png",
+      "bytes": 925,
+      "sha256": "305cd309b51bbfd6de25ec850cf1b8f078dfa780655d0b4435ccce86bf5f1e0e"
+    },
+    {
+      "path": "assets/sprites/enforcer_2.png",
+      "bytes": 913,
+      "sha256": "bc9a44efc1efc26615ff136d5a3d1d79c5eb4be23233ff2b176da975b0abf15b"
+    },
+    {
+      "path": "assets/sprites/enforcer_3.png",
+      "bytes": 945,
+      "sha256": "b31dde647627c1c37f125f16bca0e599075cb092a4cb00300740d7a961d5a0a3"
+    },
+    {
+      "path": "assets/sprites/oren.png",
+      "bytes": 905,
+      "sha256": "0f22813753cc67e01827cda0188cc22d916456156fc3ff6f4c8d6f41e9a78326"
+    },
+    {
+      "path": "assets/sprites/reticle.png",
+      "bytes": 142,
+      "sha256": "5c6041cb5e5bdf99c1703eed37a3c269a52b8d2b1a9207cec182c5436ae86fb5"
+    },
+    {
+      "path": "assets/sprites/sela.png",
+      "bytes": 909,
+      "sha256": "3baa88c325dfdb85373debfe43a6bfbda1e2fcd9098aef5c3c1af5d9fdc6dc55"
+    },
+    {
+      "path": "assets/textures/corroded_paper.png",
+      "bytes": 589,
+      "sha256": "8cc4a7584a6a4e40f1eeb624153a6ec62a7521b49a8cea9e8e0032792a0904a0"
+    },
+    {
+      "path": "assets/textures/floor_grid.png",
+      "bytes": 646,
+      "sha256": "6c3d71928a17e198eba00becf79d39d99fcd172d48f5367578506a9786d4ac19"
+    },
+    {
+      "path": "assets/textures/furnace_iron.png",
+      "bytes": 587,
+      "sha256": "a8565343aaece6d2a63651c1424b0f5c538399faadc4d1ec7102c0e9b9a8ea78"
+    },
+    {
+      "path": "assets/textures/requisition_steel.png",
+      "bytes": 576,
+      "sha256": "83d78fb363d81e4be146977caca06d5b3ff97001316b29397b997803c37c3564"
+    },
+    {
+      "path": "assets/textures/ward_linen.png",
+      "bytes": 600,
+      "sha256": "2d41f363b3533de10b26cf31fe11bd3f259fc7a6803cfba8d9edce074d8c21be"
+    },
+    {
+      "path": "data/README.md",
+      "bytes": 1039,
+      "sha256": "e6d504156f2c063a8f3520cf45b65be86ddd2c243a1948c4ad93209037fe27d1"
+    },
+    {
+      "path": "data/master_ids.json",
+      "bytes": 6198,
+      "sha256": "2b64453dffa81e057cdd3c337ceafbfb38fcbae7a3dfec541295db11d576123b"
+    },
+    {
+      "path": "data/v6_reference_catalogue.json",
+      "bytes": 65892,
+      "sha256": "b4d849f50f5a0bd9591062b9305308ab8b9c400d35ca8c4cc09bf3ac5ae656f2"
+    },
+    {
+      "path": "docs/BUILD_02_FIX_NOTES.md",
+      "bytes": 2100,
+      "sha256": "e85fb4cff50eb0e56773ec3afa25bf8890c6312ec48c1e76bc734ecd30347a1f"
+    },
+    {
+      "path": "docs/BUILD_03_DATA_TEST_LOG.txt",
+      "bytes": 1825,
+      "sha256": "fefbb66ed7aca6c97898736bea6f3735eb2b3e86ac873dad5908e277f62e4287"
+    },
+    {
+      "path": "docs/BUILD_03_SOURCE_TEST_LOG.txt",
+      "bytes": 984,
+      "sha256": "fa6ef339a58c0436df2fc62e51d07008568b1bdc44accbf3641595bd35260f18"
+    },
+    {
+      "path": "docs/BUILD_03_TYPE_FIX.md",
+      "bytes": 1302,
+      "sha256": "8b4da856e5e73921bfdfc09aeefa1a26ed3c4702edd3a33c378553b5c6c7a548"
+    },
+    {
+      "path": "docs/BUILD_04_IMPLEMENTATION_LOG.md",
+      "bytes": 4089,
+      "sha256": "512eb0a1724af4fbb4cff8c651fd3ffe251721b82ecdf7edce6e69092e17e421"
+    },
+    {
+      "path": "docs/BUILD_04_SOURCE_DATA_CHECKS.txt",
+      "bytes": 1825,
+      "sha256": "b2e1a0d53332a674a54781c82ad4940b01ff9fb0e986f3f68b33baa4ead8fc49"
+    },
+    {
+      "path": "docs/BUILD_04_SOURCE_REGRESSION.txt",
+      "bytes": 2068,
+      "sha256": "30b5fd707890e4ac9a932fccb9d886ece6f71536374d5edc9d901080dcceadfa"
+    },
+    {
+      "path": "docs/DEVELOPMENT_HANDOVER.md",
+      "bytes": 5905,
+      "sha256": "81204150ff38042d089a66d3ad11ae7790b349bfab28b903f7eec1ac47ae7e04"
+    },
+    {
+      "path": "docs/ENGINE_IMPLEMENTATION_LOG.md",
+      "bytes": 6806,
+      "sha256": "729477558d402acd21f044a7498035bdcd13f31434d57c5a879f04c4b788f926"
+    },
+    {
+      "path": "docs/MASTER_GAME_BIBLE_FINAL.md",
+      "bytes": 288468,
+      "sha256": "8b570ef6fafea27de0e73842cc43de184820bdb3b27a44e845b6632e5f2c1ba9"
+    },
+    {
+      "path": "docs/PROTECTED_ORIGINALITY_REGISTER.md",
+      "bytes": 15975,
+      "sha256": "b63609057b8ec767193734d6802acb19a26dc55a2026fa8ce10c3cb973f9045c"
+    },
+    {
+      "path": "docs/SOURCE_TEST_LOG.txt",
+      "bytes": 1825,
+      "sha256": "73cf67ddf33b498d88a8581d21ad68b83dcade5cecea05a1b89a68be5f4ab206"
+    },
+    {
+      "path": "launch_linux.sh",
+      "bytes": 981,
+      "sha256": "9ed07bb3ebdabd33d204dab751aaba8fb8897cca0df813e8d4996cb91863f3bf"
+    },
+    {
+      "path": "project.godot",
+      "bytes": 860,
+      "sha256": "d2d5c6c86a539ba64f535d802c60afc92e6cc295dc22e43863a1652a14aee8cf"
+    },
+    {
+      "path": "scenes/hearth_nine.tscn",
+      "bytes": 749,
+      "sha256": "7fa5ecba71cde1c698a3873ea224685d0ffdebb3bda4778a82ef091775ab064d"
+    },
+    {
+      "path": "scenes/main.tscn",
+      "bytes": 2367,
+      "sha256": "45715d45482c14e4f00c02393e4c9570a14884a81e3e685a510bf6a63bfeb753"
+    },
+    {
+      "path": "scripts/brin_actor.gd",
+      "bytes": 1509,
+      "sha256": "6ae46fc1db3ae2ab35d654fcc083442ec17725a68a5c811e5b2328e28570f360"
+    },
+    {
+      "path": "scripts/enemy.gd",
+      "bytes": 3673,
+      "sha256": "973ae1311fefacd6ba9a3e3cb288ca706cdf969fcbd788a3912be545c6b7c151"
+    },
+    {
+      "path": "scripts/game_ui.gd",
+      "bytes": 8772,
+      "sha256": "4af35042ad2b95577d2e5a5169c2e3f03c5fbf5a60d9085f4ee8d5b10688d9fc"
+    },
+    {
+      "path": "scripts/main.gd",
+      "bytes": 32347,
+      "sha256": "d02a2247f33d38502c2c194fdc867f4d372c2617485e99b16125ddbf3cb76334"
+    },
+    {
+      "path": "scripts/player.gd",
+      "bytes": 6301,
+      "sha256": "d21f1c9d60f13e35c24590182ff6dbc14d98414b920e69572d67ce0cc30e7824"
+    },
+    {
+      "path": "scripts/run_state.gd",
+      "bytes": 22806,
+      "sha256": "65100d9e39a98d39b24e67bcfe63aa42c210fe0795281009deef04d20204e880"
+    },
+    {
+      "path": "scripts/sootworks_builder.gd",
+      "bytes": 4442,
+      "sha256": "b04c22d6274ff97e11011fcb3c5f4dde32c55fcd84e758ab81c8569ae434aaab"
+    },
+    {
+      "path": "scripts/start_screen.gd",
+      "bytes": 763,
+      "sha256": "c1c27d27528489266ac0b623669d33665a7c055d2793c4b15128fdab6bd8df68"
+    },
+    {
+      "path": "scripts/world_builder.gd",
+      "bytes": 7590,
+      "sha256": "e34af1bddc684d8a32876c841a53f32ffb69fe5f93b11fcb78780eb82da4d517"
+    },
+    {
+      "path": "tests/make_placeholder_art.py",
+      "bytes": 4060,
+      "sha256": "fd597db625783d9abedd1e62547efcc0f379fa2389ad80babf8cc72efde0d950"
+    },
+    {
+      "path": "tests/test_build04_sootworks.py",
+      "bytes": 4176,
+      "sha256": "f3ecd8d8619239202d934f756f4a9fa3702dfd52925e25df2f2f5624cb9b57bf"
+    },
+    {
+      "path": "tests/test_gdscript_typing.py",
+      "bytes": 897,
+      "sha256": "de61672dca274d949cf871be43c589917e85e0fb6a6c1774f7f70547b4ac3013"
+    },
+    {
+      "path": "tests/test_startup_structure.py",
+      "bytes": 1945,
+      "sha256": "6a250420d4a59ed60ccc945d635c18c47b7f1673a7e854f515bcdfc0d2eb99c5"
+    },
+    {
+      "path": "tests/validate_project.py",
+      "bytes": 7312,
+      "sha256": "0e9e8a917fef922af85c9cd15c1a3d24404f2c706466e4c81eb42288f78285d7"
+    }
+  ]
+}

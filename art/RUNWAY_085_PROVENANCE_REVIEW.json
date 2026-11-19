@@ -1,0 +1,18 @@
+{
+  "build": "08.5",
+  "new_runway_assets_integrated": 0,
+  "status": "existing workspace assets reviewed but no exported bytes imported",
+  "workspace_original_asset_names": [
+    "Ninth Exhale NPC sequential vocal grunts",
+    "Ninth Exhale enemy mechanical attack effects",
+    "Ninth Exhale creature combat vocal effects"
+  ],
+  "3d_catalogue_candidates": [
+    {
+      "title": "Industrial Pipe Lamp",
+      "source": "Poly Haven",
+      "license": "CC0",
+      "status": "identified_not_imported"
+    }
+  ]
+}

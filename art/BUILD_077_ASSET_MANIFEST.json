@@ -1,0 +1,18 @@
+{
+  "build": "07.7",
+  "original_textures": [
+    "barracks_floor_077",
+    "barracks_wall_077",
+    "orchard_floor_077",
+    "orchard_glass_077"
+  ],
+  "new_actor_directions": {
+    "venn": 8,
+    "kest": 8
+  },
+  "temporary_antagonist_atlases": {
+    "gardener": "repainted millwright physical 8-direction rig, not final uniquely modelled sprite",
+    "commandant": "repainted millwright physical 8-direction rig, not final uniquely modelled sprite"
+  },
+  "note": "Production placeholder art is local and included. No new Runway originals claimed."
+}

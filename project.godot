@@ -1,0 +1,31 @@
+; THE NINTH EXHALE — original FPS engineering prototype
+; Source of truth: docs/MASTER_GAME_BIBLE_FINAL.md
+config_version=5
+
+[application]
+config/name="The Ninth Exhale"
+run/main_scene="res://scenes/main.tscn"
+run/low_processor_mode=false
+config/features=PackedStringArray("4.4", "GL Compatibility")
+
+[autoload]
+Game="*res://scripts/run_state.gd"
+Music="*res://scripts/adaptive_music_072.gd"
+
+[display]
+window/size/viewport_width=640
+window/size/viewport_height=400
+window/size/window_width_override=1280
+window/size/window_height_override=800
+window/stretch/mode="viewport"
+window/stretch/aspect="keep"
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/default_filters/use_nearest_mipmap_filter=false
+environment/defaults/default_clear_color=Color(0.07, 0.082, 0.079, 1)
+
+[physics]
+3d/default_gravity=17.0
+

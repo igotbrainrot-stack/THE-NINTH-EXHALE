@@ -1,0 +1,1 @@
+Export the 17 original Runway 2x2 turnarounds into this directory as <id>.png. This build contains no raw Runway original source PNGs. Run python3 art/tools/build_enemy_sprite_atlases_068.py to rebuild runtime atlases. See art/RUNWAY_ENEMY_ANIMATION_068.md.

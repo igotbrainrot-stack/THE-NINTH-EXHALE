@@ -1,0 +1,10 @@
+Build 07.5 source checks — executed in container on 2026-11-18
+
+Python automated regression suite: 158 / 158 PASS
+Project validation suite: 14 / 14 PASS
+3 Ashmarket 512x512 RGBA tile PNGs: decoded and verified
+8 Collector 768x768 RGBA atlas PNGs: decoded and verified
+Ashmarket OGG: valid format per ffprobe, duration 20.000 s
+
+Godot 4 engine compilation/run/playtest: NOT RUN; no godot executable installed.
+This is a source-and-data verified development build only.
