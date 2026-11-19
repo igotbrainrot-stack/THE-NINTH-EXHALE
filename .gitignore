@@ -1,16 +1,37 @@
-# Godot
+# Godot 4 generated resources and local editor state
 .godot/
+.import/
 *.tmp
 *.log
-user_saves/
 !docs/builds/*.log
+*.bak
+*.swp
+user_saves/
+.DS_Store
+Thumbs.db
+
+# Python caches and environments
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+*.py[cod]
+
+# Generated packages, not source
+*.zip
+*.7z
+*.tar
+*.tar.gz
+/builds/
+/dist/
+/exports/
+/tmp/
+/temp/
 
 # Godot executable placed beside launch_linux.sh
 /Godot_v4*
 
-# Python
-__pycache__/
-*.pyc
-
-# OS
-.DS_Store
+# Local secrets
+.env
+.env.*
+!.env.example
