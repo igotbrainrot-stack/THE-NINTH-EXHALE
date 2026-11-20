@@ -1,4 +1,7 @@
 extends Node3D
+## World props have no Sky/ReflectionProbe to reflect, so metallic above this
+## renders near-black on the Compatibility renderer.
+const WORLD_METALLIC_MAX: float = 0.2
 ## Build 08.1: district-specific procedural mesh art, not a new quest/collision layer.
 ## All geometry in this file is decorative; physical traversal remains governed by
 ## the existing district builder. No decisions, loot, or save keys are changed.
@@ -26,7 +29,7 @@ func _material(tint: Color, metal: float, rough: float, emissive: bool = false) 
     var mat := StandardMaterial3D.new()
     mat.albedo_color = tint
     mat.roughness = rough
-    mat.metallic = metal
+    mat.metallic = minf(metal, WORLD_METALLIC_MAX)
     mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
     if emissive:
         mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED

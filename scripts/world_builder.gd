@@ -19,7 +19,7 @@ func build() -> void:
     make_material("ward",Color("#c8c7ae"),"ward_enamel_v4")
     make_material("requisition",Color("#7a8783"),"requisition_steel")
     make_material("chart",Color("#d9c899"),"corroded_paper")
-    make_material("dark",Color("#303b39"),"furnace_iron")
+    make_material("dark",Color("#9aa49f"),"furnace_iron")
     make_material("red",Color("#a94d3b"),"")
     make_material("accent",Color("#c28a43"),"")
     # Flat floor at 0.0. Collision on all walls and floor.
@@ -102,7 +102,7 @@ func make_material(id: String, tint: Color, texture_name: String) -> StandardMat
     var mat := StandardMaterial3D.new()
     mat.albedo_color=tint
     mat.roughness=0.92 if id in ["ward","floor","chart","ceiling"] else 0.62
-    mat.metallic=0.52 if id in ["requisition","dark","red"] else 0.02
+    mat.metallic=0.18 if id in ["requisition","dark","red"] else 0.02
     mat.texture_filter=BaseMaterial3D.TEXTURE_FILTER_NEAREST
     mat.texture_repeat = true
     mat.uv1_triplanar = true
@@ -187,6 +187,13 @@ func add_console(name_text: String, interaction: String, pos: Vector3, heading: 
     lamp.position=Vector3(0,0.3,-0.46)
     lamp.material_override=material_cache["chart"]
     body.add_child(lamp)
+    # Second readable face: the console is usually approached from +Z, which
+    # previously showed only its dark back and sides.
+    var lamp_front := MeshInstance3D.new()
+    lamp_front.mesh=cube
+    lamp_front.position=Vector3(0,0.3,0.46)
+    lamp_front.material_override=material_cache["chart"]
+    body.add_child(lamp_front)
     var label := Label3D.new()
     label.text=heading
     label.position=pos+Vector3(0,2.0,0)

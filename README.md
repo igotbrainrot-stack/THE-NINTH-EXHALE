@@ -2,7 +2,7 @@
 
 Original retro-style first-person RPG / roguelite set in the city of Vesper, built in **Godot 4.4** (GL Compatibility renderer, 640×400 internal resolution).
 
-**Current build: 08.5 — Witness Response.** This is the complete, runnable Godot project.
+**Current build: 08.7 — Asset Integration**, with the 08.5 code-fix pass ported on top. This is the complete, runnable Godot project. 08.7 adds the textured "Pressure Docket" HUD (Enamel Service Window art, nine icons) and a registry of every runtime media file; see `docs/BUILD_087_CHANGELOG.md`, `docs/BUILD_087_QA.md` and `docs/BUILD_087_OPEN_ISSUES.md`.
 
 ## Run it
 
@@ -13,27 +13,35 @@ Controls: WASD + mouse to move and look · LMB fire · R reload · 2–5 switch 
 
 ## Status
 
-Verified on 2026-11-19 with Godot 4.4.1 stable (Linux x86_64):
+Verified on 2026-11-20 with Godot 4.4.1 stable (Linux x86_64):
 
 | Check | Result |
 |---|---|
-| `python3 -m unittest discover -s tests -p 'test_*.py'` | 267 passed |
+| `python3 -m unittest discover -s tests -p 'test_*.py'` | 272 passed |
 | `python3 tests/validate_project.py` | 14 passed |
+| `godot --headless --editor --path . --quit` | clean import |
 | `res://tests/godot_scene_smoke_084.tscn` (headless) | all 8 districts load |
 | `res://tests/godot_witness_threat_085.tscn` (headless) | 14/14 witness checks |
-| Title screen start (headless) | no script errors |
-| Rendered capture of each district | all 8 render with HUD and weapon |
+| `res://tests/godot_hud_086.tscn` (headless) | HUD art checks pass |
+| `res://tests/godot_asset_runtime_087.tscn` (headless) | asset/icon/fallback-audio checks pass |
+| `res://tests/godot_codefix_regressions.tscn` (headless, exits 1 on failure) | 36/36 regression checks incl. HUD icon/border layout, clean exit |
+| Rendered 640x400 captures | gameplay HUD, Nail Storm heat, docket modal |
 
 **Not yet playtested by a person.** No full F5 playthrough, ending playthrough, audio check or frame-time measurement has been done on this build. The last build confirmed playable by hand was Build 03.
 
-Known issues: see `docs/builds/BUILD_085_OPEN_ISSUES.md`. Godot also reports `16 resources still in use at exit` (an ObjectDB leak warning) on every run.
+Known issues: see `docs/BUILD_087_OPEN_ISSUES.md` and `docs/builds/BUILD_085_OPEN_ISSUES.md`. The old `16 resources still in use at exit` warning is fixed for every in-game quit path (menu, window close, tests); Godot's own `--quit-after` developer flag bypasses the game's quit handling and can still print it.
 
 Run the engine checks with an isolated `HOME`, because the witness test writes a temporary save:
 
 ```
 HOME=$(mktemp -d) godot --headless --path . res://tests/godot_scene_smoke_084.tscn
 HOME=$(mktemp -d) godot --headless --path . res://tests/godot_witness_threat_085.tscn
+HOME=$(mktemp -d) godot --headless --path . res://tests/godot_hud_086.tscn
+HOME=$(mktemp -d) godot --headless --path . res://tests/godot_asset_runtime_087.tscn
+HOME=$(mktemp -d) godot --headless --path . res://tests/godot_codefix_regressions.tscn
 ```
+
+Quit the game from code with `Music.request_quit()`, not `get_tree().quit()`: it stops every audio player first, which is what prevents the exit leak.
 
 ## Layout
 

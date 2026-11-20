@@ -1,0 +1,254 @@
+[
+  {
+    "name": "HUD board A",
+    "runway_task_id": "c9d38ddd-b52b-49d4-bcbb-7d00d5af135f",
+    "media_kind": "image",
+    "embedded_in_game": false,
+    "runtime_replacement": null,
+    "reason": "Runway task verified. Signed cloud media not downloadable in this execution environment.",
+    "notes": "approved style reference; not pixel-identical to the local HUD art"
+  },
+  {
+    "name": "NPC sequential vocal grunts",
+    "runway_task_id": "ea9e09a1-c650-4653-876a-2b797fbab8d5",
+    "media_kind": "audio",
+    "embedded_in_game": false,
+    "runtime_replacement": null,
+    "reason": "Runway task verified. Signed cloud media not downloadable in this execution environment.",
+    "notes": "generated externally; bundled procedural WAV fallback remains active"
+  },
+  {
+    "name": "Enemy mechanical combat",
+    "runway_task_id": "550078cf-d09e-4e2e-b88a-4136d4e4e387",
+    "media_kind": "audio",
+    "embedded_in_game": false,
+    "runtime_replacement": null,
+    "reason": "Runway task verified. Signed cloud media not downloadable in this execution environment.",
+    "notes": "generated externally; bundled procedural WAV fallback remains active"
+  },
+  {
+    "name": "Enemy organic combat",
+    "runway_task_id": "995831bf-e03c-4a16-b478-f7734aa4e6b3",
+    "media_kind": "audio",
+    "embedded_in_game": false,
+    "runtime_replacement": null,
+    "reason": "Runway task verified. Signed cloud media not downloadable in this execution environment.",
+    "notes": "generated externally; bundled procedural WAV fallback remains active"
+  },
+  {
+    "name": "Foundry pressure cycle",
+    "runway_task_id": "9457e19b-73bf-4667-98a2-d36a5209d2ad",
+    "media_kind": "audio",
+    "embedded_in_game": false,
+    "runtime_replacement": null,
+    "reason": "Runway task verified. Signed cloud media not downloadable in this execution environment.",
+    "notes": "generated externally, not embedded in-game"
+  },
+  {
+    "name": "Basilica acoustic pulse",
+    "runway_task_id": "e5a9a5d8-f6a4-4362-80c2-3f9f51edcf3a",
+    "media_kind": "audio",
+    "embedded_in_game": false,
+    "runtime_replacement": null,
+    "reason": "Runway task verified. Signed cloud media not downloadable in this execution environment.",
+    "notes": "generated externally, not embedded in-game"
+  },
+  {
+    "name": "Character turnaround: sela",
+    "runway_task_id": "ee4b4fe3-a191-4abf-aed2-8bc36330baaa",
+    "media_kind": "image",
+    "embedded_in_game": false,
+    "runtime_replacement": null,
+    "reason": "Original 8-view still turnaround not downloaded and animation frame atlas not approved/imported.",
+    "notes": "8-view still sheet, not full hand-animated locomotion"
+  },
+  {
+    "name": "Character turnaround: brin",
+    "runway_task_id": "4a9d635a-d89e-4e35-a9ac-5f09938707ed",
+    "media_kind": "image",
+    "embedded_in_game": false,
+    "runtime_replacement": null,
+    "reason": "Original 8-view still turnaround not downloaded and animation frame atlas not approved/imported.",
+    "notes": "8-view still sheet, not full hand-animated locomotion"
+  },
+  {
+    "name": "Character turnaround: ossa",
+    "runway_task_id": "6747aefb-0a8b-458c-b8aa-ed35c43fa9c3",
+    "media_kind": "image",
+    "embedded_in_game": false,
+    "runtime_replacement": null,
+    "reason": "Original 8-view still turnaround not downloaded and animation frame atlas not approved/imported.",
+    "notes": "8-view still sheet, not full hand-animated locomotion"
+  },
+  {
+    "name": "Character turnaround: oren",
+    "runway_task_id": "6a73e252-0468-4d3c-b67d-fe4e1525d0d0",
+    "media_kind": "image",
+    "embedded_in_game": false,
+    "runtime_replacement": null,
+    "reason": "Original 8-view still turnaround not downloaded and animation frame atlas not approved/imported.",
+    "notes": "8-view still sheet, not full hand-animated locomotion"
+  },
+  {
+    "name": "Character turnaround: clerk",
+    "runway_task_id": "0d9eb191-56e1-49b3-8167-ca424c3c3da5",
+    "media_kind": "image",
+    "embedded_in_game": false,
+    "runtime_replacement": null,
+    "reason": "Original 8-view still turnaround not downloaded and animation frame atlas not approved/imported.",
+    "notes": "8-view still sheet, not full hand-animated locomotion"
+  },
+  {
+    "name": "Character turnaround: sentry",
+    "runway_task_id": "25d61d2a-9ced-4eb8-b3ac-ecb10057e5d8",
+    "media_kind": "image",
+    "embedded_in_game": false,
+    "runtime_replacement": null,
+    "reason": "Original 8-view still turnaround not downloaded and animation frame atlas not approved/imported.",
+    "notes": "8-view still sheet, not full hand-animated locomotion"
+  },
+  {
+    "name": "Character turnaround: enforcer",
+    "runway_task_id": "e78a89dc-5468-484b-b736-5023cb04f2ca",
+    "media_kind": "image",
+    "embedded_in_game": false,
+    "runtime_replacement": null,
+    "reason": "Original 8-view still turnaround not downloaded and animation frame atlas not approved/imported.",
+    "notes": "8-view still sheet, not full hand-animated locomotion"
+  },
+  {
+    "name": "Character turnaround: millwright",
+    "runway_task_id": "c67a0692-8cdc-4168-b1a1-f9758dd5263a",
+    "media_kind": "image",
+    "embedded_in_game": false,
+    "runtime_replacement": null,
+    "reason": "Original 8-view still turnaround not downloaded and animation frame atlas not approved/imported.",
+    "notes": "8-view still sheet, not full hand-animated locomotion"
+  },
+  {
+    "name": "Character turnaround: cantor",
+    "runway_task_id": "fcb39529-4846-4cf1-9fa0-62e1b83cd57c",
+    "media_kind": "image",
+    "embedded_in_game": false,
+    "runtime_replacement": null,
+    "reason": "Original 8-view still turnaround not downloaded and animation frame atlas not approved/imported.",
+    "notes": "8-view still sheet, not full hand-animated locomotion"
+  },
+  {
+    "name": "Character turnaround: edda_machine",
+    "runway_task_id": "656d462b-931b-4b36-9ba0-713f2c43f3fd",
+    "media_kind": "image",
+    "embedded_in_game": false,
+    "runtime_replacement": null,
+    "reason": "Original 8-view still turnaround not downloaded and animation frame atlas not approved/imported.",
+    "notes": "8-view still sheet, not full hand-animated locomotion"
+  },
+  {
+    "name": "Character turnaround: pressure_mite",
+    "runway_task_id": "ea8de416-9574-4ed0-9651-b81d75735b3a",
+    "media_kind": "image",
+    "embedded_in_game": false,
+    "runtime_replacement": null,
+    "reason": "Original 8-view still turnaround not downloaded and animation frame atlas not approved/imported.",
+    "notes": "8-view still sheet, not full hand-animated locomotion"
+  },
+  {
+    "name": "Character turnaround: registry_bailiff",
+    "runway_task_id": "5942fd54-9ed9-4b5f-b334-57c5ded065e1",
+    "media_kind": "image",
+    "embedded_in_game": false,
+    "runtime_replacement": null,
+    "reason": "Original 8-view still turnaround not downloaded and animation frame atlas not approved/imported.",
+    "notes": "8-view still sheet, not full hand-animated locomotion"
+  },
+  {
+    "name": "Character turnaround: vent_whistler",
+    "runway_task_id": "d2105f6a-2040-4064-b2f4-ff65539cb94c",
+    "media_kind": "image",
+    "embedded_in_game": false,
+    "runtime_replacement": null,
+    "reason": "Original 8-view still turnaround not downloaded and animation frame atlas not approved/imported.",
+    "notes": "8-view still sheet, not full hand-animated locomotion"
+  },
+  {
+    "name": "Character turnaround: rivet_courier",
+    "runway_task_id": "e71b30be-ee59-47d3-b8c1-c9b81b9b313d",
+    "media_kind": "image",
+    "embedded_in_game": false,
+    "runtime_replacement": null,
+    "reason": "Original 8-view still turnaround not downloaded and animation frame atlas not approved/imported.",
+    "notes": "8-view still sheet, not full hand-animated locomotion"
+  },
+  {
+    "name": "Character turnaround: slag_sifter",
+    "runway_task_id": "19a49272-369f-415d-99ad-d0e8992053da",
+    "media_kind": "image",
+    "embedded_in_game": false,
+    "runtime_replacement": null,
+    "reason": "Original 8-view still turnaround not downloaded and animation frame atlas not approved/imported.",
+    "notes": "8-view still sheet, not full hand-animated locomotion"
+  },
+  {
+    "name": "Character turnaround: chain_hauler",
+    "runway_task_id": "3c30d0b6-b1a3-4949-869f-e0574721d0c7",
+    "media_kind": "image",
+    "embedded_in_game": false,
+    "runtime_replacement": null,
+    "reason": "Original 8-view still turnaround not downloaded and animation frame atlas not approved/imported.",
+    "notes": "8-view still sheet, not full hand-animated locomotion"
+  },
+  {
+    "name": "Character turnaround: choir_reed",
+    "runway_task_id": "87d63ca4-f62c-47ca-a60a-7ca846f6b6df",
+    "media_kind": "image",
+    "embedded_in_game": false,
+    "runtime_replacement": null,
+    "reason": "Original 8-view still turnaround not downloaded and animation frame atlas not approved/imported.",
+    "notes": "8-view still sheet, not full hand-animated locomotion"
+  },
+  {
+    "name": "Character turnaround: saltbound_porter",
+    "runway_task_id": "259fe6ba-bc1c-4db9-83b6-8f954d6e1671",
+    "media_kind": "image",
+    "embedded_in_game": false,
+    "runtime_replacement": null,
+    "reason": "Original 8-view still turnaround not downloaded and animation frame atlas not approved/imported.",
+    "notes": "8-view still sheet, not full hand-animated locomotion"
+  },
+  {
+    "name": "Character turnaround: sluice_beadle",
+    "runway_task_id": "bac544fd-435e-4d2b-9c8a-b98df3b145d4",
+    "media_kind": "image",
+    "embedded_in_game": false,
+    "runtime_replacement": null,
+    "reason": "Original 8-view still turnaround not downloaded and animation frame atlas not approved/imported.",
+    "notes": "8-view still sheet, not full hand-animated locomotion"
+  },
+  {
+    "name": "Character turnaround: triage_warden",
+    "runway_task_id": "050452fe-36a0-48d0-9ce3-ba51f5bf7696",
+    "media_kind": "image",
+    "embedded_in_game": false,
+    "runtime_replacement": null,
+    "reason": "Original 8-view still turnaround not downloaded and animation frame atlas not approved/imported.",
+    "notes": "8-view still sheet, not full hand-animated locomotion"
+  },
+  {
+    "name": "Character turnaround: bell_wretch",
+    "runway_task_id": "116b71e1-d108-4cc9-a691-36905ab9c3e7",
+    "media_kind": "image",
+    "embedded_in_game": false,
+    "runtime_replacement": null,
+    "reason": "Original 8-view still turnaround not downloaded and animation frame atlas not approved/imported.",
+    "notes": "8-view still sheet, not full hand-animated locomotion"
+  },
+  {
+    "name": "Character turnaround: rootkin",
+    "runway_task_id": "fcbc36c1-bcaa-4c79-847b-f41614ae453f",
+    "media_kind": "image",
+    "embedded_in_game": false,
+    "runtime_replacement": null,
+    "reason": "Original 8-view still turnaround not downloaded and animation frame atlas not approved/imported.",
+    "notes": "8-view still sheet, not full hand-animated locomotion"
+  }
+]

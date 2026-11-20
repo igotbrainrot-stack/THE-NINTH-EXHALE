@@ -1,0 +1,338 @@
+{
+  "0ea002d73ea30057a56ba9e19eb0d639f1fda88a23b6f81d311c402b3d779e3c": [
+    "assets/sprites/directional/clerk_back.png",
+    "assets/sprites/directional8/clerk_5.png"
+  ],
+  "3f99f6d804797f4a20ed91767836c4867d73a1938669e9966820f9ed40dfd1e7": [
+    "assets/sprites/directional/clerk_front.png",
+    "assets/sprites/directional8/clerk_1.png"
+  ],
+  "cfba3db4ca93ac47ff06e6459b111811b1f9a094e0022a76e6618ca768757425": [
+    "assets/sprites/directional/clerk_left.png",
+    "assets/sprites/directional8/clerk_3.png"
+  ],
+  "6f3c4d15b451578e0d3ba449a03d1a1c34d945507d6473b8c561033a31b3c1c6": [
+    "assets/sprites/directional/clerk_right.png",
+    "assets/sprites/directional8/clerk_7.png"
+  ],
+  "7b793d62ab8962b7db6bb41d53340218d1f25423575462ea7bec8a501bb81158": [
+    "assets/sprites/directional/oren_back.png",
+    "assets/sprites/directional8/oren_5.png"
+  ],
+  "9434a2e9c9c1d087b50f2c0dfd2d117906712e2824819813a841a323295e4c53": [
+    "assets/sprites/directional/oren_front.png",
+    "assets/sprites/directional8/oren_1.png"
+  ],
+  "ebfce6ac7bc8d9907cf91c4c835e44a600af0366516ed179486c7d21600862db": [
+    "assets/sprites/directional/oren_left.png",
+    "assets/sprites/directional8/oren_3.png"
+  ],
+  "acb590ab7ef8925803f6326f596869850b95bffbf2a2a87844d6e03acbef3d5a": [
+    "assets/sprites/directional/oren_right.png",
+    "assets/sprites/directional8/oren_7.png"
+  ],
+  "72d9999cdd2805d5473e71baaaf4720cec5c7523b52ea86197e45930c50544b5": [
+    "assets/sprites/directional/ossa_back.png",
+    "assets/sprites/directional8/ossa_5.png"
+  ],
+  "0bd05643edf98269abb0966a2289c03a04e7e80460fa0469f0229124d8ba687b": [
+    "assets/sprites/directional/ossa_front.png",
+    "assets/sprites/directional8/ossa_1.png"
+  ],
+  "021deef0601f5468fd054d05a4e3de70ab1f54c5d1ecaff6c24d366d842b56fa": [
+    "assets/sprites/directional/ossa_left.png",
+    "assets/sprites/directional8/ossa_3.png"
+  ],
+  "624abc20bf51dee61a07f8982b48cd0cf4df627d2447590d0ddf30915a5f75d2": [
+    "assets/sprites/directional/ossa_right.png",
+    "assets/sprites/directional8/ossa_7.png"
+  ],
+  "d56a3da1fff5de8918a8192a38cb0f8be991dbfcefcfa48fc6a88db32db8ad2c": [
+    "assets/sprites/directional8/kest_1.png",
+    "assets/sprites/kest.png"
+  ],
+  "46f694c297618f47c10ecc474a8cd282751c4bbb6b2d05f6077ee045d9684d7d": [
+    "assets/sprites/directional8/venn_1.png",
+    "assets/sprites/venn.png"
+  ],
+  "33503d344ba9de2ed73d1a3fd557cd851aaec38f2861b1a3dd1ed36e68e4dd6a": [
+    "assets/sprites/enemies_068/bell_wretch_back.png",
+    "assets/sprites/enemies_068/bell_wretch_left.png",
+    "assets/sprites/enemies_071/bell_wretch_3.png",
+    "assets/sprites/enemies_071/bell_wretch_4.png",
+    "assets/sprites/enemies_071/bell_wretch_5.png"
+  ],
+  "d28a43122855c5fe183f225e17f09a266eee1ff9af28c9f7c1d0a30d3fc829e3": [
+    "assets/sprites/enemies_068/bell_wretch_front.png",
+    "assets/sprites/enemies_068/bell_wretch_right.png",
+    "assets/sprites/enemies_071/bell_wretch_1.png",
+    "assets/sprites/enemies_071/bell_wretch_7.png",
+    "assets/sprites/enemies_071/bell_wretch_8.png"
+  ],
+  "8e02926b1eba579c63ef6ffd3479e216ffc495fce1621a8d664dc33b5041f080": [
+    "assets/sprites/enemies_068/cantor_back.png",
+    "assets/sprites/enemies_068/cantor_left.png",
+    "assets/sprites/enemies_071/cantor_3.png",
+    "assets/sprites/enemies_071/cantor_4.png",
+    "assets/sprites/enemies_071/cantor_5.png"
+  ],
+  "2ee31abe3d605477bfc98401d63754b5c675e54050920f055bef94abcb88a6b0": [
+    "assets/sprites/enemies_068/cantor_front.png",
+    "assets/sprites/enemies_068/cantor_right.png",
+    "assets/sprites/enemies_071/cantor_1.png",
+    "assets/sprites/enemies_071/cantor_7.png",
+    "assets/sprites/enemies_071/cantor_8.png"
+  ],
+  "36fe302543c0933a4ab80f9d2944095bbd50bb8800f41f39fb7f9e9d22edeeb9": [
+    "assets/sprites/enemies_068/chain_hauler_back.png",
+    "assets/sprites/enemies_071/chain_hauler_5.png"
+  ],
+  "e21595a25ddc095b8d2708dcf27cf16893f6a5d61b861ae1718cf675dfdce40d": [
+    "assets/sprites/enemies_068/chain_hauler_front.png",
+    "assets/sprites/enemies_071/chain_hauler_1.png"
+  ],
+  "a2a1b6e68ca6f4a8b653b42d3fb5bf97f25c1035990308d3843fdddc5f542b35": [
+    "assets/sprites/enemies_068/chain_hauler_left.png",
+    "assets/sprites/enemies_071/chain_hauler_3.png"
+  ],
+  "e5037ed4deb0475a9cdeebedd8eb6390e0523853fe014e759de27016da1dfcb7": [
+    "assets/sprites/enemies_068/chain_hauler_right.png",
+    "assets/sprites/enemies_071/chain_hauler_7.png"
+  ],
+  "26b6dd3aac28b9b532648d5d9dfa6c12be302d4f33f3c883d8a308b856d221f4": [
+    "assets/sprites/enemies_068/choir_reed_back.png",
+    "assets/sprites/enemies_071/choir_reed_5.png"
+  ],
+  "277af5dbdda928d689a7e49ba444314904e5b3ba61bd24b6e2e77f9bf6fa0552": [
+    "assets/sprites/enemies_068/choir_reed_front.png",
+    "assets/sprites/enemies_071/choir_reed_1.png"
+  ],
+  "65fc524e37c3ee29e4247d4d2ff310ea07b87ea1bfe41b5caaa5964e9195bc67": [
+    "assets/sprites/enemies_068/choir_reed_left.png",
+    "assets/sprites/enemies_071/choir_reed_3.png"
+  ],
+  "7dc433720e53934de0160b0928d30580dcc5dc9e4d3c94838ed5b969c0ff9321": [
+    "assets/sprites/enemies_068/choir_reed_right.png",
+    "assets/sprites/enemies_071/choir_reed_7.png"
+  ],
+  "b5410d2569bfa40f3ef421307a9d8722c1887272e5d9e0a4b28da5214b2f3d73": [
+    "assets/sprites/enemies_068/edda_machine_back.png",
+    "assets/sprites/enemies_071/edda_machine_5.png"
+  ],
+  "dc9943cb07482488e60f3c1678a3f5bed3d23d8b1a53d2523deeb01b6f55b0cd": [
+    "assets/sprites/enemies_068/edda_machine_front.png",
+    "assets/sprites/enemies_071/edda_machine_1.png"
+  ],
+  "881e0b351c459bbab439acb08649893ed10348250eadbae9f0c4a5f9a4195ad8": [
+    "assets/sprites/enemies_068/edda_machine_left.png",
+    "assets/sprites/enemies_071/edda_machine_3.png"
+  ],
+  "de03c531d1078f8941ef0f5adb767d5ed6e1adc0578bd77d2fe2efc76e09644d": [
+    "assets/sprites/enemies_068/edda_machine_right.png",
+    "assets/sprites/enemies_071/edda_machine_7.png"
+  ],
+  "7990266f575f77d1a8ffbe373b290b19e2b7c3551cd831d2a165e6cab4afbe3b": [
+    "assets/sprites/enemies_068/enforcer_back.png",
+    "assets/sprites/enemies_068/enforcer_left.png",
+    "assets/sprites/enemies_071/enforcer_3.png",
+    "assets/sprites/enemies_071/enforcer_4.png",
+    "assets/sprites/enemies_071/enforcer_5.png"
+  ],
+  "fd4d4ede30144531b36b0a50f125edb0d82a6e27adbf02b4d4606f4484bf05e5": [
+    "assets/sprites/enemies_068/enforcer_front.png",
+    "assets/sprites/enemies_068/enforcer_right.png",
+    "assets/sprites/enemies_071/enforcer_1.png",
+    "assets/sprites/enemies_071/enforcer_7.png",
+    "assets/sprites/enemies_071/enforcer_8.png"
+  ],
+  "850bc9f8dbeeda753eab131f486a8bfa28b30c5213040fcb47fae291756773f8": [
+    "assets/sprites/enemies_068/millwright_back.png",
+    "assets/sprites/enemies_068/millwright_left.png",
+    "assets/sprites/enemies_071/millwright_3.png",
+    "assets/sprites/enemies_071/millwright_4.png",
+    "assets/sprites/enemies_071/millwright_5.png"
+  ],
+  "c90d2ce50a711856798c6787c09dd1ab37ed5d4c221a0e72947576cc945cc6f7": [
+    "assets/sprites/enemies_068/millwright_front.png",
+    "assets/sprites/enemies_068/millwright_right.png",
+    "assets/sprites/enemies_071/millwright_1.png",
+    "assets/sprites/enemies_071/millwright_7.png",
+    "assets/sprites/enemies_071/millwright_8.png"
+  ],
+  "fd4104cdb1bf514c45162476e945d8b2de87a96bb1f10dd92fea5a5f120fb53a": [
+    "assets/sprites/enemies_068/pressure_mite_back.png",
+    "assets/sprites/enemies_071/pressure_mite_5.png"
+  ],
+  "f9cc411d580c1d026a5edb5c1de48d938d8bd53f14805c08e5a53971fb5ec5d3": [
+    "assets/sprites/enemies_068/pressure_mite_front.png",
+    "assets/sprites/enemies_071/pressure_mite_1.png"
+  ],
+  "bdc5834ff6381f1da599652206730edd64b502daec5480d0c962195c32713ebc": [
+    "assets/sprites/enemies_068/pressure_mite_left.png",
+    "assets/sprites/enemies_071/pressure_mite_3.png"
+  ],
+  "cd33f9116b7de1aca7bdc1901205951a16fbf3da9622f5c19ad19c056ed71c8f": [
+    "assets/sprites/enemies_068/pressure_mite_right.png",
+    "assets/sprites/enemies_071/pressure_mite_7.png"
+  ],
+  "8df56998f62c5aedd80e69293a2fd3410d928e9d300a551b9d6c1461316e59c2": [
+    "assets/sprites/enemies_068/registry_bailiff_back.png",
+    "assets/sprites/enemies_071/registry_bailiff_5.png"
+  ],
+  "24300f89bbe889e1bb338faedba7338ffbe3bccb7c4959e5ed1bf46735fe8d89": [
+    "assets/sprites/enemies_068/registry_bailiff_front.png",
+    "assets/sprites/enemies_071/registry_bailiff_1.png"
+  ],
+  "dce5271d8b4892d3854848ced005c30b165fac5c33d65ffb4b749468a75c5798": [
+    "assets/sprites/enemies_068/registry_bailiff_left.png",
+    "assets/sprites/enemies_071/registry_bailiff_3.png"
+  ],
+  "11edf978d97be3f230853fa2c851e8ce0ce548e948a19ee981c119e96673448b": [
+    "assets/sprites/enemies_068/registry_bailiff_right.png",
+    "assets/sprites/enemies_071/registry_bailiff_7.png"
+  ],
+  "c2ee20dd3cdc41e352e0f0e884128cc93fd1678ba41ebe25c421a6999e817a9b": [
+    "assets/sprites/enemies_068/rivet_courier_back.png",
+    "assets/sprites/enemies_071/rivet_courier_5.png"
+  ],
+  "a8eb760f0adce179cf31ecd07ae0b1d2492c18eb64828474e97351e25dbc7567": [
+    "assets/sprites/enemies_068/rivet_courier_front.png",
+    "assets/sprites/enemies_071/rivet_courier_1.png"
+  ],
+  "0d8300f23a9e69b1dff9fb62290f77066cb3002ee5d52a2f91d4cc242c86acaf": [
+    "assets/sprites/enemies_068/rivet_courier_left.png",
+    "assets/sprites/enemies_071/rivet_courier_3.png"
+  ],
+  "d493a7fc640dd2cada84cd5aadcb8cdf729cd795c84212c503d10731b36a86c4": [
+    "assets/sprites/enemies_068/rivet_courier_right.png",
+    "assets/sprites/enemies_071/rivet_courier_7.png"
+  ],
+  "d513dde3a8cf7bdb468a2a851bc615eb1967dd52020b46e05a006fc9b37848d5": [
+    "assets/sprites/enemies_068/rootkin_back.png",
+    "assets/sprites/enemies_068/rootkin_left.png",
+    "assets/sprites/enemies_071/rootkin_3.png",
+    "assets/sprites/enemies_071/rootkin_4.png",
+    "assets/sprites/enemies_071/rootkin_5.png"
+  ],
+  "e6746dd76653fae56337e0f6259314027bec6e04f220ffee3d907f0ec354e4ff": [
+    "assets/sprites/enemies_068/rootkin_front.png",
+    "assets/sprites/enemies_068/rootkin_right.png",
+    "assets/sprites/enemies_071/rootkin_1.png",
+    "assets/sprites/enemies_071/rootkin_7.png",
+    "assets/sprites/enemies_071/rootkin_8.png"
+  ],
+  "6c28c2c6e96a986a5bd33952c06f33473da5802621dfbc1519f0adbd9a2d7dc1": [
+    "assets/sprites/enemies_068/saltbound_porter_back.png",
+    "assets/sprites/enemies_071/saltbound_porter_5.png"
+  ],
+  "e2d92b2e44939750eefa77ec4afb045dfbdc6274fcea2280ff51629fb32d417d": [
+    "assets/sprites/enemies_068/saltbound_porter_front.png",
+    "assets/sprites/enemies_071/saltbound_porter_1.png"
+  ],
+  "e3e987c0f44b6060c03d9f29f0eadd9c9aa4c88874efe1f0f3e908f173ddc04f": [
+    "assets/sprites/enemies_068/saltbound_porter_left.png",
+    "assets/sprites/enemies_071/saltbound_porter_3.png"
+  ],
+  "1d76f9b352bd6d400f9f4d9e21a943a1f814ba237beeebc336a9ec70c04da7ca": [
+    "assets/sprites/enemies_068/saltbound_porter_right.png",
+    "assets/sprites/enemies_071/saltbound_porter_7.png"
+  ],
+  "583d3a661d8adc7530f72c79afa7e21de4f8d555cdef6af3f8105264c624f35b": [
+    "assets/sprites/enemies_068/sentry_back.png",
+    "assets/sprites/enemies_068/sentry_left.png",
+    "assets/sprites/enemies_071/sentry_3.png",
+    "assets/sprites/enemies_071/sentry_4.png",
+    "assets/sprites/enemies_071/sentry_5.png"
+  ],
+  "e7b5723888b3a00aa495816f655f3442ff28f77873961b74808ffefa72e1af24": [
+    "assets/sprites/enemies_068/sentry_front.png",
+    "assets/sprites/enemies_068/sentry_right.png",
+    "assets/sprites/enemies_071/sentry_1.png",
+    "assets/sprites/enemies_071/sentry_7.png",
+    "assets/sprites/enemies_071/sentry_8.png"
+  ],
+  "767c51f95b90241e6e13ec207f44fb9976210bc267303498aece2f39ed2713ac": [
+    "assets/sprites/enemies_068/slag_sifter_back.png",
+    "assets/sprites/enemies_071/slag_sifter_5.png"
+  ],
+  "f867141463d5101f44ca2cbb1c49cfdd77ac08e6810450f0ddfee0de868db951": [
+    "assets/sprites/enemies_068/slag_sifter_front.png",
+    "assets/sprites/enemies_071/slag_sifter_1.png"
+  ],
+  "3312b7a7a6229083af6901433352af206e0eb6413d929f15b34974459898c1ca": [
+    "assets/sprites/enemies_068/slag_sifter_left.png",
+    "assets/sprites/enemies_071/slag_sifter_3.png"
+  ],
+  "b8e87bd9e735c29a1bd225a7b51bbd7ff53ace48c61b29a5767060af7c097045": [
+    "assets/sprites/enemies_068/slag_sifter_right.png",
+    "assets/sprites/enemies_071/slag_sifter_7.png"
+  ],
+  "dd3d4850b93a652e0b705c92b9ca3dc66c0e070e2908c329e02557ab9cbcea6f": [
+    "assets/sprites/enemies_068/sluice_beadle_back.png",
+    "assets/sprites/enemies_071/sluice_beadle_5.png"
+  ],
+  "35c63ebee8321e4d563fa53e586ceae1b09c3120b991878702abb97ed3e4f145": [
+    "assets/sprites/enemies_068/sluice_beadle_front.png",
+    "assets/sprites/enemies_071/sluice_beadle_1.png"
+  ],
+  "dbef55e9700a591d2043a6db02e010d8775d0639e2c994d97042296d6230c3dd": [
+    "assets/sprites/enemies_068/sluice_beadle_left.png",
+    "assets/sprites/enemies_071/sluice_beadle_3.png"
+  ],
+  "a832353a18776561d5bf673e0453325ec2deda0314673af1be43784c2575d813": [
+    "assets/sprites/enemies_068/sluice_beadle_right.png",
+    "assets/sprites/enemies_071/sluice_beadle_7.png"
+  ],
+  "c44d198c2de275f13bbe11ae7e7f2644c75c9aace33f60151777170d99dcc08c": [
+    "assets/sprites/enemies_068/triage_warden_back.png",
+    "assets/sprites/enemies_071/triage_warden_5.png"
+  ],
+  "544baaee1cffbc2a0cafd4d559debb5ec27ff6479646b149da004fe55f815eb7": [
+    "assets/sprites/enemies_068/triage_warden_front.png",
+    "assets/sprites/enemies_071/triage_warden_1.png"
+  ],
+  "473c629e19c9dc9f7eb4886de0281ad4b56e7afc87f929f60b7f1bb94c39cb4b": [
+    "assets/sprites/enemies_068/triage_warden_left.png",
+    "assets/sprites/enemies_071/triage_warden_3.png"
+  ],
+  "5565755e7ae81b2a1a490f7792cf121833642c1585be31141a6a5acdfaa3aeba": [
+    "assets/sprites/enemies_068/triage_warden_right.png",
+    "assets/sprites/enemies_071/triage_warden_7.png"
+  ],
+  "eac1f539c89ef11ad4883153a8eea1e2d22a0402db3cf825c0ac758c6676eecb": [
+    "assets/sprites/enemies_068/vent_whistler_back.png",
+    "assets/sprites/enemies_071/vent_whistler_5.png"
+  ],
+  "bbc4b03e0cc2ba43d8ecb12b3f3d2f421f3fc8e70c4e2b3e923f071ef847fa75": [
+    "assets/sprites/enemies_068/vent_whistler_front.png",
+    "assets/sprites/enemies_071/vent_whistler_1.png"
+  ],
+  "d0f8accc18cb5da1802ab507eaa0144e385ece196425197967441b0373dc5bdf": [
+    "assets/sprites/enemies_068/vent_whistler_left.png",
+    "assets/sprites/enemies_071/vent_whistler_3.png"
+  ],
+  "00cb3e0e2a1abe8869913e9aafd930c87bb072460be056c6cd8ab6d997c99960": [
+    "assets/sprites/enemies_068/vent_whistler_right.png",
+    "assets/sprites/enemies_071/vent_whistler_7.png"
+  ],
+  "bc9a44efc1efc26615ff136d5a3d1d79c5eb4be23233ff2b176da975b0abf15b": [
+    "assets/sprites/enforcer_0.png",
+    "assets/sprites/enforcer_2.png"
+  ],
+  "9fa54100887daec59e968e2f21345b9bbc6e0c278c2a79039968fea1e366d5aa": [
+    "assets/textures/basilica_floor_v3.png",
+    "assets/textures/basilica_stone.png"
+  ],
+  "93c8170f2ff03cf76afe1084f4cd63b36969c80f52d29f2f82d7031955c1afc4": [
+    "assets/textures/floor_grid.png",
+    "assets/textures/soot_floor_v3.png"
+  ],
+  "ea56d0a29b9b963eff15e937c8aa33df0138f6cacae6f5c1f8bcf43ed99977c4": [
+    "assets/textures/furnace_iron.png",
+    "assets/textures/soot_wall_v3.png"
+  ],
+  "33e688145d8916defc776021f5f776b8e448526d3f1c2ee9b0f01022510113f0": [
+    "assets/textures/ward_ceiling_v3.png",
+    "assets/textures/ward_enamel_v2.png"
+  ]
+}

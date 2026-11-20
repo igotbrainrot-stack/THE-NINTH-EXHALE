@@ -292,7 +292,7 @@ func _update_aim_lane_079z() -> void:
         return
     aim_lane_079z.visible = true
     aim_lane_079z.global_position = (source+goal)*0.5
-    aim_lane_079z.look_at(goal,Vector3.UP)
+    aim_lane_079z.look_at(goal, preload("res://scripts/combat_tracer_079x.gd").safe_up(segment))
     aim_lane_079z.scale = Vector3(1.0,1.0,segment.length())
     var cue_color: Color = aim_lane_mat_079z.albedo_color
     cue_color.a = 0.30 + 0.14 * absf(sin(frame_timer*19.0))

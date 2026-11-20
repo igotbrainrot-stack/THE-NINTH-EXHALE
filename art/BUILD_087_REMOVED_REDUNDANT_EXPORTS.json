@@ -1,0 +1,92 @@
+[
+  {
+    "path": "assets/ui/hud_086/icon_ammo_16.png",
+    "sha256": "9829a99a5e7a66640199bb119202a3e2e443d1de45f2c6d09818ed9ad4262ad3",
+    "reason": "Unreferenced derived size variant; canonical icon_<name>.png retained and UI scales it at runtime"
+  },
+  {
+    "path": "assets/ui/hud_086/icon_ammo_24.png",
+    "sha256": "f11e4172f31215d405d9e1d15ca03e7cc52f036d01014354729ccf8711fec685",
+    "reason": "Unreferenced derived size variant; canonical icon_<name>.png retained and UI scales it at runtime"
+  },
+  {
+    "path": "assets/ui/hud_086/icon_ampoule_16.png",
+    "sha256": "6a7697a586076985fb3277e945cb66d6104aec8126a8983fb143065c16611d97",
+    "reason": "Unreferenced derived size variant; canonical icon_<name>.png retained and UI scales it at runtime"
+  },
+  {
+    "path": "assets/ui/hud_086/icon_ampoule_24.png",
+    "sha256": "c3c3dd642f16624245dbff2ef830d5d063f89776eb47fd62e18b69502d696aac",
+    "reason": "Unreferenced derived size variant; canonical icon_<name>.png retained and UI scales it at runtime"
+  },
+  {
+    "path": "assets/ui/hud_086/icon_breath_16.png",
+    "sha256": "bfbf6f9a793a50e6535d1eead1390c64a6cbcf8cf072f2d380290c1c60133502",
+    "reason": "Unreferenced derived size variant; canonical icon_<name>.png retained and UI scales it at runtime"
+  },
+  {
+    "path": "assets/ui/hud_086/icon_breath_24.png",
+    "sha256": "5410a05ced992a34b149910e609bb984a56427722b06651ed7abf1274ba7e41f",
+    "reason": "Unreferenced derived size variant; canonical icon_<name>.png retained and UI scales it at runtime"
+  },
+  {
+    "path": "assets/ui/hud_086/icon_evidence_tab_16.png",
+    "sha256": "6ab00e2d3f2e0ac5304ddea0b50fecedc468c704d85cb7034ad0f3b69bb1eed6",
+    "reason": "Unreferenced derived size variant; canonical icon_<name>.png retained and UI scales it at runtime"
+  },
+  {
+    "path": "assets/ui/hud_086/icon_evidence_tab_24.png",
+    "sha256": "6faf1abe07630a644f0d0e8acd28105104010cd400f82c827a7ea60863a0346d",
+    "reason": "Unreferenced derived size variant; canonical icon_<name>.png retained and UI scales it at runtime"
+  },
+  {
+    "path": "assets/ui/hud_086/icon_health_16.png",
+    "sha256": "287778d92d747fba48e46b1401084685ae4e8d37ab57fab3c856dd67238be037",
+    "reason": "Unreferenced derived size variant; canonical icon_<name>.png retained and UI scales it at runtime"
+  },
+  {
+    "path": "assets/ui/hud_086/icon_health_24.png",
+    "sha256": "c480c9fd2ba4bd551505054782867311264adc844887f97814114c95e45584fe",
+    "reason": "Unreferenced derived size variant; canonical icon_<name>.png retained and UI scales it at runtime"
+  },
+  {
+    "path": "assets/ui/hud_086/icon_heat_16.png",
+    "sha256": "2236f2685154bd981feafbccfd6254a318265d776b289e2052cff2d70f0bf60a",
+    "reason": "Unreferenced derived size variant; canonical icon_<name>.png retained and UI scales it at runtime"
+  },
+  {
+    "path": "assets/ui/hud_086/icon_heat_24.png",
+    "sha256": "6c5c4348b0dff2ad075d679826e4146a69a67e1dc3cf983b67e1b31a8219a46a",
+    "reason": "Unreferenced derived size variant; canonical icon_<name>.png retained and UI scales it at runtime"
+  },
+  {
+    "path": "assets/ui/hud_086/icon_interact_16.png",
+    "sha256": "3e752eb2e9f88cd56f33acd1dd88a329fa4fd79e2ff4179599d9819d9faf1ade",
+    "reason": "Unreferenced derived size variant; canonical icon_<name>.png retained and UI scales it at runtime"
+  },
+  {
+    "path": "assets/ui/hud_086/icon_interact_24.png",
+    "sha256": "40c420a536d994a05e2a5365ba573119003a42c600f24de168870c6417164f0c",
+    "reason": "Unreferenced derived size variant; canonical icon_<name>.png retained and UI scales it at runtime"
+  },
+  {
+    "path": "assets/ui/hud_086/icon_route_arrow_16.png",
+    "sha256": "2be49286745bb17a037a1f9dd59274a192d0e52db0fbe67a05d7aabe521101ac",
+    "reason": "Unreferenced derived size variant; canonical icon_<name>.png retained and UI scales it at runtime"
+  },
+  {
+    "path": "assets/ui/hud_086/icon_route_arrow_24.png",
+    "sha256": "2ea9a305cbf311f82fd9e7659ed97c75ca990421c6805455514b86b17ac772d4",
+    "reason": "Unreferenced derived size variant; canonical icon_<name>.png retained and UI scales it at runtime"
+  },
+  {
+    "path": "assets/ui/hud_086/icon_writ_16.png",
+    "sha256": "e8f62b2e4add64ac674897d02c931f85d2442f1ce3718d7eebd5de8df1d0be30",
+    "reason": "Unreferenced derived size variant; canonical icon_<name>.png retained and UI scales it at runtime"
+  },
+  {
+    "path": "assets/ui/hud_086/icon_writ_24.png",
+    "sha256": "3302373b50d7032fba0204f555113eb8d1d97a23b94a39501460570cd4d11340",
+    "reason": "Unreferenced derived size variant; canonical icon_<name>.png retained and UI scales it at runtime"
+  }
+]
