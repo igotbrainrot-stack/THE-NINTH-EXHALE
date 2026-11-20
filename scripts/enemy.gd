@@ -491,7 +491,10 @@ func _physics_process(delta: float) -> void:
 # ---- BUILD 06.8 FRAME-ATLAS ANIMATION ----
 func _load_directional_animation() -> void:
     for face in DIRECTIONS:
-        var atlas_path: String = "res://assets/sprites/enemies_077/%s_%d.png" % [actor_key,face] if actor_key in ["gardener","commandant"] else ("res://assets/sprites/enemies_076/core_actuator_%d.png" % face if actor_key == "core_actuator" else ("res://assets/sprites/enemies_075/collector_%d.png" % face if actor_key == "collector" else "res://assets/sprites/enemies_074/%s_%d.png" % [actor_key,face]))
+        # Build 08.8 Runway turnaround atlases first, then the 07.x procedural ones.
+        var atlas_path: String = "res://assets/sprites/enemies_088/%s_%d.png" % [actor_key,face]
+        if not ResourceLoader.exists(atlas_path):
+            atlas_path = "res://assets/sprites/enemies_077/%s_%d.png" % [actor_key,face] if actor_key in ["gardener","commandant"] else ("res://assets/sprites/enemies_076/core_actuator_%d.png" % face if actor_key == "core_actuator" else ("res://assets/sprites/enemies_075/collector_%d.png" % face if actor_key == "collector" else "res://assets/sprites/enemies_074/%s_%d.png" % [actor_key,face]))
         if not ResourceLoader.exists(atlas_path):
             atlas_path = "res://assets/sprites/enemies_073/%s_%d.png" % [actor_key,face]
         if not ResourceLoader.exists(atlas_path):
