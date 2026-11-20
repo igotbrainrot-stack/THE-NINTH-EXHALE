@@ -42,8 +42,14 @@ func _ready() -> void:
     alpha_cut = SpriteBase3D.ALPHA_CUT_DISCARD
     alpha_scissor_threshold = 0.26
     shaded = false
+    # Build 08.8: Runway turnaround art (tools/import_art_088.py) takes priority.
+    # Its idle strips are generated from the same art, so never mix it with the
+    # 07.2 idle strips of the older sprite.
+    var art_088: bool = ResourceLoader.exists("res://assets/sprites/npc_088/%s_1.png" % sprite_stem)
+    var face_dir: String = "npc_088" if art_088 else "directional8"
+    var idle_dir: String = "npc_idle_088" if art_088 else "npc_idle_072"
     for index in range(1,9):
-        var path: String = "res://assets/sprites/directional8/%s_%d.png" % [sprite_stem,index]
+        var path: String = "res://assets/sprites/%s/%s_%d.png" % [face_dir,sprite_stem,index]
         if ResourceLoader.exists(path):
             face_textures[index] = load(path)
     # A0: same graphic every angle only for explicitly universal assets.
@@ -56,7 +62,7 @@ func _ready() -> void:
             if ResourceLoader.exists(legacy_path): face_textures[key] = load(legacy_path)
     # Four uniquely shifted upper-body idle poses per view. Constant foot pivot.
     for index in range(1,9):
-        var idle_path: String = "res://assets/sprites/npc_idle_072/%s_%d.png" % [sprite_stem,index]
+        var idle_path: String = "res://assets/sprites/%s/%s_%d.png" % [idle_dir,sprite_stem,index]
         if ResourceLoader.exists(idle_path):
             var strip: Texture2D = load(idle_path)
             var cells: Array[Texture2D] = []

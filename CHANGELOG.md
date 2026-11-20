@@ -2,6 +2,19 @@
 
 Full per-build notes, QA and open issues for every build since Build 02 are in `docs/builds/`.
 
+## 08.8 art wiring (2026-11-20)
+
+New Runway turnaround art from the owner's ART_ASSETS_1/2 ZIPs is now what the game renders, built with `tools/import_art_088.py`.
+- **5 NPCs:** Sela, Ossa, the clerk, Oren and Brin get 8-angle stills plus breathing idle strips made from the same art.
+- **17 enemies and hearing Echoforms:** slag sifter, rootkin, choir reed, registry bailiff, chain hauler, saltbound porter, vent whistler, sluice beadle, rivet courier, bell wretch, triage warden, sentry (intake crawler), cantor, enforcer, millwright, edda machine and pressure mite.
+- **Animation:** each enemy angle gets 12 frames (walk, alert, attack, hurt, death), built as rigid transforms of the new still. This is the same approach as the 07.x procedural atlases.
+- **Scale and sources:** sizes match the replaced sprites, so in-game scale is unchanged. The "STRICT 8-WAY" set is used where it exists.
+- **Loaders:** the new art loads first, and the old sprites remain as fallbacks. Kest, Venn, commandant, gardener, collector and core actuator have no new art and are unchanged.
+- **Provenance:** recorded in `art/BUILD_088_ART_IMPORT_MANIFEST.json`, with source sheets in `art/production_sources/art_088/` (byte-identical). `runway_task_id` stays null until a verified task-ID list arrives, and licence review is pending. Brin's redesign and the sentry slot are flagged for confirmation.
+- **Tests:**
+  - `tests/godot_art_088.tscn` loads all 8 districts plus the intake alarm and checks every actor renders the expected art (39 checks).
+  - `tests/test_build088_art_import.py` checks hashes, formats, fallbacks and that no task IDs are invented.
+
 ## 08.7 integration (2026-11-20)
 
 Build 08.7 "Asset Integration" imported from the verified ZIP (SHA-256 `375bbd75…a15c`, 2,150 files) as its exact delta over 08.5, then the 08.5 code-fix pass (PR #3) ported on top. 08.7's own changes are listed in `docs/BUILD_087_CHANGELOG.md`.

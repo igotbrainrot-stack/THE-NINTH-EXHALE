@@ -10,7 +10,9 @@ var clock: float = 0.0
 
 func _ready() -> void:
     for face in range(1,9):
-        var file_path: String = "res://assets/sprites/enemies_074/%s_%d.png" % [echoform_id,face]
+        var file_path: String = "res://assets/sprites/enemies_088/%s_%d.png" % [echoform_id,face]
+        if not ResourceLoader.exists(file_path):
+            file_path = "res://assets/sprites/enemies_074/%s_%d.png" % [echoform_id,face]
         if not ResourceLoader.exists(file_path):
             file_path = "res://assets/sprites/enemies_073/%s_%d.png" % [echoform_id,face]
         if not ResourceLoader.exists(file_path):

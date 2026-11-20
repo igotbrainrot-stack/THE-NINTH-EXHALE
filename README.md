@@ -17,13 +17,14 @@ Verified on 2026-11-20 with Godot 4.4.1 stable (Linux x86_64):
 
 | Check | Result |
 |---|---|
-| `python3 -m unittest discover -s tests -p 'test_*.py'` | 272 passed |
+| `python3 -m unittest discover -s tests -p 'test_*.py'` | 277 passed |
 | `python3 tests/validate_project.py` | 14 passed |
 | `godot --headless --editor --path . --quit` | clean import |
 | `res://tests/godot_scene_smoke_084.tscn` (headless) | all 8 districts load |
 | `res://tests/godot_witness_threat_085.tscn` (headless) | 14/14 witness checks |
 | `res://tests/godot_hud_086.tscn` (headless) | HUD art checks pass |
 | `res://tests/godot_asset_runtime_087.tscn` (headless) | asset/icon/fallback-audio checks pass |
+| `res://tests/godot_art_088.tscn` (headless, exits 1 on failure) | 39/39 actors render the 08.8 art |
 | `res://tests/godot_codefix_regressions.tscn` (headless, exits 1 on failure) | 36/36 regression checks incl. HUD icon/border layout, clean exit |
 | Rendered 640x400 captures | gameplay HUD, Nail Storm heat, docket modal |
 
