@@ -38,6 +38,7 @@ var ammo_text: Label
 var hint_text: Label
 var heat_bar: ProgressBar
 var heat_text: Label
+var heat_icon_087: TextureRect
 
 var prompt_panel: Panel
 var prompt_label: Label
@@ -81,23 +82,70 @@ func _panel_style(bg: Color, border: Color, radius: int = 5, width: int = 2, pad
     skin.shadow_size = 3
     return skin
 
+# Build 08.6: approved Enamel Service Window art skin. Keep all game text, counters,
+# controls and input in Godot; these textures are strictly visual and are not
+# interaction or state snapshots. Nine-slice corners stay within the authored
+# imported PNG margins, so long objective/weapon panels do not distort rivets.
+const HUD_086_PATH: String = "res://assets/ui/hud_086/"
+const HUD_086_STYLE: Dictionary = {
+    "hud_frame_brass": [16, 14, 16, 14],
+    "hud_frame_steel": [16, 14, 16, 14],
+    "hud_prompt_tab": [13, 8, 13, 8],
+    "hud_banner_alert": [18, 10, 18, 10],
+    "hud_docket_modal": [26, 26, 26, 26],
+    "hud_button_normal": [18, 12, 18, 12],
+    "hud_button_hover": [18, 12, 18, 12],
+    "hud_button_pressed": [18, 12, 18, 12],
+    "hud_bar_track": [6, 3, 6, 3]
+}
+
+func _hud086_texture(name: String) -> Texture2D:
+    return load(HUD_086_PATH + name + ".png") as Texture2D
+
+func _hud086_skin(name: String, padding: Vector4 = Vector4.ZERO) -> StyleBoxTexture:
+    var style := StyleBoxTexture.new()
+    style.texture = _hud086_texture(name)
+    var margins: Array = HUD_086_STYLE.get(name, [0, 0, 0, 0])
+    style.texture_margin_left = float(margins[0])
+    style.texture_margin_top = float(margins[1])
+    style.texture_margin_right = float(margins[2])
+    style.texture_margin_bottom = float(margins[3])
+    style.content_margin_left = padding.x
+    style.content_margin_top = padding.y
+    style.content_margin_right = padding.z
+    style.content_margin_bottom = padding.w
+    return style
+
+func _hud086_icon(parent: Control, name: String, xy: Vector2, dimensions: Vector2 = Vector2(16, 16)) -> TextureRect:
+    var badge := TextureRect.new()
+    badge.name = "HUD086Icon_" + name
+    badge.texture = _hud086_texture(name)
+    badge.position = xy
+    badge.size = dimensions
+    badge.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+    badge.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+    badge.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+    badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    parent.add_child(badge)
+    return badge
+
 func _apply_button_style(button: Button, emphasis: bool = false) -> void:
     var base: Color = Color("#2a312e")
     var hover: Color = Color("#39413d")
     var pressed: Color = Color("#4f4735")
     var border: Color = Color("#b38a4f") if emphasis else Color("#6c7468")
-    var normal := _panel_style(base, border, 4, 2, 12, 8, 12, 8)
-    var hover_skin := _panel_style(hover, Color("#d6ac6a") if emphasis else Color("#95a08f"), 4, 2, 12, 8, 12, 8)
-    var pressed_skin := _panel_style(pressed, Color("#dfc28a"), 4, 2, 12, 8, 12, 8)
+    var normal := _hud086_skin("hud_button_normal", Vector4(12, 8, 12, 8))
+    var hover_skin := _hud086_skin("hud_button_hover", Vector4(12, 8, 12, 8))
+    var pressed_skin := _hud086_skin("hud_button_pressed", Vector4(12, 8, 12, 8))
     button.add_theme_stylebox_override("normal", normal)
     button.add_theme_stylebox_override("hover", hover_skin)
     button.add_theme_stylebox_override("pressed", pressed_skin)
     button.add_theme_stylebox_override("focus", hover_skin)
     button.add_theme_stylebox_override("disabled", normal)
-    button.add_theme_color_override("font_color", Color("#e8dbc0"))
-    button.add_theme_color_override("font_hover_color", Color("#fbf3df"))
-    button.add_theme_color_override("font_pressed_color", Color("#fff9ef"))
-    button.add_theme_color_override("font_focus_color", Color("#fff9ef"))
+    button.add_theme_color_override("font_color", Color("#171918"))
+    button.add_theme_color_override("font_hover_color", Color("#171918"))
+    button.add_theme_color_override("font_pressed_color", Color("#171918"))
+    button.add_theme_color_override("font_focus_color", Color("#171918"))
     button.add_theme_font_size_override("font_size", 15 if emphasis else 14)
     button.focus_mode = Control.FOCUS_ALL
     button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
@@ -105,8 +153,15 @@ func _apply_button_style(button: Button, emphasis: bool = false) -> void:
 func _apply_progress_style(bar: ProgressBar, fill: Color) -> void:
     bar.show_percentage = false
     bar.max_value = 100.0
-    bar.add_theme_stylebox_override("background", _panel_style(Color("#141715"), Color("#39413d"), 2, 1, 0, 0, 0, 0))
-    bar.add_theme_stylebox_override("fill", _panel_style(fill, fill.lightened(0.15), 2, 1, 0, 0, 0, 0))
+    bar.add_theme_stylebox_override("background", _hud086_skin("hud_bar_track"))
+    var fill_name: String = "hud_bar_fill_health"
+    if fill == Color("#6e9780"):
+        fill_name = "hud_bar_fill_breath"
+    elif fill == Color("#c88c4e"):
+        fill_name = "hud_bar_fill_heat"
+    var fill_skin := StyleBoxTexture.new()
+    fill_skin.texture = _hud086_texture(fill_name)
+    bar.add_theme_stylebox_override("fill", fill_skin)
 
 func build_base() -> void:
     overlay = Control.new()
@@ -125,11 +180,12 @@ func build_base() -> void:
     objective_panel = Panel.new()
     objective_panel.position = Vector2(12, 10)
     objective_panel.size = Vector2(356, 70)
-    objective_panel.add_theme_stylebox_override("panel", _panel_style(Color(0.09,0.11,0.105,0.86), Color("#8f6f3d"), 5, 2, 10, 7, 10, 8))
+    objective_panel.add_theme_stylebox_override("panel", _hud086_skin("hud_frame_brass", Vector4(10, 7, 10, 8)))
     overlay.add_child(objective_panel)
 
+    _hud086_icon(objective_panel, "icon_writ", Vector2(10, 8), Vector2(15, 15))
     zone_label = Label.new()
-    zone_label.position = Vector2(12, 8)
+    zone_label.position = Vector2(29, 8)
     zone_label.size = Vector2(330, 18)
     zone_label.add_theme_font_size_override("font_size", 11)
     zone_label.add_theme_color_override("font_color", Color("#bda77e"))
@@ -147,11 +203,12 @@ func build_base() -> void:
     navigation_panel = Panel.new()
     navigation_panel.position = Vector2(427, 10)
     navigation_panel.size = Vector2(201, 54)
-    navigation_panel.add_theme_stylebox_override("panel", _panel_style(Color(0.09,0.11,0.105,0.82), Color("#607166"), 5, 2, 10, 7, 10, 7))
+    navigation_panel.add_theme_stylebox_override("panel", _hud086_skin("hud_frame_steel", Vector4(10, 7, 10, 7)))
     overlay.add_child(navigation_panel)
 
     var nav_title := Label.new()
-    nav_title.position = Vector2(12, 8)
+    _hud086_icon(navigation_panel, "icon_route_arrow", Vector2(9, 7), Vector2(15, 15))
+    nav_title.position = Vector2(27, 8)
     nav_title.size = Vector2(170, 16)
     nav_title.add_theme_font_size_override("font_size", 10)
     nav_title.add_theme_color_override("font_color", Color("#93b1a0"))
@@ -168,7 +225,7 @@ func build_base() -> void:
     navigation_panel.add_child(navigation)
 
     reticle = TextureRect.new()
-    reticle.texture = load("res://assets/ui/reticle_069.png")
+    reticle.texture = _hud086_texture("hud_reticle")
     reticle.position = Vector2(304, 184)
     reticle.size = Vector2(32, 32)
     reticle.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -213,12 +270,13 @@ func build_base() -> void:
     prompt_panel.position = Vector2(186, 282)
     prompt_panel.size = Vector2(268, 26)
     prompt_panel.visible = false
-    prompt_panel.add_theme_stylebox_override("panel", _panel_style(Color(0.08,0.09,0.09,0.80), Color("#7b6944"), 4, 1, 8, 4, 8, 4))
+    prompt_panel.add_theme_stylebox_override("panel", _hud086_skin("hud_prompt_tab", Vector4(8, 4, 8, 4)))
     overlay.add_child(prompt_panel)
 
     prompt_label = Label.new()
-    prompt_label.position = Vector2(8, 4)
-    prompt_label.size = Vector2(252, 16)
+    _hud086_icon(prompt_panel, "icon_interact", Vector2(8, 5), Vector2(15, 15))
+    prompt_label.position = Vector2(24, 4)
+    prompt_label.size = Vector2(236, 16)
     prompt_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     prompt_label.add_theme_font_size_override("font_size", 11)
     prompt_label.add_theme_color_override("font_color", Color("#e7dec8"))
@@ -227,11 +285,12 @@ func build_base() -> void:
     vitals_panel = Panel.new()
     vitals_panel.position = Vector2(10, 309)
     vitals_panel.size = Vector2(238, 82)
-    vitals_panel.add_theme_stylebox_override("panel", _panel_style(Color(0.09,0.11,0.105,0.90), Color("#6f7a67"), 5, 2, 10, 8, 10, 8))
+    vitals_panel.add_theme_stylebox_override("panel", _hud086_skin("hud_frame_steel", Vector4(10, 8, 10, 8)))
     overlay.add_child(vitals_panel)
 
     var vitals_title := Label.new()
-    vitals_title.position = Vector2(10, 6)
+    _hud086_icon(vitals_panel, "icon_health", Vector2(10, 5), Vector2(14, 14))
+    vitals_title.position = Vector2(27, 6)
     vitals_title.size = Vector2(100, 14)
     vitals_title.add_theme_font_size_override("font_size", 10)
     vitals_title.add_theme_color_override("font_color", Color("#9fb7a4"))
@@ -251,9 +310,11 @@ func build_base() -> void:
     _apply_progress_style(hp_bar, Color("#b66c5a"))
     vitals_panel.add_child(hp_bar)
 
+    # 08.7: Breath icon is a live HUD element, not an unused packaged variant.
+    _hud086_icon(vitals_panel, "icon_breath", Vector2(10, 38), Vector2(14, 14))
     breath_text = Label.new()
-    breath_text.position = Vector2(10, 38)
-    breath_text.size = Vector2(120, 14)
+    breath_text.position = Vector2(27, 38)
+    breath_text.size = Vector2(101, 14)
     breath_text.add_theme_font_size_override("font_size", 11)
     breath_text.add_theme_color_override("font_color", Color("#d5e6d3"))
     vitals_panel.add_child(breath_text)
@@ -271,9 +332,11 @@ func build_base() -> void:
     meta_text.add_theme_color_override("font_color", Color("#cbbfa6"))
     vitals_panel.add_child(meta_text)
 
+    # 08.7: Consumable indicator follows the existing ampoule counter.
+    _hud086_icon(vitals_panel, "icon_ampoule", Vector2(130, 56), Vector2(13, 13))
     med_text = Label.new()
-    med_text.position = Vector2(135, 56)
-    med_text.size = Vector2(90, 16)
+    med_text.position = Vector2(148, 56)
+    med_text.size = Vector2(78, 16)
     med_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
     med_text.add_theme_font_size_override("font_size", 10)
     med_text.add_theme_color_override("font_color", Color("#d0ddb7"))
@@ -282,11 +345,12 @@ func build_base() -> void:
     weapon_panel = Panel.new()
     weapon_panel.position = Vector2(391, 309)
     weapon_panel.size = Vector2(239, 82)
-    weapon_panel.add_theme_stylebox_override("panel", _panel_style(Color(0.09,0.11,0.105,0.90), Color("#8f6f3d"), 5, 2, 10, 8, 10, 8))
+    weapon_panel.add_theme_stylebox_override("panel", _hud086_skin("hud_frame_brass", Vector4(10, 8, 10, 8)))
     overlay.add_child(weapon_panel)
 
     var weapon_title := Label.new()
-    weapon_title.position = Vector2(10, 6)
+    _hud086_icon(weapon_panel, "icon_ammo", Vector2(10, 5), Vector2(14, 14))
+    weapon_title.position = Vector2(27, 6)
     weapon_title.size = Vector2(100, 14)
     weapon_title.add_theme_font_size_override("font_size", 10)
     weapon_title.add_theme_color_override("font_color", Color("#bda77e"))
@@ -307,9 +371,11 @@ func build_base() -> void:
     ammo_text.add_theme_color_override("font_color", Color("#dfd6be"))
     weapon_panel.add_child(ammo_text)
 
+    # 08.7: Heat icon is only visible when a heat-using weapon is equipped.
+    heat_icon_087 = _hud086_icon(weapon_panel, "icon_heat", Vector2(10, 56), Vector2(14, 14))
     heat_text = Label.new()
-    heat_text.position = Vector2(10, 56)
-    heat_text.size = Vector2(90, 14)
+    heat_text.position = Vector2(27, 56)
+    heat_text.size = Vector2(52, 14)
     heat_text.add_theme_font_size_override("font_size", 10)
     heat_text.add_theme_color_override("font_color", Color("#d2bc90"))
     weapon_panel.add_child(heat_text)
@@ -329,19 +395,22 @@ func build_base() -> void:
     weapon_panel.add_child(hint_text)
 
     action_strip = Label.new()
-    action_strip.position = Vector2(184, 372)
-    action_strip.size = Vector2(272, 16)
+    # The old 272px-wide strip overlapped VITALS and EQUIPMENT at native 640x400.
+    # Keep controls in the intentional 143px gap between the two lower panels.
+    action_strip.position = Vector2(250, 317)
+    action_strip.size = Vector2(138, 70)
     action_strip.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+    action_strip.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
     action_strip.add_theme_font_size_override("font_size", 10)
-    action_strip.add_theme_color_override("font_color", Color("#98a48d"))
-    action_strip.text = "[TAB] DOSSIER  •  [E] INTERACT  •  [F] INTERVENE  •  [R] RELOAD"
+    action_strip.add_theme_color_override("font_color", Color("#c8c7ae"))
+    action_strip.text = "[TAB] DOSSIER\n[E] INTERACT\n[F] INTERVENE\n[R] RELOAD"
     overlay.add_child(action_strip)
 
     banner_panel = Panel.new()
     banner_panel.position = Vector2(148, 88)
     banner_panel.size = Vector2(344, 38)
     banner_panel.visible = false
-    banner_panel.add_theme_stylebox_override("panel", _panel_style(Color(0.15,0.11,0.08,0.90), Color("#c28a43"), 5, 2, 10, 6, 10, 6))
+    banner_panel.add_theme_stylebox_override("panel", _hud086_skin("hud_banner_alert", Vector4(10, 6, 10, 6)))
     overlay.add_child(banner_panel)
 
     banner = Label.new()
@@ -349,7 +418,7 @@ func build_base() -> void:
     banner.size = Vector2(320, 24)
     banner.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     banner.add_theme_font_size_override("font_size", 13)
-    banner.add_theme_color_override("font_color", Color("#efdfc0"))
+    banner.add_theme_color_override("font_color", Color("#2a312e"))
     banner_panel.add_child(banner)
 
     # Legacy regression references retained for source tests:
@@ -370,7 +439,7 @@ func build_base() -> void:
 
 func update_hud() -> void:
     if not Game.has_attempt():
-        zone_label.text = "THE NINTH EXHALE / BUILD 07.8"
+        zone_label.text = "THE NINTH EXHALE / HUD 08.6"
         objective_label.text = "Enter Hearth Nine and open the civic pressure docket."
         navigation.text = "NO ACTIVE ROUTE"
         hp_text.text = "HP --"
@@ -383,6 +452,8 @@ func update_hud() -> void:
         heat_text.text = "STATUS"
         heat_bar.value = 0.0
         heat_bar.visible = false
+        if is_instance_valid(heat_icon_087):
+            heat_icon_087.visible = false
         return
     var inventory: Dictionary = Game.state["inventory"]
     var id: String = Game.equipped_weapon()
@@ -498,10 +569,14 @@ func update_hud() -> void:
     ammo_text.text = "MAG %d   RESERVE %d" % [Game.weapon_mag(id), Game.weapon_reserve(id)]
     hint_text.text = "R RELOAD"
     if id == "nail":
+        if is_instance_valid(heat_icon_087):
+            heat_icon_087.visible = true
         heat_bar.visible = true
         heat_text.text = "HEAT"
         heat_bar.value = clampf(100.0 * float(Game.state["weapon_state"].get("nail_heat", 0.0)) / 90.0, 0.0, 100.0)
     else:
+        if is_instance_valid(heat_icon_087):
+            heat_icon_087.visible = false
         heat_bar.visible = false
         heat_text.text = "2–5 SWITCH"
     if current_prompt == "":
@@ -531,7 +606,7 @@ func _process(delta: float) -> void:
     if is_instance_valid(damage_flash_079):
         damage_flash_079.color.a = 0.17 * clampf(damage_time_079/0.22,0.0,1.0)
     if is_instance_valid(reticle):
-        reticle.modulate = Color("#ffe2ab") if reticle_hit_clock_079 > 0.0 else Color.WHITE
+        reticle.texture = _hud086_texture("hud_reticle_hit") if reticle_hit_clock_079 > 0.0 else _hud086_texture("hud_reticle")
     if banner_time < 0.0:
         banner_panel.visible = false
     if refresh_time <= 0.0:
@@ -625,12 +700,13 @@ func open_modal(heading: String, description: String, choices: Array) -> void:
     modal = Panel.new()
     modal.position = Vector2(42, 26)
     modal.size = Vector2(556, 328)
-    modal.add_theme_stylebox_override("panel", _panel_style(Color("#202824"), Color("#b38a4f"), 6, 2, 14, 12, 14, 12))
+    modal.add_theme_stylebox_override("panel", _hud086_skin("hud_docket_modal", Vector4(14, 12, 14, 12)))
     overlay.add_child(modal)
 
     var title := Label.new()
+    _hud086_icon(modal, "icon_evidence_tab", Vector2(15, 9), Vector2(18, 18))
     title.text = heading
-    title.position = Vector2(16, 10)
+    title.position = Vector2(39, 10)
     title.size = Vector2(378, 28)
     title.add_theme_font_size_override("font_size", 20)
     title.add_theme_color_override("font_color", Color("#efe2c7"))
@@ -650,6 +726,14 @@ func open_modal(heading: String, description: String, choices: Array) -> void:
     line.size = Vector2(524, 2)
     line.color = Color("#8f6f3d")
     modal.add_child(line)
+
+    var story_backing := ColorRect.new()
+    story_backing.position = Vector2(12, 46)
+    story_backing.size = Vector2(532, 166)
+    story_backing.color = Color("#171918")
+    story_backing.color.a = 0.91
+    story_backing.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    modal.add_child(story_backing)
 
     var story := RichTextLabel.new()
     story.bbcode_enabled = true
@@ -671,7 +755,7 @@ func open_modal(heading: String, description: String, choices: Array) -> void:
     options_title.size = Vector2(200, 18)
     options_title.text = "AVAILABLE ACTIONS"
     options_title.add_theme_font_size_override("font_size", 10)
-    options_title.add_theme_color_override("font_color", Color("#bda77e"))
+    options_title.add_theme_color_override("font_color", Color("#2a312e"))
     modal.add_child(options_title)
 
     var scroll := ScrollContainer.new()
