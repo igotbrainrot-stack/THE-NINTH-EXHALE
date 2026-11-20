@@ -54,4 +54,4 @@ func _check_assets() -> void:
     for path in paths:
         _check(ResourceLoader.exists(path) and load(path) is AudioStream, "fallback_audio_" + path.get_file())
     print("ASSET087_END: ", failed.size(), " failure(s)")
-    get_tree().quit(0 if failed.is_empty() else 1)
+    Music.request_quit(0 if failed.is_empty() else 1)

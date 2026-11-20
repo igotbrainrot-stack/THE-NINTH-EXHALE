@@ -22,7 +22,7 @@ func _ready() -> void:
     body.size = Vector3(0.75,1.50,0.52)
     housing.mesh = body
     var coating := StandardMaterial3D.new()
-    coating.metallic = 0.55
+    coating.metallic = 0.18
     coating.roughness = 0.38
     coating.albedo_color = Color("#626f67")
     housing.material_override = coating

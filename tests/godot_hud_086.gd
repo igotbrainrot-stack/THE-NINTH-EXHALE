@@ -56,4 +56,4 @@ func _check() -> void:
     ui.close_modal()
     _assert_check(ui.hp_bar.max_value == 100.0, "hp_live_value_range")
     print("HUD086_END: ", failed.size(), " failure(s)")
-    get_tree().quit(0 if failed.is_empty() else 1)
+    Music.request_quit(0 if failed.is_empty() else 1)

@@ -120,13 +120,15 @@ func _hud086_icon(parent: Control, name: String, xy: Vector2, dimensions: Vector
     var badge := TextureRect.new()
     badge.name = "HUD086Icon_" + name
     badge.texture = _hud086_texture(name)
-    badge.position = xy
-    badge.size = dimensions
     badge.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
     badge.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
     badge.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
     badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
     parent.add_child(badge)
+    # Size last: with the default expand mode the 24 px texture is the minimum
+    # size, so assigning 14-15 px first left every icon at 24 px over its label.
+    badge.position = xy
+    badge.size = dimensions
     return badge
 
 func _apply_button_style(button: Button, emphasis: bool = false) -> void:
@@ -164,6 +166,10 @@ func _apply_progress_style(bar: ProgressBar, fill: Color) -> void:
     bar.add_theme_stylebox_override("fill", fill_skin)
 
 func build_base() -> void:
+    # Label/ProgressBar sizes are assigned after add_child(): Godot clamps a
+    # Control to its minimum size, and font/style overrides only take effect
+    # in the tree. Sizing earlier inflated every label to 23 px and every bar
+    # to 27 px, which caused the 640x400 HUD overlaps.
     overlay = Control.new()
     overlay.name = "PressureDocket"
     overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -179,50 +185,54 @@ func build_base() -> void:
 
     objective_panel = Panel.new()
     objective_panel.position = Vector2(12, 10)
-    objective_panel.size = Vector2(356, 70)
+    objective_panel.size = Vector2(356, 76)
     objective_panel.add_theme_stylebox_override("panel", _hud086_skin("hud_frame_brass", Vector4(10, 7, 10, 8)))
     overlay.add_child(objective_panel)
 
     _hud086_icon(objective_panel, "icon_writ", Vector2(10, 8), Vector2(15, 15))
     zone_label = Label.new()
     zone_label.position = Vector2(29, 8)
-    zone_label.size = Vector2(330, 18)
     zone_label.add_theme_font_size_override("font_size", 11)
     zone_label.add_theme_color_override("font_color", Color("#bda77e"))
     zone_label.text = "PRESSURE DOCKET / OBJECTIVE"
     objective_panel.add_child(zone_label)
+    zone_label.size = Vector2(318, 18)
 
     objective_label = Label.new()
-    objective_label.position = Vector2(12, 26)
-    objective_label.size = Vector2(330, 34)
+    objective_label.position = Vector2(12, 25)
     objective_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
     objective_label.add_theme_font_size_override("font_size", 13)
     objective_label.add_theme_color_override("font_color", Color("#e6dcc5"))
+    objective_label.max_lines_visible = 2
+    objective_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
     objective_panel.add_child(objective_label)
+    objective_label.size = Vector2(330, 42)
 
     navigation_panel = Panel.new()
-    navigation_panel.position = Vector2(427, 10)
-    navigation_panel.size = Vector2(201, 54)
+    navigation_panel.position = Vector2(378, 10)
+    navigation_panel.size = Vector2(250, 54)
     navigation_panel.add_theme_stylebox_override("panel", _hud086_skin("hud_frame_steel", Vector4(10, 7, 10, 7)))
     overlay.add_child(navigation_panel)
 
     var nav_title := Label.new()
     _hud086_icon(navigation_panel, "icon_route_arrow", Vector2(9, 7), Vector2(15, 15))
     nav_title.position = Vector2(27, 8)
-    nav_title.size = Vector2(170, 16)
     nav_title.add_theme_font_size_override("font_size", 10)
     nav_title.add_theme_color_override("font_color", Color("#93b1a0"))
     nav_title.text = "ADVISORY ROUTE"
     navigation_panel.add_child(nav_title)
+    nav_title.size = Vector2(170, 16)
 
     navigation = Label.new()
-    navigation.position = Vector2(12, 22)
-    navigation.size = Vector2(174, 22)
+    navigation.position = Vector2(12, 26)
     navigation.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT
-    navigation.add_theme_font_size_override("font_size", 12)
+    navigation.add_theme_font_size_override("font_size", 11)
     navigation.add_theme_color_override("font_color", Color("#d9ead2"))
     navigation.mouse_filter=Control.MOUSE_FILTER_IGNORE
+    navigation.clip_text = true
+    navigation.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
     navigation_panel.add_child(navigation)
+    navigation.size = Vector2(226, 18)
 
     reticle = TextureRect.new()
     reticle.texture = _hud086_texture("hud_reticle")
@@ -276,11 +286,11 @@ func build_base() -> void:
     prompt_label = Label.new()
     _hud086_icon(prompt_panel, "icon_interact", Vector2(8, 5), Vector2(15, 15))
     prompt_label.position = Vector2(24, 4)
-    prompt_label.size = Vector2(236, 16)
     prompt_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     prompt_label.add_theme_font_size_override("font_size", 11)
     prompt_label.add_theme_color_override("font_color", Color("#e7dec8"))
     prompt_panel.add_child(prompt_label)
+    prompt_label.size = Vector2(236, 16)
 
     vitals_panel = Panel.new()
     vitals_panel.position = Vector2(10, 309)
@@ -291,56 +301,56 @@ func build_base() -> void:
     var vitals_title := Label.new()
     _hud086_icon(vitals_panel, "icon_health", Vector2(10, 5), Vector2(14, 14))
     vitals_title.position = Vector2(27, 6)
-    vitals_title.size = Vector2(100, 14)
     vitals_title.add_theme_font_size_override("font_size", 10)
     vitals_title.add_theme_color_override("font_color", Color("#9fb7a4"))
     vitals_title.text = "VITALS"
     vitals_panel.add_child(vitals_title)
+    vitals_title.size = Vector2(100, 14)
 
     hp_text = Label.new()
     hp_text.position = Vector2(10, 20)
-    hp_text.size = Vector2(120, 14)
     hp_text.add_theme_font_size_override("font_size", 11)
     hp_text.add_theme_color_override("font_color", Color("#f2d5bd"))
     vitals_panel.add_child(hp_text)
+    hp_text.size = Vector2(120, 14)
 
     hp_bar = ProgressBar.new()
     hp_bar.position = Vector2(130, 22)
-    hp_bar.size = Vector2(96, 10)
     _apply_progress_style(hp_bar, Color("#b66c5a"))
     vitals_panel.add_child(hp_bar)
+    hp_bar.size = Vector2(96, 10)
 
     # 08.7: Breath icon is a live HUD element, not an unused packaged variant.
     _hud086_icon(vitals_panel, "icon_breath", Vector2(10, 38), Vector2(14, 14))
     breath_text = Label.new()
     breath_text.position = Vector2(27, 38)
-    breath_text.size = Vector2(101, 14)
     breath_text.add_theme_font_size_override("font_size", 11)
     breath_text.add_theme_color_override("font_color", Color("#d5e6d3"))
     vitals_panel.add_child(breath_text)
+    breath_text.size = Vector2(101, 14)
 
     breath_bar = ProgressBar.new()
     breath_bar.position = Vector2(130, 40)
-    breath_bar.size = Vector2(96, 10)
     _apply_progress_style(breath_bar, Color("#6e9780"))
     vitals_panel.add_child(breath_bar)
+    breath_bar.size = Vector2(96, 10)
 
     meta_text = Label.new()
     meta_text.position = Vector2(10, 56)
-    meta_text.size = Vector2(160, 16)
     meta_text.add_theme_font_size_override("font_size", 10)
     meta_text.add_theme_color_override("font_color", Color("#cbbfa6"))
     vitals_panel.add_child(meta_text)
+    meta_text.size = Vector2(118, 16)
 
     # 08.7: Consumable indicator follows the existing ampoule counter.
     _hud086_icon(vitals_panel, "icon_ampoule", Vector2(130, 56), Vector2(13, 13))
     med_text = Label.new()
     med_text.position = Vector2(148, 56)
-    med_text.size = Vector2(78, 16)
     med_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
     med_text.add_theme_font_size_override("font_size", 10)
     med_text.add_theme_color_override("font_color", Color("#d0ddb7"))
     vitals_panel.add_child(med_text)
+    med_text.size = Vector2(78, 16)
 
     weapon_panel = Panel.new()
     weapon_panel.position = Vector2(391, 309)
@@ -351,60 +361,60 @@ func build_base() -> void:
     var weapon_title := Label.new()
     _hud086_icon(weapon_panel, "icon_ammo", Vector2(10, 5), Vector2(14, 14))
     weapon_title.position = Vector2(27, 6)
-    weapon_title.size = Vector2(100, 14)
     weapon_title.add_theme_font_size_override("font_size", 10)
     weapon_title.add_theme_color_override("font_color", Color("#bda77e"))
     weapon_title.text = "EQUIPMENT"
     weapon_panel.add_child(weapon_title)
+    weapon_title.size = Vector2(100, 14)
 
     weapon_name = Label.new()
     weapon_name.position = Vector2(10, 20)
-    weapon_name.size = Vector2(160, 14)
     weapon_name.add_theme_font_size_override("font_size", 12)
     weapon_name.add_theme_color_override("font_color", Color("#efe2c7"))
     weapon_panel.add_child(weapon_name)
+    weapon_name.size = Vector2(160, 14)
 
     ammo_text = Label.new()
     ammo_text.position = Vector2(10, 38)
-    ammo_text.size = Vector2(140, 16)
     ammo_text.add_theme_font_size_override("font_size", 11)
     ammo_text.add_theme_color_override("font_color", Color("#dfd6be"))
     weapon_panel.add_child(ammo_text)
+    ammo_text.size = Vector2(140, 16)
 
     # 08.7: Heat icon is only visible when a heat-using weapon is equipped.
     heat_icon_087 = _hud086_icon(weapon_panel, "icon_heat", Vector2(10, 56), Vector2(14, 14))
     heat_text = Label.new()
     heat_text.position = Vector2(27, 56)
-    heat_text.size = Vector2(52, 14)
     heat_text.add_theme_font_size_override("font_size", 10)
     heat_text.add_theme_color_override("font_color", Color("#d2bc90"))
     weapon_panel.add_child(heat_text)
+    heat_text.size = Vector2(52, 14)
 
     heat_bar = ProgressBar.new()
     heat_bar.position = Vector2(82, 58)
-    heat_bar.size = Vector2(145, 10)
     _apply_progress_style(heat_bar, Color("#c88c4e"))
     weapon_panel.add_child(heat_bar)
+    heat_bar.size = Vector2(145, 10)
 
     hint_text = Label.new()
     hint_text.position = Vector2(150, 38)
-    hint_text.size = Vector2(76, 16)
     hint_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
     hint_text.add_theme_font_size_override("font_size", 10)
     hint_text.add_theme_color_override("font_color", Color("#9eb79f"))
     weapon_panel.add_child(hint_text)
+    hint_text.size = Vector2(76, 16)
 
     action_strip = Label.new()
     # The old 272px-wide strip overlapped VITALS and EQUIPMENT at native 640x400.
     # Keep controls in the intentional 143px gap between the two lower panels.
     action_strip.position = Vector2(250, 317)
-    action_strip.size = Vector2(138, 70)
     action_strip.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     action_strip.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
     action_strip.add_theme_font_size_override("font_size", 10)
     action_strip.add_theme_color_override("font_color", Color("#c8c7ae"))
     action_strip.text = "[TAB] DOSSIER\n[E] INTERACT\n[F] INTERVENE\n[R] RELOAD"
     overlay.add_child(action_strip)
+    action_strip.size = Vector2(138, 70)
 
     banner_panel = Panel.new()
     banner_panel.position = Vector2(148, 88)
@@ -415,11 +425,11 @@ func build_base() -> void:
 
     banner = Label.new()
     banner.position = Vector2(12, 6)
-    banner.size = Vector2(320, 24)
     banner.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     banner.add_theme_font_size_override("font_size", 13)
     banner.add_theme_color_override("font_color", Color("#2a312e"))
     banner_panel.add_child(banner)
+    banner.size = Vector2(320, 24)
 
     # Legacy regression references retained for source tests:
     # overlay.move_child(gun,0)
@@ -439,7 +449,7 @@ func build_base() -> void:
 
 func update_hud() -> void:
     if not Game.has_attempt():
-        zone_label.text = "THE NINTH EXHALE / HUD 08.6"
+        zone_label.text = "THE NINTH EXHALE / BUILD 08.7"
         objective_label.text = "Enter Hearth Nine and open the civic pressure docket."
         navigation.text = "NO ACTIVE ROUTE"
         hp_text.text = "HP --"
@@ -490,7 +500,10 @@ func update_hud() -> void:
         else:
             objective_text = "Secure %d more founding Writ(s) from five reachable offices." % maxi(0, 3-writ_count)
     if zone == "sootworks":
-        objective_text = "Return to Flood Basilica." if Game.state["writs"].has("qobj_writ_of_labour") else "Track Brin, verify payroll, then recover the Labour Writ."
+        # Once the Labour Writ is held, keep the run-wide objective computed above
+        # (five offices are reachable; the old "Return to Flood Basilica" was stale).
+        if not Game.state["writs"].has("qobj_writ_of_labour"):
+            objective_text = "Track Brin, verify payroll, then recover the Labour Writ."
     elif zone == "ashmarket":
         var trade: Dictionary = Game.state.get("trade",{})
         if Game.state["writs"].has("qobj_writ_of_trade"):
@@ -898,6 +911,10 @@ func dossier_text() -> String:
     lines.append("RISKS DISCLOSED %s / ORIGINAL PETITION %s / ASSENT %d OF 3" % [str(civic.get("risk_disclosed",false)),str(civic.get("petition_read",false)),Game.assembly_vote_count_078()])
     lines.append("MANDATE %s / REVOKED %s / TRUE DAWN TECHNICAL CLUES %s" % [str(civic.get("mandate",false)),str(civic.get("mandate_revoked",false)),str(Game.dawn_technical_prerequisites_078())])
     lines.append("RAIL STAGED %s / CAPACITY %s / BOARDING %s / GATE %s" % [str(civic.get("staged_seats",0)),str(core.get("rail_capacity",24)),str(civic.get("seats_used",0)),str(civic.get("rail_state","closed"))])
-    lines.append("STAGED ROSTERS: %s" % ", ".join(civic.get("staged_groups",{}).keys()))
+    # Released cohorts stay in the dictionary as false; list only staged ones.
+    var staged_now: Array[String] = []
+    for group in civic.get("staged_groups",{}).keys():
+        if bool(civic["staged_groups"][group]): staged_now.append(str(group))
+    lines.append("STAGED ROSTERS: %s" % (", ".join(staged_now) if not staged_now.is_empty() else "none"))
     lines.append("[color=#90a190]Any three Writs, signed original archives and the Custodian resolution precede the public assembly. Liberation, Dominion and The Crown are never blocked by goodwill points. True Dawn requires three separate clues and explicit revocable consent.[/color]")
     return "\n".join(lines)

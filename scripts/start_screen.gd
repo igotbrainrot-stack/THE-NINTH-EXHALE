@@ -72,7 +72,7 @@ func _style_labels() -> void:
     title.text = "THE NINTH EXHALE"
     title.add_theme_font_size_override("font_size", 34)
     title.add_theme_color_override("font_color", Color("#efe2c7"))
-    subtitle.text = "BUILD 07.8 / PUBLIC ASSEMBLY + FOUR ENDINGS"
+    subtitle.text = "BUILD 08.7 / ASSET INTEGRATION"
     subtitle.add_theme_color_override("font_color", Color("#bda77e"))
     description.text = "A municipal-industrial FPS/RPG of consent, scarcity and contested survival.\n\nExplore five Writ districts. Any three distinct Writs, an installed Lung and a voluntary Rootkin hearing open the central archive.\n\nConfront the Custodian, then enter the public assembly to choose among four irreversible settlements. The emergency railway is finite; True Dawn requires public consent and three restoration clues."
     description.add_theme_color_override("font_color", Color("#dae1d2"))
@@ -177,7 +177,7 @@ func _enter_npc_gallery() -> void:
         push_error("NPC ROTATION GALLERY FAILED: %d" % error)
 
 func _quit_game() -> void:
-    get_tree().quit()
+    Music.request_quit()
 
 func _unhandled_input(event: InputEvent) -> void:
     if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F10:

@@ -612,6 +612,11 @@ func open_main_menu() -> void:
     var opts: Array = []
     if Game.has_saved_active():
         opts.append({"label":"RESUME / last active attempt","action":"resume"})
+    else:
+        var failed: Dictionary = Game.failed_attempt_awaiting_reprint()
+        if not failed.is_empty():
+            var last_death: Dictionary = failed["nix_archived_failures"].back()
+            opts.append({"label":"RECONSTRUCT / %s after death at %s" % [str(failed.get("build","Witness")).to_upper(), str(last_death.get("site","Vesper"))],"action":"reprint_saved"})
     if Game.profile.get("completed_endings",[]).size() > 0:
         opts.append({"label":"ARCHIVED SETTLEMENTS / NOT REWOUND","action":"ending:archive"})
     for name in ["Witness","Breaker","Mechanist","Stalker"]:
@@ -1813,7 +1818,14 @@ func _on_action(action: String) -> void:
         resume_loaded_attempt()
         return
     if action=="quit":
-        get_tree().quit()
+        Music.request_quit()
+        return
+    if action=="reprint_saved":
+        # Same chain as the in-game "RECONSTRUCT", after an app restart.
+        if Game.load_failed_chain_for_reprint():
+            begin_attempt(str(Game.state.get("build","Witness")), true)
+        else:
+            open_main_menu()
         return
     if action=="reprint":
         begin_attempt(str(Game.state.get("build","Witness")), true)
@@ -1849,7 +1861,7 @@ func _on_action(action: String) -> void:
                 message = "ASHMARKET / TRADE OFFICE\nInspect two original contracts, hear the buyers and deal with the Collector. Four distinct legal and conflict routes are available."
             show_choice("MUNICIPAL SERVICE TRANSFER",message,[go_back()])
         else:
-            show_choice("TRANSFER DENIED","Install the Lung before district travel. This build contains Hearth Nine, Sootworks, Flood Basilica and Ashmarket.",[go_back()])
+            show_choice("TRANSFER DENIED","Install the Lung before district travel.",[go_back()])
         return
     if action.begins_with("ossa:"):
         var verb_ossa: String = action.trim_prefix("ossa:")
@@ -1994,6 +2006,15 @@ func _save_now() -> void:
 func _load_now() -> void:
     pending_quiet_service_079 = ""
     pending_quiet_service_deadline_079 = 0
+    if Game.has_attempt():
+        # Bible: the active checkpoint "cannot be manually rewound through the
+        # game UI". Damage, ammo and ampoule use are not autosaved, so loading
+        # used to refill them; commit the live state first, and refuse to load
+        # while hostiles are engaged so F9 cannot be used to escape a fight.
+        if is_instance_valid(Music) and Music.active_combat:
+            hud.notify("CHECKPOINT LOCKED / NOT DURING COMBAT")
+            return
+        Game.save_attempt()
     if Game.load_attempt():
         reload_district_world()
         player.restore_position()

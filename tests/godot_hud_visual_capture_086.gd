@@ -22,4 +22,4 @@ func _take_capture() -> void:
     var image: Image = get_viewport().get_texture().get_image()
     var err: Error = image.save_png("/mnt/data/hud086_integration/HUD_086_IN_ENGINE.png")
     print("HUD086_CAPTURE: ", err, " ", image.get_width(), "x", image.get_height())
-    get_tree().quit(0 if err == OK else 1)
+    Music.request_quit(0 if err == OK else 1)
