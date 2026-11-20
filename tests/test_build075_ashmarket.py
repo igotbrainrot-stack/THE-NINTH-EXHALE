@@ -23,7 +23,7 @@ class Ashmarket075(unittest.TestCase):
             self.assertIn(route,relevant)
         self.assertIn('bool(state["trade"]["collector_defeated"])',relevant)
         self.assertIn('bool(state["trade"]["counting_lock_isolated"])',relevant)
-        self.assertIn('stat("Speech") < 7',relevant)
+        self.assertIn('coalition_check()',relevant)
         self.assertIn('qobj_writ_of_trade',relevant)
         self.assertIn('if not _in_ashmarket() or state["writs"].has("qobj_writ_of_trade")',relevant)
 

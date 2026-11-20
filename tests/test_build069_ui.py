@@ -14,7 +14,7 @@ class TestBuild069UIPolish(unittest.TestCase):
         self.assertIn('func set_interact_prompt(message: String) -> void:', code)
         self.assertIn('ProgressBar.new()', code)
         self.assertIn('ADVISORY ROUTE', code)
-        self.assertIn('CIVIC RECORD / CHOOSE A RESPONSE', code)
+        self.assertIn('subtitle.text = "CIVIC RECORD"', code)
 
     def test_player_emits_aim_prompt_signal(self):
         code = (ROOT / 'scripts/player.gd').read_text()
