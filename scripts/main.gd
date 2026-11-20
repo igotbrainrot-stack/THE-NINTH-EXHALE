@@ -62,6 +62,7 @@ func _ready() -> void:
     player.escape_requested.connect(_show_dossier)
     player.weapon_message.connect(_show_message)
     Game.attempt_failed.connect(_on_attempt_failed)
+    Game.level_changed.connect(_on_level_changed_089)
     player.set_control_active(false)
     Music.set_listener(player)
     hud.set_weapon("covenant")
@@ -921,8 +922,8 @@ func _on_interact(interaction_id: String) -> void:
             else:
                 show_choice("RESERVE RACK / TWO WARDS", "The spare is real. Its claim tag names another ward. An unapproved removal can save Hearth Nine immediately, but creates a documented shortage elsewhere.",[{"label":"REMOVE SPARE / STEAL WITH TRACEABLE COST","action":"claim:steal"},go_back()])
         "tech_panel":
-            var tech_message := "TECH 5 REQUIRED / your Tech is %d. A measured diversion can free the known reserve without erasing the audit trail." % Game.stat("Tech")
-            show_choice("MAINTENANCE / POWER REDIRECTION",tech_message,[{"label":"[TECH 5] REROUTE THE LOAD / CLAIM LUNG","action":"claim:tech"},go_back()])
+            var tech_message := "A measured diversion can free the known reserve without erasing the audit trail."
+            show_choice("MAINTENANCE / POWER REDIRECTION",tech_message,[check_option("REROUTE THE LOAD / CLAIM LUNG","claim:tech",Game.check_attribute("Tech",5)),go_back()])
         "ammo_locker":
             if Game.state["event_ids"].has("hearth.mandatory_ammo"):
                 show_choice("EMERGENCY SUPPLIES", "The single authorised issue has been collected. The ledger cannot restock on another visit.",[go_back()])
@@ -955,7 +956,7 @@ func orchard_interaction_077(interaction_id: String) -> void:
         "orchard_scientists", "orchard_technician":
             show_choice("RESEARCH STAFF / VOICE OF THE ORCHARD", "Two living control cultures must be compared before the researchers can challenge the Gardener. A private declaration of good intentions is not a public vote.",[{"label":"PRESENT CONTROL / CALL PUBLIC VOTE","action":"orchard:vote"},go_back()])
         "orchard_feed_line":
-            show_choice("FORCED MEMORY FEED / ISOLATION", "A trained technician can cut the root motor's coercive pattern feed with a staffed mineral rinse. This costs 2 Energy and 1 Labour; existing plants still require care.",[{"label":"[TECH 5] ISOLATE ROOT FEED / 2E + 1L","action":"orchard:isolate"},go_back()])
+            show_choice("FORCED MEMORY FEED / ISOLATION", "A trained technician can cut the root motor's coercive pattern feed with a staffed mineral rinse. This costs 2 Energy and 1 Labour; existing plants still require care.",[check_option("ISOLATE ROOT FEED / 2E + 1L","orchard:isolate",Game.check_attribute("Tech",5)),go_back()])
         "orchard_gardener":
             show_choice("GARDENER / PROPAGATION AUTHORITY", "'A fruit that speaks is not necessarily a person,' says the Gardener. The keeper requires a controlled separation test, not a speech. Its powered root apparatus can also be stopped.",[{"label":"CONFRONT POWERED ROOT ASSEMBLY","action":"orchard:fight"},go_back()])
         "orchard_writ":
@@ -986,7 +987,7 @@ func barracks_interaction_077(interaction_id: String) -> void:
         "barracks_platoon_vote":
             show_choice("PLATOON / THEIR OWN NAMES", "If the casualty roll and real watch staffing are both recorded, soldiers can vote to revoke illegal orders while leaving protection in place.",[{"label":"READ NAMES / CALL SOLDIERS ASSEMBLY","action":"barracks:vote"},go_back()])
         "barracks_signal":
-            show_choice("SIGNAL ZERO / CONTRADICTORY ORDERS", "A Tech 5 operator can isolate the old coercive signal only after recording which real guards will stay. The intervention costs 2 Energy and 2 Labour.",[{"label":"[TECH 5] ISOLATE ORDER BUS / 2E + 2L","action":"barracks:isolate"},go_back()])
+            show_choice("SIGNAL ZERO / CONTRADICTORY ORDERS", "A Tech 5 operator can isolate the old coercive signal only after recording which real guards will stay. The intervention costs 2 Energy and 2 Labour.",[check_option("ISOLATE ORDER BUS / 2E + 2L","barracks:isolate",Game.check_attribute("Tech",5,0,"",bool(Game.state["defence"]["guard_roster"]),"staffed safety roster")),go_back()])
         "barracks_commandant":
             show_choice("BARRACKS COMMANDANT / DISTINCT FROM VOSS", "The regional Commandant controls this district's powered frame. Central Custodian Marshal Voss, if selected by the run, is a different individual.",[{"label":"CHALLENGE REGIONAL POWER FRAME","action":"barracks:fight"},go_back()])
         "barracks_writ":
@@ -1027,7 +1028,7 @@ func core_interaction_076(interaction_id: String) -> void:
             show_choice("INDEPENDENT GATE RADIO / VOSS EVIDENCE", "A sealed plan shows separate short-wave command would have reduced Voss's border disaster. He was right to fear coordination failure, but centralised orders were not the only possible response.",[ {"label":"COPY DATED RADIO PLAN","action":"core:doc:radio"},go_back()])
         "core_safety_bus":
             var bus_text: String = "The regulator can be isolated only if technicians prepare a staffed manual fallback. Costs 3 existing Energy and 2 Labour. Conventional electricity cannot replace correction patterns."
-            show_choice("EXECUTIVE SAFETY BUS / PHYSICAL RETROFIT",bus_text,[ {"label":"[TECH 5] WIRE SAFETY FALLBACK / PAY 3E + 2L","action":"core:safety"},go_back()])
+            show_choice("EXECUTIVE SAFETY BUS / PHYSICAL RETROFIT",bus_text,[check_option("WIRE SAFETY FALLBACK / PAY 3E + 2L","core:safety",Game.check_attribute("Tech",5)),go_back()])
         "core_carriage_repair":
             show_choice("SPARE CARRIAGE / PHYSICAL MAINTENANCE", "A second damaged carriage sits on existing track. Your local inspector verified 24 existing usable seats; repairs could make 12 more, still far below Vesper's population. Costs 2 physical salvage, 3 Labour and 2 Energy. None are free.",[ {"label":"REPAIR SPARE CARRIAGE / +12 REAL SEATS","action":"core:repair"},go_back()])
         "core_boarding_plan":
@@ -1045,8 +1046,8 @@ func core_interaction_076(interaction_id: String) -> void:
                 var options: Array = []
                 if Game.core_main_records_complete():
                     options.append({"label":"PRESENT THREE-WRIT TRIBUNAL / NEED CUSTODIAN PROOF","action":"core:resolve:tribunal"})
-                    options.append({"label":"[SPEECH 5 OR INSIGHT 5] SEEK ABDICATION","action":"core:resolve:abdication"})
-                    options.append({"label":"[TECH 5 + SAFETY BUS] CONTAIN AUTHORITY","action":"core:resolve:containment"})
+                    options.append(check_option("SEEK ABDICATION","core:resolve:abdication",Game.abdication_check()))
+                    options.append(check_option("CONTAIN AUTHORITY","core:resolve:containment",Game.check_attribute("Tech",5,0,"",bool(core.get("safety_bus_prepared",false)),"prepared safety bus")))
                     if bool(core.get("actuator_disabled",false)):
                         options.append({"label":"REMOVE POWERED ENFORCEMENT / NO PERSON KILLED","action":"core:resolve:apparatus_shutdown"})
                     else:
@@ -1088,7 +1089,7 @@ func ashmarket_interaction(interaction_id: String) -> void:
             if bool(trade["counting_lock_isolated"]):
                 show_choice("TOKEN PRESS / ISOLATED", "The counting locks have physically withdrawn. This consumed two Energy and one Labour; the original disputed contracts remain preserved.",[go_back()])
             else:
-                show_choice("TOKEN PRESS / CONTROL BUS", "A Tech 5 operator can isolate the bonded locks for two Energy and one Labour. The system can be stopped without erasing the buyer's contract evidence.",[{"label":"[TECH 5] ISOLATE THE COUNTING LOCKS","action":"market:sabotage"},go_back()])
+                show_choice("TOKEN PRESS / CONTROL BUS", "A Tech 5 operator can isolate the bonded locks for two Energy and one Labour. The system can be stopped without erasing the buyer's contract evidence.",[check_option("ISOLATE THE COUNTING LOCKS","market:sabotage",Game.check_attribute("Tech",5)),go_back()])
         "market_collector_desk":
             if has_writ:
                 show_choice("COLLECTOR / TRADE FILED", "The emergency Writ is in the three-office docket; no repeat transfer is possible. The clearing service still has to answer for its original debts.",[go_back()])
@@ -1096,13 +1097,11 @@ func ashmarket_interaction(interaction_id: String) -> void:
                 show_choice("COLLECTOR / VACATED OFFICE", "The keeper is absent. The public register, not a dropped personal trinket, holds the Trade Writ.",[go_back()])
             else:
                 var opts: Array = []
-                if bool(trade["coalition_recorded"]):
-                    opts.append({"label":"[SPEECH 7] PRESENT THE BUYERS' CONTRACT CHALLENGE","action":"trade:coalition"})
-                if Game.stat("Force") >= 6:
-                    opts.append({"label":"[FORCE 6] FORCE A SIGNATURE / SECURITY COST","action":"market:intimidate"})
+                opts.append(check_option("PRESENT THE BUYERS' CONTRACT CHALLENGE","trade:coalition",Game.coalition_check()))
+                opts.append(check_option("FORCE A SIGNATURE / SECURITY COST","market:intimidate",Game.check_attribute("Force",6)))
                 opts.append({"label":"CHALLENGE THE COLLECTOR'S SECURITY / FIGHT","action":"market:fight"})
                 opts.append(go_back())
-                show_choice("COLLECTOR / THE SELLING PRICE", "'They wanted hinges once. Now they want the keys to someone they no longer own.' Evidence plus Speech 7 can transfer the Writ publicly. Force has a witnessed institutional cost. Counting-lock isolation and combat remain possible.",opts)
+                show_choice("COLLECTOR / THE SELLING PRICE", "'They wanted hinges once. Now they want the keys to someone they no longer own.' Documented buyers' contracts and testimony let a Speech case transfer the Writ publicly. Force has a witnessed institutional cost. Counting-lock isolation and combat remain possible.",opts)
         "market_trade_registry":
             if has_writ:
                 show_choice("TRADE WRIT / EMERGENCY QUORUM", "The durable public register confirms the Trade Writ is already transferred. Labour and Faith remain distinct; no second copy is created.",[go_back()])
@@ -1206,7 +1205,7 @@ func sootworks_interaction(interaction_id: String) -> void:
             if writ_owned:
                 show_choice("ISOLATION BUS / WRIT ACQUIRED", "The elected route has already recorded the Writ; the control bus must not produce another credential.",[go_back()])
             else:
-                show_choice("SOOTWORKS / ISOLATION BUS", "Tech %d. This service switch cuts only the control circuit; it does not conjure power or rewrite the payroll. The shutdown uses 3 Energy and 2 Labour capacity in this prototype." % Game.stat("Tech"), [{"label":"[TECH 5] ISOLATE THE MILLWRIGHT'S CONTROL BUS","action":"soot:sabotage"},go_back()])
+                show_choice("SOOTWORKS / ISOLATION BUS", "This service switch cuts only the control circuit; it does not conjure power or rewrite the payroll. The shutdown uses 3 Energy and 2 Labour capacity.", [check_option("ISOLATE THE MILLWRIGHT'S CONTROL BUS","soot:sabotage",Game.check_attribute("Tech",5)),go_back()])
         "millwright_order":
             if writ_owned:
                 show_choice("MILLWRIGHT / DISPUTED AUTHORITY", "The public registry has recorded your Labour Writ. Office hostility and civic consequences remain.",[go_back()])
@@ -1285,7 +1284,7 @@ func basilica_interaction(interaction_id: String) -> void:
             if writ_owned:
                 show_choice("SIGNAL GOVERNOR / PUBLIC AUDIT","A Writ already exists in the docket. Isolation is not needed to duplicate it.",[go_back()])
             else:
-                show_choice("GOVERNOR / COMMAND BUS","The dangerous command frequency can be isolated through an existing service bypass. Requires Tech 5; costs finite Energy and Labour; it does not stop citizens praying.",[{"label":"[TECH 5] ISOLATE CONTROL GOVERNOR","action":"basilica:isolate"},go_back()])
+                show_choice("GOVERNOR / COMMAND BUS","The dangerous command frequency can be isolated through an existing service bypass. Requires Tech 5; costs finite Energy and Labour; it does not stop citizens praying.",[check_option("ISOLATE CONTROL GOVERNOR","basilica:isolate",Game.check_attribute("Tech",5)),go_back()])
         "cantor_order":
             if writ_owned:
                 show_choice("CANTOR / OFFICE DISPUTED","The public faith register already bears this attempt's single credential.",[go_back()])
@@ -1339,8 +1338,8 @@ func _refresh_field_visuals() -> void:
 
 func hearing_choices(note: String) -> void:
     var options: Array = [
-        {"label":"PRESS / displace the pressure surge","action":"hearing:Press"},
-        {"label":"ATTUNE / align Rootkin with the field","action":"hearing:Attune"},
+        {"label":"PRESS / strong when EXPOSED, weak otherwise","action":"hearing:Press"},
+        {"label":"ATTUNE / steady when RISING or SHIELDED; tires if repeated","action":"hearing:Attune"},
         {"label":"BRACE / cushion the next field response","action":"hearing:Brace"},
         {"label":"OBSERVE / document a signal rhythm","action":"hearing:Observe"},
         {"label":"WITHDRAW / free retry remains available","action":"hearing:Withdraw"}]
@@ -1373,8 +1372,12 @@ func clerk_dialogue() -> void:
     if bool(Game.state["flags"]["guard_defeated"]):
         show_choice("REQUISITION CLERK / GUARD REMOVED", "'The guard has stopped answering. The public rack and its record remain. The claim is still disputed, even if you take it by force.'",[{"label":"SEIZE LUNG / ENTER AN ASSAULT REPORT","action":"claim:fight"},go_back()])
         return
-    var evidence_bonus := 1 if bool(Game.state["flags"]["allocation_record_seen"]) else 0
-    show_choice("REQUISITION CLERK / COMPETING ALLOTMENTS", "'We have one spare Cinder Lung and more than one ward in need.'\n\nYour Speech %d + documented copy %d; negotiated threshold 6 with required public record. Force remains possible whatever your build." % [Game.stat("Speech"),evidence_bonus],[{"label":"[SPEECH 6 + RECORD] PUBLIC ALLOCATION HEARING","action":"claim:bargain"},{"label":"DEMAND RESERVE BY FORCE / ENFORCER RESPONDS","action":"begin_fight"},go_back()])
+    show_choice("REQUISITION CLERK / COMPETING ALLOTMENTS", "'We have one spare Cinder Lung and more than one ward in need.'\n\nA public allocation hearing needs the copied requisition record. Force remains possible whatever your build.",[check_option("PUBLIC ALLOCATION HEARING","claim:bargain",Game.bargain_check()),{"label":"DEMAND RESERVE BY FORCE / ENFORCER RESPONDS","action":"begin_fight"},go_back()])
+
+## A dialogue option gated by a deterministic check: always visible, showing the
+## exact sum, and disabled (not clickable) until it is met. Bible 7.1 / 13.
+func check_option(label: String, action: String, check: Dictionary) -> Dictionary:
+    return {"label": "%s  %s" % [str(check["text"]), label], "action": action, "enabled": bool(check["ok"])}
 
 func go_back() -> Dictionary:
     return {"label":"CLOSE DOCKET / RETURN TO WORLD","action":"close"}
@@ -1510,6 +1513,15 @@ func assembly_interaction_078(interaction_id: String) -> void:
             show_choice("ASSEMBLY / NO PUBLIC REGISTER", "There is no legally recorded action at this station.",[go_back()])
 
 func _on_action(action: String) -> void:
+    # Bible 13: Ninth learns before committing when a choice would make True Dawn
+    # impossible (fewer than three constituencies left). Never a silent lockout.
+    if action.ends_with("#confirmed"):
+        action = action.trim_suffix("#confirmed")
+    elif Game.has_attempt():
+        var lockout: String = Game.true_dawn_lockout_warning_089(action)
+        if lockout != "":
+            show_choice("TRUE DAWN WOULD CLOSE", lockout, [{"label":"CONFIRM / ACCEPT THE CONSEQUENCE","action":action + "#confirmed"}, go_back()])
+            return
     if action == "ending:menu":
         open_main_menu()
         return
@@ -1633,10 +1645,21 @@ func _on_action(action: String) -> void:
             done = Game.grant_growth_writ_077(method) if orchard else Game.grant_defence_writ_077(method)
         show_choice("%s / %s" % [office.to_upper(), "ORIGINAL RECORDED" if done else "NO CHANGE"],"One physical event was recorded and its real consequences persist. The Writ, when eligible, is transferred by the public registry." if done else "The required independent evidence, Tech skill, resources, public mandate or apparatus defeat is missing; other valid routes remain available.",[go_back()])
         return
+    if action.begins_with("perk:") and Game.has_attempt():
+        var perk_id: String = action.trim_prefix("perk:")
+        var taken: bool = Game.choose_perk_089(perk_id)
+        var perk: Dictionary = Game.PERKS_089.get(perk_id, {})
+        show_choice("NINTH / PERK %s" % ("CHOSEN" if taken else "UNAVAILABLE"), ("%s: %s" % [perk.get("name",""), perk.get("effect","")]) if taken else "No perk choice is available, the perk is already taken, or its attribute requirement is not met.", [go_back()])
+        return
+    if action.begins_with("level7:") and Game.has_attempt():
+        var kind: String = action.trim_prefix("level7:")
+        var chosen: bool = Game.choose_level7_bonus(kind)
+        show_choice("NINTH / LEVEL 7", ("You took %s. Open the docket to spend it." % ("one attribute point" if kind == "attribute" else "a fourth perk")) if chosen else "The level 7 bonus is not available.", [go_back()])
+        return
     if action.begins_with("attribute:") and Game.has_attempt():
         var stat_name: String = action.trim_prefix("attribute:")
         var upgraded: bool = Game.choose_attribute_075(stat_name)
-        show_choice("NINTH / ATTRIBUTE %s" % ("ALLOCATED" if upgraded else "UNAVAILABLE"),"Your chosen attribute rose by one permanent point in this attempt. Level 3 and Level 5 each provide one finite point." if upgraded else "You have no unspent attribute point, the stat is already at ten, or the stat name is invalid.",[go_back()])
+        show_choice("NINTH / ATTRIBUTE %s" % ("ALLOCATED" if upgraded else "UNAVAILABLE"),"Your chosen attribute rose by one permanent point in this attempt. Levels 3 and 5 each provide one point; level 7 can provide another." if upgraded else "You have no unspent attribute point, the stat is already at ten, or the stat name is invalid.",[go_back()])
         return
     if action.begins_with("market:") and Game.has_attempt():
         var which: String = action.trim_prefix("market:")
@@ -2022,6 +2045,10 @@ func _load_now() -> void:
     else:
         hud.notify("NO VALID ACTIVE SAVE")
 
+func _on_level_changed_089(new_level: int) -> void:
+    var reward: String = "choose a perk" if new_level in [2,4,6] else ("spend an attribute point" if new_level in [3,5] else "choose +1 attribute or a fourth perk")
+    hud.notify("LEVEL %d / %s IN THE DOCKET (TAB)" % [new_level, reward.to_upper()], 4.0)
+
 func _show_dossier() -> void:
     if not Game.has_attempt():return
     player.set_control_active(false)
@@ -2030,6 +2057,14 @@ func _show_dossier() -> void:
         for stat_name in ["Force","Reflex","Insight","Speech","Tech","Resolve"]:
             if Game.stat(stat_name) < 10:
                 options.append({"label":"SPEND ATTRIBUTE POINT / +1 %s" % stat_name.to_upper(),"action":"attribute:"+stat_name})
+    if Game.level7_choice_pending():
+        options.append({"label":"LEVEL 7 BONUS / +1 ATTRIBUTE POINT","action":"level7:attribute"})
+        options.append({"label":"LEVEL 7 BONUS / A FOURTH PERK","action":"level7:perk"})
+    if Game.perk_points_available() > 0:
+        for perk_id in Game.PERKS_089.keys():
+            if not Game.has_perk(perk_id):
+                var perk: Dictionary = Game.PERKS_089[perk_id]
+                options.append(check_option("PERK %s %s: %s" % [perk_id, str(perk["name"]).to_upper(), perk["effect"]], "perk:" + perk_id, Game.perk_check(perk_id)))
     hud.open_modal("CIVIC PRESSURE DOCKET",hud.dossier_text(),options)
 
 

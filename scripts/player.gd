@@ -195,8 +195,9 @@ func intervene() -> void:
     weapon_message.emit("EMERGENCY INTERVENTION / OUT OF REACH")
 
 func try_dash() -> void:
-    if not active or float(Game.state.get("breath",0.0))<14.0 or dash_time>0.0:return
-    Game.state["breath"]=float(Game.state["breath"])-14.0
+    var dash_cost: float = Game.dash_breath_cost()
+    if not active or float(Game.state.get("breath",0.0))<dash_cost or dash_time>0.0:return
+    Game.state["breath"]=float(Game.state["breath"])-dash_cost
     dash_time=0.24
 
 func fire_equipped() -> void:

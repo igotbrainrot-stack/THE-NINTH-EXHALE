@@ -2,6 +2,38 @@
 
 Full per-build notes, QA and open issues for every build since Build 02 are in `docs/builds/`.
 
+## 08.9 readable choices and RPG fixes (2026-11-20)
+
+Bible-conformance fixes for checks, progression, trust, the True Dawn lockout and the hearing. No art changes.
+
+**Checks (bible 7.1)**
+- A single `check_attribute()` shows the exact sum on every gated option, for example `[Speech 5 + buyers' contracts 2 = 7 / 7]`, `[Tech 1 / 5]` or `[Speech 6; public allocation record required]`.
+- Options you can't take yet stay visible but greyed out; previously they were clickable, or hidden in the Force 6 case.
+- The Ashmarket coalition now counts its documented evidence (+2), so Speech 5 qualifies, matching the bible's worked example.
+
+**Progression (bible 7.2)**
+- 165 XP is paid for only three unique Writs (495 max).
+- Advancement XP stops at 1,050, and any excess becomes run score.
+- Level-ups show a notice.
+- Perks are chosen at levels 2, 4 and 6, and level 7 offers +1 attribute or a fourth perk.
+- Six of the bible's 18 perks have working effects and are offered: F3 Anchor Hands, R2 Edge Runner, R3 Narrow Escape, S1 Common Ground, T2 Careful Isolation and V1 Count Breath. The rest need systems that don't exist yet (recoil, breaching, mods, dissonance).
+
+**Office Trust:** actions now adjust trust within −3 to +3. Previously the last action overwrote earlier history; for example, Venn's decision replaced the Growth trust earned from the Writ route.
+
+**True Dawn lockout**
+- The docket has a "Known final prerequisites" section: Writs, hearing, the three dawn items, all six constituencies (verified, open or closed with a reason), rail cohort and Energy/Labour reserve, plus Office Trust and perks.
+- Before any action that would leave fewer than the 3 constituencies the mandate needs, Ninth gets a confirmation explaining that True Dawn becomes impossible. Previously the lockout was silent.
+
+**Hearing balance**
+- Press displaces 13 integrity in the exposed phase but only 1 otherwise.
+- Attune displaces 6 in the rising phase and 5 otherwise, and repeating it tires the participant (+2 strain).
+- These values come from an exhaustive simulation. Repeating any single command fails on every seed, a phase-aware player passes every time with strain to spare, and the best lines use all four commands. Previously, repeating Attune always won.
+- The command hints say which phase each command suits.
+
+**UI:** long modal options wrap instead of widening the column, greyed-out options are readable, and the modal subtitle fits its frame.
+
+**Tests:** `tests/godot_rpg_089.tscn` adds 33 runtime checks. Four source-text pins were updated to the new code form of the same rules.
+
 ## 08.8 art wiring (2026-11-20)
 
 New Runway turnaround art from the owner's ART_ASSETS_1/2 ZIPs is now what the game renders, built with `tools/import_art_088.py`.

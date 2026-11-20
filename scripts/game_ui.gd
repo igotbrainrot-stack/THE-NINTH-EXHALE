@@ -726,7 +726,7 @@ func open_modal(heading: String, description: String, choices: Array) -> void:
     modal.add_child(title)
 
     var subtitle := Label.new()
-    subtitle.text = "CIVIC RECORD / CHOOSE A RESPONSE"
+    subtitle.text = "CIVIC RECORD"
     subtitle.position = Vector2(382, 14)
     subtitle.size = Vector2(156, 18)
     subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -781,16 +781,28 @@ func open_modal(heading: String, description: String, choices: Array) -> void:
     options.custom_minimum_size = Vector2(500, 0)
     options.add_theme_constant_override("separation", 6)
     scroll.add_child(options)
+    var focus_taken: bool = false
     for i in range(choices.size()):
         var choice = choices[i]
         var button := Button.new()
         button.text = str(choice.get("label", "Continue"))
         button.custom_minimum_size = Vector2(500, 32)
+        # Long labels (check sums, perk effects) wrap inside the 500 px column
+        # instead of widening it and forcing a sideways scroll.
+        button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
         _apply_button_style(button, i == 0)
+        # Bible 7.1: a check-gated option stays visible with its exact sum, but can
+        # only be attempted once it is met.
+        button.disabled = not bool(choice.get("enabled", true))
+        if button.disabled:
+            button.add_theme_color_override("font_disabled_color", Color("#3b362c"))
+            button.modulate = Color(1, 1, 1, 0.62)
+            button.tooltip_text = "Requirement not met yet"
         button.pressed.connect(_button_pressed.bind(str(choice.get("action", "close"))))
         options.add_child(button)
-        if i == 0:
+        if not button.disabled and not focus_taken:
             button.grab_focus()
+            focus_taken = true
 
     var footer := Label.new()
     footer.position = Vector2(16, 309)
@@ -843,12 +855,20 @@ func dossier_text() -> String:
     var lines: Array[String] = []
     lines.append("[color=#e9dcc0][b]NINTH / %s[/b][/color]    [color=#9fb7a4]ATTEMPT %s[/color]" % [str(Game.state["build"]), str(Game.state["attempt_id"])])
     lines.append("")
+    lines.append_array(_final_prerequisites_lines_089())
+    lines.append("")
     lines.append("[color=#bda77e][b]ATTRIBUTES[/b][/color]")
     lines.append("FORCE %s   REFLEX %s   INSIGHT %s   SPEECH %s   TECH %s   RESOLVE %s" % [attrs["Force"], attrs["Reflex"], attrs["Insight"], attrs["Speech"], attrs["Tech"], attrs["Resolve"]])
     lines.append("")
     lines.append("[color=#bda77e][b]RESOURCES[/b][/color]")
     lines.append("LEVEL %s   XP %s   VOUCHERS %s" % [Game.state["level"], Game.state["xp"], Game.state["inventory"]["vouchers"]])
-    lines.append("ATTRIBUTE POINTS TO SPEND: %d  /  LEVEL 3 + 5" % int(Game.state.get("unspent_attribute_points",0)))
+    lines.append("ATTRIBUTE POINTS TO SPEND: %d  /  PERK CHOICES: %d" % [int(Game.state.get("unspent_attribute_points",0)), Game.perk_points_available()])
+    var perk_names: Array[String] = []
+    for perk_id in Game.state.get("perks",[]):
+        if Game.PERKS_089.has(perk_id): perk_names.append("%s %s" % [perk_id, Game.PERKS_089[perk_id]["name"]])
+    lines.append("PERKS: %s" % (", ".join(perk_names) if not perk_names.is_empty() else "none yet (levels 2, 4, 6)"))
+    if int(Game.state.get("run_score_xp",0)) > 0:
+        lines.append("RUN SCORE BEYOND THE 1,050 XP CAP: %d" % int(Game.state["run_score_xp"]))
     lines.append("ENERGY %s / CORRECTION %s / BIOMASS %s / AIR %s / LABOUR %s" % [resources["Energy"], resources["Correction"], resources["Biomass"], resources["Air"], resources["Labour"]])
     lines.append("WARD ALLOCATION: HEARTH %s / CLAIMANT %s / IDLE %s" % [Game.state["ward_air"]["Hearth Nine"], Game.state["ward_air"]["Claimant Ward"], Game.state["ward_air"]["Reserve Capacity"]])
     lines.append("CINDER LUNG: %s    METHOD: %s" % ["INSTALLED" if bool(lung["installed"]) else "PENDING", str(lung["method"])])
@@ -918,3 +938,33 @@ func dossier_text() -> String:
     lines.append("STAGED ROSTERS: %s" % (", ".join(staged_now) if not staged_now.is_empty() else "none"))
     lines.append("[color=#90a190]Any three Writs, signed original archives and the Custodian resolution precede the public assembly. Liberation, Dominion and The Crown are never blocked by goodwill points. True Dawn requires three separate clues and explicit revocable consent.[/color]")
     return "\n".join(lines)
+
+## Bible 13 docket: "known final prerequisites" and Office Trust -3..+3.
+func _final_prerequisites_lines_089() -> Array[String]:
+    var out: Array[String] = []
+    var ok := func(v: bool) -> String: return "[color=#9fd18b]DONE[/color]" if v else "[color=#d9a05b]TODO[/color]"
+    var writs: int = Game.founding_writs_recorded_077().size()
+    var civic: Dictionary = Game.state.get("civic",{})
+    out.append("[color=#bda77e][b]KNOWN FINAL PREREQUISITES[/b][/color]")
+    out.append("%s  Three unique Writs from different offices (%d / 3)" % [ok.call(writs >= 3), mini(writs,3)])
+    out.append("%s  Public Echoform hearing passed" % ok.call(bool(Game.state.get("hearing",{}).get("passed",false))))
+    out.append("[color=#9fb7a4]TRUE DAWN ALSO NEEDS:[/color]")
+    out.append("%s  Orchard root seed   %s  Deep heat survey   %s  Governor's cipher" % [ok.call(bool(Game.state.get("growth",{}).get("root_seed_found",false))), ok.call(bool(Game.state.get("defence",{}).get("heat_survey_found",false))), ok.call(bool(Game.state.get("core",{}).get("cipher_copied",false)))])
+    if bool(civic.get("mandate_revoked",false)):
+        out.append("[color=#e07a63]CLOSED  The public mandate was revoked. True Dawn is no longer possible this attempt.[/color]")
+    else:
+        out.append("%s  Public mandate: 3 constituencies (%d still possible)" % [ok.call(bool(civic.get("mandate",false))), Game.constituencies_possible_089()])
+        for group in Game.CONSTITUENCY_NAMES_089.keys():
+            var status: String = Game.constituency_status_089(group)
+            var colour: String = "#9fd18b" if status == "verified" else ("#e07a63" if status.begins_with("closed") else "#d8d6c7")
+            out.append("      [color=%s]%s: %s[/color]" % [colour, Game.CONSTITUENCY_NAMES_089[group], status.to_upper()])
+        if Game.constituencies_possible_089() < 3:
+            out.append("[color=#e07a63]True Dawn is no longer possible: fewer than three constituencies can vote.[/color]")
+    out.append("%s  At least one cohort staged on the emergency rail   %s  Energy 3+ and Labour 2+ held back" % [ok.call(int(civic.get("staged_seats",0)) > 0), ok.call(int(Game.state["resources"].get("Energy",0)) >= 3 and int(Game.state["resources"].get("Labour",0)) >= 2)])
+    out.append("")
+    out.append("[color=#bda77e][b]OFFICE TRUST (-3 TO +3; NOT A MORALITY SCORE)[/b][/color]")
+    var trust: Array[String] = []
+    for office in ["Hearth Nine","Claimant Ward","Labour","Faith","Trade","Growth","Defence","Central Archive"]:
+        trust.append("%s %+d" % [office.to_upper(), int(Game.state["relationships"].get(office,0))])
+    out.append("   ".join(trust))
+    return out
