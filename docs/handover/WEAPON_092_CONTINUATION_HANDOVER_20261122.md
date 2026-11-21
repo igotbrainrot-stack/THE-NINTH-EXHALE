@@ -28,7 +28,7 @@ Production sources:
 
 The current idle strips are small positional variations (<=2 px) from a single master image, not fully authored mechanical idle animations. Reload, dry, draw and intervene use existing procedural fallbacks. Nail vent and Choir shutter ripple are not yet authored as image states.
 
-Muzzle/shell anchors are provisional. Recheck them in the rendered game. The capture harness currently calls `hud.set_weapon()` without beginning a Game attempt, so `update_hud()` displays the fallback label “COVENANT PISTOL” in all four weapon capture screenshots. This is a test-harness label defect; the weapon sprite itself changes. Fix the harness to initialise a test attempt or explicitly set the matching catalog label before captures.
+Muzzle/shell anchors are provisional. Recheck them in the rendered game. The capture harness label/timing defect was corrected in commit `b2b3bd585dbe1af8bd17ffb6c0e6e18cb2dd7019`: it now begins a Witness attempt, grants the four test weapons to the temporary test inventory, equips each weapon through `Game.equip_weapon()`, and captures 20 ms after fire so the 75 ms muzzle flash is still visible. This correction still needs a fresh rendered capture run for final visual sign-off.
 
 ## Engine and package
 Godot version: 4.4.1 stable Linux x86_64.
