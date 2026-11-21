@@ -41,18 +41,18 @@ jobs:
           GODOT=./Godot_v4.4.1-stable_linux.x86_64
           $GODOT --headless --path . res://tests/godot_scene_smoke_084.tscn
           $GODOT --headless --path . res://tests/godot_anim_092.tscn
-          $GODOT --headless --script res://tests/godot_weapon_art_092.gd --path .
+          $GODOT --headless --path . --script res://tests/godot_weapon_art_092.gd
           $GODOT --headless --path . res://tests/godot_perception_092.tscn
           $GODOT --headless --path . res://tests/godot_hud_override_091.tscn
       - name: Rendered combat playthrough
         env:
           GODOT: ${{ github.workspace }}/Godot_v4.4.1-stable_linux.x86_64
-          BOT_SECONDS: "90"
+          BOT_SECONDS: "420"
           BOT_POLICY: combat
           CAP_DIR: ${{ github.workspace }}/artifacts/package_playbot
         run: |
           mkdir -p "$CAP_DIR"
-          xvfb-run -a env LIBGL_ALWAYS_SOFTWARE=1 GODOT="$GODOT" BOT_SECONDS="$BOT_SECONDS" BOT_POLICY="$BOT_POLICY" CAP_DIR="$CAP_DIR" tools/playbot_090/run_playbot.sh "$CAP_DIR" 90
+          xvfb-run -a env LIBGL_ALWAYS_SOFTWARE=1 GODOT="$GODOT" BOT_SECONDS="$BOT_SECONDS" BOT_POLICY="$BOT_POLICY" CAP_DIR="$CAP_DIR" tools/playbot_090/run_playbot.sh "$CAP_DIR" 420
       - name: Assemble complete runnable project
         run: |
           mkdir -p package/THE_NINTH_EXHALE
