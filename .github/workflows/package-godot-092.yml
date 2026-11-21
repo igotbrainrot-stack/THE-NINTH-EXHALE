@@ -6,6 +6,10 @@ on:
     paths:
       - .github/workflows/package-godot-092.yml
       - docs/handover/PACKAGE_092_TRIGGER*.md
+      - scripts/game_ui.gd
+      - tests/godot_anim_092.gd
+      - README.md
+      - docs/handover/BUILD_092_COMPLETION_GAP_REGISTER.md
   workflow_dispatch:
 permissions:
   contents: read
