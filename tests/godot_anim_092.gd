@@ -5,7 +5,7 @@ extends Node
 ## one-shot holds, weapon state flow and fallbacks. Exits 1 on any failure.
 const A = preload("res://scripts/sprite_anim_092.gd")
 const DIR := "user://anim_092_test/"
-const DECLARED := 14
+const DECLARED := 18
 var passes: int = 0
 var failures: Array[String] = []
 
@@ -103,6 +103,25 @@ func _run() -> void:
     hud.weapon_event("reload", 1.8)
     check(hud.weapon_state_092 == "reload" and is_equal_approx(hud.weapon_speed_092, 1.0 / 1.8), "reload is time-scaled to the catalog's 1.8 s")
     check(hud.weapon_anchor_092("muzzle", Vector2.ZERO) == Vector2(400, 120) and hud.weapon_anchor_092("shell_port", Vector2.ZERO) == Vector2(470, 190), "muzzle and shell anchors come from the manifest")
+    hud.reload_clock = 0.0
+    hud.weapon_event("intervene", 0.16)
+    check(hud.intervene_active_092 and hud.weapon_state_092 == "idle" and hud.dry_kick == 0.0, "unpainted intervention has a distinct procedural state instead of dry-fire")
+    hud._advance_viewmodel(0.05)
+    var jab_offset: Vector2 = hud.intervene_offset_092
+    hud._advance_viewmodel(0.40)
+    check(jab_offset.length() > 20.0 and not hud.intervene_active_092 and hud.intervene_offset_092 == Vector2.ZERO, "procedural intervention thrusts forward and returns to neutral")
+    _json(DIR + "weapons/covenant/covenant.anim.json", {"cell": [64, 40], "anchors": {"muzzle": [400, 120], "shell_port": [470, 190]},
+        "procedural": {"recoil": 0.25, "reload_dip": false}, "states": {
+        "idle": {"frames": 4, "fps": 4, "loop": true}, "fire": {"frames": 4, "fps": 24, "loop": false},
+        "reload": {"frames": 12, "fps": 12, "loop": false}, "draw": {"frames": 5, "fps": 20, "loop": false},
+        "intervene": {"frames": 3, "fps": 18, "loop": false}}})
+    _strip(DIR + "weapons/covenant/covenant_intervene.png", 3, wcell, 40)
+    A.clear_cache()
+    hud.weapon_anim_092 = A.load_set("covenant", DIR + "weapons/")
+    hud.weapon_event("intervene", 0.16)
+    check(hud.weapon_state_092 == "intervene" and hud.intervene_active_092, "authored intervention strip overrides the procedural fallback")
+    hud._advance_viewmodel(0.40)
+    check(not hud.intervene_active_092 and hud.weapon_state_092 == "idle", "authored intervention completes and its event timer releases")
     A.root_dir = "res://assets/sprites/anim_092/"
     A.clear_cache()
     _cleanup(ProjectSettings.globalize_path(DIR))
