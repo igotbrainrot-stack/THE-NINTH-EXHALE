@@ -1,0 +1,82 @@
+{
+  "build": "09.2",
+  "branch": "feature/weapon-art-092-20261122",
+  "weapons": {
+    "covenant": {
+      "master": {
+        "task_id": "9f78791b-5b5d-4369-b93e-72fbc33be3ba",
+        "reference_file_id": "file_00000000e3ec820baf393e6540945580",
+        "url": "https://dnznrvs05pmza.cloudfront.net/gpt_image_2_6_sunburst/9f78791b-5b5d-4369-b93e-72fbc33be3ba/Create_a_production_quality_first_person_game_viewmodel_master_frame_by_faithfully_upgrading_the_exa_0.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMzcyYmIyNDViZjk2MzVkYyIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTM5OTM2NX0.910hgmXGxiazbIRfrr6y_66CIhG1fmJ5i80lqzx-bac",
+        "prompt": "Create a production-quality first-person game viewmodel master frame by faithfully upgrading the exact Covenant service pistol and right hand in the reference. Keep the same compact, flat-sided silhouette, low offset barrel, squared witness-counter housing ahead of the grip, pearl-grey maintenance key, and brown leather work glove with rolled, worn canvas cuff. The gun is a fictional civic-industrial service instrument, not a recognizable real firearm: matte charcoal blued steel slide, machined bevels, inset ceramic pressure block, tiny brass fasteners, narrow white mechanical witness tab, precise stamped-metal seams without any writing or numbers. Preserve the reference's lower-right first-person composition, muzzle pointing toward screen centre, glove naturally gripping the handle, forearm entering from bottom-right. High-end hand-painted 3D-rendered pixel-art hybrid: crisp silhouettes, controlled warm upper-left lighting, deep readable material separation, subtle edge wear, leather grain, clean anti-aliased alpha edges, restrained 1990s retro-FPS palette, high detail but clear at 640x400. One single image, no sheet, no grid, no multiple views. Full transparent background outside the weapon and hand. No muzzle flash, no smoke, no casings, no text, no logos, no numbers, no extra objects."
+      },
+      "fire": {
+        "task_id": "ce6451fb-5f09-45cf-aec8-817947eba028",
+        "reference_task_id": "9f78791b-5b5d-4369-b93e-72fbc33be3ba",
+        "url": "https://dnznrvs05pmza.cloudfront.net/gpt_image_2_6_sunburst/ce6451fb-5f09-45cf-aec8-817947eba028/Create_a_production_ready_2x2_weapon_fire_sprite_sheet_for_THE_NINTH_EXHALE__using_the_reference_as__0.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiZTMxNjA3OGQwOTY4Y2Q4YSIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTM2OTM1N30.KrEaYpvvY02ybGywh0ApUuCgshJTWBSqoOjB9Iw5brg",
+        "prompt": "Create a production-ready 2x2 weapon-fire sprite sheet for THE NINTH EXHALE, using the reference as the exact source of truth for the weapon design, hand, materials, perspective, lighting, size and lower-right first-person placement. The image is a strict 2-column by 2-row grid of four equal frames with NO gutters, NO borders, NO separators, NO labels and NO text. Each cell is one complete 16:9 viewmodel frame. Across the four frames show one continuous firing cycle for the same Covenant Pistol: frame 1 held ready; frame 2 the mechanical firing action begins, with the weapon moving slightly up/back and the appropriate moving part starting to travel; frame 3 peak recoil with the mechanism visibly completing its short travel; frame 4 the weapon and moving part return to the exact ready pose. The right hand and glove stay naturally attached and consistent, the camera and muzzle anchor remain fixed, no shape redesign or extra props. Keep the weapon and hand in the same lower-right area in every cell with identical scale and pivot. Do NOT add muzzle flash, smoke, sparks or shell casings; these are separate game effects. Preserve the restrained industrial-civic palette, crisp silhouette, detailed metal/ceramic/leather textures and readable separation at 640x400. True transparent background outside the weapon and hand in all four cells. No logos, text, numbers, watermark or extra objects."
+      },
+      "model": {
+        "task_id": "a55f8802-d854-4a84-9b7a-78b26c777981",
+        "triangles": 1446546,
+        "has_materials": true
+      }
+    },
+    "coil": {
+      "master": {
+        "task_id": "6c4a384f-b3cf-4bdc-b135-e6337b3503e0",
+        "reference_file_id": "file_000000008a70820b97afb4834b9274a7",
+        "url": "https://dnznrvs05pmza.cloudfront.net/gpt_image_2_6_sunburst/6c4a384f-b3cf-4bdc-b135-e6337b3503e0/Create_a_production_quality_first_person_game_viewmodel_master_frame_by_faithfully_upgrading_the_exa_0.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiOWI0M2I2ODRmYTRiMGYxYyIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTQyNDUxNn0.Q6gO2mXkxsF2uChR_AC8SZsoqp15ro0QiT5XMDsGfE8",
+        "prompt": "Create a production-quality first-person game viewmodel master frame by faithfully upgrading the exact Coil Shotgun in the reference, keeping its existing weapon identity and right-hand grip. It must read as a compressed rectangular industrial shutter-breaching tool, not a conventional shotgun: two long parallel ceramic-insulated conductor bars above an inset pale pressure-ceramic block, a broad gunwale-shaped lower grip, a visible layered cooling plate and compact heavy housing. Use matte charcoal blued steel with precise machined bevels, bone ceramic, muted teal-steel brackets and copper only at the actual conductor contacts. Preserve the reference's lower-right first-person composition and brown leather work glove with rolled stained canvas cuff; muzzle points toward screen centre. High-end hand-painted 3D-rendered pixel-art hybrid: clean strong silhouette, fine but controlled surface detail, readable material separation, subtle edge wear, realistic leather grain, crisp anti-aliased alpha edges, warm upper-left light, restrained 1990s retro-FPS palette, clearly readable at 640x400. One single image, no sheet or grid. Transparent background outside the weapon and hand. No muzzle flash, smoke, shell, text, logo, numerals or extra objects."
+      },
+      "fire": {
+        "task_id": "02fc9554-95d7-4f34-9350-5626af610830",
+        "reference_task_id": "6c4a384f-b3cf-4bdc-b135-e6337b3503e0",
+        "url": "https://dnznrvs05pmza.cloudfront.net/gpt_image_2_6_sunburst/02fc9554-95d7-4f34-9350-5626af610830/Create_a_production_ready_2x2_weapon_fire_sprite_sheet_for_THE_NINTH_EXHALE__using_the_reference_as__0.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiYTA2YzVmM2Y3OTAwMTEwNCIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTQwMjQzMX0.aEI8WdP2fq73bqARqGAUx8c-dqaxpigv4zGaiUHPb9s",
+        "prompt": "Create a production-ready 2x2 weapon-fire sprite sheet for THE NINTH EXHALE, using the reference as the exact source of truth for the weapon design, hand, materials, perspective, lighting, size and lower-right first-person placement. The image is a strict 2-column by 2-row grid of four equal frames with NO gutters, NO borders, NO separators, NO labels and NO text. Each cell is one complete 16:9 viewmodel frame. Across the four frames show one continuous firing cycle for the same Coil Shotgun: frame 1 held ready; frame 2 the mechanical firing action begins, with the weapon moving slightly up/back and the appropriate moving part starting to travel; frame 3 peak recoil with the mechanism visibly completing its short travel; frame 4 the weapon and moving part return to the exact ready pose. The right hand and glove stay naturally attached and consistent, the camera and muzzle anchor remain fixed, no shape redesign or extra props. Keep the weapon and hand in the same lower-right area in every cell with identical scale and pivot. Do NOT add muzzle flash, smoke, sparks or shell casings; these are separate game effects. Preserve the restrained industrial-civic palette, crisp silhouette, detailed metal/ceramic/leather textures and readable separation at 640x400. True transparent background outside the weapon and hand in all four cells. No logos, text, numbers, watermark or extra objects."
+      },
+      "model": {
+        "task_id": "4f383851-9b85-4ca2-b11a-decf1c04063e",
+        "triangles": 1455526,
+        "has_materials": true
+      }
+    },
+    "nail": {
+      "master": {
+        "task_id": "0497b8c2-8b03-4372-8fbb-f25d4322395c",
+        "reference_file_id": "file_00000000f054820bb57c7811a26b993b",
+        "url": "https://dnznrvs05pmza.cloudfront.net/gpt_image_2_6_sunburst/0497b8c2-8b03-4372-8fbb-f25d4322395c/Create_one_production_quality_first_person_game_viewmodel_master_frame_for_THE_NINTH_EXHALE__Use_the_0.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiYWUzMDNhZjU2NGQ4Y2VlNyIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTM5NDgwNX0.yyXEFBUzrpN8KR3XgqP3Cs7stm57lX6I27C8Orq9Q7g",
+        "prompt": "Create one production-quality first-person game viewmodel master frame for THE NINTH EXHALE. Use the reference ONLY for the brown leather work glove, stained rolled canvas cuff, camera angle, scale and lighting; design a distinct new weapon, not a pistol. The weapon is an asymmetric industrial pneumatic riveter: stepped rectangular upper body, right-side box-shaped feed cassette, three separate square service apertures in a staggered stepped profile, visible linear piston track, hinged protective recoil cage around the front actuator, and a small collection pan below the feed. Make each mechanical element clearly separable at 640x400. Materials: matte charcoal blued steel, bone ceramic insulators, muted oxide-teal brackets, a few restrained brass pins, worn dark steel feed latch, subtle oil staining. Keep the weapon in the lower-right first-person composition, pointing toward screen centre, with the gloved right hand gripping it. High-end hand-painted 3D-rendered pixel-art hybrid, crisp silhouette, fine controlled texture, readable contrast, warm upper-left light, detailed leather grain and machined edges. Transparent background outside the weapon and hand. No rotary barrel crown, no minigun, no military styling, no text, numbers, logos, flash, smoke, shell, grid or extra objects."
+      },
+      "fire": {
+        "task_id": "063d0230-3186-4f32-a642-754dea30c59d",
+        "reference_task_id": "0497b8c2-8b03-4372-8fbb-f25d4322395c",
+        "url": "https://dnznrvs05pmza.cloudfront.net/gpt_image_2_6_sunburst/063d0230-3186-4f32-a642-754dea30c59d/Create_a_production_ready_2x2_mechanical_animation_sprite_sheet_for_THE_NINTH_EXHALE_using_the_refer_0.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiM2ZhNTU1NzUyMjJkYjZiMyIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTM3NDMyNX0.Fxjsro6ca_m1rRDPy22NOcVQ8MoZ1CDo-ki7iTOV2w",
+        "prompt": "Create a production-ready 2x2 mechanical animation sprite sheet for THE NINTH EXHALE using the reference as the exact source of truth for the fictional industrial pneumatic riveter tool, right hand, glove, materials, perspective, lighting, scale and lower-right placement. Strict 2-column by 2-row grid of four equal 16:9 frames, no gutters, borders, separators, labels or text. Show one continuous safe mechanical actuator cycle: frame 1 tool at rest; frame 2 the visible linear piston begins to travel inside its protective recoil cage; frame 3 piston reaches full travel and the three square service apertures briefly open in sequence; frame 4 the piston and shutters return to the exact rest pose. This is a fictional industrial maintenance tool animation, not a real firearm: no projectile, no ammunition, no firing, no muzzle flash, no smoke, no violence. The same right hand and glove remain attached, same fixed camera and identical pivot and scale in all four frames. Crisp detailed charcoal steel, ceramic insulators, muted teal-steel brackets, tiny brass pins, readable machined surfaces at 640x400. True transparent background outside the tool and hand. No logos, numbers, words or extra objects."
+      },
+      "model": {
+        "task_id": "f0fb8078-36ab-4a3e-b6b6-42f38110bd2c",
+        "triangles": 1464250,
+        "has_materials": true
+      }
+    },
+    "choir": {
+      "master": {
+        "task_id": "6781a495-cd36-4917-b91f-edff3dda460d",
+        "reference_file_id": "file_00000000f054820bb57c7811a26b993b",
+        "url": "https://dnznrvs05pmza.cloudfront.net/gpt_image_2_6_sunburst/6781a495-cd36-4917-b91f-edff3dda460d/Create_one_production_quality_first_person_game_viewmodel_master_frame_for_THE_NINTH_EXHALE__Use_the_0.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMWQxM2Y3YjU2NTM5YzFlZSIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTQyNTQ2MX0.j2JsRQVEnfi97F1gnfQAMqaKakd_ha7o2JpA8qy8-iA",
+        "prompt": "Create one production-quality first-person game viewmodel master frame for THE NINTH EXHALE. Use the reference ONLY for the brown leather work glove, stained rolled canvas cuff, camera angle, scale and lighting; design a distinct new weapon, not a pistol. The weapon is a boxy acoustic cancellation frame: asymmetrical rectangular chassis, staggered rectangular waveguide ducts, three layered ceramic resonator shutters clearly visible in the forward assembly, a heavy fabric-wrapped lower handle, compact pressure-balanced housing and small service latches. The ducts must be rectangular stepped channels, never round pipes. Materials: matte charcoal steel, bone ceramic, muted teal-steel brackets, dark woven fabric, tiny justified brass fittings. Preserve a lower-right first-person composition with gloved right hand gripping the handle, muzzle assembly pointing toward screen centre. High-end hand-painted 3D-rendered pixel-art hybrid, strong unique silhouette, clean mechanical separation, controlled fine texture, readable contrast, warm upper-left light, machined edges and restrained wear. Transparent background outside the weapon and hand. No organ-pipe look, no ornate antique styling, no text, numbers, logos, flash, smoke, shell, grid or extra objects."
+      },
+      "fire": {
+        "task_id": "899889fe-83bc-4582-80b8-fed9cc4de134",
+        "reference_task_id": "6781a495-cd36-4917-b91f-edff3dda460d",
+        "url": "https://dnznrvs05pmza.cloudfront.net/gpt_image_2_6_sunburst/899889fe-83bc-4582-80b8-fed9cc4de134/Create_a_production_ready_2x2_weapon_fire_sprite_sheet_for_THE_NINTH_EXHALE__using_the_reference_as__0.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMmQwMmQxOWNjY2YwZTU2ZiIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTQxNTQ1Mn0.SAtQpEXwqhpCSlQ9TfvzXLo3Ald6K6bJm42Va3yjBGY",
+        "prompt": "Create a production-ready 2x2 weapon-fire sprite sheet for THE NINTH EXHALE, using the reference as the exact source of truth for the weapon design, hand, materials, perspective, lighting, size and lower-right first-person placement. The image is a strict 2-column by 2-row grid of four equal frames with NO gutters, NO borders, NO separators, NO labels and NO text. Each cell is one complete 16:9 viewmodel frame. Across the four frames show one continuous firing cycle for the same Choirbreaker: frame 1 held ready; frame 2 the mechanical firing action begins, with the weapon moving slightly up/back and the appropriate moving part starting to travel; frame 3 peak recoil with the mechanism visibly completing its short travel; frame 4 the weapon and moving part return to the exact ready pose. The right hand and glove stay naturally attached and consistent, the camera and muzzle anchor remain fixed, no shape redesign or extra props. Keep the weapon and hand in the same lower-right area in every cell with identical scale and pivot. Do NOT add muzzle flash, smoke, sparks or shell casings; these are separate game effects. Preserve the restrained industrial-civic palette, crisp silhouette, detailed metal/ceramic/leather textures and readable separation at 640x400. True transparent background outside the weapon and hand in all four cells. No logos, text, numbers, watermark or extra objects."
+      },
+      "model": {
+        "task_id": "54a95905-7dea-4586-8d3d-e3d0e597e024",
+        "triangles": 1487285,
+        "has_materials": true
+      }
+    }
+  }
+}
