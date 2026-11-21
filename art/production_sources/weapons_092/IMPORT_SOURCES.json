@@ -50,7 +50,7 @@
       "fire": {
         "task_id": "063d0230-3186-4f32-a642-754dea30c59d",
         "reference_task_id": "0497b8c2-8b03-4372-8fbb-f25d4322395c",
-        "url": "https://dnznrvs05pmza.cloudfront.net/gpt_image_2_6_sunburst/063d0230-3186-4f32-a642-754dea30c59d/Create_a_production_ready_2x2_mechanical_animation_sprite_sheet_for_THE_NINTH_EXHALE_using_the_refer_0.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiM2ZhNTU1NzUyMjJkYjZiMyIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTM3NDMyNX0.Fxjsro6ca_m1rRDPy22NOcVQ8MoZ1CDo-ki7iTOV2w",
+        "url": "https://dnznrvs05pmza.cloudfront.net/gpt_image_2_6_sunburst/063d0230-3186-4f32-a642-754dea30c59d/Create_a_production_ready_2x2_mechanical_animation_sprite_sheet_for_THE_NINTH_EXHALE_using_the_refer_0.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiM2ZhNTU1NzUyMjJkYjZiMyIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTM3NDMyNX0.Fxjsro6ca_mI1rRDPy22NOcVQ8MoZ1CDo-ki7iTOV2w",
         "prompt": "Create a production-ready 2x2 mechanical animation sprite sheet for THE NINTH EXHALE using the reference as the exact source of truth for the fictional industrial pneumatic riveter tool, right hand, glove, materials, perspective, lighting, scale and lower-right placement. Strict 2-column by 2-row grid of four equal 16:9 frames, no gutters, borders, separators, labels or text. Show one continuous safe mechanical actuator cycle: frame 1 tool at rest; frame 2 the visible linear piston begins to travel inside its protective recoil cage; frame 3 piston reaches full travel and the three square service apertures briefly open in sequence; frame 4 the piston and shutters return to the exact rest pose. This is a fictional industrial maintenance tool animation, not a real firearm: no projectile, no ammunition, no firing, no muzzle flash, no smoke, no violence. The same right hand and glove remain attached, same fixed camera and identical pivot and scale in all four frames. Crisp detailed charcoal steel, ceramic insulators, muted teal-steel brackets, tiny brass pins, readable machined surfaces at 640x400. True transparent background outside the tool and hand. No logos, numbers, words or extra objects."
       },
       "model": {
@@ -80,5 +80,5 @@
     }
   },
   "alpha_pipeline": "rembg/isnet-general-use",
-  "importer_revision": 2
+  "importer_revision": 3
 }
