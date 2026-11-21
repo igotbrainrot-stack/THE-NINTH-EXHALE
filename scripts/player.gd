@@ -11,6 +11,9 @@ signal escape_requested
 signal weapon_message(message: String)
 signal weapon_switched(id: String)
 signal weapon_anim(kind: String, duration: float)
+## Build 09.2: every noise the player makes reaches perceivers (sense_092.gd).
+const Perception092 = preload("res://scripts/perception_092.gd")
+var footstep_clock_092: float = 0.0
 ## Build 09.0: reticle marker feedback. killed is true when this hit dropped hp to 0.
 signal hit_confirmed_090(killed: bool)
 signal aim_prompt_changed(message: String)
@@ -87,6 +90,10 @@ func _input(event: InputEvent) -> void:
         elif event.physical_keycode==KEY_3:select_weapon("coil")
         elif event.physical_keycode==KEY_4:select_weapon("nail")
         elif event.physical_keycode==KEY_5:select_weapon("choir")
+        elif event.keycode==KEY_F3:
+            # 09.2 perception overlay: awareness and state over every enemy.
+            Perception092.debug = not Perception092.debug
+            weapon_message.emit("PERCEPTION OVERLAY / %s" % ("ON" if Perception092.debug else "OFF"))
         elif event.keycode==KEY_F10:
             Music.toggle_mute()
             weapon_message.emit("MUSIC / MUTED" if Music.muted else "MUSIC / ENABLED")
@@ -121,6 +128,11 @@ func _physics_process(delta: float) -> void:
     velocity.x=direction.x*speed
     velocity.z=direction.z*speed
     move_and_slide()
+    # Footsteps: walking is heard only close by, sprinting across a room.
+    footstep_clock_092 -= delta
+    if direction.length() > 0.0 and dash_time <= 0.0 and footstep_clock_092 <= 0.0:
+        footstep_clock_092 = 0.4 if sprinting else 0.55
+        Perception092.emit_noise(get_tree(), global_position, Perception092.NOISE_SPRINT if sprinting else Perception092.NOISE_WALK, "footsteps", false, self)
     if reloading:
         reload_remaining-=delta
         if reload_remaining<=0.0:
@@ -181,12 +193,13 @@ func intervene() -> void:
     if not active or not Game.has_attempt() or intervention_cooldown > 0.0 or reloading: return
     intervention_cooldown = 0.88
     _play_action_audio("metal_hit.wav",-11.0)
+    Perception092.emit_noise(get_tree(), global_position, Perception092.NOISE_MELEE, "scuffle", true, self)
     var origin: Vector3 = camera.global_position
     var query := PhysicsRayQueryParameters3D.create(origin,origin-camera.global_transform.basis.z*2.6)
     query.exclude = [get_rid()]
     query.collision_mask = 5
     var hit: Dictionary = get_world_3d().direct_space_state.intersect_ray(query)
-    weapon_anim.emit("dry",0.16)
+    weapon_anim.emit("intervene",0.16)   # 09.2: its own painted state; procedural as "dry"
     if not hit.is_empty():
         var target: Object = hit.get("collider")
         if is_instance_valid(target) and target.has_method("take_hit"):
@@ -202,6 +215,7 @@ func try_dash() -> void:
     if not active or float(Game.state.get("breath",0.0))<dash_cost or dash_time>0.0:return
     Game.state["breath"]=float(Game.state["breath"])-dash_cost
     dash_time=0.24
+    Perception092.emit_noise(get_tree(), global_position, Perception092.NOISE_DASH, "dash", false, self)
 
 func fire_equipped() -> void:
     if not Game.has_attempt() or current_fire_cooldown>0.0 or reloading:return
@@ -231,6 +245,7 @@ func fire_equipped() -> void:
     if id=="nail":
         Game.state["weapon_state"]["nail_heat"]=float(Game.state["weapon_state"].get("nail_heat",0.0))+float(spec["heat"])
         if float(Game.state["weapon_state"]["nail_heat"])>=90.0:nail_overheated=true
+    Perception092.emit_noise(get_tree(), global_position, float(Perception092.WEAPON_NOISE.get(id, 18.0)), "gunfire", true, self)
     shot_fired.emit(hit_enemy)
 
 func _resolve_shot(id: String, damage: int) -> bool:

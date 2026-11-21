@@ -73,4 +73,6 @@ func take_hit(damage: int) -> void:
     if hp > 0: Game.save_attempt() # Intimidation and injury survive reload.
     if hp == 0:
         if Game.kill_ossa():
+            # 09.2: a painted death plays and stays as silent remains, if delivered.
+            preload("res://scripts/sprite_anim_092.gd").spawn_death(get_parent(), global_position, "ossa", 0.0072)
             queue_free()

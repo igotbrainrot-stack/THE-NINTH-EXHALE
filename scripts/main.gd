@@ -12,6 +12,7 @@ const CoreBuilder076 = preload("res://scripts/core_builder_076.gd")
 const AssemblyBuilder078 = preload("res://scripts/assembly_builder_078.gd")
 const LiftBuilder = preload("res://scripts/lift_builder.gd")
 const OfficeEnforcer = preload("res://scripts/enemy.gd")
+const Perception092 = preload("res://scripts/perception_092.gd")
 const CombatTracer079X = preload("res://scripts/combat_tracer_079x.gd")
 const EnemyRoster068 = preload("res://scripts/enemy_roster_068.gd")
 const PressureFixture = preload("res://scripts/pressure_fixture.gd")
@@ -203,12 +204,23 @@ func _hook_named_witnesses_085() -> void:
         if is_instance_valid(witness) and witness.has_signal("threatened_085"):
             witness.connect("threatened_085",Callable(self,"_on_named_witness_threatened_085").bind(witness_name))
 
+## 09.2: the 08.5 shortcut (alert the district keeper by fiat) is replaced
+## by perception, as bible L1398 requires: the threatened civilian cries out,
+## and only office-holders who see the assault or hear the cry react. They turn
+## hostile, and record what they witnessed, only if they then see the attacker.
+## A keeper out of earshot never learns of it from this event.
 func _on_named_witness_threatened_085(witness_name: String) -> void:
     if not Game.has_attempt(): return
-    if is_instance_valid(guard) and int(guard.hp) > 0:
-        guard.anger()
+    var witness: Node3D = world.get_node_or_null(witness_name)
+    var at: Vector3 = witness.global_position if is_instance_valid(witness) else player.global_position
     player._play_action_audio("pressure_warning.wav",-10.0)
-    hud.notify("WITNESS UNDER THREAT / %s / DISTRICT SECURITY ALERTED" % witness_name.to_upper(),4.5)
+    Perception092.emit_noise(get_tree(), at, Perception092.NOISE_CRY, "cry_for_help", true, witness)
+    var heard_by: Array = Perception092.witness_assault(get_tree(), witness_name, at, player.global_position)
+    if heard_by.is_empty():
+        hud.notify("%s CRIES FOR HELP / NO OFFICE-HOLDER IN EARSHOT" % witness_name.to_upper(),4.5)
+    else:
+        var channel: String = str(heard_by[0][1])
+        hud.notify("%s CRIES FOR HELP / THE OFFICE %s IT" % [witness_name.to_upper(), "SAW" if channel == "SIGHT" else "HEARD"],4.5)
 
 func _setup_environmental_encounter_079(zone: String) -> void:
     if not Game.has_attempt() or zone not in ["hearth","sootworks","basilica"]: return
@@ -238,7 +250,10 @@ func _shutdown_environmental_encounter_079(zone: String, method: String) -> void
         pending_quiet_service_079 = ""
         pending_quiet_service_deadline_079 = 0
     if Game.shut_down_hazard_079(zone,method):
-        if is_instance_valid(service_hazard_079): service_hazard_079.call("confirm_shutdown")
+        if is_instance_valid(service_hazard_079):
+            service_hazard_079.call("confirm_shutdown")
+            if method != "quiet":
+                Perception092.emit_noise(get_tree(), service_hazard_079.global_position, Perception092.NOISE_BURST, "rupture", true)
         player._play_action_audio("mechanical_reload.wav",-12.0)
         hud.notify("%s / %s / SERVICE DISABLED / %s" % [zone.to_upper(),method.to_upper(),"1 ENERGY + 1 LABOUR" if method == "quiet" else "2 ENERGY"],3.1)
     else:
@@ -336,6 +351,7 @@ func _pressure_fixture_has_path_079z(point: Vector3, actor: Node3D) -> bool:
 
 func _on_pressure_fixture_burst(fixture_id: String, at: Vector3) -> void:
     if not Game.vent_pressure_fixture(fixture_id): return
+    Perception092.emit_noise(get_tree(), at, Perception092.NOISE_BURST, "pressure_burst", true)
     var distance: float = INF
     var affected: bool = false
     if is_instance_valid(guard):
@@ -439,7 +455,11 @@ func _nav_target() -> Dictionary:
         var civic: Dictionary = Game.state.get("civic",{})
         if not bool(civic.get("risk_disclosed",false)):
             return {"label":"PUBLIC RISK DISCLOSURE","pos":Vector3(-21,0,-14)}
-        if not bool(civic.get("petition_read",false)):
+        # 09.2: only route to the petition when the Ninth actually copied it in
+        # the Core. Under Latch or Voss it is never targeted there, and the
+        # marker used to strand players (and the playbot) at a console that can
+        # only answer NOT RECORDED.
+        if not bool(civic.get("petition_read",false)) and bool(Game.state.get("core",{}).get("voluntary_petition",false)):
             return {"label":"SIGNED PATIENT PETITION","pos":Vector3(-14,0,-14)}
         if Game.dawn_technical_prerequisites_078() and not bool(civic.get("mandate",false)):
             return {"label":"CIVIC WITNESS ROLLS","pos":Vector3(-7,0,-3)}

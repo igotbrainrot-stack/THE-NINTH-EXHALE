@@ -2,6 +2,56 @@
 
 Full per-build notes, QA and open issues for every build since Build 02 are in `docs/builds/`.
 
+## 09.2 GPT HUD art in game, immersive-sim phase 1, animation drop-ins (2026-11-22)
+
+This build sits on top of GPT's branch `feature/hud-091-art-assets-weapon-wip-20261121` (commit 8fc5e6f, the new HUD art in `assets/ui/hud_091/`) and includes its commits. Plan: `docs/research/` and the Project doc "Immersive sim integration plan".
+
+**GPT's HUD art, checked in game.**
+- The art loads through the 09.1 override slot with no code change; captures at 640×400 look right.
+- Two code fixes it exposed:
+  - The docket footer sat on the new bottom border; it now sits at y = 300 and the choice list stops above it.
+  - Re-laying-out notice slips crashed on `get_meta("move_tween", null)` (Godot 4.4 treats a null default as no default).
+- `tests/godot_hud_override_091` used to write and delete files in the real `assets/ui/hud_091/`, which would have destroyed delivered art (GPT flagged this). It now uses a scratch `user://` folder through the new `GameUI.art_override_dir`, and hashes the real art before and after.
+
+**Immersive sim, phase 1: deterministic perception (no dice; bible L699, POR-20).**
+- `scripts/perception_092.gd`:
+  - two vision cones (near 3.2 m/80°, main 13 m/50°)
+  - a line-of-sight ray
+  - analytic light from the room's lamps
+  - a motion factor (still, walking, sprinting)
+  - awareness rises and decays at fixed rates through suspicious (?), investigating (?!) and hostile (!)
+- **Noise is an event with a radius, not a timer.** Walking 2.4 m, sprinting 7.5 m, a dash 8.5 m, a scuffle 6 m, a cry for help 20 m, a pressure burst 20 m, and gunfire 12–26 m depending on the weapon. Walls almost halve how far a noise carries.
+- `scripts/sense_092.gd` gives every enemy a sense:
+  - **Patrols** look about on a fixed scan, turn to noises, walk to investigate, and give up on blocked leads.
+  - **Keepers** (Millwright and the other office-holders) ignore a stranger's presence. Gunfire alone never turns them; seeing or hearing an assault on a witness does.
+  - Distance-only waking is gone.
+- **The witness-threat response is now witnessed.** Before, hurting Brin or Ossa angered the district guard by fiat. Now the witness cries for help and only an office-holder who saw or heard it responds, recording `witness.092.*.assault_on_*` with the channel. Without one in earshot, the docket says so.
+- `F3` shows the perception debug labels.
+- Not in this phase: a room/portal sound graph, a navmesh, search behaviour after losing the player, runners or radios, Nix memory of sightings, a HUD "how visible am I" cue, and a ghost policy.
+
+**Animation drop-in slots (art is GPT's job; the game is ready for it).**
+- `scripts/sprite_anim_092.gd` loads `assets/sprites/anim_092/<stem>/<stem>.anim.json` plus strips `<stem>_<state>_<facing>.png` for enemies and NPCs.
+- Missing facings borrow the nearest painted facing. Missing states keep the old atlas.
+- Enemies play idle, walk, rush, alert, windup, attack, hurt and death. NPCs play idle, talk, listen, threatened and hurt.
+- Killed Brin or Ossa now leave silent remains playing their death strip (dead NPCs stay silent).
+- Weapons: `assets/weapons/anim_092/<weapon>/` with idle, fire, reload (time-fitted to the catalog), dry, draw and intervene. Muzzle-flash and shell anchors come from the manifest, and procedural recoil and the reload dip scale down when frames exist.
+- Briefs for GPT:
+  - `docs/handover/GPT_WEAPON_ANIMATION_HANDOVER_092.md`
+  - `docs/handover/GPT_SPRITE_ANIMATION_HANDOVER_092.md`
+- `tools/anim_092.py` slices sheets, checks deliveries (baseline, scale, frame counts, transparency) and writes GIF previews.
+
+**Fix: the Assembly marker no longer strands the player.** Under Archivist Latch or Marshal Voss the Core never routes to the patient petition, but the Assembly marker pointed at it anyway, where it can only answer NOT RECORDED. Found by the playbot, which looped there.
+
+**Tests**
+- New Godot suites:
+  - `tests/godot_perception_092.tscn` (25 checks: cones, light, cover, noise, keepers, witnessed assault, no dice)
+  - `tests/godot_anim_092.tscn` (14 checks)
+- New Python tests:
+  - `tests/test_build092_anim_tool.py`
+  - `tests/test_build092_assembly_route.py`
+- `test_build085_witness_intimidation.py` now asserts the guard is not angered by fiat; `godot_witness_threat_085` exits 1 on failure.
+- The playbot takes `BOT_POLICY=combat|pacifist`, logs sense transitions and checks every witness record has a living witness.
+
 ## 09.1 cleanup and HUD art hand-off (2026-11-21)
 
 **Smaller project.** The tracked files went from 372 MB to 304 MB. A fresh Godot import cache went from 183 MB to 91 MB.
