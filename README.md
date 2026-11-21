@@ -9,11 +9,11 @@ Original retro-style first-person RPG / roguelite set in the city of Vesper, bui
 1. Install Godot 4.4.x (standard, not .NET), or put the Godot executable next to `launch_linux.sh`.
 2. Linux: `./launch_linux.sh`. Any OS: open `project.godot` in the Godot Project Manager and press **F5**.
 
-Controls: WASD + mouse to move and look · LMB fire · R reload · 2–5 switch weapon · E interact · F / right-click intervene · TAB or ESC opens the dossier.
+Controls: WASD + mouse to move and look · LMB fire · R reload · 2–5 switch weapon · E interact · F / right-click intervene · TAB or ESC opens the dossier. In any docket, number keys 1–9 pick a choice and ←/→ or Q/E switch the dossier's tabs.
 
 ## Status
 
-Verified on 2026-11-20 with Godot 4.4.1 stable (Linux x86_64):
+Verified on 2026-11-21 with Godot 4.4.1 stable (Linux x86_64):
 
 | Check | Result |
 |---|---|
@@ -26,8 +26,11 @@ Verified on 2026-11-20 with Godot 4.4.1 stable (Linux x86_64):
 | `res://tests/godot_asset_runtime_087.tscn` (headless) | asset/icon/fallback-audio checks pass |
 | `res://tests/godot_rpg_089.tscn` (headless, exits 1 on failure) | 33/33 checks, perks, XP caps, trust, lockout warning, hearing balance |
 | `res://tests/godot_art_088.tscn` (headless, exits 1 on failure) | 39/39 actors render the 08.8 art |
+| `res://tests/godot_hud_090.tscn` (headless, exits 1 on failure) | 54/54 notice slips, stamps, keycaps, number keys, docket tabs, vignette, bar trail, hit marker, level-up reminder, hearing layout |
+| `res://tests/godot_prompts_090.tscn` (headless, exits 1 on failure) | all 122 interactables in 9 districts have written prompts that fit; all 45 route targets lead to something usable |
+| `tools/playbot_090/run_playbot.sh out/ 420` (rendered) | scripted playthrough: title → Liberation ending in ~6 min bot time; frames + log |
 | `res://tests/godot_codefix_regressions.tscn` (headless, exits 1 on failure) | 36/36 regression checks incl. HUD icon/border layout, clean exit |
-| Rendered 640x400 captures | gameplay HUD, Nail Storm heat, docket modal |
+| Rendered 640x400 captures | gameplay HUD, Nail Storm heat, docket modal, 09.0 slips/stamp/low-health/tabbed docket |
 
 **Not yet playtested by a person.** No full F5 playthrough, ending playthrough, audio check or frame-time measurement has been done on this build. The last build confirmed playable by hand was Build 03.
 

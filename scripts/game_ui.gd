@@ -64,6 +64,18 @@ var damage_flash_079: ColorRect
 var damage_time_079: float = 0.0
 var reticle_hit_clock_079: float = 0.0
 
+const HudFx090 = preload("res://scripts/hud_fx_090.gd")
+var fx: Control                          # Build 09.0 stamp / slips / vignette layer
+var prompt_keycap: Panel                 # "[E]" drawn as a key, not bracket text
+var prompt_keycap_label: Label
+var modal_buttons: Array[Button] = []    # number keys 1-9 pick these
+var modal_actions: Array[String] = []
+var modal_tabs: Array = []               # [{tab, text}] for the docket
+var modal_tab_index: int = 0
+var modal_tab_buttons: Array[Button] = []
+var modal_story: RichTextLabel
+var legend_clock: float = 0.0            # seconds of active play; legend fades at 45 s
+
 func _ready() -> void:
     add_to_group("game_ui")
     build_base()
@@ -184,39 +196,46 @@ func build_base() -> void:
     overlay.add_child(vignette)
 
     objective_panel = Panel.new()
-    objective_panel.position = Vector2(12, 10)
-    objective_panel.size = Vector2(356, 76)
+    # Build 09.0 compaction: the HUD used 35% of the 640x400 view. Panels are
+    # now sized to their content (about 15%) and the view stays open.
+    objective_panel.position = Vector2(8, 6)
+    objective_panel.size = Vector2(300, 60)
     objective_panel.add_theme_stylebox_override("panel", _hud086_skin("hud_frame_brass", Vector4(10, 7, 10, 8)))
     overlay.add_child(objective_panel)
 
-    _hud086_icon(objective_panel, "icon_writ", Vector2(10, 8), Vector2(15, 15))
+    _hud086_icon(objective_panel, "icon_writ", Vector2(9, 7), Vector2(12, 12))
     zone_label = Label.new()
-    zone_label.position = Vector2(29, 8)
-    zone_label.add_theme_font_size_override("font_size", 11)
+    zone_label.position = Vector2(25, 5)
+    zone_label.add_theme_font_size_override("font_size", 10)
     zone_label.add_theme_color_override("font_color", Color("#bda77e"))
     zone_label.text = "PRESSURE DOCKET / OBJECTIVE"
     objective_panel.add_child(zone_label)
-    zone_label.size = Vector2(318, 18)
+    zone_label.size = Vector2(268, 15)
+    zone_label.clip_text = true
+    zone_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 
     objective_label = Label.new()
-    objective_label.position = Vector2(12, 25)
+    objective_label.position = Vector2(10, 20)
     objective_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-    objective_label.add_theme_font_size_override("font_size", 13)
+    objective_label.add_theme_font_size_override("font_size", 11)
+    objective_label.add_theme_constant_override("line_spacing", -1)
     objective_label.add_theme_color_override("font_color", Color("#e6dcc5"))
     objective_label.max_lines_visible = 2
     objective_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
     objective_panel.add_child(objective_label)
-    objective_label.size = Vector2(330, 42)
+    objective_label.size = Vector2(282, 34)
 
     navigation_panel = Panel.new()
-    navigation_panel.position = Vector2(378, 10)
-    navigation_panel.size = Vector2(250, 54)
+    navigation_panel.position = Vector2(384, 6)
+    navigation_panel.size = Vector2(248, 28)
+    navigation_panel.tooltip_text = "ADVISORY ROUTE: points at the next machine, never a gate"
     navigation_panel.add_theme_stylebox_override("panel", _hud086_skin("hud_frame_steel", Vector4(10, 7, 10, 7)))
     overlay.add_child(navigation_panel)
 
     var nav_title := Label.new()
-    _hud086_icon(navigation_panel, "icon_route_arrow", Vector2(9, 7), Vector2(15, 15))
-    nav_title.position = Vector2(27, 8)
+    _hud086_icon(navigation_panel, "icon_route_arrow", Vector2(8, 8), Vector2(12, 12))
+    nav_title.position = Vector2(24, 6)
+    nav_title.visible = false   # the compass line itself says where to go
     nav_title.add_theme_font_size_override("font_size", 10)
     nav_title.add_theme_color_override("font_color", Color("#93b1a0"))
     nav_title.text = "ADVISORY ROUTE"
@@ -224,7 +243,7 @@ func build_base() -> void:
     nav_title.size = Vector2(170, 16)
 
     navigation = Label.new()
-    navigation.position = Vector2(12, 26)
+    navigation.position = Vector2(22, 6)
     navigation.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT
     navigation.add_theme_font_size_override("font_size", 11)
     navigation.add_theme_color_override("font_color", Color("#d9ead2"))
@@ -232,7 +251,7 @@ func build_base() -> void:
     navigation.clip_text = true
     navigation.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
     navigation_panel.add_child(navigation)
-    navigation.size = Vector2(226, 18)
+    navigation.size = Vector2(220, 16)
 
     reticle = TextureRect.new()
     reticle.texture = _hud086_texture("hud_reticle")
@@ -277,7 +296,7 @@ func build_base() -> void:
     overlay.add_child(shell)
 
     prompt_panel = Panel.new()
-    prompt_panel.position = Vector2(186, 282)
+    prompt_panel.position = Vector2(186, 236)
     prompt_panel.size = Vector2(268, 26)
     prompt_panel.visible = false
     prompt_panel.add_theme_stylebox_override("panel", _hud086_skin("hud_prompt_tab", Vector4(8, 4, 8, 4)))
@@ -291,16 +310,26 @@ func build_base() -> void:
     prompt_label.add_theme_color_override("font_color", Color("#e7dec8"))
     prompt_panel.add_child(prompt_label)
     prompt_label.size = Vector2(236, 16)
+    prompt_keycap = Panel.new()
+    prompt_keycap.name = "PromptKeycap"
+    prompt_keycap.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    prompt_keycap.add_theme_stylebox_override("panel", _keycap_style())
+    prompt_keycap.visible = false
+    prompt_panel.add_child(prompt_keycap)
+    prompt_keycap.position = Vector2(7, 5)
+    prompt_keycap.size = Vector2(17, 16)
+    prompt_keycap_label = _keycap_label(prompt_keycap, "E")
 
     vitals_panel = Panel.new()
-    vitals_panel.position = Vector2(10, 309)
-    vitals_panel.size = Vector2(238, 82)
+    vitals_panel.position = Vector2(8, 340)
+    vitals_panel.size = Vector2(204, 54)
     vitals_panel.add_theme_stylebox_override("panel", _hud086_skin("hud_frame_steel", Vector4(10, 8, 10, 8)))
     overlay.add_child(vitals_panel)
 
     var vitals_title := Label.new()
-    _hud086_icon(vitals_panel, "icon_health", Vector2(10, 5), Vector2(14, 14))
+    _hud086_icon(vitals_panel, "icon_health", Vector2(8, 7), Vector2(12, 12))
     vitals_title.position = Vector2(27, 6)
+    vitals_title.visible = false
     vitals_title.add_theme_font_size_override("font_size", 10)
     vitals_title.add_theme_color_override("font_color", Color("#9fb7a4"))
     vitals_title.text = "VITALS"
@@ -308,59 +337,62 @@ func build_base() -> void:
     vitals_title.size = Vector2(100, 14)
 
     hp_text = Label.new()
-    hp_text.position = Vector2(10, 20)
+    hp_text.position = Vector2(136, 5)
+    hp_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
     hp_text.add_theme_font_size_override("font_size", 11)
     hp_text.add_theme_color_override("font_color", Color("#f2d5bd"))
     vitals_panel.add_child(hp_text)
-    hp_text.size = Vector2(120, 14)
+    hp_text.size = Vector2(60, 15)
 
     hp_bar = ProgressBar.new()
-    hp_bar.position = Vector2(130, 22)
+    hp_bar.position = Vector2(24, 9)
     _apply_progress_style(hp_bar, Color("#b66c5a"))
     vitals_panel.add_child(hp_bar)
-    hp_bar.size = Vector2(96, 10)
+    hp_bar.size = Vector2(108, 9)
 
     # 08.7: Breath icon is a live HUD element, not an unused packaged variant.
-    _hud086_icon(vitals_panel, "icon_breath", Vector2(10, 38), Vector2(14, 14))
+    _hud086_icon(vitals_panel, "icon_breath", Vector2(8, 22), Vector2(12, 12))
     breath_text = Label.new()
-    breath_text.position = Vector2(27, 38)
+    breath_text.position = Vector2(136, 20)
+    breath_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
     breath_text.add_theme_font_size_override("font_size", 11)
     breath_text.add_theme_color_override("font_color", Color("#d5e6d3"))
     vitals_panel.add_child(breath_text)
-    breath_text.size = Vector2(101, 14)
+    breath_text.size = Vector2(60, 15)
 
     breath_bar = ProgressBar.new()
-    breath_bar.position = Vector2(130, 40)
+    breath_bar.position = Vector2(24, 24)
     _apply_progress_style(breath_bar, Color("#6e9780"))
     vitals_panel.add_child(breath_bar)
-    breath_bar.size = Vector2(96, 10)
+    breath_bar.size = Vector2(108, 9)
 
     meta_text = Label.new()
-    meta_text.position = Vector2(10, 56)
-    meta_text.add_theme_font_size_override("font_size", 10)
+    meta_text.position = Vector2(8, 35)
+    meta_text.add_theme_font_size_override("font_size", 9)
     meta_text.add_theme_color_override("font_color", Color("#cbbfa6"))
     vitals_panel.add_child(meta_text)
-    meta_text.size = Vector2(118, 16)
+    meta_text.size = Vector2(110, 13)
 
     # 08.7: Consumable indicator follows the existing ampoule counter.
-    _hud086_icon(vitals_panel, "icon_ampoule", Vector2(130, 56), Vector2(13, 13))
+    _hud086_icon(vitals_panel, "icon_ampoule", Vector2(124, 36), Vector2(11, 11))
     med_text = Label.new()
-    med_text.position = Vector2(148, 56)
+    med_text.position = Vector2(136, 35)
     med_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-    med_text.add_theme_font_size_override("font_size", 10)
+    med_text.add_theme_font_size_override("font_size", 9)
     med_text.add_theme_color_override("font_color", Color("#d0ddb7"))
     vitals_panel.add_child(med_text)
-    med_text.size = Vector2(78, 16)
+    med_text.size = Vector2(60, 13)
 
     weapon_panel = Panel.new()
-    weapon_panel.position = Vector2(391, 309)
-    weapon_panel.size = Vector2(239, 82)
+    weapon_panel.position = Vector2(428, 340)
+    weapon_panel.size = Vector2(204, 54)
     weapon_panel.add_theme_stylebox_override("panel", _hud086_skin("hud_frame_brass", Vector4(10, 8, 10, 8)))
     overlay.add_child(weapon_panel)
 
     var weapon_title := Label.new()
-    _hud086_icon(weapon_panel, "icon_ammo", Vector2(10, 5), Vector2(14, 14))
+    _hud086_icon(weapon_panel, "icon_ammo", Vector2(8, 7), Vector2(12, 12))
     weapon_title.position = Vector2(27, 6)
+    weapon_title.visible = false
     weapon_title.add_theme_font_size_override("font_size", 10)
     weapon_title.add_theme_color_override("font_color", Color("#bda77e"))
     weapon_title.text = "EQUIPMENT"
@@ -368,53 +400,63 @@ func build_base() -> void:
     weapon_title.size = Vector2(100, 14)
 
     weapon_name = Label.new()
-    weapon_name.position = Vector2(10, 20)
-    weapon_name.add_theme_font_size_override("font_size", 12)
-    weapon_name.add_theme_color_override("font_color", Color("#efe2c7"))
+    weapon_name.position = Vector2(24, 5)
+    weapon_name.add_theme_font_size_override("font_size", 10)
+    weapon_name.add_theme_color_override("font_color", Color("#bda77e"))
+    weapon_name.clip_text = true
     weapon_panel.add_child(weapon_name)
-    weapon_name.size = Vector2(160, 14)
+    weapon_name.size = Vector2(172, 15)
 
     ammo_text = Label.new()
-    ammo_text.position = Vector2(10, 38)
-    ammo_text.add_theme_font_size_override("font_size", 11)
-    ammo_text.add_theme_color_override("font_color", Color("#dfd6be"))
+    # Ammunition is the number read mid-fight, so it is the biggest type here.
+    ammo_text.position = Vector2(8, 19)
+    ammo_text.add_theme_font_size_override("font_size", 19)
+    ammo_text.add_theme_color_override("font_color", Color("#efe2c7"))
+    ammo_text.add_theme_color_override("font_outline_color", Color("#171918"))
+    ammo_text.add_theme_constant_override("outline_size", 2)
     weapon_panel.add_child(ammo_text)
-    ammo_text.size = Vector2(140, 16)
+    ammo_text.size = Vector2(104, 28)
 
     # 08.7: Heat icon is only visible when a heat-using weapon is equipped.
-    heat_icon_087 = _hud086_icon(weapon_panel, "icon_heat", Vector2(10, 56), Vector2(14, 14))
+    heat_icon_087 = _hud086_icon(weapon_panel, "icon_heat", Vector2(118, 35), Vector2(11, 11))
     heat_text = Label.new()
-    heat_text.position = Vector2(27, 56)
+    heat_text.position = Vector2(118, 20)
     heat_text.add_theme_font_size_override("font_size", 10)
     heat_text.add_theme_color_override("font_color", Color("#d2bc90"))
     weapon_panel.add_child(heat_text)
-    heat_text.size = Vector2(52, 14)
+    heat_text.size = Vector2(76, 13)
+    heat_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 
     heat_bar = ProgressBar.new()
-    heat_bar.position = Vector2(82, 58)
+    heat_bar.position = Vector2(132, 37)
     _apply_progress_style(heat_bar, Color("#c88c4e"))
     weapon_panel.add_child(heat_bar)
-    heat_bar.size = Vector2(145, 10)
+    heat_bar.size = Vector2(62, 8)
 
     hint_text = Label.new()
-    hint_text.position = Vector2(150, 38)
+    hint_text.position = Vector2(118, 33)
     hint_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
     hint_text.add_theme_font_size_override("font_size", 10)
     hint_text.add_theme_color_override("font_color", Color("#9eb79f"))
     weapon_panel.add_child(hint_text)
-    hint_text.size = Vector2(76, 16)
+    hint_text.size = Vector2(76, 14)
 
     action_strip = Label.new()
     # The old 272px-wide strip overlapped VITALS and EQUIPMENT at native 640x400.
     # Keep controls in the intentional 143px gap between the two lower panels.
-    action_strip.position = Vector2(250, 317)
+    # 09.0: a one-line control reminder between the panels. It fades once the
+    # player has been in control for a while (legend_clock) and is never shown
+    # over an interaction prompt.
+    action_strip.position = Vector2(214, 362)
     action_strip.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     action_strip.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-    action_strip.add_theme_font_size_override("font_size", 10)
+    action_strip.add_theme_font_size_override("font_size", 9)
     action_strip.add_theme_color_override("font_color", Color("#c8c7ae"))
-    action_strip.text = "[TAB] DOSSIER\n[E] INTERACT\n[F] INTERVENE\n[R] RELOAD"
+    action_strip.add_theme_color_override("font_outline_color", Color("#171918"))
+    action_strip.add_theme_constant_override("outline_size", 3)
+    action_strip.text = "TAB dossier · F intervene · R reload\nSHIFT sprint · 1 ampoule · 2–5 weapons"
     overlay.add_child(action_strip)
-    action_strip.size = Vector2(138, 70)
+    action_strip.size = Vector2(208, 28)
 
     banner_panel = Panel.new()
     banner_panel.position = Vector2(148, 88)
@@ -445,6 +487,12 @@ func build_base() -> void:
     overlay.move_child(gun, 1)
     overlay.move_child(muzzle, 2)
     overlay.move_child(shell, 3)
+    # Build 09.0 feedback layer sits above the viewmodel and under every panel,
+    # so the red pressure edge never tints the readouts.
+    fx = HudFx090.new()
+    overlay.add_child(fx)
+    overlay.move_child(fx, 4)
+    fx.setup(self)
     update_hud()
 
 func update_hud() -> void:
@@ -452,14 +500,14 @@ func update_hud() -> void:
         zone_label.text = "THE NINTH EXHALE / BUILD 08.7"
         objective_label.text = "Enter Hearth Nine and open the civic pressure docket."
         navigation.text = "NO ACTIVE ROUTE"
-        hp_text.text = "HP --"
-        breath_text.text = "BREATH --"
-        meta_text.text = "LEVEL --   XP --"
-        med_text.text = "AMPOULES --"
+        hp_text.text = "--"
+        breath_text.text = "--"
+        meta_text.text = "LEVEL --"
+        med_text.text = "× --"
         weapon_name.text = "COVENANT PISTOL"
-        ammo_text.text = "MAG --   RESERVE --"
-        hint_text.text = "2–5 SWITCH"
-        heat_text.text = "STATUS"
+        ammo_text.text = "-- / --"
+        hint_text.text = ""
+        heat_text.text = ""
         heat_bar.value = 0.0
         heat_bar.visible = false
         if is_instance_valid(heat_icon_087):
@@ -478,9 +526,9 @@ func update_hud() -> void:
     elif zone == "assembly": zone_name = "PUBLIC ASSEMBLY / LAST SIGNATURE"
     elif zone == "core": zone_name = "FREIGHT LIFT / CENTRAL ARCHIVES"
     elif zone == "lift": zone_name = "FREIGHT LIFT TRIAL"
-    zone_label.text = "%s / ACTIVE OBJECTIVE" % zone_name
+    zone_label.text = zone_name   # the panel itself is the objective; the suffix overflowed
 
-    var objective_text := "RETURN LUNG TO DR SELA / E" if bool(Game.state["lung"]["acquired"]) else "CONTEST THE HELD CINDER LUNG / REQUISITIONS"
+    var objective_text := "Bring the Cinder Lung to Dr Sela and install it." if bool(Game.state["lung"]["acquired"]) else "Contest the withheld Cinder Lung at the reserve requisitions desk."
     if zone == "hearth" and Game.intro_stage() != "stabilised":
         var intro_phase: String = Game.intro_stage()
         if intro_phase == "unwoken":
@@ -571,27 +619,46 @@ func update_hud() -> void:
     var health_max: int = Game.max_health()
     var breath_now: int = int(Game.state["breath"])
     var breath_max: int = Game.max_breath()
-    hp_text.text = "HP %d / %d" % [health_now, health_max]
-    breath_text.text = "BREATH %d / %d" % [breath_now, breath_max]
+    hp_text.text = "%d/%d" % [health_now, health_max]
+    breath_text.text = "%d/%d" % [breath_now, breath_max]
+    hp_text.add_theme_color_override("font_color", Color("#ff9b80") if health_now * 10 < health_max * 3 else Color("#f2d5bd"))
     hp_bar.value = 100.0 * float(health_now) / maxf(1.0, float(health_max))
     breath_bar.value = 100.0 * float(breath_now) / maxf(1.0, float(breath_max))
-    meta_text.text = "LEVEL %d   XP %d" % [int(Game.state["level"]), int(Game.state["xp"])]
-    med_text.text = "AMPOULES %d" % int(inventory["consumables"].get("Breath Ampoule", 0))
+    if is_instance_valid(fx):
+        fx.track_bar(hp_bar, hp_bar.value)
+        fx.track_bar(breath_bar, breath_bar.value)
+        fx.watch_state()
+    # Unspent level-up choices stay visible until spent in the docket.
+    var pending: int = int(Game.state.get("unspent_attribute_points", 0)) + Game.perk_points_available() + (1 if Game.level7_choice_pending() else 0)
+    if pending > 0:
+        meta_text.text = "LV %d · %d TO SPEND · TAB" % [int(Game.state["level"]), pending]
+        meta_text.add_theme_color_override("font_color", Color("#e0b46d"))
+    else:
+        meta_text.text = "LEVEL %d · %d XP" % [int(Game.state["level"]), int(Game.state["xp"])]
+        meta_text.add_theme_color_override("font_color", Color("#cbbfa6"))
+    med_text.text = "× %d  [1]" % int(inventory["consumables"].get("Breath Ampoule", 0))
 
     weapon_name.text = str(spec.get("name", "SERVICE TOOL")).to_upper()
-    ammo_text.text = "MAG %d   RESERVE %d" % [Game.weapon_mag(id), Game.weapon_reserve(id)]
-    hint_text.text = "R RELOAD"
+    var mag_now: int = Game.weapon_mag(id)
+    var mag_size: int = int(spec.get("mag", 1))
+    ammo_text.text = "%d / %d" % [mag_now, Game.weapon_reserve(id)]
+    ammo_text.add_theme_color_override("font_color", Color("#ff9b80") if mag_now * 4 <= mag_size else Color("#efe2c7"))
+    # The reload reminder appears only when it is useful.
+    hint_text.text = "R  RELOAD" if mag_now * 4 <= mag_size and Game.weapon_reserve(id) > 0 else ""
+    hint_text.add_theme_color_override("font_color", Color("#ff9b80"))
     if id == "nail":
         if is_instance_valid(heat_icon_087):
             heat_icon_087.visible = true
         heat_bar.visible = true
         heat_text.text = "HEAT"
+        hint_text.visible = false
         heat_bar.value = clampf(100.0 * float(Game.state["weapon_state"].get("nail_heat", 0.0)) / 90.0, 0.0, 100.0)
     else:
         if is_instance_valid(heat_icon_087):
             heat_icon_087.visible = false
         heat_bar.visible = false
-        heat_text.text = "2–5 SWITCH"
+        heat_text.text = ""
+        hint_text.visible = true
     if current_prompt == "":
         prompt_panel.visible = false
 
@@ -602,16 +669,72 @@ func set_navigation(label_text: String) -> void:
 func set_interact_prompt(message: String) -> void:
     current_prompt = message
     if not is_instance_valid(prompt_panel) or not is_instance_valid(prompt_label): return
-    prompt_label.text = message
+    # "[E] SPEAK TO BRIN" renders as a keycap plus the verb phrase.
+    var key: String = ""
+    var text: String = message
+    var m := RegEx.create_from_string("^\\[([A-Z0-9]{1,3})\\]\\s*(.*)$").search(message)
+    if m != null:
+        key = m.get_string(1)
+        text = m.get_string(2)
+    prompt_label.text = text
+    var icon: Node = prompt_panel.get_node_or_null("HUD086Icon_icon_interact")
+    if is_instance_valid(prompt_keycap):
+        prompt_keycap.visible = key != ""
+        prompt_keycap_label.text = key
+    if icon is CanvasItem: (icon as CanvasItem).visible = key == ""
     prompt_panel.visible = message != "" and not modal_open
 
+func _keycap_style() -> StyleBoxFlat:
+    var key := StyleBoxFlat.new()
+    key.bg_color = Color("#e6dcc5")
+    key.border_color = Color("#6b5530")
+    key.border_width_left = 1
+    key.border_width_right = 1
+    key.border_width_top = 1
+    key.border_width_bottom = 3
+    key.set_corner_radius_all(2)
+    return key
+
+func _keycap_label(cap: Control, text: String) -> Label:
+    var label := Label.new()
+    label.name = "KeyLegend"
+    label.text = text
+    label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+    label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+    label.add_theme_font_size_override("font_size", 10)
+    label.add_theme_color_override("font_color", Color("#171918"))
+    cap.add_child(label)
+    label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+    label.offset_bottom = -2
+    return label
+
+## Notices are filed as stacked slips (newest on top, three at most) so a new
+## message no longer overwrites the one the player was still reading. The
+## legacy banner keeps the last text for captures and saves.
 func notify(message: String, seconds: float = 4.0) -> void:
     banner.text = message
-    banner_panel.visible = true
-    banner_time = seconds
+    banner_time = 0.0
+    if is_instance_valid(fx):
+        fx.slip(message, seconds)
+    else:
+        banner_panel.visible = true
+        banner_time = seconds
+
+## Big milestones get the civic stamp instead of a slip.
+func stamp(title: String, detail: String = "") -> void:
+    if is_instance_valid(fx): fx.stamp(title, detail)
+
+func hit_confirmed_090(killed: bool) -> void:
+    if is_instance_valid(fx): fx.shot_result(true, killed)
 
 func _process(delta: float) -> void:
     banner_time -= delta
+    if Game.has_attempt() and not modal_open:
+        legend_clock += delta
+    if is_instance_valid(action_strip):
+        action_strip.modulate.a = clampf((45.0 - legend_clock) / 5.0, 0.0, 1.0)
+        action_strip.visible = action_strip.modulate.a > 0.01
     refresh_time -= delta
     _advance_viewmodel(delta)
     damage_time_079 = maxf(0.0,damage_time_079-delta)
@@ -695,7 +818,7 @@ func _advance_viewmodel(delta: float) -> void:
     else:
         shell.visible = false
 
-func open_modal(heading: String, description: String, choices: Array) -> void:
+func open_modal(heading: String, description: String, choices: Array, tabs: Array = []) -> void:
     close_modal(false)
     modal_open = true
     reticle.visible = false
@@ -703,6 +826,13 @@ func open_modal(heading: String, description: String, choices: Array) -> void:
     muzzle.visible = false
     shell.visible = false
     prompt_panel.visible = false
+    modal_buttons.clear()
+    modal_actions.clear()
+    modal_tab_buttons.clear()
+    modal_tabs = tabs
+    modal_tab_index = 0
+    var tabbed: bool = tabs.size() > 1
+    var many: bool = choices.size() >= 4
 
     modal_scrim = ColorRect.new()
     modal_scrim.color = Color(0, 0, 0, 0.48)
@@ -721,8 +851,17 @@ func open_modal(heading: String, description: String, choices: Array) -> void:
     title.text = heading
     title.position = Vector2(39, 10)
     title.size = Vector2(378, 28)
-    title.add_theme_font_size_override("font_size", 20)
+    title.clip_text = true
+    title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+    # Long headings shrink to fit rather than lose their end to an ellipsis.
+    var title_size: int = 20
+    var title_font: Font = title.get_theme_font("font")
+    while title_size > 14 and title_font.get_string_size(heading, HORIZONTAL_ALIGNMENT_LEFT, -1, title_size).x > title.size.x:
+        title_size -= 1
+    title.add_theme_font_size_override("font_size", title_size)
     title.add_theme_color_override("font_color", Color("#efe2c7"))
+    title.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.55))
+    title.add_theme_constant_override("shadow_offset_y", 1)
     modal.add_child(title)
 
     var subtitle := Label.new()
@@ -740,40 +879,53 @@ func open_modal(heading: String, description: String, choices: Array) -> void:
     line.color = Color("#8f6f3d")
     modal.add_child(line)
 
+    var story_top: float = 46.0
+    if tabbed:
+        _build_modal_tabs(tabs)
+        story_top = 66.0
+    var story_bottom: float = 162.0 if many else 212.0
+    # The tabbed docket trades one visible choice row for more record text.
+    if tabbed and many: story_bottom = 196.0
+    var options_y: float = story_bottom + 5.0 if many else 214.0
+    if tabbed and many: options_y = story_bottom - 16.0   # no "AVAILABLE ACTIONS" caption
+
     var story_backing := ColorRect.new()
-    story_backing.position = Vector2(12, 46)
-    story_backing.size = Vector2(532, 166)
+    story_backing.position = Vector2(12, story_top)
+    story_backing.size = Vector2(532, story_bottom - story_top)
     story_backing.color = Color("#171918")
     story_backing.color.a = 0.91
     story_backing.mouse_filter = Control.MOUSE_FILTER_IGNORE
     modal.add_child(story_backing)
 
     var story := RichTextLabel.new()
+    story.name = "ModalStory"
     story.bbcode_enabled = true
     story.fit_content = false
     story.scroll_active = true
-    story.position = Vector2(16, 52)
-    story.size = Vector2(524, 154)
-    story.add_theme_font_size_override("normal_font_size", 14)
+    story.position = Vector2(16, story_top + 6.0)
+    # Significant final choices should not all be hidden below a tiny
+    # 74-pixel scroll viewport, so four or more choices shorten the story.
+    story.size = Vector2(524, story_bottom - story_top - 12.0) if not many else Vector2(524, story_bottom - story_top - 6.0)
+    story.add_theme_font_size_override("normal_font_size", 13 if tabbed else 14)
+    story.add_theme_font_size_override("bold_font_size", 13 if tabbed else 14)
     story.add_theme_color_override("default_color", Color("#d8d6c7"))
-    story.text = description
+    story.text = str(tabs[0]["text"]) if tabbed else description
     modal.add_child(story)
+    modal_story = story
 
-    if choices.size() >= 4:
-        # Significant final choices should not all be hidden below a tiny
-        # 74-pixel scroll viewport. Preserve scroll for smaller screens.
-        story.size = Vector2(524,110)
     var options_title := Label.new()
-    options_title.position = Vector2(16, 167) if choices.size() >= 4 else Vector2(16, 214)
+    options_title.position = Vector2(16, options_y)
     options_title.size = Vector2(200, 18)
     options_title.text = "AVAILABLE ACTIONS"
+    options_title.visible = not (tabbed and many)
     options_title.add_theme_font_size_override("font_size", 10)
     options_title.add_theme_color_override("font_color", Color("#2a312e"))
     modal.add_child(options_title)
 
     var scroll := ScrollContainer.new()
-    scroll.position = Vector2(16, 187) if choices.size() >= 4 else Vector2(16, 234)
-    scroll.size = Vector2(524, 122) if choices.size() >= 4 else Vector2(524, 74)
+    scroll.position = Vector2(16, options_y + 20.0)
+    scroll.size = Vector2(524, 309.0 - options_y - 20.0)
+    scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
     modal.add_child(scroll)
 
     var options := VBoxContainer.new()
@@ -798,8 +950,13 @@ func open_modal(heading: String, description: String, choices: Array) -> void:
             button.add_theme_color_override("font_disabled_color", Color("#3b362c"))
             button.modulate = Color(1, 1, 1, 0.62)
             button.tooltip_text = "Requirement not met yet"
-        button.pressed.connect(_button_pressed.bind(str(choice.get("action", "close"))))
+        var action_id: String = str(choice.get("action", "close"))
+        button.pressed.connect(_button_pressed.bind(action_id))
         options.add_child(button)
+        modal_buttons.append(button)
+        modal_actions.append(action_id)
+        if i < 9:
+            _add_choice_key(button, str(i + 1))
         if not button.disabled and not focus_taken:
             button.grab_focus()
             focus_taken = true
@@ -808,17 +965,122 @@ func open_modal(heading: String, description: String, choices: Array) -> void:
     footer.position = Vector2(16, 309)
     footer.size = Vector2(524, 14)
     footer.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-    footer.text = "TAB or ESC returns here during play • This docket saves and records witnessed actions once"
+    var hint: String = "1-%d choose" % mini(9, choices.size()) if choices.size() > 1 else "1 or ENTER continues"
+    if tabbed: hint += " • ←/→ or Q/E switch tabs"
+    footer.text = hint + " • TAB or ESC returns here during play"
     footer.add_theme_font_size_override("font_size", 10)
     footer.add_theme_color_override("font_color", Color("#90a190"))
     modal.add_child(footer)
     Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
+    # Opening transition: the scrim and the docket fade in quickly so the
+    # change of mode reads, without delaying input.
+    modal_scrim.modulate.a = 0.0
+    modal.modulate.a = 0.0
+    var t := modal.create_tween().set_parallel(true)
+    t.tween_property(modal_scrim, "modulate:a", 1.0, 0.12)
+    t.tween_property(modal, "modulate:a", 1.0, 0.10)
+
+## Number keycap at the left of each choice; the style's left content margin is
+## widened so the label never runs under it.
+func _add_choice_key(button: Button, number: String) -> void:
+    for state in ["normal", "hover", "pressed", "focus", "disabled"]:
+        var box: StyleBox = button.get_theme_stylebox(state)
+        if box != null:
+            box = box.duplicate()
+            box.content_margin_left = 34.0
+            box.content_margin_right = 14.0
+            button.add_theme_stylebox_override(state, box)
+    var cap := Panel.new()
+    cap.name = "ChoiceKey"
+    cap.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    cap.add_theme_stylebox_override("panel", _keycap_style())
+    button.add_child(cap)
+    cap.anchor_top = 0.5
+    cap.anchor_bottom = 0.5
+    cap.offset_left = 10
+    cap.offset_right = 27
+    cap.offset_top = -8
+    cap.offset_bottom = 8
+    _keycap_label(cap, number)
+
+func _build_modal_tabs(tabs: Array) -> void:
+    var row := HBoxContainer.new()
+    row.name = "DocketTabs"
+    row.add_theme_constant_override("separation", 3)
+    modal.add_child(row)
+    row.position = Vector2(14, 45)
+    for i in range(tabs.size()):
+        var tab := Button.new()
+        tab.name = "DocketTab%d" % i
+        tab.text = str(tabs[i]["tab"])
+        tab.focus_mode = Control.FOCUS_NONE
+        tab.toggle_mode = true
+        tab.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+        tab.add_theme_font_size_override("font_size", 11)
+        tab.pressed.connect(select_modal_tab.bind(i))
+        row.add_child(tab)
+        tab.custom_minimum_size = Vector2(86, 18)
+        modal_tab_buttons.append(tab)
+    _style_modal_tabs()
+
+func _style_modal_tabs() -> void:
+    for i in range(modal_tab_buttons.size()):
+        var tab: Button = modal_tab_buttons[i]
+        var active: bool = i == modal_tab_index
+        var box := StyleBoxFlat.new()
+        box.bg_color = Color("#b38a4f") if active else Color("#2a312e", 0.92)
+        box.border_color = Color("#e1d1a6") if active else Color("#6c7468")
+        box.set_border_width_all(1)
+        box.border_width_bottom = 0 if active else 1
+        box.corner_radius_top_left = 3
+        box.corner_radius_top_right = 3
+        box.content_margin_left = 8
+        box.content_margin_right = 8
+        for state in ["normal", "hover", "pressed", "focus", "hover_pressed"]:
+            tab.add_theme_stylebox_override(state, box)
+        var ink: Color = Color("#171918") if active else Color("#d8d6c7")
+        for c in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color", "font_hover_pressed_color"]:
+            tab.add_theme_color_override(c, ink)
+        tab.set_pressed_no_signal(active)
+
+func select_modal_tab(index: int) -> void:
+    if modal_tabs.size() <= 1 or not is_instance_valid(modal_story): return
+    modal_tab_index = posmod(index, modal_tabs.size())
+    modal_story.text = str(modal_tabs[modal_tab_index]["text"])
+    modal_story.scroll_to_line(0)
+    _style_modal_tabs()
+
+## Keyboard shortcuts while a docket is open: 1-9 pick the numbered choice
+## (disabled ones are ignored), Left/Right or Q/E change docket tab.
+func _input(event: InputEvent) -> void:
+    if not modal_open or not (event is InputEventKey) or not event.pressed or event.echo:
+        return
+    var key: int = (event as InputEventKey).keycode
+    if key >= KEY_1 and key <= KEY_9:
+        var index: int = key - KEY_1
+        if index < modal_buttons.size() and is_instance_valid(modal_buttons[index]) and not modal_buttons[index].disabled:
+            get_viewport().set_input_as_handled()
+            modal_buttons[index].grab_focus()
+            _button_pressed(modal_actions[index])
+        return
+    if modal_tabs.size() > 1 and key in [KEY_LEFT, KEY_Q]:
+        select_modal_tab(modal_tab_index - 1)
+        get_viewport().set_input_as_handled()
+    elif modal_tabs.size() > 1 and key in [KEY_RIGHT, KEY_E]:
+        select_modal_tab(modal_tab_index + 1)
+        get_viewport().set_input_as_handled()
 
 func _button_pressed(action_id: String) -> void:
     action_selected.emit(action_id)
 
 func close_modal(show_game: bool = true) -> void:
     modal_open = false
+    modal_buttons.clear()
+    modal_actions.clear()
+    modal_tab_buttons.clear()
+    modal_tabs = []
+    modal_story = null
     if is_instance_valid(modal_scrim):
         modal_scrim.queue_free()
         modal_scrim = null
@@ -834,6 +1096,7 @@ func close_modal(show_game: bool = true) -> void:
 
 func impact_damage_079(amount: int) -> void:
     damage_time_079 = 0.22 + minf(0.13,float(amount)*0.004)
+    if is_instance_valid(fx): fx.damage_taken(amount)
 
 func animate_shot(hit: bool) -> void:
     if hit: reticle_hit_clock_079 = 0.12
@@ -842,12 +1105,22 @@ func animate_shot(hit: bool) -> void:
     recoil_strength = minf(1.75, recoil_strength + 1.0)
     shot_flash=0.065 if active_weapon != "nail" else 0.036
     shell_life = 0.42 if active_weapon in ["covenant", "nail"] else 0.0
-    if hit:
-        notify("TARGET / CONFIRMED IMPACT", 0.45)
+    # Hits are confirmed by the reticle marker (hit_confirmed_090), not a banner.
 
+## Build 09.0: the docket is read in four tabs. dossier_text() still returns
+## the whole record (save files, tests and the plain fallback use it).
 func dossier_text() -> String:
     if not Game.has_attempt():
         return "[b]No active reconstruction.[/b]"
+    var parts: Array[String] = []
+    for section in dossier_sections():
+        parts.append(str(section["text"]))
+    return "\n\n".join(parts)
+
+func dossier_sections() -> Array:
+    if not Game.has_attempt():
+        return [{"tab": "Goals", "text": "[b]No active reconstruction.[/b]"}]
+    var sections: Array = []
     var attrs: Dictionary = Game.state["attributes"]
     var resources: Dictionary = Game.state["resources"]
     var plan: Dictionary = Game.state["world_plan"]
@@ -856,7 +1129,8 @@ func dossier_text() -> String:
     lines.append("[color=#e9dcc0][b]NINTH / %s[/b][/color]    [color=#9fb7a4]ATTEMPT %s[/color]" % [str(Game.state["build"]), str(Game.state["attempt_id"])])
     lines.append("")
     lines.append_array(_final_prerequisites_lines_089())
-    lines.append("")
+    sections.append({"tab": "Goals", "text": "\n".join(lines)})
+    lines = []
     lines.append("[color=#bda77e][b]ATTRIBUTES[/b][/color]")
     lines.append("FORCE %s   REFLEX %s   INSIGHT %s   SPEECH %s   TECH %s   RESOLVE %s" % [attrs["Force"], attrs["Reflex"], attrs["Insight"], attrs["Speech"], attrs["Tech"], attrs["Resolve"]])
     lines.append("")
@@ -888,10 +1162,11 @@ func dossier_text() -> String:
     elif zone == "lift": zone_name = "Freight Lift (Two-Writ Trial)"
     lines.append("CURRENT DISTRICT: %s" % zone_name)
     lines.append("FOUNDING WRITS: %d / 3 REQUIRED (FIVE OFFICES) • %s" % [Game.founding_writs_recorded_077().size(), ", ".join(Game.founding_writs_recorded_077())])
+    sections.append({"tab": "The Ninth", "text": "\n".join(lines)})
+    lines = []
     var brin: Dictionary = Game.state.get("brin", {})
     var ossa: Dictionary = Game.state.get("ossa", {})
     var hearing: Dictionary = Game.state.get("hearing", {})
-    lines.append("")
     lines.append("[color=#bda77e][b]RELATIONSHIPS + RECORDS[/b][/color]")
     lines.append("BRIN: %s / %s / ALIVE %s" % [str(brin.get("stage", "unmet")), str(brin.get("decision", "")), str(brin.get("alive", true))])
     lines.append("OSSA: %s / %s / ALIVE %s" % [str(ossa.get("stage", "unmet")), str(ossa.get("decision", "")), str(ossa.get("alive", true))])
@@ -918,8 +1193,9 @@ func dossier_text() -> String:
     lines.append("WORKERS' RELIEF %s / INDEPENDENT CHOIR NOTES %s" % ["COPIED" if bool(discovered.get("sootworks_relief", false)) else "UNFOUND", "COPIED" if bool(discovered.get("basilica_notes", false)) else "UNFOUND"])
     lines.append("")
     lines.append("[color=#90a190]The transcript is preserved in the saved attempt, not a creature-ownership record.[/color]")
+    sections.append({"tab": "Records", "text": "\n".join(lines)})
+    lines = []
     var core: Dictionary = Game.state.get("core",{})
-    lines.append("")
     lines.append("[color=#bda77e][b]FULL FREIGHT LIFT / CENTRAL CORE[/b][/color]")
     lines.append("THREE-WRIT QUORUM %s / SIGNED ORDER %s / OBJECTION %s / RAIL CHARTER %s" % [str(Game.state.get("trade",{}).get("quorum_audit",false)),str(core.get("order_read",false)),str(core.get("objection_heard",false)),str(core.get("rail_read",false))])
     lines.append("CUSTODIAN %s / METHOD %s / FATE %s" % [str(Game.core_custodian()),str(core.get("custodian_method","")),str(core.get("custodian_fate",""))])
@@ -937,7 +1213,8 @@ func dossier_text() -> String:
         if bool(civic["staged_groups"][group]): staged_now.append(str(group))
     lines.append("STAGED ROSTERS: %s" % (", ".join(staged_now) if not staged_now.is_empty() else "none"))
     lines.append("[color=#90a190]Any three Writs, signed original archives and the Custodian resolution precede the public assembly. Liberation, Dominion and The Crown are never blocked by goodwill points. True Dawn requires three separate clues and explicit revocable consent.[/color]")
-    return "\n".join(lines)
+    sections.append({"tab": "Endgame", "text": "\n".join(lines)})
+    return sections
 
 ## Bible 13 docket: "known final prerequisites" and Office Trust -3..+3.
 func _final_prerequisites_lines_089() -> Array[String]:

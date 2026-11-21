@@ -11,6 +11,8 @@ signal escape_requested
 signal weapon_message(message: String)
 signal weapon_switched(id: String)
 signal weapon_anim(kind: String, duration: float)
+## Build 09.0: reticle marker feedback. killed is true when this hit dropped hp to 0.
+signal hit_confirmed_090(killed: bool)
 signal aim_prompt_changed(message: String)
 signal impact_event_079(at: Vector3, normal: Vector3, material_kind: String)
 signal tracer_event_079x(origin: Vector3, destination: Vector3, weapon_kind: String)
@@ -189,6 +191,7 @@ func intervene() -> void:
         var target: Object = hit.get("collider")
         if is_instance_valid(target) and target.has_method("take_hit"):
             target.take_hit(7)
+            _confirm_hit_090(target)
             shot_fired.emit(true)
             weapon_message.emit("EMERGENCY INTERVENTION / 7 IMPACT — KEEP MOVING")
             return
@@ -262,7 +265,12 @@ func _resolve_shot(id: String, damage: int) -> bool:
     var effective_range: float=float(spec["range"])
     var falloff: float=1.0 if distance<=effective_range else lerpf(1.0,0.40,clampf((distance-effective_range)/maxf(effective_range,1.0),0.0,1.0))
     target.take_hit(maxi(1,roundi(float(damage)*falloff)))
+    _confirm_hit_090(target)
     return true
+
+func _confirm_hit_090(target: Object) -> void:
+    if not is_instance_valid(target) or not ("hp" in target): return
+    hit_confirmed_090.emit(int(target.get("hp")) <= 0)
 
 func reload_weapon() -> void:
     if not Game.has_attempt() or reloading:return
@@ -324,8 +332,99 @@ func _prompt_for_interaction(id: String) -> String:
         "market_trade_registry": return "[E] FILE TRADE WRIT"
         "market_rain_cistern": return "[E] CHECK WATER ALLOTMENT"
         "quorum_audit_desk": return "[E] VERIFY THREE WRITS"
+        # 09.0: every remaining interactable gets a written verb + noun; the
+        # raw-id fallback showed "[E] FUTURE GATE" for the founding rails.
+        "ammo_locker": return "[E] CLAIM EMERGENCY SUPPLIES"
+        "clerk": return "[E] SPEAK TO THE REQUISITION CLERK"
+        "future_gate": return "[E] OPEN THE FOUNDING SERVICE RAILS"
+        "intake_quench": return "[E] VENT THE INTAKE QUENCH"
+        "lung_rack": return "[E] INSPECT THE RESERVE LUNG RACK"
+        "nix": return "[E] LISTEN TO NIX"
+        "oren": return "[E] SPEAK TO OREN"
+        "pressure_display": return "[E] READ THE WARD PRESSURE DISPLAY"
+        "slice_lift": return "[E] BOARD THE FREIGHT LIFT TRIAL"
+        "tech_panel": return "[E] OPEN THE MAINTENANCE BYPASS"
+        "labour_clerk": return "[E] SPEAK TO THE LABOUR CLERK"
+        "labour_registry": return "[E] OPEN THE LABOUR WRIT REGISTRY"
+        "millwright_order": return "[E] READ THE MILLWRIGHT'S ORDERS"
+        "payroll_cylinder": return "[E] INSPECT THE PAYROLL CYLINDER"
+        "sootworks_locker": return "[E] CLAIM THE DEFENCE RATION"
+        "sootworks_regulator": return "[E] OPEN THE HEAT ISOLATION BUS"
+        "sootworks_relief": return "[E] OPEN THE NIGHT-SHIFT RELIEF BOX"
+        "sootworks_service_bypass": return "[E] RELEASE THE SERVICE DOOR"
+        "sootworks_steam_diverter": return "[E] DIVERT THE STEAM"
+        "sootworks_weapon_rack": return "[E] ASK FOR A WORKER'S TOOL"
+        "workers_council": return "[E] ADDRESS THE WORKERS' COUNCIL"
+        "ashmarket_transfer": return "[E] RIDE THE RAIL TO ASHMARKET"
+        "basilica_transfer": return "[E] RIDE THE RAIL TO FLOOD BASILICA"
+        "sootworks_transfer": return "[E] RIDE THE RAIL TO SOOTWORKS"
+        "hearth_return": return "[E] RIDE THE RAIL TO HEARTH NINE"
+        "slice_return": return "[E] RIDE THE LIFT BACK TO HEARTH NINE"
+        "basilica_locker": return "[E] CLAIM THE FLOOD DEFENCE ISSUE"
+        "basilica_notes": return "[E] READ THE CHOIR'S COUNTER-RECORD"
+        "basilica_resonator": return "[E] TURN THE RESONATOR DIAL"
+        "basilica_side_passage": return "[E] TRY THE LAY-CHOIR SIDE LATCH"
+        "basilica_signal": return "[E] ISOLATE THE BELL GOVERNOR"
+        "cantor_order": return "[E] READ THE CANTOR'S ORDERS"
+        "faith_clerk": return "[E] SPEAK TO THE LAY COUNCIL ATTENDANT"
+        "faith_council": return "[E] ADDRESS THE LAY COUNCIL"
+        "faith_registry": return "[E] OPEN THE FAITH WRIT WICKET"
+        "hearing_station": return "[E] BEGIN THE PUBLIC HEARING"
+        "hymn_reel": return "[E] EXAMINE THE ORIGINAL HYMN REEL"
+        "market_broker": return "[E] SPEAK TO THE MARKET BROKER"
+        "market_emergency_locker": return "[E] CLAIM THE MARKET RATION"
+        "market_porter": return "[E] SPEAK TO THE PORTER"
+        "market_rain_hearing": return "[E] ATTEND THE WATER HEARING"
+        "orchard_control_sample": return "[E] TEST THE FRUIT IDENTITY SPOOL"
+        "orchard_feed_line": return "[E] DISCONNECT THE ROOT FEED"
+        "orchard_gardener": return "[E] OPEN THE GARDENER'S STATION"
+        "orchard_root_seed": return "[E] TAKE THE ORCHARD ROOT SEED"
+        "orchard_scientists": return "[E] CALL THE RESEARCHERS' VOTE"
+        "orchard_supplies": return "[E] CLAIM THE MEDICAL ISSUE"
+        "orchard_technician": return "[E] SPEAK TO THE CULTURE TECHNICIAN"
+        "orchard_writ": return "[E] OPEN THE GROWTH WRIT WICKET"
+        "venn": return "[E] SPEAK TO VENN OF GLASS"
+        "venn_aftermath": return "[E] VISIT THE NURSERY"
+        "venn_choice": return "[E] OPEN THE NURSERY AUTONOMY HEARING"
+        "venn_record": return "[E] READ THE NURSERY INSTRUCTION"
+        "barracks_casualty_roll": return "[E] COPY THE CASUALTY ROLL"
+        "barracks_commandant": return "[E] OPEN THE COMMANDANT'S TERMINAL"
+        "barracks_guard_roster": return "[E] CHECK THE WATCH ROSTER"
+        "barracks_heat_survey": return "[E] OPEN THE DEEP HEAT SURVEY"
+        "barracks_platoon_vote": return "[E] ADDRESS THE SOLDIERS' ASSEMBLY"
+        "barracks_signal": return "[E] INSPECT THE SIGNAL CABINET"
+        "barracks_supplies": return "[E] CLAIM THE DEFENCE ISSUE"
+        "barracks_watch": return "[E] SPEAK TO THE GATE WATCH OFFICER"
+        "barracks_writ": return "[E] OPEN THE DEFENCE WRIT REGISTRY"
+        "kest": return "[E] SPEAK TO KEST"
+        "kest_aftermath": return "[E] VISIT KEST'S STATION"
+        "kest_choice": return "[E] HEAR KEST'S TESTIMONY"
+        "kest_orders": return "[E] READ KEST'S PRINT ORDERS"
+        "kest_warrant": return "[E] EXAMINE THE FORGED WARRANT"
+        "edda": return "[E] SPEAK TO CANON EDDA"
+        "eddas_chamber": return "[E] ENTER THE WRIT HEARING"
+        "eddas_petition": return "[E] READ THE VOLUNTARY PETITION"
+        # 09.0: the Public Assembly and pressure switches had no written prompt,
+        # so the fallback showed raw ids such as "[E] ASSEMBLY VOTE CHOIR 078".
+        "assembly_risks_078": return "[E] DISCLOSE THE REAL RISKS"
+        "assembly_petition_078": return "[E] READ THE ORIGINAL PETITION"
+        "assembly_vote_clinic_078": return "[E] HEAR THE CLINIC'S TESTIMONY"
+        "assembly_vote_labour_078": return "[E] HEAR THE LABOUR WITNESSES"
+        "assembly_vote_choir_078": return "[E] HEAR THE CHOIR WITNESSES"
+        "assembly_vote_market_078": return "[E] HEAR THE TRADE WITNESSES"
+        "assembly_vote_growth_078": return "[E] HEAR THE GROWTH RESEARCHERS"
+        "assembly_vote_defence_078": return "[E] HEAR THE DEFENCE SOLDIERS"
+        "assembly_rail_patients_078": return "[E] REVIEW PATIENT RAIL ROSTER"
+        "assembly_rail_families_078": return "[E] REVIEW FAMILY RAIL REGISTER"
+        "assembly_rail_crews_078": return "[E] REVIEW REPAIR CREW ROLL"
+        "assembly_rail_claimant_078": return "[E] REVIEW CLAIMANT RAIL REQUESTS"
+        "assembly_return_078": return "[E] RETURN TO THE ARCHIVES"
         _:
-            return "[E] " + id.replace("_", " ").to_upper()
+            if id.ends_with("_switch_079"):
+                return "[E] ISOLATE PRESSURE CIRCUIT"
+            # Never show build tags ("_078") to the player.
+            var words: String = RegEx.create_from_string("_0\\d\\d[a-z]?$").sub(id, "")
+            return "[E] " + words.replace("_", " ").to_upper()
 
 func _refresh_aim_prompt() -> void:
     var origin: Vector3 = camera.global_position
@@ -349,7 +448,7 @@ func try_interact() -> void:
     query.collision_mask=1
     var result: Dictionary=get_world_3d().direct_space_state.intersect_ray(query)
     if result.is_empty():
-        weapon_message.emit("No service point in reach")
+        weapon_message.emit("NOTHING IN REACH / MOVE CLOSER")
         return
     var target: Object=result.get("collider")
     if is_instance_valid(target) and target.has_meta("interaction_id"):
@@ -357,7 +456,7 @@ func try_interact() -> void:
             if child.has_method("talk_079x"):
                 child.talk_079x()
         interact_requested.emit(str(target.get_meta("interaction_id")))
-    else:weapon_message.emit("No accessible docket on this object")
+    else:weapon_message.emit("NOTHING TO OPERATE HERE")
 
 func capture_position() -> void:
     if not Game.has_attempt():return

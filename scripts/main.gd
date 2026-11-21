@@ -55,6 +55,7 @@ func _ready() -> void:
     player.weapon_switched.connect(hud.set_weapon)
     player.weapon_anim.connect(hud.weapon_event)
     player.aim_prompt_changed.connect(hud.set_interact_prompt)
+    player.hit_confirmed_090.connect(hud.hit_confirmed_090)
     player.docket_requested.connect(_show_dossier)
     player.save_requested.connect(_save_now)
     player.load_requested.connect(_load_now)
@@ -375,14 +376,22 @@ func _nav_target() -> Dictionary:
                 return {"label":"PUBLIC ARCHIVE","pos":Vector3(-6,0,-11.3)}
             return {"label":"RESERVE LUNG","pos":Vector3(13,0,9)}
         if Game.can_register_three_writ_quorum():
-            return {"label":"THREE-WRIT AUTHENTICATION","pos":Vector3(7.1,0,14)}
+            # 09.0: was Vector3(7.1,0,14), an empty spot; the desk is at (22,0,-5).
+            return {"label":"THREE-WRIT AUTHENTICATION","pos":Vector3(22,0,-5)}
         return {"label":"FIVE FOUNDING SERVICE RAILS","pos":Vector3(2.7,0,14)}
     if zone == "sootworks":
         if not bool(Game.state["brin"].get("payroll_seen",false)):
             return {"label":"PAYROLL CYLINDER","pos":Vector3(-20,0,-12)}
-        if str(Game.state["brin"].get("decision","")) == "" and bool(Game.state["brin"].get("alive",true)):
+        var brin_nav: Dictionary = Game.state["brin"]
+        if str(brin_nav.get("decision","")) == "" and bool(brin_nav.get("alive",true)):
+            # 09.0: after the investigation Brin sends Ninth to the stewards; the
+            # route used to keep pointing at him, a dead end with only "Close".
+            if str(brin_nav.get("stage","")) == "investigated":
+                return {"label":"WORKERS' COUNCIL","pos":Vector3(-7,0,-16)}
             return {"label":"BRIN HARKER","pos":Vector3(-11,0,6)}
         if not Game.state["writs"].has("qobj_writ_of_labour"):
+            if str(brin_nav.get("decision","")) == "help" and bool(brin_nav.get("alive",true)):
+                return {"label":"WORKERS' COUNCIL","pos":Vector3(-7,0,-16)}
             return {"label":"LABOUR PUBLIC REGISTRY","pos":Vector3(-20,0,15)}
         return {"label":"RETURN SERVICE RAIL","pos":Vector3(-20,0,20)}
     if zone == "basilica":
@@ -941,11 +950,31 @@ func _on_interact(interaction_id: String) -> void:
                 show_choice("THREE-WRIT QUORUM / NOT READY", "Install the Lung, authenticate any THREE distinct Writs from the five founding offices, and complete the public hearing. The two-Writ Edda trial remains a separate prototype.",[go_back()])
         "future_gate":
             if bool(Game.state["lung"]["installed"]):
-                show_choice("RAIL ACCESS / FIVE FOUNDING OFFICES", "All five district offices now have physical Writ registries. Any three independent Writs can satisfy the central charter; the remaining offices are optional but still reachable.", [{"label":"TRAVEL TO SOOTWORKS / LABOUR","action":"travel:sootworks"},{"label":"TRAVEL TO FLOOD BASILICA / FAITH","action":"travel:basilica"},{"label":"TRAVEL TO ASHMARKET / TRADE","action":"travel:ashmarket"},{"label":"TRAVEL TO GLASS ORCHARD / GROWTH","action":"travel:orchard"},{"label":"TRAVEL TO QUIET BARRACKS / DEFENCE","action":"travel:barracks"},go_back()])
+                show_choice("RAIL ACCESS / FIVE FOUNDING OFFICES", "All five district offices now have physical Writ registries. Any three independent Writs can satisfy the central charter; the remaining offices are optional but still reachable.", _founding_rail_options_090())
             else:
                 show_choice("HEARTH NINE / FIRST OBLIGATION", "Install the contested Cinder Lung before leaving the ward to pursue founding Writs.",[go_back()])
         _:
             show_choice("UNREGISTERED SERVICE", "No authored interaction is attached to this object.",[go_back()])
+
+## 09.0: the five rail options say which Writs Ninth already holds, so a
+## returning player does not have to remember which districts are finished.
+func _founding_rail_options_090() -> Array:
+    var rows: Array = [
+        ["TRAVEL TO SOOTWORKS / LABOUR", "travel:sootworks", "qobj_writ_of_labour"],
+        ["TRAVEL TO FLOOD BASILICA / FAITH", "travel:basilica", "qobj_writ_of_faith"],
+        ["TRAVEL TO ASHMARKET / TRADE", "travel:ashmarket", "qobj_writ_of_trade"],
+        ["TRAVEL TO GLASS ORCHARD / GROWTH", "travel:orchard", "qobj_writ_of_growth"],
+        ["TRAVEL TO QUIET BARRACKS / DEFENCE", "travel:barracks", "qobj_writ_of_defence"]]
+    var open_rows: Array = []
+    var held_rows: Array = []
+    for row in rows:
+        var held: bool = Game.state["writs"].has(row[2])
+        var label: String = str(row[0]) + ("  ·  WRIT HELD" if held else "")
+        (held_rows if held else open_rows).append({"label": label, "action": str(row[1])})
+    # Offices still to visit come first; finished ones stay reachable.
+    var out: Array = open_rows + held_rows
+    out.append(go_back())
+    return out
 
 func orchard_interaction_077(interaction_id: String) -> void:
     var growth: Dictionary = Game.state.get("growth",{})
@@ -1235,7 +1264,7 @@ func sootworks_interaction(interaction_id: String) -> void:
             else:
                 show_choice("SOOTWORKS / FINITE DEFENCE STOCK", "24 physical Ledger Slugs and two medical ampoules, one issued lot. The stock is not refreshed by travelling between districts.",[{"label":"CLAIM ONE-TIME DEFENCE ISSUE","action":"soot:ration"},go_back()])
         _:
-            show_choice("UNREGISTERED LABOUR SERVICE", "This machine has no authored action in Build 04.",[go_back()])
+            show_choice("UNREGISTERED LABOUR SERVICE", "This machine is not part of the Labour office record.",[go_back()])
 
 func basilica_interaction(interaction_id: String) -> void:
     if interaction_id == "basilica_notes":
@@ -1343,7 +1372,15 @@ func hearing_choices(note: String) -> void:
         {"label":"BRACE / cushion the next field response","action":"hearing:Brace"},
         {"label":"OBSERVE / document a signal rhythm","action":"hearing:Observe"},
         {"label":"WITHDRAW / free retry remains available","action":"hearing:Withdraw"}]
-    show_choice("PUBLIC HEARING / FIVE CIVIC COMMANDS",note+"\n\n"+Game.hearing_summary(),options)
+    # 09.0: the live state (field, strain, the opponent's phase) leads the
+    # docket. It used to sit under the flavour text, below the visible area
+    # once five commands were listed, so players chose blind.
+    var status: String = Game.hearing_summary()
+    var lines: PackedStringArray = status.split("\n")
+    for i in range(lines.size()):
+        if lines[i].begins_with("OPPONENT: "):
+            lines[i] = "[color=#e0b46d][b]%s[/b][/color]" % lines[i]
+    show_choice("PUBLIC HEARING / FIVE CIVIC COMMANDS","\n".join(lines)+"\n\n"+note,options)
 
 func ossa_aftermath_text() -> String:
     if not bool(Game.state["ossa"]["alive"]):
@@ -1707,7 +1744,8 @@ func _on_action(action: String) -> void:
         var way: String = action.trim_prefix("trade:")
         var legal: bool = Game.register_three_writ_quorum() if way == "quorum_audit" else Game.grant_trade_writ(way)
         var message: String = "Three unique founding Writs and the hearing are VERIFIED. Return to the public authentication desk and enter the Freight Lift of Names. Any three of five offices qualify." if way == "quorum_audit" else "The durable Trade Writ was transferred once. The register records HOW it changed hands and the Collector cannot erase it."
-        show_choice("TRADE OFFICE / %s" % ("RECORDED" if legal else "TRANSFER REJECTED"),message if legal else "The required independent evidence, skill, public authority, defeated keeper or technical isolation has not been recorded. Other routes remain available.",[go_back()])
+        var heading: String = ("THREE-WRIT QUORUM / %s" % ("VERIFIED" if legal else "NOT YET VERIFIED")) if way == "quorum_audit" else ("TRADE OFFICE / %s" % ("RECORDED" if legal else "TRANSFER REJECTED"))
+        show_choice(heading,message if legal else "The required independent evidence, skill, public authority, defeated keeper or technical isolation has not been recorded. Other routes remain available.",[go_back()])
         return
     if action == "core:enter":
         player.capture_position()
@@ -2065,7 +2103,7 @@ func _show_dossier() -> void:
             if not Game.has_perk(perk_id):
                 var perk: Dictionary = Game.PERKS_089[perk_id]
                 options.append(check_option("PERK %s %s: %s" % [perk_id, str(perk["name"]).to_upper(), perk["effect"]], "perk:" + perk_id, Game.perk_check(perk_id)))
-    hud.open_modal("CIVIC PRESSURE DOCKET",hud.dossier_text(),options)
+    hud.open_modal("CIVIC PRESSURE DOCKET",hud.dossier_text(),options,hud.dossier_sections())
 
 
 func _exit_tree() -> void:
