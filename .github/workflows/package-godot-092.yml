@@ -5,6 +5,7 @@ on:
       - feature/weapon-art-092-20261122
     paths:
       - .github/workflows/package-godot-092.yml
+      - docs/handover/PACKAGE_092_TRIGGER*.md
   workflow_dispatch:
 permissions:
   contents: read
