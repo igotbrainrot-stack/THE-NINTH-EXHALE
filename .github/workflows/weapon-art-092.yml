@@ -71,6 +71,7 @@ jobs:
           path: |
             docs/handover/WEAPON_092_CONTACT_SHEET.png
             docs/handover/WEAPON_092_BEFORE_AFTER.png
+            docs/handover/WEAPON_092_ALPHA_MASKS.png
             docs/handover/WEAPON_092_QA.md
             docs/handover/WEAPON_092_PREVIEWS
             artifacts/weapon_capture_092
