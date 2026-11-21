@@ -26,7 +26,9 @@ Verified on 2026-11-21 with Godot 4.4.1 stable (Linux x86_64):
 | `res://tests/godot_asset_runtime_087.tscn` (headless) | asset/icon/fallback-audio checks pass |
 | `res://tests/godot_rpg_089.tscn` (headless, exits 1 on failure) | 33/33 checks, perks, XP caps, trust, lockout warning, hearing balance |
 | `res://tests/godot_art_088.tscn` (headless, exits 1 on failure) | 39/39 actors render the 08.8 art |
-| `res://tests/godot_hud_090.tscn` (headless, exits 1 on failure) | 46/46 notice slips, stamps, keycaps, number keys, docket tabs, vignette, bar trail, hit marker |
+| `res://tests/godot_hud_090.tscn` (headless, exits 1 on failure) | 54/54 notice slips, stamps, keycaps, number keys, docket tabs, vignette, bar trail, hit marker, level-up reminder, hearing layout |
+| `res://tests/godot_prompts_090.tscn` (headless, exits 1 on failure) | all 122 interactables in 9 districts have written prompts that fit; all 45 route targets lead to something usable |
+| `tools/playbot_090/run_playbot.sh out/ 420` (rendered) | scripted playthrough: title → Liberation ending in ~6 min bot time; frames + log |
 | `res://tests/godot_codefix_regressions.tscn` (headless, exits 1 on failure) | 36/36 regression checks incl. HUD icon/border layout, clean exit |
 | Rendered 640x400 captures | gameplay HUD, Nail Storm heat, docket modal, 09.0 slips/stamp/low-health/tabbed docket |
 

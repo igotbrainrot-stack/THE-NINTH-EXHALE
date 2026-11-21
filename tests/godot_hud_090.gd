@@ -75,6 +75,29 @@ func _slips(hud) -> void:
         for p in [hud.objective_panel, hud.navigation_panel, hud.vitals_panel, hud.weapon_panel]:
             if r.intersects(p.get_global_rect()): clash.append("%s x %s" % [r, p.name])
     check(clash.is_empty(), "slips sit clear of HUD panels %s" % [clash])
+    hud.notify("PRESSURE CRAWLER STOPPED / FIND THE MANUAL VALVE AT THE NORTH DOOR", 4.0)
+    hud.notify("ENFORCER DOWN / WITNESS RECORDED. Ask clerk for the reserve.", 4.0)
+    await get_tree().create_timer(0.35).timeout
+    var stacked: Array[String] = []
+    for i in range(hud.fx.slips.size()):
+        for j in range(i + 1, hud.fx.slips.size()):
+            var ra: Rect2 = hud.fx.slips[i].get_global_rect()
+            var rb: Rect2 = hud.fx.slips[j].get_global_rect()
+            if ra.intersects(rb): stacked.append("%s x %s" % [ra, rb])
+        var lab: Label = hud.fx.slips[i].get_child(0)
+        if lab.get_line_count() > lab.get_visible_line_count() or lab.get_global_rect().end.y > hud.fx.slips[i].get_global_rect().end.y + 0.5:
+            stacked.append("text overflows slip %d (%s in %s)" % [i, lab.get_global_rect(), hud.fx.slips[i].get_global_rect()])
+    check(stacked.is_empty(), "wrapped slips never overlap or overflow %s" % [stacked])
+    var before: int = hud.fx.slips.size()
+    hud.notify("PISTOL EMPTY", 4.0)
+    hud.notify("PISTOL EMPTY", 4.0)
+    hud.notify("PISTOL EMPTY", 4.0)
+    await frames(2)
+    var copies: int = 0
+    for s in hud.fx.slips:
+        if str(s.get_meta("message", "")) == "PISTOL EMPTY": copies += 1
+    check(copies == 1, "repeated notice merges into one slip")
+    check(hud.fx.slips[0].get_child(0).text.ends_with("×3"), "merged slip shows its count")
     hud.notify("SHORT", 0.05)
     await get_tree().create_timer(0.6).timeout
     var still := false
@@ -209,6 +232,25 @@ func _feedback(hud) -> void:
     check(hud.fx.marker_time > 0.0 and not hud.fx.marker_kill, "hit marker on a hit")
     hud.hit_confirmed_090(true)
     check(hud.fx.marker_kill and hud.fx.marker_time > 0.2, "kill marker lasts longer")
+    Game.state["unspent_attribute_points"] = 3
+    hud.update_hud()
+    var meta: Label = hud.meta_text
+    var mw: float = meta.get_theme_font("font").get_string_size(meta.text, HORIZONTAL_ALIGNMENT_LEFT, -1, meta.get_theme_font_size("font_size")).x
+    check(meta.text.contains("TO SPEND") and mw <= meta.size.x, "pending level-up points shown and fit (%s, %d px)" % [meta.text, mw])
+    Game.state["unspent_attribute_points"] = 0
+    Game.state["level"] = 1
+    hud.update_hud()
+    check(not hud.meta_text.text.contains("TO SPEND"), "reminder clears once spent (%s)" % hud.meta_text.text)
+    scene.hearing_choices("Flavour text about the hearing.")
+    await frames(2)
+    check(hud.modal_story.text.begins_with("FIELD"), "hearing docket leads with the live field state")
+    check(hud.modal_story.text.contains("[color=#e0b46d][b]OPPONENT:"), "opponent phase is highlighted")
+    var t_label: Label = null
+    for c in hud.modal.get_children():
+        if c is Label and c.position == Vector2(39, 10): t_label = c
+    var tw: float = t_label.get_theme_font("font").get_string_size(t_label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, t_label.get_theme_font_size("font_size")).x
+    check(tw <= t_label.size.x, "long docket title shrinks to fit (%d px at %d)" % [tw, t_label.get_theme_font_size("font_size")])
+    hud.close_modal(true)
     var notices_before: int = hud.fx.slips.size()
     hud.animate_shot(true)
     check(hud.fx.slips.size() == notices_before, "a hit no longer spams a notice")

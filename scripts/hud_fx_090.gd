@@ -12,7 +12,7 @@ const INK := Color("#a94d3b")
 const INK_DARK := Color("#5e231a")
 const SLIP_TEXT := Color("#171918")
 const MAX_SLIPS := 3
-const SLIP_ORIGIN := Vector2(404, 70)
+const SLIP_ORIGIN := Vector2(408, 40)
 const SLIP_SIZE := Vector2(224, 22)
 
 var ui: Node                       # game_ui.gd
@@ -71,7 +71,20 @@ func setup(owner_ui: Node) -> void:
 
 # ---------------------------------------------------------------- slips
 func slip(message: String, seconds: float = 4.0) -> void:
+    # A repeat of a notice still on screen refreshes it with a count instead
+    # of stacking copies ("PISTOL EMPTY" three times told the player nothing).
+    for existing in slips:
+        if is_instance_valid(existing) and str(existing.get_meta("message", "")) == message:
+            var count: int = int(existing.get_meta("count", 1)) + 1
+            existing.set_meta("count", count)
+            existing.set_meta("age", 0.0)
+            existing.set_meta("life", maxf(seconds, float(existing.get_meta("life"))))
+            existing.modulate.a = 1.0
+            (existing.get_child(0) as Label).text = "%s  ×%d" % [message, count]
+            return
     var panel := Panel.new()
+    panel.set_meta("message", message)
+    panel.set_meta("count", 1)
     panel.name = "NoticeSlip"
     panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
     # A filing slip: aged paper with a brass spine, readable over any scene.
@@ -85,17 +98,26 @@ func slip(message: String, seconds: float = 4.0) -> void:
     paper.shadow_offset = Vector2(1, 1)
     panel.add_theme_stylebox_override("panel", paper)
     add_child(panel)
-    panel.size = SLIP_SIZE
     var label := Label.new()
     label.text = message
     label.position = Vector2(10, 2)
+    # Instructions ("...FIND THE MANUAL VALVE AT THE NORTH DOOR") must be read
+    # whole, so slips wrap to up to three lines instead of trimming.
+    label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+    # clip_text stops the wrapped label from imposing its own (taller) minimum
+    # height; the slip is sized from the measured text instead.
     label.clip_text = true
-    label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
     label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
     label.add_theme_font_size_override("font_size", 10)
+    label.add_theme_constant_override("line_spacing", -2)
     label.add_theme_color_override("font_color", SLIP_TEXT)
     panel.add_child(label)
-    label.size = SLIP_SIZE - Vector2(16, 4)
+    var font: Font = label.get_theme_font("font")
+    var width: float = SLIP_SIZE.x - 16.0
+    var text_h: float = font.get_multiline_string_size(message, HORIZONTAL_ALIGNMENT_LEFT, width, 10, 3).y
+    var height: float = maxf(SLIP_SIZE.y, minf(text_h, 42.0) + 6.0)
+    panel.size = Vector2(SLIP_SIZE.x, height)
+    label.size = Vector2(width, height - 4.0)
     panel.set_meta("life", seconds)
     panel.set_meta("age", 0.0)
     slips.push_front(panel)
@@ -105,17 +127,27 @@ func slip(message: String, seconds: float = 4.0) -> void:
     _layout_slips(true)
 
 func _layout_slips(animate_newest: bool) -> void:
+    var y: float = 0.0
     for i in range(slips.size()):
-        var target := SLIP_ORIGIN + Vector2(0, i * (SLIP_SIZE.y + 4))
         var s: Control = slips[i]
+        var target := SLIP_ORIGIN + Vector2(0, y)
+        y += s.size.y + 3.0
+        # A slip still sliding in from the previous notice must not finish its
+        # old move after this one, or two slips end up stacked on one spot.
+        var old_tween = s.get_meta("move_tween", null)
+        if old_tween is Tween and (old_tween as Tween).is_valid(): (old_tween as Tween).kill()
         if i == 0 and animate_newest:
             s.position = target + Vector2(40, 0)
             s.modulate.a = 0.0
             var t := s.create_tween().set_parallel(true)
             t.tween_property(s, "position", target, 0.16).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
             t.tween_property(s, "modulate:a", 1.0, 0.12)
+            s.set_meta("move_tween", t)
         else:
-            s.create_tween().tween_property(s, "position", target, 0.12)
+            s.modulate.a = maxf(s.modulate.a, 1.0) if float(s.get_meta("age", 0.0)) <= float(s.get_meta("life", 1.0)) else s.modulate.a
+            var t2 := s.create_tween()
+            t2.tween_property(s, "position", target, 0.12)
+            s.set_meta("move_tween", t2)
 
 # ---------------------------------------------------------------- stamp
 func stamp(title: String, detail: String = "") -> void:
@@ -298,6 +330,8 @@ func _process(delta: float) -> void:
         if frac < 0.3: target_low = 0.32 + 0.16 * sin(pulse_clock * 5.0) + (0.3 - frac)
     low_health = lerpf(low_health, target_low, clampf(delta * 6.0, 0.0, 1.0))
     var modal_open: bool = ui != null and bool(ui.modal_open)
+    for sl in slips:
+        if is_instance_valid(sl): sl.visible = not modal_open
     (vignette.material as ShaderMaterial).set_shader_parameter("intensity", 0.0 if modal_open else maxf(damage_pulse, low_health))
     if marker_time > 0.0:
         marker_time -= delta
@@ -312,6 +346,7 @@ func _process(delta: float) -> void:
         _place_trail(bar, info["rect"], bar.value, float(info["from"]))
     var changed: bool = false
     for s in slips.duplicate():
+        if modal_open: break   # notices wait while the docket is read
         var age: float = float(s.get_meta("age")) + delta
         s.set_meta("age", age)
         var life: float = float(s.get_meta("life"))

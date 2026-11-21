@@ -34,9 +34,11 @@ func _run() -> void:
     await _check_hud_layout("start")
     # Exercise the HUD states that previously overflowed.
     # Longest real objective must show both lines (not one line with an ellipsis).
+    # Hold the 0.15 s HUD refresh so a slow frame cannot swap the text back.
+    scene.hud.refresh_time = 99.0
     scene.hud.objective_label.text = "Track Brin, verify payroll, then recover the Labour Writ."
     await frames(1)
-    check(scene.hud.objective_label.get_visible_line_count() == 2, "two-line objective is fully visible")
+    check(scene.hud.objective_label.get_visible_line_count() == 2, "two-line objective is fully visible (lines %d visible %d, size %s)" % [scene.hud.objective_label.get_line_count(), scene.hud.objective_label.get_visible_line_count(), scene.hud.objective_label.size])
     # Longest real route label (with a 3-digit distance) must fit untrimmed.
     scene.hud.set_navigation("→  FIVE FOUNDING SERVICE RAILS · 112m")
     var nav: Label = scene.hud.navigation

@@ -2,6 +2,53 @@
 
 Full per-build notes, QA and open issues for every build since Build 02 are in `docs/builds/`.
 
+## 09.0b HUD compaction and play-tested fixes (2026-11-21)
+
+I drove the real game with a scripted player (`tools/playbot_090/`), then fixed what it ran into. The bot steers with mouse-style turning and WASD, follows the advisory route with A* pathfinding, presses E, picks docket choices with the number keys, fights only what it can see, reloads, and reads the hearing phase. With the fixes below it plays from the title screen to the Liberation ending in about 6 minutes of bot time.
+
+**HUD footprint: 35% → 15% of the 640×400 view**
+- Objective: 356×76 → 300×60, with the district name on its own line (the "/ ACTIVE OBJECTIVE" suffix overflowed in the Assembly).
+- Route: a one-row compass, 248×28, top right.
+- Vitals and weapon: 238×82 → 204×54 each.
+  - The bars carry the numbers.
+  - Ammo is the largest type on the HUD and turns red at a quarter magazine.
+  - "R RELOAD" appears only when it's useful.
+- The always-on four-line controls legend is now a two-line reminder that fades after 45 s of play.
+- The interaction prompt sits under the crosshair, where the eye already is.
+- Unspent level-up points show as "LV 4 · 3 TO SPEND · TAB" until they're spent.
+
+**Notices**
+- Slips wrap to show the whole instruction; "FIND THE MANUAL VALVE AT THE NORTH DOOR" used to be cut off.
+- Repeats merge into one slip with a count, where "PISTOL EMPTY" used to stack three times.
+- Slips hide and pause while a docket is open.
+- A slide-in race that could stack two slips on one spot is fixed.
+
+**Route and progression bugs found in play**
+- After the third Writ, the Three-Writ route pointed at an empty spot 20 m from the desk. It now points at the desk, (22, −5).
+- Sootworks: after Brin's investigation, the route kept pointing at Brin, whose docket only offers "Close". It now leads to the workers' council, both before and after the strike vote.
+- The rail menu marks offices already held ("· WRIT HELD") and lists open ones first.
+- The quorum result docket was titled "TRADE OFFICE / RECORDED"; it now reads "THREE-WRIT QUORUM / VERIFIED".
+- The quorum desk sign said "LABOUR + FAITH + TRADE"; it now says "ANY THREE WRITS".
+
+**Prompts:** all 122 interactables in nine districts now have written verb-and-noun prompts that fit the prompt tab. Before:
+- 16 showed raw ids, for example "[E] ASSEMBLY VOTE CHOIR 078" and "[E] HEARTH SWITCH 079".
+- About 70 more were id-derived, for example "[E] FUTURE GATE" for the founding service rails.
+- One dialogue line mentioned "Build 04".
+- Empty presses now say "NOTHING TO OPERATE HERE" or "NOTHING IN REACH / MOVE CLOSER".
+
+**Rootkin hearing:** the docket leads with the live field state and highlights the opponent's phase. With five commands listed, the phase line used to fall below the visible text. Long docket titles now shrink to fit instead of trimming.
+
+**Title screen:** the description wraps inside the frame; it used to run off the panel and under ENTER HEARTH NINE. There is one primary action, and the four art galleries sit in a quiet row.
+
+**Tests**
+- New `tests/godot_prompts_090.tscn` builds every district and checks four things: no raw-id prompts, every prompt fits the tab, every route target in `_nav_target()` is within 2.5 m of something usable, and each is read straight from `main.gd`.
+- `godot_hud_090` now has 54 checks.
+- The codefix objective check no longer races the HUD refresh.
+
+Captures: `docs/builds/BUILD_090_HUD_COMPACT_BEFORE_AFTER.png`.
+
+**Still needs hands:** the bot reads instantly and never explores. Its 6-minute critical path says nothing about how long a person takes; that needs real playtests. The FPS figures from these runs come from software rendering (llvmpipe) and are not meaningful.
+
 ## 09.0 HUD and UI polish (2026-11-21)
 
 Procedural HUD and docket improvements in Godot; no new image or audio assets. The bible palette is used throughout, with stamp vermilion (#A94D3B) reserved for the one signature moment.
