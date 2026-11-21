@@ -25,7 +25,7 @@ Verified on 2026-11-22 (Build 09.2) with Godot 4.4.1 stable (Linux x86_64):
 
 | Check | Result |
 |---|---|
-| `python3 -m pytest tests` | 288 passed |
+| `python3 -m pytest tests` | 290 passed |
 | `python3 tests/validate_project.py` | 14 passed |
 | `godot --headless --editor --path . --quit` | clean import |
 | `res://tests/godot_scene_smoke_084.tscn` (headless) | all 8 districts load |
@@ -38,8 +38,8 @@ Verified on 2026-11-22 (Build 09.2) with Godot 4.4.1 stable (Linux x86_64):
 | `res://tests/godot_hud_override_091.tscn` (headless, exits 1 on failure) | 8/8 HUD art drop-in slot overrides and falls back correctly, in a scratch folder; the delivered art is left untouched |
 | `res://tests/godot_perception_092.tscn` (headless, exits 1 on failure) | 25/25 vision cones, light, cover, noise, keepers ignore presence, witnessed assault, no dice |
 | `res://tests/godot_anim_092.tscn` (headless, exits 1 on failure) | 14/14 animation drop-in: manifests, facings, one-shots, death remains, weapon anchors |
-| `res://tests/godot_prompts_090.tscn` (headless, exits 1 on failure) | all 122 interactables in 9 districts have written prompts that fit; all 45 route targets lead to something usable |
-| `tools/playbot_090/run_playbot.sh out/ 760` (rendered, `BOT_POLICY=combat` or `pacifist`) | scripted playthrough with 09.2 perception: title → Liberation ending in about 6 minutes of bot time; frames + log |
+| `res://tests/godot_prompts_090.tscn` (headless, exits 1 on failure) | all 122 interactables in 9 districts have written prompts that fit; all 48 route targets lead to something usable |
+| `tools/playbot_090/run_playbot.sh out/ 760` (rendered, `BOT_POLICY=combat` or `pacifist`) | scripted playthrough with 09.2 perception: title → Liberation in about 6 minutes of bot time with both policies (pacifist takes all three Writs by the councils and the coalition challenge); frames + log |
 | `res://tests/godot_codefix_regressions.tscn` (headless, exits 1 on failure) | 36/36 regression checks incl. HUD icon/border layout, clean exit |
 | Rendered 640x400 captures | gameplay HUD, Nail Storm heat, docket modal, 09.0 slips/stamp/low-health/tabbed docket |
 

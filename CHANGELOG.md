@@ -40,7 +40,10 @@ This build sits on top of GPT's branch `feature/hud-091-art-assets-weapon-wip-20
   - `docs/handover/GPT_SPRITE_ANIMATION_HANDOVER_092.md`
 - `tools/anim_092.py` slices sheets, checks deliveries (baseline, scale, frame counts, transparency) and writes GIF previews.
 
-**Fix: the Assembly marker no longer strands the player.** Under Archivist Latch or Marshal Voss the Core never routes to the patient petition, but the Assembly marker pointed at it anyway, where it can only answer NOT RECORDED. Found by the playbot, which looped there.
+**Fix: three objective-marker dead ends**, all found by the playbot looping. The new pacifist policy found the last two; no-kill routes had never been driven end to end.
+- **Assembly.** Under Archivist Latch or Marshal Voss the Core never routes to the patient petition, but the Assembly marker pointed at it anyway, where it can only answer NOT RECORDED. It now does so only if the petition was copied.
+- **Flood Basilica.** After the hearing, the marker always sent a peaceful player to the public wicket, which only opens once the Cantor has fallen. It now routes to Ossa (meet her, then compare the reel) and then to her lay council, as Sootworks routes through Brin to the workers' council.
+- **Ashmarket.** After the buyer coalition, the marker went straight to the Trade registry, which lists only lock isolation, succession or a witnessed threat. It now goes to the Collector's board, where the coalition challenge, force or a fight settle the Writ, until one of those exists.
 
 **Tests**
 - New Godot suites:

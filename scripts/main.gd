@@ -416,6 +416,18 @@ func _nav_target() -> Dictionary:
         if not bool(Game.state["hearing"].get("passed",false)):
             return {"label":"ROOTKIN HEARING","pos":Vector3(10,0,-17)}
         if not Game.state["writs"].has("qobj_writ_of_faith"):
+            # 09.2: the peaceful route goes through Ossa's lay council, as the
+            # Sootworks one goes through the workers' council. The wicket only
+            # answers once the Cantor has fallen.
+            var ossa_nav: Dictionary = Game.state.get("ossa",{})
+            var cantor_down: bool = bool(Game.state.get("faith",{}).get("cantor_defeated",false))
+            if not cantor_down and bool(ossa_nav.get("alive",true)):
+                var ossa_stage: String = str(ossa_nav.get("stage","unmet"))
+                if ossa_stage in ["unmet","encountered"] and str(ossa_nav.get("decision","")) == "":
+                    # Meet her, then compare the reel with her (investigate).
+                    return {"label":"SISTER OSSA","pos":Vector3(-19,0,5)}
+                if ossa_stage == "investigated" or str(ossa_nav.get("decision","")) == "help":
+                    return {"label":"LAY COUNCIL","pos":Vector3(-8,0,-18)}
             return {"label":"FAITH PUBLIC WICKET","pos":Vector3(-22,0,15)}
         return {"label":"RETURN SERVICE RAIL","pos":Vector3(-22,0,21)}
     if zone == "ashmarket":
@@ -427,7 +439,12 @@ func _nav_target() -> Dictionary:
         if not bool(trade.get("coalition_recorded",false)):
             return {"label":"BUYER COALITION","pos":Vector3(-18,0,14)}
         if not Game.state["writs"].has("qobj_writ_of_trade"):
-            return {"label":"TRADE WRIT REGISTRY","pos":Vector3(20,0,14)}
+            # 09.2: the registry only lists lock isolation, succession or a
+            # witnessed threat. Until one exists, the Writ is settled at the
+            # Collector's board (coalition challenge, force or a fight).
+            if bool(trade.get("counting_lock_isolated",false)) or bool(trade.get("collector_defeated",false)) or bool(trade.get("intimidation_recorded",false)):
+                return {"label":"TRADE WRIT REGISTRY","pos":Vector3(20,0,14)}
+            return {"label":"COLLECTOR'S BOARD","pos":Vector3(14,0,4)}
         return {"label":"RETURN SERVICE RAIL","pos":Vector3(-22,0,19)}
     if zone == "orchard":
         var growth: Dictionary = Game.state.get("growth",{})
