@@ -495,13 +495,8 @@ func _load_directional_animation() -> void:
         var atlas_path: String = "res://assets/sprites/enemies_088/%s_%d.png" % [actor_key,face]
         if not ResourceLoader.exists(atlas_path):
             atlas_path = "res://assets/sprites/enemies_077/%s_%d.png" % [actor_key,face] if actor_key in ["gardener","commandant"] else ("res://assets/sprites/enemies_076/core_actuator_%d.png" % face if actor_key == "core_actuator" else ("res://assets/sprites/enemies_075/collector_%d.png" % face if actor_key == "collector" else "res://assets/sprites/enemies_074/%s_%d.png" % [actor_key,face]))
-        if not ResourceLoader.exists(atlas_path):
-            atlas_path = "res://assets/sprites/enemies_073/%s_%d.png" % [actor_key,face]
-        if not ResourceLoader.exists(atlas_path):
-            atlas_path = "res://assets/sprites/enemies_071/%s_%d.png" % [actor_key,face]
-        if not ResourceLoader.exists(atlas_path):
-            var legacy: String = "front" if face == 1 else ("left" if face in [2,3] else ("back" if face in [4,5,6] else "right"))
-            atlas_path = "res://assets/sprites/enemies_068/%s_%s.png" % [actor_key,legacy]
+        # 09.1: the 06.8/07.1/07.3 generations were removed; every actor has an
+        # 07.4-07.7 atlas (see art/BUILD_091_REMOVED_SUPERSEDED.json).
         if not ResourceLoader.exists(atlas_path): continue
         var atlas: Texture2D = load(atlas_path)
         var frames: Array[Texture2D] = []

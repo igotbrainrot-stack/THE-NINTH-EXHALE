@@ -7,7 +7,8 @@ class AssetChecks(unittest.TestCase):
  def test_every_major_npc_has_four_angles(self):
   for person in ['sela','brin','ossa','oren','clerk']:
    for side in ['front','left','right','back']:
-    im=Image.open(ROOT/'assets/sprites/directional'/f'{person}_{side}.png')
+    # 09.1: the 4-view folder was removed; directional8 holds the same cardinals.
+    im=Image.open(ROOT/'assets/sprites/directional8'/f"{person}_{ {'front':1,'left':3,'back':5,'right':7}[side] }.png")
     self.assertEqual(im.size,(192,280));self.assertEqual(im.mode,'RGBA')
     self.assertLess(im.getpixel((1,1))[3],40)
  def test_three_distinct_hostiles(self):

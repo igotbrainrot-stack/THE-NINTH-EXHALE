@@ -7,7 +7,8 @@ class GraphicsPassTests(unittest.TestCase):
   def test_all_four_facing_views_have_constant_canvas(self):
     for actor in ['sela','brin','ossa']:
       for facing in ['front','left','right','back']:
-        fp=ROOT/'assets'/'sprites'/'directional'/f'{actor}_{facing}.png'
+        # 09.1: cardinals now live in directional8 (the 4-view folder was removed).
+        fp=ROOT/'assets'/'sprites'/'directional8'/f"{actor}_{ {'front':1,'left':3,'back':5,'right':7}[facing] }.png"
         self.assertTrue(fp.exists(),str(fp))
         with Image.open(fp) as img:
           self.assertEqual(img.size,(192,280))
@@ -16,7 +17,7 @@ class GraphicsPassTests(unittest.TestCase):
   def test_camera_direction_runtime_script_linked(self):
     gd=(ROOT/'scripts/directional_npc_sprite.gd').read_text()
     self.assertIn('get_camera_3d()',gd)
-    self.assertIn('"front"',gd)
+    self.assertIn('view_from_world',gd)
     for f in ['world_builder.gd','brin_actor.gd','ossa_actor.gd']:
       self.assertIn('directional_npc_sprite.gd',(ROOT/'scripts'/f).read_text())
   def test_21_runway_art_tasks_have_unique_uuids(self):
