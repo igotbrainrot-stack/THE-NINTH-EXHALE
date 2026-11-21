@@ -1,0 +1,28 @@
+{
+  "cell": [
+    640,
+    400
+  ],
+  "anchors": {
+    "muzzle": [
+      226,
+      204
+    ]
+  },
+  "procedural": {
+    "recoil": 0.22,
+    "reload_dip": true
+  },
+  "states": {
+    "idle": {
+      "frames": 4,
+      "fps": 4,
+      "loop": true
+    },
+    "fire": {
+      "frames": 6,
+      "fps": 18,
+      "loop": false
+    }
+  }
+}
