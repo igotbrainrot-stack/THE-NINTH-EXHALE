@@ -80,5 +80,5 @@
     }
   },
   "alpha_pipeline": "rembg/isnet-general-use",
-  "importer_revision": 3
+  "importer_revision": 4
 }

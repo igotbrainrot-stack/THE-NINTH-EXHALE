@@ -25,7 +25,10 @@ jobs:
       - name: Import and validate Runway weapon art
         run: |
           python tools/import_runway_weapon_art_092.py
-          python tools/anim_092.py check --root assets/weapons/anim_092
+          python tools/anim_092.py check assets/weapons/anim_092/covenant assets/weapons/anim_092/coil assets/weapons/anim_092/nail assets/weapons/anim_092/choir
+          for weapon in covenant coil nail choir; do
+            python tools/anim_092.py preview "assets/weapons/anim_092/$weapon" --out "docs/handover/WEAPON_092_PREVIEWS/$weapon"
+          done
       - name: Python regressions
         run: |
           python3 -m unittest discover -s tests -p 'test_*.py'
@@ -69,6 +72,7 @@ jobs:
             docs/handover/WEAPON_092_CONTACT_SHEET.png
             docs/handover/WEAPON_092_BEFORE_AFTER.png
             docs/handover/WEAPON_092_QA.md
+            docs/handover/WEAPON_092_PREVIEWS
             artifacts/weapon_capture_092
             artifacts/playbot_092
           if-no-files-found: warn
