@@ -58,7 +58,7 @@ jobs:
         run: |
           mkdir -p package/THE_NINTH_EXHALE
           rsync -a --delete \
-            --exclude='.git/' --exclude='.godot/' --exclude='.pytest_cache/' \
+            --exclude='.git/' --exclude='.godot/' --exclude='.pytest_cache/' --exclude='package/' \
             --exclude='artifacts/' --exclude='*.zip' --exclude='godot.zip' \
             --exclude='Godot_v4.4.1-stable_linux.x86_64' \
             ./ package/THE_NINTH_EXHALE/
