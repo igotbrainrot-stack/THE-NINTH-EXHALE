@@ -80,5 +80,5 @@
     }
   },
   "alpha_pipeline": "rembg/isnet-general-use; RGB-independent alpha normalization; solid-crop threshold 128 + 8px padding",
-  "importer_revision": 7
+  "importer_revision": 8
 }

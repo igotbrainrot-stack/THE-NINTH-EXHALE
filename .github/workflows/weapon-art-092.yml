@@ -60,7 +60,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/weapons/anim_092 art/production_sources/weapons_092 art/WEAPON_ANIM_092_MANIFEST.json docs/handover/WEAPON_092_*
+          git add assets/weapons/anim_092 art/production_sources/weapons_092 art/WEAPON_ANIM_092_MANIFEST.json art/ART_ANIMATION_COVERAGE_092.csv docs/handover/WEAPON_092_*
           git commit -m "assets: import Runway weapon art 09.2" || exit 0
           git push origin HEAD:feature/weapon-art-092-20261122
       - name: Upload QA and rendered frames
@@ -69,10 +69,14 @@ jobs:
         with:
           name: weapon-art-092-godot-qa
           path: |
+            assets/weapons/anim_092
+            art/production_sources/weapons_092
+            art/ART_ANIMATION_COVERAGE_092.csv
             docs/handover/WEAPON_092_CONTACT_SHEET.png
             docs/handover/WEAPON_092_BEFORE_AFTER.png
             docs/handover/WEAPON_092_ALPHA_MASKS.png
             docs/handover/WEAPON_092_QA.md
+            docs/handover/WEAPON_092_RESEARCH_NOTES.md
             docs/handover/WEAPON_092_PREVIEWS
             artifacts/weapon_capture_092
             artifacts/playbot_092

@@ -154,6 +154,16 @@ def main():
   "Muzzle anchors are provisional; confirm against the Godot in-game captures. Original Runway sheets and AI-segmented alpha sheets are retained."]
  (ROOT/"docs/handover/WEAPON_092_QA.md").write_text("\n".join(qa)+"\n")
  (raw/"IMPORT_RECEIPT.json").write_text(json.dumps({"build":"09.2","weapons":list(CFG),"background_removal":"rembg/isnet-general-use","alpha_curve":"8->0, 48->255","solid_crop":"threshold128 + 8px padding"},indent=2)+"\n")
+ coverage=["weapon,state,frames,fps,loop,status,notes"]
+ for wid,item in manifest["weapons"].items():
+  idle=item["states"]["idle"]; fire=item["states"]["fire"]; fm=fire["frame_map"]
+  coverage.append(f"{wid},idle,{idle['frames']},{idle['fps']},true,generated_provisional,single master pose with <=2px breathing offsets")
+  coverage.append(f"{wid},fire,{fire['frames']},{fire['fps']},false,generated_provisional,{fm['unique_source_poses']} unique poses; duplicated holds={fm['duplicated_holds']}")
+  for state in ["reload","dry","draw","intervene"]:
+   coverage.append(f"{wid},{state},0,0,false,procedural_fallback,art pending")
+  if wid=="nail": coverage.append("nail,vent,0,0,false,procedural_fallback,art pending")
+  if wid=="choir": coverage.append("choir,idle_shutter_ripple,0,0,true,missing_variant,needs authored resonator shutter motion")
+ (ROOT/"art/ART_ANIMATION_COVERAGE_092.csv").write_text("\n".join(coverage)+"\n")
  IMPORT.unlink(missing_ok=True)
  print("WEAPON_092_IMPORT_OK: alpha and solid-crop quality gates passed.")
 if __name__=="__main__": main()
