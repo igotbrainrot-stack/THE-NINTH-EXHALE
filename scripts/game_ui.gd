@@ -111,13 +111,81 @@ const HUD_086_STYLE: Dictionary = {
     "hud_bar_track": [6, 3, 6, 3]
 }
 
+## Build 09.1 art override. Any PNG dropped into assets/ui/hud_091/ with a slot
+## name (hud_frame_brass, icon_health, hud_keycap, ...) replaces that slot; the
+## 08.6 set stays as the fallback. 9-slice margins for the new art come from
+## assets/ui/hud_091/hud_091_slices.json ({"slot": [left, top, right, bottom]}).
+## See docs/handover/GPT_HUD_UI_ART_HANDOVER_091.md.
+const HUD_091_PATH: String = "res://assets/ui/hud_091/"
+var _hud091_slices: Dictionary = {}
+var _hud091_slices_loaded: bool = false
+var _hud_texture_cache: Dictionary = {}
+
+func hud_art_path(name: String) -> String:
+    var override: String = HUD_091_PATH + name + ".png"
+    if hud_art_has_override(name):
+        return override
+    return HUD_086_PATH + name + ".png"
+
+## True for an imported PNG and for one just copied in before Godot has
+## imported it (so new art shows on the next run without opening the editor).
+func hud_art_has_override(name: String) -> bool:
+    var path: String = HUD_091_PATH + name + ".png"
+    return ResourceLoader.exists(path) or FileAccess.file_exists(path)
+
+func _load_hud_texture(path: String) -> Texture2D:
+    if _hud_texture_cache.has(path):
+        return _hud_texture_cache[path]
+    var tex: Texture2D = null
+    if ResourceLoader.exists(path):
+        tex = load(path) as Texture2D
+    elif FileAccess.file_exists(path):
+        var img := Image.load_from_file(ProjectSettings.globalize_path(path))
+        if img != null and not img.is_empty():
+            tex = ImageTexture.create_from_image(img)
+    _hud_texture_cache[path] = tex
+    return tex
+
+func _hud091_margins(name: String) -> Array:
+    if not _hud091_slices_loaded:
+        _hud091_slices_loaded = true
+        var path: String = HUD_091_PATH + "hud_091_slices.json"
+        if FileAccess.file_exists(path):
+            var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
+            if parsed is Dictionary: _hud091_slices = parsed
+    if hud_art_has_override(name) and _hud091_slices.has(name) and _hud091_slices[name] is Array and (_hud091_slices[name] as Array).size() == 4:
+        return _hud091_slices[name]
+    return HUD_086_STYLE.get(name, [0, 0, 0, 0])
+
 func _hud086_texture(name: String) -> Texture2D:
-    return load(HUD_086_PATH + name + ".png") as Texture2D
+    var tex: Texture2D = _load_hud_texture(hud_art_path(name))
+    if tex == null:   # an unreadable override must never blank the HUD
+        tex = _load_hud_texture(HUD_086_PATH + name + ".png")
+    return tex
+
+## Optional art slots for the procedural 09.0 pieces (notice slip, stamp frame,
+## keycap, docket tabs). Without a hud_091 PNG the given flat style is used.
+func hud_optional_skin(name: String, fallback: StyleBox) -> StyleBox:
+    if not hud_art_has_override(name):
+        return fallback
+    var tex: Texture2D = _load_hud_texture(HUD_091_PATH + name + ".png")
+    if tex == null:
+        return fallback
+    var style := StyleBoxTexture.new()
+    style.texture = tex
+    var m: Array = _hud091_margins(name)
+    style.texture_margin_left = float(m[0]); style.texture_margin_top = float(m[1])
+    style.texture_margin_right = float(m[2]); style.texture_margin_bottom = float(m[3])
+    style.content_margin_left = fallback.content_margin_left
+    style.content_margin_top = fallback.content_margin_top
+    style.content_margin_right = fallback.content_margin_right
+    style.content_margin_bottom = fallback.content_margin_bottom
+    return style
 
 func _hud086_skin(name: String, padding: Vector4 = Vector4.ZERO) -> StyleBoxTexture:
     var style := StyleBoxTexture.new()
     style.texture = _hud086_texture(name)
-    var margins: Array = HUD_086_STYLE.get(name, [0, 0, 0, 0])
+    var margins: Array = _hud091_margins(name)
     style.texture_margin_left = float(margins[0])
     style.texture_margin_top = float(margins[1])
     style.texture_margin_right = float(margins[2])
@@ -229,7 +297,9 @@ func build_base() -> void:
     navigation_panel.position = Vector2(384, 6)
     navigation_panel.size = Vector2(248, 28)
     navigation_panel.tooltip_text = "ADVISORY ROUTE: points at the next machine, never a gate"
-    navigation_panel.add_theme_stylebox_override("panel", _hud086_skin("hud_frame_steel", Vector4(10, 7, 10, 7)))
+    # The 28 px compass may get its own thin frame (hud_091/hud_frame_route.png);
+    # the shared steel frame's 14+14 px corners fill its whole height.
+    navigation_panel.add_theme_stylebox_override("panel", _hud086_skin("hud_frame_route" if hud_art_has_override("hud_frame_route") else "hud_frame_steel", Vector4(10, 7, 10, 7)))
     overlay.add_child(navigation_panel)
 
     var nav_title := Label.new()
@@ -684,7 +754,10 @@ func set_interact_prompt(message: String) -> void:
     if icon is CanvasItem: (icon as CanvasItem).visible = key == ""
     prompt_panel.visible = message != "" and not modal_open
 
-func _keycap_style() -> StyleBoxFlat:
+func _keycap_style() -> StyleBox:
+    return hud_optional_skin("hud_keycap", _keycap_flat())
+
+func _keycap_flat() -> StyleBoxFlat:
     var key := StyleBoxFlat.new()
     key.bg_color = Color("#e6dcc5")
     key.border_color = Color("#6b5530")
@@ -1037,8 +1110,9 @@ func _style_modal_tabs() -> void:
         box.corner_radius_top_right = 3
         box.content_margin_left = 8
         box.content_margin_right = 8
+        var skin: StyleBox = hud_optional_skin("hud_tab_active" if active else "hud_tab_idle", box)
         for state in ["normal", "hover", "pressed", "focus", "hover_pressed"]:
-            tab.add_theme_stylebox_override(state, box)
+            tab.add_theme_stylebox_override(state, skin)
         var ink: Color = Color("#171918") if active else Color("#d8d6c7")
         for c in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color", "font_hover_pressed_color"]:
             tab.add_theme_color_override(c, ink)

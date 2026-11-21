@@ -55,11 +55,7 @@ func _ready() -> void:
     # A0: same graphic every angle only for explicitly universal assets.
     var all_path: String = "res://assets/sprites/directional8/%s_0.png" % sprite_stem
     if ResourceLoader.exists(all_path): face_textures[0] = load(all_path)
-    if face_textures.is_empty():
-        for key in [1,3,5,7]:
-            var legacy: String = "front" if key == 1 else ("left" if key == 3 else ("back" if key == 5 else "right"))
-            var legacy_path: String = "res://assets/sprites/directional/%s_%s.png" % [sprite_stem,legacy]
-            if ResourceLoader.exists(legacy_path): face_textures[key] = load(legacy_path)
+    # 09.1: the legacy 4-view folder was removed; directional8 covers every NPC.
     # Four uniquely shifted upper-body idle poses per view. Constant foot pivot.
     for index in range(1,9):
         var idle_path: String = "res://assets/sprites/%s/%s_%d.png" % [idle_dir,sprite_stem,index]

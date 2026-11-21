@@ -43,10 +43,10 @@ class Graphics074(unittest.TestCase):
     def test_runtime_prefers_polished_but_preserves_previous_atlases(self):
         for name in ['enemy.gd','animated_echoform_068.gd']:
             t=(ROOT/'scripts'/name).read_text()
-            self.assertLess(t.index('enemies_074/'),t.index('enemies_073/'))
+            self.assertLess(t.index('enemies_088/'),t.index('enemies_074/'))  # 09.1: 08.8 first, 07.4 fallback
             self.assertIn('alpha_cut',t)
         g=(ROOT/'scripts/enemy_gallery_068.gd').read_text()
-        self.assertIn('"enemies_073" if compare_legacy else "enemies_074"',g)
+        self.assertIn('var source_dir: String = "enemies_074"',g)
 
     def test_floor_shadow_is_noncolliding_and_not_billboarded(self):
         s=(ROOT/'scripts/sprite_grounding_074.gd').read_text()

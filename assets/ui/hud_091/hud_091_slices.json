@@ -1,0 +1,4 @@
+{
+  "_comment": "slot: [left, top, right, bottom] 9-slice margins in source pixels, only for PNGs present in this folder",
+  "_example_hud_frame_brass": [10, 9, 10, 9]
+}

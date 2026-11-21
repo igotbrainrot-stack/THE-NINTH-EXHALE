@@ -2,6 +2,31 @@
 
 Full per-build notes, QA and open issues for every build since Build 02 are in `docs/builds/`.
 
+## 09.1 cleanup and HUD art hand-off (2026-11-21)
+
+**Smaller project.** The tracked files went from 372 MB to 304 MB. A fresh Godot import cache went from 183 MB to 91 MB.
+- Removed 834 files (67.9 MB) that the game never loads. Each one is logged with its SHA-256 and the commit it can be restored from in `art/BUILD_091_REMOVED_SUPERSEDED.json`.
+  - **The 06.8, 07.1 and 07.3 enemy sprite generations.** Every actor and facing resolves to 08.8 or 07.4–07.7 art first. The 07.3 turntable sources stay in `art/production_sources/turntable_073`.
+  - **The legacy 4-view NPC folder `assets/sprites/directional/`.** `directional8` covers every NPC.
+  - **Old review previews:** `art/previews/` and superseded capture sheets.
+  - **93 `.import` sidecars under `art/`.**
+- `art/.gdignore` keeps the ~200 MB of source sheets out of Godot's import and any export. Nothing in the game loads `art/`.
+- The runtime registry now lists 418 media files (was 778).
+- **Not touched:** source sheets and runtime art whose SHA-256 is recorded in a provenance manifest. Re-encoding would break those hashes; lossless recompression saved about 0% on runtime sprites anyway.
+- The 07.4 fallback set (33 MB) is **kept** until the 08.8 art's Runway task IDs and licence are confirmed.
+- **Dead code removed:** the fallback branches to the removed folders in `enemy.gd`, `animated_echoform_068.gd` and `directional_npc_sprite.gd`. The enemy gallery's compare mode now shows the in-game art against the 07.4 fallback.
+
+**HUD art override slot.** Any PNG in `assets/ui/hud_091/` named after a HUD slot replaces that slot, with no code change. It works even before Godot has imported the file. 9-slice margins come from `hud_091_slices.json`.
+- Missing or unreadable art falls back to the 08.6 set.
+- New optional slots for the 09.0 pieces: `hud_slip`, `hud_stamp_frame`, `hud_keycap`, `hud_tab_active`, `hud_tab_idle`.
+- `hud_frame_route` is also new, because the shared steel frame's 14 + 14 px corners fill the whole 28 px compass.
+- Handover for the GPT/Runway art session: `docs/handover/GPT_HUD_UI_ART_HANDOVER_091.md`, with annotated slot maps `HUD_091_SLOTS_PLAY.png` and `HUD_091_SLOTS_DOCKET.png`.
+
+**Tests**
+- New `tests/test_build091_cleanup.py` replays the runtime sprite lookup for all 19 enemies and guards, both echoforms and all 7 NPCs, across 8 facings. It also checks that no code references a removed folder, that the removal log is complete, and that the 08.8 source hashes are unchanged.
+- New `tests/godot_hud_override_091.tscn` drops real PNGs into `hud_091`, checks they're used with their margins and that the rest falls back, then cleans up.
+- Six historical tests that only checked the removed folders now check the same guarantees on the 07.4 and `directional8` sets. One retired test compared two removed generations with each other.
+
 ## 09.0b HUD compaction and play-tested fixes (2026-11-21)
 
 I drove the real game with a scripted player (`tools/playbot_090/`), then fixed what it ran into. The bot steers with mouse-style turning and WASD, follows the advisory route with A* pathfinding, presses E, picks docket choices with the number keys, fights only what it can see, reloads, and reads the hearing phase. With the fixes below it plays from the title screen to the Liberation ending in about 6 minutes of bot time.

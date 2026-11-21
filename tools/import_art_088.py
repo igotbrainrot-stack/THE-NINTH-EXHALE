@@ -168,7 +168,7 @@ def build(src_dir: Path, root: Path):
             old = sprites / f"directional8/{key}_1.png"
         else:
             cell, foot, out_dir = ENEMY_CELL, ENEMY_FOOT, sprites / "enemies_088"
-            old = next((sprites / f"{d}/{key}_1.png" for d in ["enemies_074", "enemies_073", "enemies_071"] if (sprites / f"{d}/{key}_1.png").exists()), None)
+            old = next((sprites / f"{d}/{key}_1.png" for d in ["enemies_074", "enemies_075", "enemies_076", "enemies_077"] if (sprites / f"{d}/{key}_1.png").exists()), None)
         h_target = target_height(old, cell, foot - 6)
         tallest = max(v.height for v in views); widest = max(v.width for v in views)
         scale = min(h_target / tallest, (cell[0] - 6) / widest)
