@@ -21,17 +21,30 @@ Controls: WASD move · mouse look · LMB fire · R reload · 2–5 switch weapon
 
 **Perception:** sight and hearing are deterministic. Light, cover, movement and noise influence detection; office-holders respond only to witnessed assaults. F3 exposes perception debug labels.
 
-## Verified CI checks (Build 09.2 package validation)
+## Verified CI checks (Build 09.2)
 
-The previous successful Godot 4.4.1 Linux package run completed:
-- **290** Python tests
-- **14** project validations
-- Godot animation tests **14/14**
+- **290** Python tests passed
+- **14** project validations passed
+- Godot animation tests **18/18**
 - Perception tests **25/25**
 - HUD art override tests **8/8**
 - Project import, district scene smoke and weapon-art loader checks passed
+- Combat and pacifist full-campaign playbots both reached **VESPER / LIBERATION**, completing Labour, Faith and Trade Writs and passing the living-witness invariant (0 violations)
 
-Package/startup smoke was **not a full campaign playthrough**. The dedicated full-campaign playbot validation is being run for both combat and pacifist policies; its results will be recorded separately.
+Automated playbot results are not human QA: the game has **not yet been playtested by humans** and needs full human campaign sign-off.
+
+## Known unfinished work
+
+- **P0 safe-hub issue:** Hearth Nine still spawns an enforcer, crawler, optional hostiles and an environmental hazard in the 09.2 baseline. The combat/tutorial and contested Lung must be relocated to a separate Intake Annex.
+- Only Liberation has been fully verified by automated playbots; Dominion, Crown and True Dawn require direct testing.
+- Human full-campaign, endings, audio and performance testing have not been signed off.
+- Weapon idle strips are small breathing variations from a master frame. Reload, dry, draw and intervene states are still procedural fallbacks; Nail Storm piston/vent animation and Choirbreaker shutter ripple are incomplete.
+- Muzzle/shell anchors still need in-game visual review.
+- NPC/enemy animation, voice and ambience assets still need completion/integration; procedural fallbacks remain.
+- The Tripo H3.1 weapon models are source references only; retopology/LOD is required before runtime use.
+- The master game bible describes a broader full game than this playable development slice. Do not call the project complete until the production-gap list, playthrough, human review and release QA are closed.
+
+See `docs/handover/BUILD_092_COMPLETION_GAP_REGISTER.md` for the completion checklist.
 
 ## Known unfinished work
 
