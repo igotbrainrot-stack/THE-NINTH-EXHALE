@@ -55,6 +55,7 @@ func _ready() -> void:
     player.weapon_switched.connect(hud.set_weapon)
     player.weapon_anim.connect(hud.weapon_event)
     player.aim_prompt_changed.connect(hud.set_interact_prompt)
+    player.hit_confirmed_090.connect(hud.hit_confirmed_090)
     player.docket_requested.connect(_show_dossier)
     player.save_requested.connect(_save_now)
     player.load_requested.connect(_load_now)
@@ -2065,7 +2066,7 @@ func _show_dossier() -> void:
             if not Game.has_perk(perk_id):
                 var perk: Dictionary = Game.PERKS_089[perk_id]
                 options.append(check_option("PERK %s %s: %s" % [perk_id, str(perk["name"]).to_upper(), perk["effect"]], "perk:" + perk_id, Game.perk_check(perk_id)))
-    hud.open_modal("CIVIC PRESSURE DOCKET",hud.dossier_text(),options)
+    hud.open_modal("CIVIC PRESSURE DOCKET",hud.dossier_text(),options,hud.dossier_sections())
 
 
 func _exit_tree() -> void:

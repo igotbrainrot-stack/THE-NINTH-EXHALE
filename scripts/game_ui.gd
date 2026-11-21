@@ -64,6 +64,17 @@ var damage_flash_079: ColorRect
 var damage_time_079: float = 0.0
 var reticle_hit_clock_079: float = 0.0
 
+const HudFx090 = preload("res://scripts/hud_fx_090.gd")
+var fx: Control                          # Build 09.0 stamp / slips / vignette layer
+var prompt_keycap: Panel                 # "[E]" drawn as a key, not bracket text
+var prompt_keycap_label: Label
+var modal_buttons: Array[Button] = []    # number keys 1-9 pick these
+var modal_actions: Array[String] = []
+var modal_tabs: Array = []               # [{tab, text}] for the docket
+var modal_tab_index: int = 0
+var modal_tab_buttons: Array[Button] = []
+var modal_story: RichTextLabel
+
 func _ready() -> void:
     add_to_group("game_ui")
     build_base()
@@ -291,6 +302,15 @@ func build_base() -> void:
     prompt_label.add_theme_color_override("font_color", Color("#e7dec8"))
     prompt_panel.add_child(prompt_label)
     prompt_label.size = Vector2(236, 16)
+    prompt_keycap = Panel.new()
+    prompt_keycap.name = "PromptKeycap"
+    prompt_keycap.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    prompt_keycap.add_theme_stylebox_override("panel", _keycap_style())
+    prompt_keycap.visible = false
+    prompt_panel.add_child(prompt_keycap)
+    prompt_keycap.position = Vector2(7, 5)
+    prompt_keycap.size = Vector2(17, 16)
+    prompt_keycap_label = _keycap_label(prompt_keycap, "E")
 
     vitals_panel = Panel.new()
     vitals_panel.position = Vector2(10, 309)
@@ -445,6 +465,12 @@ func build_base() -> void:
     overlay.move_child(gun, 1)
     overlay.move_child(muzzle, 2)
     overlay.move_child(shell, 3)
+    # Build 09.0 feedback layer sits above the viewmodel and under every panel,
+    # so the red pressure edge never tints the readouts.
+    fx = HudFx090.new()
+    overlay.add_child(fx)
+    overlay.move_child(fx, 4)
+    fx.setup(self)
     update_hud()
 
 func update_hud() -> void:
@@ -575,6 +601,10 @@ func update_hud() -> void:
     breath_text.text = "BREATH %d / %d" % [breath_now, breath_max]
     hp_bar.value = 100.0 * float(health_now) / maxf(1.0, float(health_max))
     breath_bar.value = 100.0 * float(breath_now) / maxf(1.0, float(breath_max))
+    if is_instance_valid(fx):
+        fx.track_bar(hp_bar, hp_bar.value)
+        fx.track_bar(breath_bar, breath_bar.value)
+        fx.watch_state()
     meta_text.text = "LEVEL %d   XP %d" % [int(Game.state["level"]), int(Game.state["xp"])]
     med_text.text = "AMPOULES %d" % int(inventory["consumables"].get("Breath Ampoule", 0))
 
@@ -602,13 +632,64 @@ func set_navigation(label_text: String) -> void:
 func set_interact_prompt(message: String) -> void:
     current_prompt = message
     if not is_instance_valid(prompt_panel) or not is_instance_valid(prompt_label): return
-    prompt_label.text = message
+    # "[E] SPEAK TO BRIN" renders as a keycap plus the verb phrase.
+    var key: String = ""
+    var text: String = message
+    var m := RegEx.create_from_string("^\\[([A-Z0-9]{1,3})\\]\\s*(.*)$").search(message)
+    if m != null:
+        key = m.get_string(1)
+        text = m.get_string(2)
+    prompt_label.text = text
+    var icon: Node = prompt_panel.get_node_or_null("HUD086Icon_icon_interact")
+    if is_instance_valid(prompt_keycap):
+        prompt_keycap.visible = key != ""
+        prompt_keycap_label.text = key
+    if icon is CanvasItem: (icon as CanvasItem).visible = key == ""
     prompt_panel.visible = message != "" and not modal_open
 
+func _keycap_style() -> StyleBoxFlat:
+    var key := StyleBoxFlat.new()
+    key.bg_color = Color("#e6dcc5")
+    key.border_color = Color("#6b5530")
+    key.border_width_left = 1
+    key.border_width_right = 1
+    key.border_width_top = 1
+    key.border_width_bottom = 3
+    key.set_corner_radius_all(2)
+    return key
+
+func _keycap_label(cap: Control, text: String) -> Label:
+    var label := Label.new()
+    label.name = "KeyLegend"
+    label.text = text
+    label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+    label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+    label.add_theme_font_size_override("font_size", 10)
+    label.add_theme_color_override("font_color", Color("#171918"))
+    cap.add_child(label)
+    label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+    label.offset_bottom = -2
+    return label
+
+## Notices are filed as stacked slips (newest on top, three at most) so a new
+## message no longer overwrites the one the player was still reading. The
+## legacy banner keeps the last text for captures and saves.
 func notify(message: String, seconds: float = 4.0) -> void:
     banner.text = message
-    banner_panel.visible = true
-    banner_time = seconds
+    banner_time = 0.0
+    if is_instance_valid(fx):
+        fx.slip(message, seconds)
+    else:
+        banner_panel.visible = true
+        banner_time = seconds
+
+## Big milestones get the civic stamp instead of a slip.
+func stamp(title: String, detail: String = "") -> void:
+    if is_instance_valid(fx): fx.stamp(title, detail)
+
+func hit_confirmed_090(killed: bool) -> void:
+    if is_instance_valid(fx): fx.shot_result(true, killed)
 
 func _process(delta: float) -> void:
     banner_time -= delta
@@ -695,7 +776,7 @@ func _advance_viewmodel(delta: float) -> void:
     else:
         shell.visible = false
 
-func open_modal(heading: String, description: String, choices: Array) -> void:
+func open_modal(heading: String, description: String, choices: Array, tabs: Array = []) -> void:
     close_modal(false)
     modal_open = true
     reticle.visible = false
@@ -703,6 +784,13 @@ func open_modal(heading: String, description: String, choices: Array) -> void:
     muzzle.visible = false
     shell.visible = false
     prompt_panel.visible = false
+    modal_buttons.clear()
+    modal_actions.clear()
+    modal_tab_buttons.clear()
+    modal_tabs = tabs
+    modal_tab_index = 0
+    var tabbed: bool = tabs.size() > 1
+    var many: bool = choices.size() >= 4
 
     modal_scrim = ColorRect.new()
     modal_scrim.color = Color(0, 0, 0, 0.48)
@@ -721,8 +809,12 @@ func open_modal(heading: String, description: String, choices: Array) -> void:
     title.text = heading
     title.position = Vector2(39, 10)
     title.size = Vector2(378, 28)
+    title.clip_text = true
+    title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
     title.add_theme_font_size_override("font_size", 20)
     title.add_theme_color_override("font_color", Color("#efe2c7"))
+    title.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.55))
+    title.add_theme_constant_override("shadow_offset_y", 1)
     modal.add_child(title)
 
     var subtitle := Label.new()
@@ -740,40 +832,53 @@ func open_modal(heading: String, description: String, choices: Array) -> void:
     line.color = Color("#8f6f3d")
     modal.add_child(line)
 
+    var story_top: float = 46.0
+    if tabbed:
+        _build_modal_tabs(tabs)
+        story_top = 66.0
+    var story_bottom: float = 162.0 if many else 212.0
+    # The tabbed docket trades one visible choice row for more record text.
+    if tabbed and many: story_bottom = 196.0
+    var options_y: float = story_bottom + 5.0 if many else 214.0
+    if tabbed and many: options_y = story_bottom - 16.0   # no "AVAILABLE ACTIONS" caption
+
     var story_backing := ColorRect.new()
-    story_backing.position = Vector2(12, 46)
-    story_backing.size = Vector2(532, 166)
+    story_backing.position = Vector2(12, story_top)
+    story_backing.size = Vector2(532, story_bottom - story_top)
     story_backing.color = Color("#171918")
     story_backing.color.a = 0.91
     story_backing.mouse_filter = Control.MOUSE_FILTER_IGNORE
     modal.add_child(story_backing)
 
     var story := RichTextLabel.new()
+    story.name = "ModalStory"
     story.bbcode_enabled = true
     story.fit_content = false
     story.scroll_active = true
-    story.position = Vector2(16, 52)
-    story.size = Vector2(524, 154)
-    story.add_theme_font_size_override("normal_font_size", 14)
+    story.position = Vector2(16, story_top + 6.0)
+    # Significant final choices should not all be hidden below a tiny
+    # 74-pixel scroll viewport, so four or more choices shorten the story.
+    story.size = Vector2(524, story_bottom - story_top - 12.0) if not many else Vector2(524, story_bottom - story_top - 6.0)
+    story.add_theme_font_size_override("normal_font_size", 13 if tabbed else 14)
+    story.add_theme_font_size_override("bold_font_size", 13 if tabbed else 14)
     story.add_theme_color_override("default_color", Color("#d8d6c7"))
-    story.text = description
+    story.text = str(tabs[0]["text"]) if tabbed else description
     modal.add_child(story)
+    modal_story = story
 
-    if choices.size() >= 4:
-        # Significant final choices should not all be hidden below a tiny
-        # 74-pixel scroll viewport. Preserve scroll for smaller screens.
-        story.size = Vector2(524,110)
     var options_title := Label.new()
-    options_title.position = Vector2(16, 167) if choices.size() >= 4 else Vector2(16, 214)
+    options_title.position = Vector2(16, options_y)
     options_title.size = Vector2(200, 18)
     options_title.text = "AVAILABLE ACTIONS"
+    options_title.visible = not (tabbed and many)
     options_title.add_theme_font_size_override("font_size", 10)
     options_title.add_theme_color_override("font_color", Color("#2a312e"))
     modal.add_child(options_title)
 
     var scroll := ScrollContainer.new()
-    scroll.position = Vector2(16, 187) if choices.size() >= 4 else Vector2(16, 234)
-    scroll.size = Vector2(524, 122) if choices.size() >= 4 else Vector2(524, 74)
+    scroll.position = Vector2(16, options_y + 20.0)
+    scroll.size = Vector2(524, 309.0 - options_y - 20.0)
+    scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
     modal.add_child(scroll)
 
     var options := VBoxContainer.new()
@@ -798,8 +903,13 @@ func open_modal(heading: String, description: String, choices: Array) -> void:
             button.add_theme_color_override("font_disabled_color", Color("#3b362c"))
             button.modulate = Color(1, 1, 1, 0.62)
             button.tooltip_text = "Requirement not met yet"
-        button.pressed.connect(_button_pressed.bind(str(choice.get("action", "close"))))
+        var action_id: String = str(choice.get("action", "close"))
+        button.pressed.connect(_button_pressed.bind(action_id))
         options.add_child(button)
+        modal_buttons.append(button)
+        modal_actions.append(action_id)
+        if i < 9:
+            _add_choice_key(button, str(i + 1))
         if not button.disabled and not focus_taken:
             button.grab_focus()
             focus_taken = true
@@ -808,17 +918,122 @@ func open_modal(heading: String, description: String, choices: Array) -> void:
     footer.position = Vector2(16, 309)
     footer.size = Vector2(524, 14)
     footer.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-    footer.text = "TAB or ESC returns here during play • This docket saves and records witnessed actions once"
+    var hint: String = "1-%d choose" % mini(9, choices.size()) if choices.size() > 1 else "1 or ENTER continues"
+    if tabbed: hint += " • ←/→ or Q/E switch tabs"
+    footer.text = hint + " • TAB or ESC returns here during play"
     footer.add_theme_font_size_override("font_size", 10)
     footer.add_theme_color_override("font_color", Color("#90a190"))
     modal.add_child(footer)
     Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
+    # Opening transition: the scrim and the docket fade in quickly so the
+    # change of mode reads, without delaying input.
+    modal_scrim.modulate.a = 0.0
+    modal.modulate.a = 0.0
+    var t := modal.create_tween().set_parallel(true)
+    t.tween_property(modal_scrim, "modulate:a", 1.0, 0.12)
+    t.tween_property(modal, "modulate:a", 1.0, 0.10)
+
+## Number keycap at the left of each choice; the style's left content margin is
+## widened so the label never runs under it.
+func _add_choice_key(button: Button, number: String) -> void:
+    for state in ["normal", "hover", "pressed", "focus", "disabled"]:
+        var box: StyleBox = button.get_theme_stylebox(state)
+        if box != null:
+            box = box.duplicate()
+            box.content_margin_left = 34.0
+            box.content_margin_right = 14.0
+            button.add_theme_stylebox_override(state, box)
+    var cap := Panel.new()
+    cap.name = "ChoiceKey"
+    cap.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    cap.add_theme_stylebox_override("panel", _keycap_style())
+    button.add_child(cap)
+    cap.anchor_top = 0.5
+    cap.anchor_bottom = 0.5
+    cap.offset_left = 10
+    cap.offset_right = 27
+    cap.offset_top = -8
+    cap.offset_bottom = 8
+    _keycap_label(cap, number)
+
+func _build_modal_tabs(tabs: Array) -> void:
+    var row := HBoxContainer.new()
+    row.name = "DocketTabs"
+    row.add_theme_constant_override("separation", 3)
+    modal.add_child(row)
+    row.position = Vector2(14, 45)
+    for i in range(tabs.size()):
+        var tab := Button.new()
+        tab.name = "DocketTab%d" % i
+        tab.text = str(tabs[i]["tab"])
+        tab.focus_mode = Control.FOCUS_NONE
+        tab.toggle_mode = true
+        tab.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+        tab.add_theme_font_size_override("font_size", 11)
+        tab.pressed.connect(select_modal_tab.bind(i))
+        row.add_child(tab)
+        tab.custom_minimum_size = Vector2(86, 18)
+        modal_tab_buttons.append(tab)
+    _style_modal_tabs()
+
+func _style_modal_tabs() -> void:
+    for i in range(modal_tab_buttons.size()):
+        var tab: Button = modal_tab_buttons[i]
+        var active: bool = i == modal_tab_index
+        var box := StyleBoxFlat.new()
+        box.bg_color = Color("#b38a4f") if active else Color("#2a312e", 0.92)
+        box.border_color = Color("#e1d1a6") if active else Color("#6c7468")
+        box.set_border_width_all(1)
+        box.border_width_bottom = 0 if active else 1
+        box.corner_radius_top_left = 3
+        box.corner_radius_top_right = 3
+        box.content_margin_left = 8
+        box.content_margin_right = 8
+        for state in ["normal", "hover", "pressed", "focus", "hover_pressed"]:
+            tab.add_theme_stylebox_override(state, box)
+        var ink: Color = Color("#171918") if active else Color("#d8d6c7")
+        for c in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color", "font_hover_pressed_color"]:
+            tab.add_theme_color_override(c, ink)
+        tab.set_pressed_no_signal(active)
+
+func select_modal_tab(index: int) -> void:
+    if modal_tabs.size() <= 1 or not is_instance_valid(modal_story): return
+    modal_tab_index = posmod(index, modal_tabs.size())
+    modal_story.text = str(modal_tabs[modal_tab_index]["text"])
+    modal_story.scroll_to_line(0)
+    _style_modal_tabs()
+
+## Keyboard shortcuts while a docket is open: 1-9 pick the numbered choice
+## (disabled ones are ignored), Left/Right or Q/E change docket tab.
+func _input(event: InputEvent) -> void:
+    if not modal_open or not (event is InputEventKey) or not event.pressed or event.echo:
+        return
+    var key: int = (event as InputEventKey).keycode
+    if key >= KEY_1 and key <= KEY_9:
+        var index: int = key - KEY_1
+        if index < modal_buttons.size() and is_instance_valid(modal_buttons[index]) and not modal_buttons[index].disabled:
+            get_viewport().set_input_as_handled()
+            modal_buttons[index].grab_focus()
+            _button_pressed(modal_actions[index])
+        return
+    if modal_tabs.size() > 1 and key in [KEY_LEFT, KEY_Q]:
+        select_modal_tab(modal_tab_index - 1)
+        get_viewport().set_input_as_handled()
+    elif modal_tabs.size() > 1 and key in [KEY_RIGHT, KEY_E]:
+        select_modal_tab(modal_tab_index + 1)
+        get_viewport().set_input_as_handled()
 
 func _button_pressed(action_id: String) -> void:
     action_selected.emit(action_id)
 
 func close_modal(show_game: bool = true) -> void:
     modal_open = false
+    modal_buttons.clear()
+    modal_actions.clear()
+    modal_tab_buttons.clear()
+    modal_tabs = []
+    modal_story = null
     if is_instance_valid(modal_scrim):
         modal_scrim.queue_free()
         modal_scrim = null
@@ -834,6 +1049,7 @@ func close_modal(show_game: bool = true) -> void:
 
 func impact_damage_079(amount: int) -> void:
     damage_time_079 = 0.22 + minf(0.13,float(amount)*0.004)
+    if is_instance_valid(fx): fx.damage_taken(amount)
 
 func animate_shot(hit: bool) -> void:
     if hit: reticle_hit_clock_079 = 0.12
@@ -842,12 +1058,22 @@ func animate_shot(hit: bool) -> void:
     recoil_strength = minf(1.75, recoil_strength + 1.0)
     shot_flash=0.065 if active_weapon != "nail" else 0.036
     shell_life = 0.42 if active_weapon in ["covenant", "nail"] else 0.0
-    if hit:
-        notify("TARGET / CONFIRMED IMPACT", 0.45)
+    # Hits are confirmed by the reticle marker (hit_confirmed_090), not a banner.
 
+## Build 09.0: the docket is read in four tabs. dossier_text() still returns
+## the whole record (save files, tests and the plain fallback use it).
 func dossier_text() -> String:
     if not Game.has_attempt():
         return "[b]No active reconstruction.[/b]"
+    var parts: Array[String] = []
+    for section in dossier_sections():
+        parts.append(str(section["text"]))
+    return "\n\n".join(parts)
+
+func dossier_sections() -> Array:
+    if not Game.has_attempt():
+        return [{"tab": "Goals", "text": "[b]No active reconstruction.[/b]"}]
+    var sections: Array = []
     var attrs: Dictionary = Game.state["attributes"]
     var resources: Dictionary = Game.state["resources"]
     var plan: Dictionary = Game.state["world_plan"]
@@ -856,7 +1082,8 @@ func dossier_text() -> String:
     lines.append("[color=#e9dcc0][b]NINTH / %s[/b][/color]    [color=#9fb7a4]ATTEMPT %s[/color]" % [str(Game.state["build"]), str(Game.state["attempt_id"])])
     lines.append("")
     lines.append_array(_final_prerequisites_lines_089())
-    lines.append("")
+    sections.append({"tab": "Goals", "text": "\n".join(lines)})
+    lines = []
     lines.append("[color=#bda77e][b]ATTRIBUTES[/b][/color]")
     lines.append("FORCE %s   REFLEX %s   INSIGHT %s   SPEECH %s   TECH %s   RESOLVE %s" % [attrs["Force"], attrs["Reflex"], attrs["Insight"], attrs["Speech"], attrs["Tech"], attrs["Resolve"]])
     lines.append("")
@@ -888,10 +1115,11 @@ func dossier_text() -> String:
     elif zone == "lift": zone_name = "Freight Lift (Two-Writ Trial)"
     lines.append("CURRENT DISTRICT: %s" % zone_name)
     lines.append("FOUNDING WRITS: %d / 3 REQUIRED (FIVE OFFICES) • %s" % [Game.founding_writs_recorded_077().size(), ", ".join(Game.founding_writs_recorded_077())])
+    sections.append({"tab": "The Ninth", "text": "\n".join(lines)})
+    lines = []
     var brin: Dictionary = Game.state.get("brin", {})
     var ossa: Dictionary = Game.state.get("ossa", {})
     var hearing: Dictionary = Game.state.get("hearing", {})
-    lines.append("")
     lines.append("[color=#bda77e][b]RELATIONSHIPS + RECORDS[/b][/color]")
     lines.append("BRIN: %s / %s / ALIVE %s" % [str(brin.get("stage", "unmet")), str(brin.get("decision", "")), str(brin.get("alive", true))])
     lines.append("OSSA: %s / %s / ALIVE %s" % [str(ossa.get("stage", "unmet")), str(ossa.get("decision", "")), str(ossa.get("alive", true))])
@@ -918,8 +1146,9 @@ func dossier_text() -> String:
     lines.append("WORKERS' RELIEF %s / INDEPENDENT CHOIR NOTES %s" % ["COPIED" if bool(discovered.get("sootworks_relief", false)) else "UNFOUND", "COPIED" if bool(discovered.get("basilica_notes", false)) else "UNFOUND"])
     lines.append("")
     lines.append("[color=#90a190]The transcript is preserved in the saved attempt, not a creature-ownership record.[/color]")
+    sections.append({"tab": "Records", "text": "\n".join(lines)})
+    lines = []
     var core: Dictionary = Game.state.get("core",{})
-    lines.append("")
     lines.append("[color=#bda77e][b]FULL FREIGHT LIFT / CENTRAL CORE[/b][/color]")
     lines.append("THREE-WRIT QUORUM %s / SIGNED ORDER %s / OBJECTION %s / RAIL CHARTER %s" % [str(Game.state.get("trade",{}).get("quorum_audit",false)),str(core.get("order_read",false)),str(core.get("objection_heard",false)),str(core.get("rail_read",false))])
     lines.append("CUSTODIAN %s / METHOD %s / FATE %s" % [str(Game.core_custodian()),str(core.get("custodian_method","")),str(core.get("custodian_fate",""))])
@@ -937,7 +1166,8 @@ func dossier_text() -> String:
         if bool(civic["staged_groups"][group]): staged_now.append(str(group))
     lines.append("STAGED ROSTERS: %s" % (", ".join(staged_now) if not staged_now.is_empty() else "none"))
     lines.append("[color=#90a190]Any three Writs, signed original archives and the Custodian resolution precede the public assembly. Liberation, Dominion and The Crown are never blocked by goodwill points. True Dawn requires three separate clues and explicit revocable consent.[/color]")
-    return "\n".join(lines)
+    sections.append({"tab": "Endgame", "text": "\n".join(lines)})
+    return sections
 
 ## Bible 13 docket: "known final prerequisites" and Office Trust -3..+3.
 func _final_prerequisites_lines_089() -> Array[String]:

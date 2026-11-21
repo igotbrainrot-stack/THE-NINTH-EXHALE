@@ -11,6 +11,8 @@ signal escape_requested
 signal weapon_message(message: String)
 signal weapon_switched(id: String)
 signal weapon_anim(kind: String, duration: float)
+## Build 09.0: reticle marker feedback. killed is true when this hit dropped hp to 0.
+signal hit_confirmed_090(killed: bool)
 signal aim_prompt_changed(message: String)
 signal impact_event_079(at: Vector3, normal: Vector3, material_kind: String)
 signal tracer_event_079x(origin: Vector3, destination: Vector3, weapon_kind: String)
@@ -189,6 +191,7 @@ func intervene() -> void:
         var target: Object = hit.get("collider")
         if is_instance_valid(target) and target.has_method("take_hit"):
             target.take_hit(7)
+            _confirm_hit_090(target)
             shot_fired.emit(true)
             weapon_message.emit("EMERGENCY INTERVENTION / 7 IMPACT — KEEP MOVING")
             return
@@ -262,7 +265,12 @@ func _resolve_shot(id: String, damage: int) -> bool:
     var effective_range: float=float(spec["range"])
     var falloff: float=1.0 if distance<=effective_range else lerpf(1.0,0.40,clampf((distance-effective_range)/maxf(effective_range,1.0),0.0,1.0))
     target.take_hit(maxi(1,roundi(float(damage)*falloff)))
+    _confirm_hit_090(target)
     return true
+
+func _confirm_hit_090(target: Object) -> void:
+    if not is_instance_valid(target) or not ("hp" in target): return
+    hit_confirmed_090.emit(int(target.get("hp")) <= 0)
 
 func reload_weapon() -> void:
     if not Game.has_attempt() or reloading:return

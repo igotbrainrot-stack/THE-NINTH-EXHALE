@@ -2,6 +2,32 @@
 
 Full per-build notes, QA and open issues for every build since Build 02 are in `docs/builds/`.
 
+## 09.0 HUD and UI polish (2026-11-21)
+
+Procedural HUD and docket improvements in Godot; no new image or audio assets. The bible palette is used throughout, with stamp vermilion (#A94D3B) reserved for the one signature moment.
+
+**Civic stamp.** Recorded milestones are stamped on screen with a short slam and a low metal thud, one at a time and never twice: Writ recorded (with the quorum count), hearing passed, Lung installed, level up, perk recorded and Custodian defeated. The milestones are detected from saved state, so every route that grants them is covered.
+
+**Notices.** `notify()` now files stacked paper slips under the route panel, newest on top and at most three, instead of one banner that each new message overwrote. The API is unchanged. Evidence pickups add a "docket (TAB)" slip.
+
+**Combat feedback**
+- Hits draw a small cream tick around the reticle, and kills a heavier vermilion cross; the "TARGET / CONFIRMED IMPACT" banner spam is gone. `player.gd` emits `hit_confirmed_090(killed)`.
+- Damage pushes a red pressure edge in from the screen border.
+- Below 30% health the edge stays and pulses.
+- The vignette is hidden while a docket is open.
+- Health and Breath bars show a pale trail for the amount just lost, which drains to the new value.
+
+**Interaction prompt.** "[E] SPEAK TO BRIN HARKER" now renders as an E keycap followed by the action text.
+
+**Dockets**
+- Every choice has a number keycap; keys 1–9 pick it, and disabled choices ignore their key. Button text is unchanged, so check sums still read `[Tech 1 / 5] …`.
+- The Civic Pressure Docket is split into four tabs: Goals (prerequisites and Office Trust), The Ninth (attributes, resources, plan), Records (relationships, Writs, hearing, discoveries) and Endgame (lift, core, assembly, rail). Switch with a click, ←/→ or Q/E. `dossier_text()` still returns the whole record.
+- Dockets fade in, the footer lists the shortcuts, and long titles trim instead of overflowing.
+
+**Code:** new `scripts/hud_fx_090.gd`, plus changes to `game_ui.gd`, `main.gd` and `player.gd`. Tested by the new `tests/godot_hud_090.tscn` (46 checks). All earlier suites still pass: Python 277, codefix 36, RPG 33, art 39, plus smoke, witness, HUD 086 and asset 087.
+
+**Not yet playtested by hand.** The timing of the stamp (about 2 s on screen) and the slip lifetimes are first guesses.
+
 ## 08.9 readable choices and RPG fixes (2026-11-20)
 
 Bible-conformance fixes for checks, progression, trust, the True Dawn lockout and the hearing. No art changes.
