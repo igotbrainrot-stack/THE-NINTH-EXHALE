@@ -33,9 +33,27 @@ Muzzle/shell anchors are provisional. Recheck them in the rendered game. The cap
 ## Engine and package
 Godot version: 4.4.1 stable Linux x86_64.
 Workflow: `.github/workflows/package-godot-092.yml`.
-It imports the project, runs the Python regression suite, runs Godot scene/animation/weapon/perception/HUD tests, performs a 420-second rendered playbot run, then packages the complete project source/assets together with the official Godot 4.4.1 Linux executable. The package contains `RUN_GAME.sh`, `RUN_TESTS.sh` and a runtime README. Download the Actions artifact from the workflow run after completion; do not assume the artifact exists until the upload step has succeeded.
+Successful package workflow run: https://github.com/igotbrainrot-stack/THE-NINTH-EXHALE/actions/runs/44926051600
+- Commit tested: `053ce895aa3f7f126846f837bcadef0fc10fdb2b`
+- Artifact: `the-ninth-exhale-092-godot-441-linux` (ID `14714749989`, 433,982,740 bytes, expires 2026-12-21)
+- Outer artifact SHA-256: `6f74000268001dee7aed8ab4460dbb9ad4040471a79a1301c13792264c373632`
+- Inside the downloaded Actions artifact ZIP is `package/THE_NINTH_EXHALE_BUILD_092_GODOT_441_LINUX.zip` plus its `.sha256` file and startup capture folder.
+- Extract the outer Actions artifact, then extract the inner project ZIP. Run `./RUN_GAME.sh`; run `./RUN_TESTS.sh` for the included Godot suites.
+
+The workflow imports the project, runs the Python regression suite, runs five Godot runtime suites, performs a zero-duration rendered startup smoke, and packages the complete project source/assets together with the official Godot 4.4.1 Linux executable. The startup smoke is not a full playthrough: it only confirms the initial game scene starts and remains in Hearth Nine. Separate longer playbot attempts completed their gameplay steps but their earlier packaging step had the recursive-rsync defect; do not treat those as the delivered package.
 
 The previously uploaded Godot binary from an older chat was not mounted in the current workspace. The package workflow therefore fetches the official Godot 4.4.1 stable Linux x86_64 release, verifies its version, and includes it. This is the same engine version, not the exact prior attachment.
+
+## Package verification results
+- Python: 290 passed.
+- Project source validation: 14 passed.
+- Godot animation: 14 passed, 0 failed.
+- Godot perception: 25 passed, 0 failed.
+- HUD override: 8 passed, 0 failed.
+- District scene smoke and weapon-art resource/loader tests completed successfully.
+- Godot version verified: `4.4.1.stable.official.49a5bc7b6`.
+- Startup smoke ended in Hearth Nine with no Writs or hostile activity; this is a launch check only, not a campaign completion.
+- Non-blocking runner warnings: two resources remained in use at exit; the GitHub headless runner had no usable audio device and fell back to the dummy driver; V-sync mode was unsupported in the software-rendered environment. Actual audio playback and human graphical playtesting remain outstanding.
 
 ## Research / source models
 - Four Runway Tripo H3.1 models are recorded in the weapon manifest at approximately 1.4 million triangles each. They are source references only and must not be used as runtime meshes without retopology and LOD.
