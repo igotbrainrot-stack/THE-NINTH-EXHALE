@@ -25,7 +25,7 @@ jobs:
       - name: Import Runway weapon art
         run: |
           python tools/import_runway_weapon_art_092.py
-          python tools/anim_092.py check assets/weapons/anim_092
+          python tools/anim_092.py check --root assets/weapons/anim_092
       - name: Python regressions
         run: |
           python3 -m unittest discover -s tests -p 'test_*.py'
@@ -40,16 +40,17 @@ jobs:
           ./Godot_v4.4.1-stable_linux.x86_64 --headless --editor --path . --quit
           ./Godot_v4.4.1-stable_linux.x86_64 --headless --path . --script res://tests/godot_weapon_art_092.gd
           ./Godot_v4.4.1-stable_linux.x86_64 --headless --path . res://tests/godot_anim_092.tscn
-      - name: Play the game and capture frames
+      - name: Capture all weapon states in the real game
+        env:
+          CAP_DIR: ${{ github.workspace }}/artifacts/weapon_capture_092
+        run: |
+          mkdir -p "$CAP_DIR"
+          xvfb-run -a env LIBGL_ALWAYS_SOFTWARE=1 CAP_DIR="$CAP_DIR" ./Godot_v4.4.1-stable_linux.x86_64 --path . --rendering-driver opengl3 --script res://tests/godot_weapon_art_capture_092.gd
+      - name: Play the game with rendered frame capture
         continue-on-error: true
         env:
           GODOT: ${{ github.workspace }}/Godot_v4.4.1-stable_linux.x86_64
-          BOT_SECONDS: "90"
-          BOT_POLICY: combat
-          CAP_DIR: ${{ github.workspace }}/artifacts/playbot_092
-        run: |
-          mkdir -p "$CAP_DIR"
-          xvfb-run -a env LIBGL_ALWAYS_SOFTWARE=1 GODOT="$GODOT" BOT_SECONDS="$BOT_SECONDS" BOT_POLICY="$BOT_POLICY" CAP_DIR="$CAP_DIR" tools/playbot_090/run_playbot.sh "$CAP_DIR" 90
+        run: tools/playbot_090/run_playbot.sh artifacts/playbot_092 90
       - name: Commit generated assets
         if: success()
         run: |
@@ -58,7 +59,7 @@ jobs:
           git add assets/weapons/anim_092 art/production_sources/weapons_092 art/WEAPON_ANIM_092_MANIFEST.json docs/handover/WEAPON_092_*
           git commit -m "assets: import Runway weapon art 09.2" || exit 0
           git push origin HEAD:feature/weapon-art-092-20261122
-      - name: Upload QA and rendered playbot frames
+      - name: Upload QA and rendered frames
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -67,5 +68,6 @@ jobs:
             docs/handover/WEAPON_092_CONTACT_SHEET.png
             docs/handover/WEAPON_092_BEFORE_AFTER.png
             docs/handover/WEAPON_092_QA.md
+            artifacts/weapon_capture_092
             artifacts/playbot_092
           if-no-files-found: warn
