@@ -13,18 +13,31 @@ func _run() -> void:
     assert(packed != null, "Could not load Hearth Nine scene")
     var game := packed.instantiate()
     root.add_child(game)
+    await process_frame
+    game.begin_attempt("Witness")
+    Game.ensure_weapon_state()
+    Game.state["inventory"]["weapons"] = [
+        {"definition_id":"wp_covenant_pistol"},
+        {"definition_id":"wp_coil_shotgun"},
+        {"definition_id":"wp_nail_storm"},
+        {"definition_id":"wp_choirbreaker"}
+    ]
+    for id in WEAPONS:
+        Game.state["weapon_state"]["magazines"][id] = 24
+        Game.state["weapon_state"]["reserves"][id] = 96
     await create_timer(1.5).timeout
     assert(game.get("hud") != null, "Hearth Nine HUD was not created")
     var hud = game.hud
     hud.close_modal(true)
     await create_timer(0.4).timeout
     for weapon in WEAPONS:
+        Game.equip_weapon(weapon)
         hud.set_weapon(weapon)
         await create_timer(0.35).timeout
         await process_frame
         _capture(game, cap_dir, weapon + "_idle")
         hud.weapon_event("fire", 0.0)
-        await create_timer(0.09).timeout
+        await create_timer(0.02).timeout
         await process_frame
         _capture(game, cap_dir, weapon + "_fire")
         await create_timer(0.25).timeout
