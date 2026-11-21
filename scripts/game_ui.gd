@@ -942,12 +942,13 @@ func _advance_viewmodel(delta: float) -> void:
     var intervene_offset := Vector2.ZERO
     var intervene_rotation := 0.0
     if intervene_active_092:
+        intervene_clock_092 += delta
+        var progress: float = clampf(intervene_clock_092 / maxf(0.01, intervene_duration_092), 0.0, 1.0)
         if weapon_anim_092 != null and weapon_anim_092.has_state("intervene"):
+            # Painted animation supplies the movement; still advance the event timer.
             intervene_offset_092 = Vector2.ZERO
             intervene_rotation_092 = 0.0
         else:
-            intervene_clock_092 += delta
-            var progress: float = clampf(intervene_clock_092 / maxf(0.01, intervene_duration_092), 0.0, 1.0)
             var thrust: float
             if progress < 0.38:
                 thrust = progress / 0.38
@@ -958,10 +959,10 @@ func _advance_viewmodel(delta: float) -> void:
             thrust = clampf(thrust, 0.0, 1.0)
             intervene_offset_092 = Vector2(-26.0 * thrust, -46.0 * thrust)
             intervene_rotation_092 = -0.17 * thrust
-            if progress >= 1.0:
-                intervene_active_092 = false
-                intervene_offset_092 = Vector2.ZERO
-                intervene_rotation_092 = 0.0
+        if progress >= 1.0:
+            intervene_active_092 = false
+            intervene_offset_092 = Vector2.ZERO
+            intervene_rotation_092 = 0.0
         intervene_offset = intervene_offset_092
         intervene_rotation = intervene_rotation_092
     else:
