@@ -79,6 +79,6 @@
       }
     }
   },
-  "alpha_pipeline": "rembg/isnet-general-use",
-  "importer_revision": 4
+  "alpha_pipeline": "rembg/isnet-general-use with RGB-independent alpha normalization",
+  "importer_revision": 5
 }
