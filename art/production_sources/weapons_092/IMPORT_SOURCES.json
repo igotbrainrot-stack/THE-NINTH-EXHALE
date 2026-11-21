@@ -78,5 +78,7 @@
         "has_materials": true
       }
     }
-  }
+  },
+  "alpha_pipeline": "rembg/isnet-general-use",
+  "importer_revision": 2
 }
