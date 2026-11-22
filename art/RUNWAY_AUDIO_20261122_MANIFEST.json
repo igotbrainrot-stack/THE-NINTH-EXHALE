@@ -1,0 +1,72 @@
+{
+  "project": "THE NINTH EXHALE",
+  "date_utc": "2026-11-22",
+  "source": "Runway / IGotBrainRot workspace",
+  "branch": "feature/weapon-art-092-20261122",
+  "pr": 11,
+  "credits_spent": 7,
+  "credits_remaining_after_submission": 0,
+  "source_auth_status": "Runway API token revoked during follow-up asset retrieval (401)",
+  "note": "Generation requests accepted; binary MP3 outputs could not be retrieved, verified, or pushed to GitHub. Task IDs are authoritative for retrieval after reconnection. Do not mark assets as bundled.",
+  "assets": [
+    {
+      "key": "combat_music",
+      "title": "Pneumatic Verdict",
+      "task_id": "5fdebefa-9b27-461f-83eb-35a514b728bc",
+      "model": "lyria-3-clip",
+      "credits": 4,
+      "requested_duration_seconds": null,
+      "target_path": "assets/music/runway_20261122/pneumatic_verdict_combat.mp3",
+      "prompt": "Original instrumental short combat music cue for THE NINTH EXHALE, a grim retro-futurist industrial biohorror first-person action RPG. Relentless 1980s analog techno-industrial energy with the aggression and urgency of heavy metal, 145 BPM. Hammering gated drum machine and distorted industrial percussion, sinister pulsing analog bass sequencer, razor-edged FM synth stabs, detuned minor-key arpeggios, brief menacing machine-choir textures, pounding tom fills, high tension and kinetic forward momentum. Sounds like a brutal mechanical tribunal activating; oppressive, strange, memorable, polished game soundtrack. Strong beat and bass, immediately actionable battle cue, ending with a clean rhythmic phrase that can be edited into a loop. No vocals, no spoken words, no recognizable melodies, no guitar solos, no cinematic orchestra.",
+      "submission_status": "accepted_by_runway",
+      "completion_status": "unverified_due_to_revoked_runway_token",
+      "binary_committed": false,
+      "runtime_integrated": false
+    },
+    {
+      "key": "coil_shotgun_fire",
+      "title": "Coil Shotgun Fire",
+      "task_id": "54da5bc5-407b-4b9b-aad6-425ec4584f98",
+      "model": "sound-effects",
+      "credits": 1,
+      "requested_duration_seconds": 1,
+      "target_path": "assets/audio/runway_20261122/coil_shotgun_fire.mp3",
+      "fallback_path": "assets/audio/coil_fire.wav",
+      "prompt": "One powerful close-range discharge from a retro-industrial electromagnetic coil shotgun: rising capacitor snap, brutal low-frequency metallic THOOM, crackling blue-white electrical arc, quick sizzling decay and heavy mechanical bolt recoil. Dry and punchy, designed as a single FPS weapon firing sound, no music, no voices.",
+      "submission_status": "accepted_by_runway",
+      "completion_status": "unverified_due_to_revoked_runway_token",
+      "binary_committed": false,
+      "runtime_integrated": false
+    },
+    {
+      "key": "nail_storm_fire",
+      "title": "Nail Storm Fire",
+      "task_id": "ad91da3d-de21-4033-ae4d-e0a1966cd638",
+      "model": "sound-effects",
+      "credits": 1,
+      "requested_duration_seconds": 1,
+      "target_path": "assets/audio/runway_20261122/nail_storm_fire.mp3",
+      "fallback_path": "assets/audio/nail_fire.wav",
+      "prompt": "One vicious burst from a heavy bio-industrial pneumatic nail launcher: rapid compressed-air piston hammer CLACK-CHUFF, three tightly spaced steel rivet impacts, metallic feed-rack chatter and a short pressure-release hiss. Distinct from a conventional gunshot, aggressive close-up first-person shooter weapon effect, no music, no voices.",
+      "submission_status": "accepted_by_runway",
+      "completion_status": "unverified_due_to_revoked_runway_token",
+      "binary_committed": false,
+      "runtime_integrated": false
+    },
+    {
+      "key": "choirbreaker_fire",
+      "title": "Choirbreaker Fire",
+      "task_id": "8cb8c083-db88-4add-a846-be9ce690e749",
+      "model": "sound-effects",
+      "credits": 1,
+      "requested_duration_seconds": 1,
+      "target_path": "assets/audio/runway_20261122/choirbreaker_fire.mp3",
+      "fallback_path": "assets/audio/choir_fire.wav",
+      "prompt": "One terrifying shot from a biomechanical acoustic cannon: guttural sub-bass pressure-wave BWAAAM, resonant metallic throat shutters snapping open, distorted choral harmonic overtone without any words, brief air-ripping shockwave decay. Singular heavy FPS weapon attack, otherworldly industrial horror, no music or speech.",
+      "submission_status": "accepted_by_runway",
+      "completion_status": "unverified_due_to_revoked_runway_token",
+      "binary_committed": false,
+      "runtime_integrated": false
+    }
+  ]
+}
