@@ -1,0 +1,3 @@
+# Source art, provenance sheets and review images: read by Python tools and
+# tests, never loaded by the game. Keeping Godot out of here avoids importing
+# ~200 MB of 2560 px sheets into .godot/ and into any exported build.

@@ -12,6 +12,8 @@ const CoreBuilder076 = preload("res://scripts/core_builder_076.gd")
 const AssemblyBuilder078 = preload("res://scripts/assembly_builder_078.gd")
 const LiftBuilder = preload("res://scripts/lift_builder.gd")
 const OfficeEnforcer = preload("res://scripts/enemy.gd")
+const NamedWitness093 = preload("res://scripts/named_witness_093.gd")
+const Perception092 = preload("res://scripts/perception_092.gd")
 const CombatTracer079X = preload("res://scripts/combat_tracer_079x.gd")
 const EnemyRoster068 = preload("res://scripts/enemy_roster_068.gd")
 const PressureFixture = preload("res://scripts/pressure_fixture.gd")
@@ -55,6 +57,7 @@ func _ready() -> void:
     player.weapon_switched.connect(hud.set_weapon)
     player.weapon_anim.connect(hud.weapon_event)
     player.aim_prompt_changed.connect(hud.set_interact_prompt)
+    player.hit_confirmed_090.connect(hud.hit_confirmed_090)
     player.docket_requested.connect(_show_dossier)
     player.save_requested.connect(_save_now)
     player.load_requested.connect(_load_now)
@@ -62,6 +65,7 @@ func _ready() -> void:
     player.escape_requested.connect(_show_dossier)
     player.weapon_message.connect(_show_message)
     Game.attempt_failed.connect(_on_attempt_failed)
+    Game.level_changed.connect(_on_level_changed_089)
     player.set_control_active(false)
     Music.set_listener(player)
     hud.set_weapon("covenant")
@@ -201,12 +205,52 @@ func _hook_named_witnesses_085() -> void:
         if is_instance_valid(witness) and witness.has_signal("threatened_085"):
             witness.connect("threatened_085",Callable(self,"_on_named_witness_threatened_085").bind(witness_name))
 
+## 09.2: the 08.5 shortcut (alert the district keeper by fiat) is replaced
+## by perception, as bible L1398 requires: the threatened civilian cries out,
+## and only office-holders who see the assault or hear the cry react. They turn
+## hostile, and record what they witnessed, only if they then see the attacker.
+## A keeper out of earshot never learns of it from this event.
 func _on_named_witness_threatened_085(witness_name: String) -> void:
     if not Game.has_attempt(): return
-    if is_instance_valid(guard) and int(guard.hp) > 0:
-        guard.anger()
+    var witness: Node3D = world.get_node_or_null(witness_name)
+    var at: Vector3 = witness.global_position if is_instance_valid(witness) else player.global_position
     player._play_action_audio("pressure_warning.wav",-10.0)
-    hud.notify("WITNESS UNDER THREAT / %s / DISTRICT SECURITY ALERTED" % witness_name.to_upper(),4.5)
+    Perception092.emit_noise(get_tree(), at, Perception092.NOISE_CRY, "cry_for_help", true, witness)
+    var heard_by: Array = Perception092.witness_assault(get_tree(), witness_name, at, player.global_position)
+    if heard_by.is_empty():
+        # 09.3: nobody perceived it, so the witness runs to tell the office.
+        # Intercepting (calming) or losing them is the player's problem now.
+        var key: String = "brin" if witness_name == "Brin Harker" else "ossa"
+        var runner = NamedWitness093.start_run(witness, key, player.global_position) if is_instance_valid(witness) else null
+        if runner != null and str(runner.status) == "running":
+            runner.delivered.connect(_on_witness_report_delivered_093)
+            hud.notify("%s CRIES FOR HELP / RUNNING TO TELL THE %s" % [witness_name.to_upper(), str(runner.KEEPER_LABEL.get(runner.keeper_key, "OFFICE"))],4.5)
+        else:
+            hud.notify("%s CRIES FOR HELP / NO OFFICE-HOLDER IN EARSHOT" % witness_name.to_upper(),4.5)
+    else:
+        var channel: String = str(heard_by[0][1])
+        hud.notify("%s CRIES FOR HELP / THE OFFICE %s IT" % [witness_name.to_upper(), "SAW" if channel == "SIGHT" else "HEARD"],4.5)
+
+func _on_witness_report_delivered_093(victim: String, keeper: String) -> void:
+    var who: String = "BRIN" if victim == "brin" else "OSSA"
+    hud.notify("%s REACHED THE %s / THE OFFICE IS WATCHING FOR YOU" % [who, keeper.to_upper()],5.0)
+    Game.save_attempt()
+
+func _witness_gate_093(key: String) -> Dictionary:
+    # A threatened witness pauses their arc with the person who hurt them.
+    var actor: Node = world.get_node_or_null("Brin Harker" if key == "brin" else "Sister Ossa")
+    if not NamedWitness093.is_threatened(actor): return {}
+    var name_up: String = "BRIN" if key == "brin" else "OSSA"
+    var keeper: String = "Millwright" if key == "brin" else "Cantor"
+    var where: String
+    match NamedWitness093.status(key):
+        "running": where = "keeps out of reach and heads for the %s." % keeper
+        "delivered": where = "stays close to the %s and has told what you did." % keeper
+        "no_listener": where = "has found a corner and will not come out."
+        _: where = "backs away, watching your hands."
+    return {"title": "%s / THREATENED WITNESS" % name_up,
+        "text": "%s %s Nothing more will be said to the person who hurt them until you stand down and answer for it." % ["Brin" if key == "brin" else "Ossa", where],
+        "options": [check_option("APOLOGISE / LOWER THE WEAPON", "witness:calm:" + key, NamedWitness093.calm_check()), go_back()]}
 
 func _setup_environmental_encounter_079(zone: String) -> void:
     if not Game.has_attempt() or zone not in ["hearth","sootworks","basilica"]: return
@@ -236,7 +280,10 @@ func _shutdown_environmental_encounter_079(zone: String, method: String) -> void
         pending_quiet_service_079 = ""
         pending_quiet_service_deadline_079 = 0
     if Game.shut_down_hazard_079(zone,method):
-        if is_instance_valid(service_hazard_079): service_hazard_079.call("confirm_shutdown")
+        if is_instance_valid(service_hazard_079):
+            service_hazard_079.call("confirm_shutdown")
+            if method != "quiet":
+                Perception092.emit_noise(get_tree(), service_hazard_079.global_position, Perception092.NOISE_BURST, "rupture", true)
         player._play_action_audio("mechanical_reload.wav",-12.0)
         hud.notify("%s / %s / SERVICE DISABLED / %s" % [zone.to_upper(),method.to_upper(),"1 ENERGY + 1 LABOUR" if method == "quiet" else "2 ENERGY"],3.1)
     else:
@@ -334,6 +381,7 @@ func _pressure_fixture_has_path_079z(point: Vector3, actor: Node3D) -> bool:
 
 func _on_pressure_fixture_burst(fixture_id: String, at: Vector3) -> void:
     if not Game.vent_pressure_fixture(fixture_id): return
+    Perception092.emit_noise(get_tree(), at, Perception092.NOISE_BURST, "pressure_burst", true)
     var distance: float = INF
     var affected: bool = false
     if is_instance_valid(guard):
@@ -374,14 +422,22 @@ func _nav_target() -> Dictionary:
                 return {"label":"PUBLIC ARCHIVE","pos":Vector3(-6,0,-11.3)}
             return {"label":"RESERVE LUNG","pos":Vector3(13,0,9)}
         if Game.can_register_three_writ_quorum():
-            return {"label":"THREE-WRIT AUTHENTICATION","pos":Vector3(7.1,0,14)}
+            # 09.0: was Vector3(7.1,0,14), an empty spot; the desk is at (22,0,-5).
+            return {"label":"THREE-WRIT AUTHENTICATION","pos":Vector3(22,0,-5)}
         return {"label":"FIVE FOUNDING SERVICE RAILS","pos":Vector3(2.7,0,14)}
     if zone == "sootworks":
         if not bool(Game.state["brin"].get("payroll_seen",false)):
             return {"label":"PAYROLL CYLINDER","pos":Vector3(-20,0,-12)}
-        if str(Game.state["brin"].get("decision","")) == "" and bool(Game.state["brin"].get("alive",true)):
+        var brin_nav: Dictionary = Game.state["brin"]
+        if str(brin_nav.get("decision","")) == "" and bool(brin_nav.get("alive",true)):
+            # 09.0: after the investigation Brin sends Ninth to the stewards; the
+            # route used to keep pointing at him, a dead end with only "Close".
+            if str(brin_nav.get("stage","")) == "investigated":
+                return {"label":"WORKERS' COUNCIL","pos":Vector3(-7,0,-16)}
             return {"label":"BRIN HARKER","pos":Vector3(-11,0,6)}
         if not Game.state["writs"].has("qobj_writ_of_labour"):
+            if str(brin_nav.get("decision","")) == "help" and bool(brin_nav.get("alive",true)):
+                return {"label":"WORKERS' COUNCIL","pos":Vector3(-7,0,-16)}
             return {"label":"LABOUR PUBLIC REGISTRY","pos":Vector3(-20,0,15)}
         return {"label":"RETURN SERVICE RAIL","pos":Vector3(-20,0,20)}
     if zone == "basilica":
@@ -390,6 +446,18 @@ func _nav_target() -> Dictionary:
         if not bool(Game.state["hearing"].get("passed",false)):
             return {"label":"ROOTKIN HEARING","pos":Vector3(10,0,-17)}
         if not Game.state["writs"].has("qobj_writ_of_faith"):
+            # 09.2: the peaceful route goes through Ossa's lay council, as the
+            # Sootworks one goes through the workers' council. The wicket only
+            # answers once the Cantor has fallen.
+            var ossa_nav: Dictionary = Game.state.get("ossa",{})
+            var cantor_down: bool = bool(Game.state.get("faith",{}).get("cantor_defeated",false))
+            if not cantor_down and bool(ossa_nav.get("alive",true)):
+                var ossa_stage: String = str(ossa_nav.get("stage","unmet"))
+                if ossa_stage in ["unmet","encountered"] and str(ossa_nav.get("decision","")) == "":
+                    # Meet her, then compare the reel with her (investigate).
+                    return {"label":"SISTER OSSA","pos":Vector3(-19,0,5)}
+                if ossa_stage == "investigated" or str(ossa_nav.get("decision","")) == "help":
+                    return {"label":"LAY COUNCIL","pos":Vector3(-8,0,-18)}
             return {"label":"FAITH PUBLIC WICKET","pos":Vector3(-22,0,15)}
         return {"label":"RETURN SERVICE RAIL","pos":Vector3(-22,0,21)}
     if zone == "ashmarket":
@@ -401,7 +469,12 @@ func _nav_target() -> Dictionary:
         if not bool(trade.get("coalition_recorded",false)):
             return {"label":"BUYER COALITION","pos":Vector3(-18,0,14)}
         if not Game.state["writs"].has("qobj_writ_of_trade"):
-            return {"label":"TRADE WRIT REGISTRY","pos":Vector3(20,0,14)}
+            # 09.2: the registry only lists lock isolation, succession or a
+            # witnessed threat. Until one exists, the Writ is settled at the
+            # Collector's board (coalition challenge, force or a fight).
+            if bool(trade.get("counting_lock_isolated",false)) or bool(trade.get("collector_defeated",false)) or bool(trade.get("intimidation_recorded",false)):
+                return {"label":"TRADE WRIT REGISTRY","pos":Vector3(20,0,14)}
+            return {"label":"COLLECTOR'S BOARD","pos":Vector3(14,0,4)}
         return {"label":"RETURN SERVICE RAIL","pos":Vector3(-22,0,19)}
     if zone == "orchard":
         var growth: Dictionary = Game.state.get("growth",{})
@@ -429,7 +502,11 @@ func _nav_target() -> Dictionary:
         var civic: Dictionary = Game.state.get("civic",{})
         if not bool(civic.get("risk_disclosed",false)):
             return {"label":"PUBLIC RISK DISCLOSURE","pos":Vector3(-21,0,-14)}
-        if not bool(civic.get("petition_read",false)):
+        # 09.2: only route to the petition when the Ninth actually copied it in
+        # the Core. Under Latch or Voss it is never targeted there, and the
+        # marker used to strand players (and the playbot) at a console that can
+        # only answer NOT RECORDED.
+        if not bool(civic.get("petition_read",false)) and bool(Game.state.get("core",{}).get("voluntary_petition",false)):
             return {"label":"SIGNED PATIENT PETITION","pos":Vector3(-14,0,-14)}
         if Game.dawn_technical_prerequisites_078() and not bool(civic.get("mandate",false)):
             return {"label":"CIVIC WITNESS ROLLS","pos":Vector3(-7,0,-3)}
@@ -612,6 +689,11 @@ func open_main_menu() -> void:
     var opts: Array = []
     if Game.has_saved_active():
         opts.append({"label":"RESUME / last active attempt","action":"resume"})
+    else:
+        var failed: Dictionary = Game.failed_attempt_awaiting_reprint()
+        if not failed.is_empty():
+            var last_death: Dictionary = failed["nix_archived_failures"].back()
+            opts.append({"label":"RECONSTRUCT / %s after death at %s" % [str(failed.get("build","Witness")).to_upper(), str(last_death.get("site","Vesper"))],"action":"reprint_saved"})
     if Game.profile.get("completed_endings",[]).size() > 0:
         opts.append({"label":"ARCHIVED SETTLEMENTS / NOT REWOUND","action":"ending:archive"})
     for name in ["Witness","Breaker","Mechanist","Stalker"]:
@@ -916,8 +998,8 @@ func _on_interact(interaction_id: String) -> void:
             else:
                 show_choice("RESERVE RACK / TWO WARDS", "The spare is real. Its claim tag names another ward. An unapproved removal can save Hearth Nine immediately, but creates a documented shortage elsewhere.",[{"label":"REMOVE SPARE / STEAL WITH TRACEABLE COST","action":"claim:steal"},go_back()])
         "tech_panel":
-            var tech_message := "TECH 5 REQUIRED / your Tech is %d. A measured diversion can free the known reserve without erasing the audit trail." % Game.stat("Tech")
-            show_choice("MAINTENANCE / POWER REDIRECTION",tech_message,[{"label":"[TECH 5] REROUTE THE LOAD / CLAIM LUNG","action":"claim:tech"},go_back()])
+            var tech_message := "A measured diversion can free the known reserve without erasing the audit trail."
+            show_choice("MAINTENANCE / POWER REDIRECTION",tech_message,[check_option("REROUTE THE LOAD / CLAIM LUNG","claim:tech",Game.check_attribute("Tech",5)),go_back()])
         "ammo_locker":
             if Game.state["event_ids"].has("hearth.mandatory_ammo"):
                 show_choice("EMERGENCY SUPPLIES", "The single authorised issue has been collected. The ledger cannot restock on another visit.",[go_back()])
@@ -935,11 +1017,31 @@ func _on_interact(interaction_id: String) -> void:
                 show_choice("THREE-WRIT QUORUM / NOT READY", "Install the Lung, authenticate any THREE distinct Writs from the five founding offices, and complete the public hearing. The two-Writ Edda trial remains a separate prototype.",[go_back()])
         "future_gate":
             if bool(Game.state["lung"]["installed"]):
-                show_choice("RAIL ACCESS / FIVE FOUNDING OFFICES", "All five district offices now have physical Writ registries. Any three independent Writs can satisfy the central charter; the remaining offices are optional but still reachable.", [{"label":"TRAVEL TO SOOTWORKS / LABOUR","action":"travel:sootworks"},{"label":"TRAVEL TO FLOOD BASILICA / FAITH","action":"travel:basilica"},{"label":"TRAVEL TO ASHMARKET / TRADE","action":"travel:ashmarket"},{"label":"TRAVEL TO GLASS ORCHARD / GROWTH","action":"travel:orchard"},{"label":"TRAVEL TO QUIET BARRACKS / DEFENCE","action":"travel:barracks"},go_back()])
+                show_choice("RAIL ACCESS / FIVE FOUNDING OFFICES", "All five district offices now have physical Writ registries. Any three independent Writs can satisfy the central charter; the remaining offices are optional but still reachable.", _founding_rail_options_090())
             else:
                 show_choice("HEARTH NINE / FIRST OBLIGATION", "Install the contested Cinder Lung before leaving the ward to pursue founding Writs.",[go_back()])
         _:
             show_choice("UNREGISTERED SERVICE", "No authored interaction is attached to this object.",[go_back()])
+
+## 09.0: the five rail options say which Writs Ninth already holds, so a
+## returning player does not have to remember which districts are finished.
+func _founding_rail_options_090() -> Array:
+    var rows: Array = [
+        ["TRAVEL TO SOOTWORKS / LABOUR", "travel:sootworks", "qobj_writ_of_labour"],
+        ["TRAVEL TO FLOOD BASILICA / FAITH", "travel:basilica", "qobj_writ_of_faith"],
+        ["TRAVEL TO ASHMARKET / TRADE", "travel:ashmarket", "qobj_writ_of_trade"],
+        ["TRAVEL TO GLASS ORCHARD / GROWTH", "travel:orchard", "qobj_writ_of_growth"],
+        ["TRAVEL TO QUIET BARRACKS / DEFENCE", "travel:barracks", "qobj_writ_of_defence"]]
+    var open_rows: Array = []
+    var held_rows: Array = []
+    for row in rows:
+        var held: bool = Game.state["writs"].has(row[2])
+        var label: String = str(row[0]) + ("  ·  WRIT HELD" if held else "")
+        (held_rows if held else open_rows).append({"label": label, "action": str(row[1])})
+    # Offices still to visit come first; finished ones stay reachable.
+    var out: Array = open_rows + held_rows
+    out.append(go_back())
+    return out
 
 func orchard_interaction_077(interaction_id: String) -> void:
     var growth: Dictionary = Game.state.get("growth",{})
@@ -950,7 +1052,7 @@ func orchard_interaction_077(interaction_id: String) -> void:
         "orchard_scientists", "orchard_technician":
             show_choice("RESEARCH STAFF / VOICE OF THE ORCHARD", "Two living control cultures must be compared before the researchers can challenge the Gardener. A private declaration of good intentions is not a public vote.",[{"label":"PRESENT CONTROL / CALL PUBLIC VOTE","action":"orchard:vote"},go_back()])
         "orchard_feed_line":
-            show_choice("FORCED MEMORY FEED / ISOLATION", "A trained technician can cut the root motor's coercive pattern feed with a staffed mineral rinse. This costs 2 Energy and 1 Labour; existing plants still require care.",[{"label":"[TECH 5] ISOLATE ROOT FEED / 2E + 1L","action":"orchard:isolate"},go_back()])
+            show_choice("FORCED MEMORY FEED / ISOLATION", "A trained technician can cut the root motor's coercive pattern feed with a staffed mineral rinse. This costs 2 Energy and 1 Labour; existing plants still require care.",[check_option("ISOLATE ROOT FEED / 2E + 1L","orchard:isolate",Game.check_attribute("Tech",5)),go_back()])
         "orchard_gardener":
             show_choice("GARDENER / PROPAGATION AUTHORITY", "'A fruit that speaks is not necessarily a person,' says the Gardener. The keeper requires a controlled separation test, not a speech. Its powered root apparatus can also be stopped.",[{"label":"CONFRONT POWERED ROOT ASSEMBLY","action":"orchard:fight"},go_back()])
         "orchard_writ":
@@ -981,7 +1083,7 @@ func barracks_interaction_077(interaction_id: String) -> void:
         "barracks_platoon_vote":
             show_choice("PLATOON / THEIR OWN NAMES", "If the casualty roll and real watch staffing are both recorded, soldiers can vote to revoke illegal orders while leaving protection in place.",[{"label":"READ NAMES / CALL SOLDIERS ASSEMBLY","action":"barracks:vote"},go_back()])
         "barracks_signal":
-            show_choice("SIGNAL ZERO / CONTRADICTORY ORDERS", "A Tech 5 operator can isolate the old coercive signal only after recording which real guards will stay. The intervention costs 2 Energy and 2 Labour.",[{"label":"[TECH 5] ISOLATE ORDER BUS / 2E + 2L","action":"barracks:isolate"},go_back()])
+            show_choice("SIGNAL ZERO / CONTRADICTORY ORDERS", "A Tech 5 operator can isolate the old coercive signal only after recording which real guards will stay. The intervention costs 2 Energy and 2 Labour.",[check_option("ISOLATE ORDER BUS / 2E + 2L","barracks:isolate",Game.check_attribute("Tech",5,0,"",bool(Game.state["defence"]["guard_roster"]),"staffed safety roster")),go_back()])
         "barracks_commandant":
             show_choice("BARRACKS COMMANDANT / DISTINCT FROM VOSS", "The regional Commandant controls this district's powered frame. Central Custodian Marshal Voss, if selected by the run, is a different individual.",[{"label":"CHALLENGE REGIONAL POWER FRAME","action":"barracks:fight"},go_back()])
         "barracks_writ":
@@ -1022,7 +1124,7 @@ func core_interaction_076(interaction_id: String) -> void:
             show_choice("INDEPENDENT GATE RADIO / VOSS EVIDENCE", "A sealed plan shows separate short-wave command would have reduced Voss's border disaster. He was right to fear coordination failure, but centralised orders were not the only possible response.",[ {"label":"COPY DATED RADIO PLAN","action":"core:doc:radio"},go_back()])
         "core_safety_bus":
             var bus_text: String = "The regulator can be isolated only if technicians prepare a staffed manual fallback. Costs 3 existing Energy and 2 Labour. Conventional electricity cannot replace correction patterns."
-            show_choice("EXECUTIVE SAFETY BUS / PHYSICAL RETROFIT",bus_text,[ {"label":"[TECH 5] WIRE SAFETY FALLBACK / PAY 3E + 2L","action":"core:safety"},go_back()])
+            show_choice("EXECUTIVE SAFETY BUS / PHYSICAL RETROFIT",bus_text,[check_option("WIRE SAFETY FALLBACK / PAY 3E + 2L","core:safety",Game.check_attribute("Tech",5)),go_back()])
         "core_carriage_repair":
             show_choice("SPARE CARRIAGE / PHYSICAL MAINTENANCE", "A second damaged carriage sits on existing track. Your local inspector verified 24 existing usable seats; repairs could make 12 more, still far below Vesper's population. Costs 2 physical salvage, 3 Labour and 2 Energy. None are free.",[ {"label":"REPAIR SPARE CARRIAGE / +12 REAL SEATS","action":"core:repair"},go_back()])
         "core_boarding_plan":
@@ -1040,8 +1142,8 @@ func core_interaction_076(interaction_id: String) -> void:
                 var options: Array = []
                 if Game.core_main_records_complete():
                     options.append({"label":"PRESENT THREE-WRIT TRIBUNAL / NEED CUSTODIAN PROOF","action":"core:resolve:tribunal"})
-                    options.append({"label":"[SPEECH 5 OR INSIGHT 5] SEEK ABDICATION","action":"core:resolve:abdication"})
-                    options.append({"label":"[TECH 5 + SAFETY BUS] CONTAIN AUTHORITY","action":"core:resolve:containment"})
+                    options.append(check_option("SEEK ABDICATION","core:resolve:abdication",Game.abdication_check()))
+                    options.append(check_option("CONTAIN AUTHORITY","core:resolve:containment",Game.check_attribute("Tech",5,0,"",bool(core.get("safety_bus_prepared",false)),"prepared safety bus")))
                     if bool(core.get("actuator_disabled",false)):
                         options.append({"label":"REMOVE POWERED ENFORCEMENT / NO PERSON KILLED","action":"core:resolve:apparatus_shutdown"})
                     else:
@@ -1083,7 +1185,7 @@ func ashmarket_interaction(interaction_id: String) -> void:
             if bool(trade["counting_lock_isolated"]):
                 show_choice("TOKEN PRESS / ISOLATED", "The counting locks have physically withdrawn. This consumed two Energy and one Labour; the original disputed contracts remain preserved.",[go_back()])
             else:
-                show_choice("TOKEN PRESS / CONTROL BUS", "A Tech 5 operator can isolate the bonded locks for two Energy and one Labour. The system can be stopped without erasing the buyer's contract evidence.",[{"label":"[TECH 5] ISOLATE THE COUNTING LOCKS","action":"market:sabotage"},go_back()])
+                show_choice("TOKEN PRESS / CONTROL BUS", "A Tech 5 operator can isolate the bonded locks for two Energy and one Labour. The system can be stopped without erasing the buyer's contract evidence.",[check_option("ISOLATE THE COUNTING LOCKS","market:sabotage",Game.check_attribute("Tech",5)),go_back()])
         "market_collector_desk":
             if has_writ:
                 show_choice("COLLECTOR / TRADE FILED", "The emergency Writ is in the three-office docket; no repeat transfer is possible. The clearing service still has to answer for its original debts.",[go_back()])
@@ -1091,13 +1193,11 @@ func ashmarket_interaction(interaction_id: String) -> void:
                 show_choice("COLLECTOR / VACATED OFFICE", "The keeper is absent. The public register, not a dropped personal trinket, holds the Trade Writ.",[go_back()])
             else:
                 var opts: Array = []
-                if bool(trade["coalition_recorded"]):
-                    opts.append({"label":"[SPEECH 7] PRESENT THE BUYERS' CONTRACT CHALLENGE","action":"trade:coalition"})
-                if Game.stat("Force") >= 6:
-                    opts.append({"label":"[FORCE 6] FORCE A SIGNATURE / SECURITY COST","action":"market:intimidate"})
+                opts.append(check_option("PRESENT THE BUYERS' CONTRACT CHALLENGE","trade:coalition",Game.coalition_check()))
+                opts.append(check_option("FORCE A SIGNATURE / SECURITY COST","market:intimidate",Game.check_attribute("Force",6)))
                 opts.append({"label":"CHALLENGE THE COLLECTOR'S SECURITY / FIGHT","action":"market:fight"})
                 opts.append(go_back())
-                show_choice("COLLECTOR / THE SELLING PRICE", "'They wanted hinges once. Now they want the keys to someone they no longer own.' Evidence plus Speech 7 can transfer the Writ publicly. Force has a witnessed institutional cost. Counting-lock isolation and combat remain possible.",opts)
+                show_choice("COLLECTOR / THE SELLING PRICE", "'They wanted hinges once. Now they want the keys to someone they no longer own.' Documented buyers' contracts and testimony let a Speech case transfer the Writ publicly. Force has a witnessed institutional cost. Counting-lock isolation and combat remain possible.",opts)
         "market_trade_registry":
             if has_writ:
                 show_choice("TRADE WRIT / EMERGENCY QUORUM", "The durable public register confirms the Trade Writ is already transferred. Labour and Faith remain distinct; no second copy is created.",[go_back()])
@@ -1163,8 +1263,11 @@ func sootworks_interaction(interaction_id: String) -> void:
         "hearth_return":
             show_choice("SERVICE RAIL / HEARTH NINE", "The municipal transfer remains open. The current district, quest events and enemy damage will be saved before departing.",[{"label":"RETURN TO HEARTH NINE","action":"travel:hearth"},go_back()])
         "brin":
+            var gate_brin: Dictionary = _witness_gate_093("brin") if bool(brin["alive"]) else {}
             if not bool(brin["alive"]):
                 show_choice("BRIN / ABSENT", "The workshop has no living speaker. The payroll record and public Writ remain accessible.",[go_back()])
+            elif not gate_brin.is_empty():
+                show_choice(gate_brin["title"], gate_brin["text"], gate_brin["options"])
             elif str(brin["stage"])=="unmet":
                 show_choice("BRIN HARKER / THE SHIFT CARD", "Brin repairs a spoon with wire. 'It isn't the work. It's that they charge rent for the hours I'm asleep.' His old card records ninety-one years across printed bodies. He asks you to inspect the original freight payroll cylinder.",[{"label":"HEAR HIM OUT / RECORD THE MEETING","action":"brin:meet"},go_back()])
             elif str(brin["stage"])=="encountered" and bool(brin["payroll_seen"]):
@@ -1187,6 +1290,8 @@ func sootworks_interaction(interaction_id: String) -> void:
                 show_choice("LABOUR COUNCIL / TRANSFER COMPLETE","The Writ of Labour has been transferred once. The record can be read, not claimed again.",[go_back()])
             elif not bool(brin["alive"]):
                 show_choice("LABOUR COUNCIL / BRIN DEAD", "The workers cannot hear Brin now. His record remains, but Ninth cannot stage his living testimony. Other Writ routes are available.",[go_back()])
+            elif str(brin["stage"])=="investigated" and not _witness_gate_093("brin").is_empty():
+                show_choice("LABOUR COUNCIL / NO TESTIMONY", "Brin will not stand beside the person who hurt him. The stewards will not hear his case through you until he is calm. Other Writ routes are available.",[go_back()])
             elif str(brin["stage"])=="investigated":
                 show_choice("LABOUR COUNCIL / SUBMIT THE CYLINDER", "The workers inspect the clear debt. An orderly stoppage can preserve the neighbouring ward's heat with real labour and energy costs. A partial emergency-crew compromise is also possible. Betrayal earns an immediate material reward but loses workshop support.",[
                     {"label":"SAFE STRIKE / RELEASE WORKERS / BRIN'S TORQUE","action":"brin:help"},
@@ -1201,7 +1306,7 @@ func sootworks_interaction(interaction_id: String) -> void:
             if writ_owned:
                 show_choice("ISOLATION BUS / WRIT ACQUIRED", "The elected route has already recorded the Writ; the control bus must not produce another credential.",[go_back()])
             else:
-                show_choice("SOOTWORKS / ISOLATION BUS", "Tech %d. This service switch cuts only the control circuit; it does not conjure power or rewrite the payroll. The shutdown uses 3 Energy and 2 Labour capacity in this prototype." % Game.stat("Tech"), [{"label":"[TECH 5] ISOLATE THE MILLWRIGHT'S CONTROL BUS","action":"soot:sabotage"},go_back()])
+                show_choice("SOOTWORKS / ISOLATION BUS", "This service switch cuts only the control circuit; it does not conjure power or rewrite the payroll. The shutdown uses 3 Energy and 2 Labour capacity.", [check_option("ISOLATE THE MILLWRIGHT'S CONTROL BUS","soot:sabotage",Game.check_attribute("Tech",5)),go_back()])
         "millwright_order":
             if writ_owned:
                 show_choice("MILLWRIGHT / DISPUTED AUTHORITY", "The public registry has recorded your Labour Writ. Office hostility and civic consequences remain.",[go_back()])
@@ -1231,7 +1336,7 @@ func sootworks_interaction(interaction_id: String) -> void:
             else:
                 show_choice("SOOTWORKS / FINITE DEFENCE STOCK", "24 physical Ledger Slugs and two medical ampoules, one issued lot. The stock is not refreshed by travelling between districts.",[{"label":"CLAIM ONE-TIME DEFENCE ISSUE","action":"soot:ration"},go_back()])
         _:
-            show_choice("UNREGISTERED LABOUR SERVICE", "This machine has no authored action in Build 04.",[go_back()])
+            show_choice("UNREGISTERED LABOUR SERVICE", "This machine is not part of the Labour office record.",[go_back()])
 
 func basilica_interaction(interaction_id: String) -> void:
     if interaction_id == "basilica_notes":
@@ -1242,8 +1347,11 @@ func basilica_interaction(interaction_id: String) -> void:
     var writ_owned: bool = Game.state["writs"].has("qobj_writ_of_faith")
     match interaction_id:
         "ossa":
+            var gate_ossa: Dictionary = _witness_gate_093("ossa") if bool(ossa["alive"]) else {}
             if not bool(ossa["alive"]):
                 show_choice("OSSA / NO LIVING SPEAKER","Only the reel and public documents remain; nobody may ventriloquise Ossa's testimony.",[go_back()])
+            elif not gate_ossa.is_empty():
+                show_choice(gate_ossa["title"], gate_ossa["text"], gate_ossa["options"])
             elif str(ossa["stage"]) == "unmet":
                 show_choice("SISTER OSSA / AN OMITTED NOTE","'There used to be a sixth note. We sang it when the west ward flooded. Then we kept singing after the water went away.' She wants to know what the maintenance reel proves.",[ {"label":"MEET OSSA / HEAR HER ACCOUNT","action":"ossa:meet"},go_back()])
             elif str(ossa["stage"]) == "encountered" and bool(ossa["hymn_seen"]):
@@ -1266,6 +1374,8 @@ func basilica_interaction(interaction_id: String) -> void:
                 show_choice("LAY COUNCIL / CREDENTIAL SEALED","The Faith Writ has already been recorded in the Quorum ledger; no duplicate can be awarded.",[go_back()])
             elif not bool(ossa["alive"]):
                 show_choice("COUNCIL / OSSA ABSENT","The congregation retains autonomy but Ossa cannot lead this petition from the grave. The Cantor's technical or combat/registry route remains open.",[go_back()])
+            elif str(ossa["stage"]) == "investigated" and not _witness_gate_093("ossa").is_empty():
+                show_choice("LAY COUNCIL / NO PETITION","Ossa will not lead the congregation beside the person who hurt her. Calm her first, or take the Cantor's technical or registry route.",[go_back()])
             elif str(ossa["stage"]) == "investigated":
                 show_choice("LAY COUNCIL / GOVERNOR'S SIXTH NOTE","The congregation must decide whether to disconnect the coercive signal while retaining their shared prayers. The actions impose different recorded costs.",[
                     {"label":"PUBLIC VOTE / FREE THE CHOIR / CHOIRBREAKER","action":"ossa:help"},
@@ -1280,7 +1390,7 @@ func basilica_interaction(interaction_id: String) -> void:
             if writ_owned:
                 show_choice("SIGNAL GOVERNOR / PUBLIC AUDIT","A Writ already exists in the docket. Isolation is not needed to duplicate it.",[go_back()])
             else:
-                show_choice("GOVERNOR / COMMAND BUS","The dangerous command frequency can be isolated through an existing service bypass. Requires Tech 5; costs finite Energy and Labour; it does not stop citizens praying.",[{"label":"[TECH 5] ISOLATE CONTROL GOVERNOR","action":"basilica:isolate"},go_back()])
+                show_choice("GOVERNOR / COMMAND BUS","The dangerous command frequency can be isolated through an existing service bypass. Requires Tech 5; costs finite Energy and Labour; it does not stop citizens praying.",[check_option("ISOLATE CONTROL GOVERNOR","basilica:isolate",Game.check_attribute("Tech",5)),go_back()])
         "cantor_order":
             if writ_owned:
                 show_choice("CANTOR / OFFICE DISPUTED","The public faith register already bears this attempt's single credential.",[go_back()])
@@ -1334,12 +1444,20 @@ func _refresh_field_visuals() -> void:
 
 func hearing_choices(note: String) -> void:
     var options: Array = [
-        {"label":"PRESS / displace the pressure surge","action":"hearing:Press"},
-        {"label":"ATTUNE / align Rootkin with the field","action":"hearing:Attune"},
+        {"label":"PRESS / strong when EXPOSED, weak otherwise","action":"hearing:Press"},
+        {"label":"ATTUNE / steady when RISING or SHIELDED; tires if repeated","action":"hearing:Attune"},
         {"label":"BRACE / cushion the next field response","action":"hearing:Brace"},
         {"label":"OBSERVE / document a signal rhythm","action":"hearing:Observe"},
         {"label":"WITHDRAW / free retry remains available","action":"hearing:Withdraw"}]
-    show_choice("PUBLIC HEARING / FIVE CIVIC COMMANDS",note+"\n\n"+Game.hearing_summary(),options)
+    # 09.0: the live state (field, strain, the opponent's phase) leads the
+    # docket. It used to sit under the flavour text, below the visible area
+    # once five commands were listed, so players chose blind.
+    var status: String = Game.hearing_summary()
+    var lines: PackedStringArray = status.split("\n")
+    for i in range(lines.size()):
+        if lines[i].begins_with("OPPONENT: "):
+            lines[i] = "[color=#e0b46d][b]%s[/b][/color]" % lines[i]
+    show_choice("PUBLIC HEARING / FIVE CIVIC COMMANDS","\n".join(lines)+"\n\n"+note,options)
 
 func ossa_aftermath_text() -> String:
     if not bool(Game.state["ossa"]["alive"]):
@@ -1368,8 +1486,12 @@ func clerk_dialogue() -> void:
     if bool(Game.state["flags"]["guard_defeated"]):
         show_choice("REQUISITION CLERK / GUARD REMOVED", "'The guard has stopped answering. The public rack and its record remain. The claim is still disputed, even if you take it by force.'",[{"label":"SEIZE LUNG / ENTER AN ASSAULT REPORT","action":"claim:fight"},go_back()])
         return
-    var evidence_bonus := 1 if bool(Game.state["flags"]["allocation_record_seen"]) else 0
-    show_choice("REQUISITION CLERK / COMPETING ALLOTMENTS", "'We have one spare Cinder Lung and more than one ward in need.'\n\nYour Speech %d + documented copy %d; negotiated threshold 6 with required public record. Force remains possible whatever your build." % [Game.stat("Speech"),evidence_bonus],[{"label":"[SPEECH 6 + RECORD] PUBLIC ALLOCATION HEARING","action":"claim:bargain"},{"label":"DEMAND RESERVE BY FORCE / ENFORCER RESPONDS","action":"begin_fight"},go_back()])
+    show_choice("REQUISITION CLERK / COMPETING ALLOTMENTS", "'We have one spare Cinder Lung and more than one ward in need.'\n\nA public allocation hearing needs the copied requisition record. Force remains possible whatever your build.",[check_option("PUBLIC ALLOCATION HEARING","claim:bargain",Game.bargain_check()),{"label":"DEMAND RESERVE BY FORCE / ENFORCER RESPONDS","action":"begin_fight"},go_back()])
+
+## A dialogue option gated by a deterministic check: always visible, showing the
+## exact sum, and disabled (not clickable) until it is met. Bible 7.1 / 13.
+func check_option(label: String, action: String, check: Dictionary) -> Dictionary:
+    return {"label": "%s  %s" % [str(check["text"]), label], "action": action, "enabled": bool(check["ok"])}
 
 func go_back() -> Dictionary:
     return {"label":"CLOSE DOCKET / RETURN TO WORLD","action":"close"}
@@ -1505,6 +1627,15 @@ func assembly_interaction_078(interaction_id: String) -> void:
             show_choice("ASSEMBLY / NO PUBLIC REGISTER", "There is no legally recorded action at this station.",[go_back()])
 
 func _on_action(action: String) -> void:
+    # Bible 13: Ninth learns before committing when a choice would make True Dawn
+    # impossible (fewer than three constituencies left). Never a silent lockout.
+    if action.ends_with("#confirmed"):
+        action = action.trim_suffix("#confirmed")
+    elif Game.has_attempt():
+        var lockout: String = Game.true_dawn_lockout_warning_089(action)
+        if lockout != "":
+            show_choice("TRUE DAWN WOULD CLOSE", lockout, [{"label":"CONFIRM / ACCEPT THE CONSEQUENCE","action":action + "#confirmed"}, go_back()])
+            return
     if action == "ending:menu":
         open_main_menu()
         return
@@ -1628,10 +1759,21 @@ func _on_action(action: String) -> void:
             done = Game.grant_growth_writ_077(method) if orchard else Game.grant_defence_writ_077(method)
         show_choice("%s / %s" % [office.to_upper(), "ORIGINAL RECORDED" if done else "NO CHANGE"],"One physical event was recorded and its real consequences persist. The Writ, when eligible, is transferred by the public registry." if done else "The required independent evidence, Tech skill, resources, public mandate or apparatus defeat is missing; other valid routes remain available.",[go_back()])
         return
+    if action.begins_with("perk:") and Game.has_attempt():
+        var perk_id: String = action.trim_prefix("perk:")
+        var taken: bool = Game.choose_perk_089(perk_id)
+        var perk: Dictionary = Game.PERKS_089.get(perk_id, {})
+        show_choice("NINTH / PERK %s" % ("CHOSEN" if taken else "UNAVAILABLE"), ("%s: %s" % [perk.get("name",""), perk.get("effect","")]) if taken else "No perk choice is available, the perk is already taken, or its attribute requirement is not met.", [go_back()])
+        return
+    if action.begins_with("level7:") and Game.has_attempt():
+        var kind: String = action.trim_prefix("level7:")
+        var chosen: bool = Game.choose_level7_bonus(kind)
+        show_choice("NINTH / LEVEL 7", ("You took %s. Open the docket to spend it." % ("one attribute point" if kind == "attribute" else "a fourth perk")) if chosen else "The level 7 bonus is not available.", [go_back()])
+        return
     if action.begins_with("attribute:") and Game.has_attempt():
         var stat_name: String = action.trim_prefix("attribute:")
         var upgraded: bool = Game.choose_attribute_075(stat_name)
-        show_choice("NINTH / ATTRIBUTE %s" % ("ALLOCATED" if upgraded else "UNAVAILABLE"),"Your chosen attribute rose by one permanent point in this attempt. Level 3 and Level 5 each provide one finite point." if upgraded else "You have no unspent attribute point, the stat is already at ten, or the stat name is invalid.",[go_back()])
+        show_choice("NINTH / ATTRIBUTE %s" % ("ALLOCATED" if upgraded else "UNAVAILABLE"),"Your chosen attribute rose by one permanent point in this attempt. Levels 3 and 5 each provide one point; level 7 can provide another." if upgraded else "You have no unspent attribute point, the stat is already at ten, or the stat name is invalid.",[go_back()])
         return
     if action.begins_with("market:") and Game.has_attempt():
         var which: String = action.trim_prefix("market:")
@@ -1679,7 +1821,8 @@ func _on_action(action: String) -> void:
         var way: String = action.trim_prefix("trade:")
         var legal: bool = Game.register_three_writ_quorum() if way == "quorum_audit" else Game.grant_trade_writ(way)
         var message: String = "Three unique founding Writs and the hearing are VERIFIED. Return to the public authentication desk and enter the Freight Lift of Names. Any three of five offices qualify." if way == "quorum_audit" else "The durable Trade Writ was transferred once. The register records HOW it changed hands and the Collector cannot erase it."
-        show_choice("TRADE OFFICE / %s" % ("RECORDED" if legal else "TRANSFER REJECTED"),message if legal else "The required independent evidence, skill, public authority, defeated keeper or technical isolation has not been recorded. Other routes remain available.",[go_back()])
+        var heading: String = ("THREE-WRIT QUORUM / %s" % ("VERIFIED" if legal else "NOT YET VERIFIED")) if way == "quorum_audit" else ("TRADE OFFICE / %s" % ("RECORDED" if legal else "TRANSFER REJECTED"))
+        show_choice(heading,message if legal else "The required independent evidence, skill, public authority, defeated keeper or technical isolation has not been recorded. Other routes remain available.",[go_back()])
         return
     if action == "core:enter":
         player.capture_position()
@@ -1813,7 +1956,14 @@ func _on_action(action: String) -> void:
         resume_loaded_attempt()
         return
     if action=="quit":
-        get_tree().quit()
+        Music.request_quit()
+        return
+    if action=="reprint_saved":
+        # Same chain as the in-game "RECONSTRUCT", after an app restart.
+        if Game.load_failed_chain_for_reprint():
+            begin_attempt(str(Game.state.get("build","Witness")), true)
+        else:
+            open_main_menu()
         return
     if action=="reprint":
         begin_attempt(str(Game.state.get("build","Witness")), true)
@@ -1849,7 +1999,17 @@ func _on_action(action: String) -> void:
                 message = "ASHMARKET / TRADE OFFICE\nInspect two original contracts, hear the buyers and deal with the Collector. Four distinct legal and conflict routes are available."
             show_choice("MUNICIPAL SERVICE TRANSFER",message,[go_back()])
         else:
-            show_choice("TRANSFER DENIED","Install the Lung before district travel. This build contains Hearth Nine, Sootworks, Flood Basilica and Ashmarket.",[go_back()])
+            show_choice("TRANSFER DENIED","Install the Lung before district travel.",[go_back()])
+        return
+    if action.begins_with("witness:calm:"):
+        var calm_key: String = action.trim_prefix("witness:calm:")
+        var calm_actor: Node = world.get_node_or_null("Brin Harker" if calm_key == "brin" else "Sister Ossa")
+        var calm_name: String = "BRIN" if calm_key == "brin" else "OSSA"
+        if NamedWitness093.calm(calm_actor, calm_key):
+            var told: bool = NamedWitness093.status(calm_key) == "delivered"
+            show_choice("%s / STANDING DOWN" % calm_name, "You lower the weapon and say it plainly. They stay wary, but they will talk again.%s" % (" What they already told the office stays told." if told else " They stop where they are."),[go_back()])
+        else:
+            show_choice("%s / NOT READY" % calm_name, "They are not ready to hear it from you. %s" % NamedWitness093.calm_check()["text"],[go_back()])
         return
     if action.begins_with("ossa:"):
         var verb_ossa: String = action.trim_prefix("ossa:")
@@ -1994,12 +2154,25 @@ func _save_now() -> void:
 func _load_now() -> void:
     pending_quiet_service_079 = ""
     pending_quiet_service_deadline_079 = 0
+    if Game.has_attempt():
+        # Bible: the active checkpoint "cannot be manually rewound through the
+        # game UI". Damage, ammo and ampoule use are not autosaved, so loading
+        # used to refill them; commit the live state first, and refuse to load
+        # while hostiles are engaged so F9 cannot be used to escape a fight.
+        if is_instance_valid(Music) and Music.active_combat:
+            hud.notify("CHECKPOINT LOCKED / NOT DURING COMBAT")
+            return
+        Game.save_attempt()
     if Game.load_attempt():
         reload_district_world()
         player.restore_position()
         hud.notify("SAVED ATTEMPT RESTORED / district, actors and grants preserved")
     else:
         hud.notify("NO VALID ACTIVE SAVE")
+
+func _on_level_changed_089(new_level: int) -> void:
+    var reward: String = "choose a perk" if new_level in [2,4,6] else ("spend an attribute point" if new_level in [3,5] else "choose +1 attribute or a fourth perk")
+    hud.notify("LEVEL %d / %s IN THE DOCKET (TAB)" % [new_level, reward.to_upper()], 4.0)
 
 func _show_dossier() -> void:
     if not Game.has_attempt():return
@@ -2009,7 +2182,15 @@ func _show_dossier() -> void:
         for stat_name in ["Force","Reflex","Insight","Speech","Tech","Resolve"]:
             if Game.stat(stat_name) < 10:
                 options.append({"label":"SPEND ATTRIBUTE POINT / +1 %s" % stat_name.to_upper(),"action":"attribute:"+stat_name})
-    hud.open_modal("CIVIC PRESSURE DOCKET",hud.dossier_text(),options)
+    if Game.level7_choice_pending():
+        options.append({"label":"LEVEL 7 BONUS / +1 ATTRIBUTE POINT","action":"level7:attribute"})
+        options.append({"label":"LEVEL 7 BONUS / A FOURTH PERK","action":"level7:perk"})
+    if Game.perk_points_available() > 0:
+        for perk_id in Game.PERKS_089.keys():
+            if not Game.has_perk(perk_id):
+                var perk: Dictionary = Game.PERKS_089[perk_id]
+                options.append(check_option("PERK %s %s: %s" % [perk_id, str(perk["name"]).to_upper(), perk["effect"]], "perk:" + perk_id, Game.perk_check(perk_id)))
+    hud.open_modal("CIVIC PRESSURE DOCKET",hud.dossier_text(),options,hud.dossier_sections())
 
 
 func _exit_tree() -> void:

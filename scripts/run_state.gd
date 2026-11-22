@@ -4,6 +4,7 @@ extends Node
 
 signal state_changed
 signal attempt_failed
+signal level_changed(new_level: int)
 const SAVE_DIR = "user://saves"
 const SAVE_PATH = "user://saves/active_v1.json"
 const PROFILE_PATH = "user://saves/profile_v1.json"
@@ -128,7 +129,7 @@ func max_health() -> int:
     return maxi(80, 100 + 6 * (stat("Resolve")-2) + 3 * (stat("Force")-3))
 
 func max_breath() -> int:
-    return maxi(88, 100 + 4 * (stat("Resolve")-2))
+    return maxi(88, 100 + 4 * (stat("Resolve")-2)) + (10 if has_perk("V1") else 0)
 
 func record_event(event_id: String, kind: String, details: Dictionary = {}) -> bool:
     if not has_attempt() or state["event_ids"].has(event_id):
@@ -145,22 +146,56 @@ func record_evidence() -> bool:
     save_attempt()
     return true
 
+## Bible deterministic check (section 7.1): attribute + documented evidence bonus
+## >= threshold, AND any required fact present. No dice. Returns the exact label the
+## UI must show, e.g. "[Speech 5 + buyers' contracts 2 = 7 / 7]".
+func check_attribute(attr: String, threshold: int, bonus: int = 0, bonus_label: String = "", fact_ok: bool = true, fact_label: String = "") -> Dictionary:
+    var value: int = stat(attr)
+    var perk_bonus: int = 1 if attr == "Speech" and fact_ok and bonus > 0 and perk_ready_in_district("S1") else 0
+    var total: int = value + bonus + perk_bonus
+    var text: String
+    if perk_bonus > 0 and total >= threshold and value + bonus < threshold:
+        return {"ok": has_attempt(), "text": "[%s %d + %s %d + Common Ground 1 = %d / %d]" % [attr, value, bonus_label, bonus, total, threshold], "perk":"S1"}
+    if not fact_ok:
+        text = "[%s %d; %s required]" % [attr, threshold, fact_label]
+    elif bonus > 0:
+        text = "[%s %d + %s %d = %d / %d]" % [attr, value, bonus_label, bonus, total, threshold]
+    else:
+        text = "[%s %d / %d]" % [attr, value, threshold]
+    return {"ok": has_attempt() and fact_ok and total >= threshold, "text": text}
+
+func bargain_check() -> Dictionary:
+    var seen: bool = bool(state["flags"]["allocation_record_seen"])
+    return check_attribute("Speech", 6, 1 if seen else 0, "allocation record", seen, "public allocation record")
+
 func can_bargain() -> bool:
-    return has_attempt() and stat("Speech") + (1 if bool(state["flags"]["allocation_record_seen"]) else 0) >= 6 and bool(state["flags"]["allocation_record_seen"])
+    return bool(bargain_check()["ok"])
+
+## Ashmarket coalition: documented duplicate contracts + independent buyer testimony
+## are a strong documented linkage (+2 under the bible rule), so Speech 5 qualifies.
+func coalition_check() -> Dictionary:
+    var documented: bool = bool(state.get("trade",{}).get("coalition_recorded",false))
+    return check_attribute("Speech", 7, 2 if documented else 0, "buyers' contracts", documented, "buyers' contracts and testimony")
+
+func abdication_check() -> Dictionary:
+    var speech: int = stat("Speech"); var insight: int = stat("Insight")
+    return {"ok": speech >= 5 or insight >= 5, "text": "[Speech %d / 5 or Insight %d / 5]" % [speech, insight]}
 
 func claim_lung(method: String) -> bool:
     if not has_attempt() or bool(state["lung"]["acquired"]):return false
     if not ["fight","bargain","tech","steal"].has(method):return false
-    if method == "bargain" and not can_bargain():return false
+    var bargain_used: Dictionary = bargain_check() if method == "bargain" else {}
+    if method == "bargain" and not bool(bargain_used.get("ok",false)):return false
     if method == "tech" and stat("Tech") < 5:return false
     if method == "fight" and not bool(state["flags"]["guard_defeated"]):return false
     if not record_event("hearth.lung_claim", "allocation_claim", {"method":method,"source":"contested reserve rack"}):return false
     state["lung"]["acquired"] = true
     state["lung"]["method"] = method
+    if str(bargain_used.get("perk","")) == "S1": spend_district_perk("S1")
     if method in ["fight", "steal"]:
-        state["relationships"]["Claimant Ward"] = -1
+        adjust_trust_089("Claimant Ward", -1)
     if method == "bargain":
-        state["relationships"]["Hearth Nine"] = 1
+        adjust_trust_089("Hearth Nine", 1)
     save_attempt()
     return true
 
@@ -181,8 +216,24 @@ func install_lung() -> bool:
 
 func award_xp_once(challenge_id: String, amount: int) -> bool:
     if not has_attempt() or state["xp_awards"].has(challenge_id):return false
-    state["xp_awards"][challenge_id] = amount
-    state["xp"] = int(state["xp"]) + amount
+    var granted: int = amount
+    # Bible 7.2: 165 XP for each of three unique Writ transfers, up to 495. A fourth
+    # or fifth Writ is still recorded (no repeat) but pays nothing.
+    if challenge_id.begins_with("writ."):
+        var paid_writs: int = 0
+        for key in state["xp_awards"].keys():
+            if str(key).begins_with("writ.") and int(state["xp_awards"][key]) > 0: paid_writs += 1
+        if paid_writs >= 3: granted = 0
+    state["xp_awards"][challenge_id] = granted
+    var level_before: int = int(state.get("level",1))
+    var total: int = int(state["xp"]) + granted
+    # Bible 7.2: XP cannot exceed the 1,050 threshold for advancement; the excess
+    # is kept as run score only.
+    var cap: int = int(XP_LEVELS.back())
+    if total > cap:
+        state["run_score_xp"] = int(state.get("run_score_xp",0)) + total - cap
+        total = cap
+    state["xp"] = total
     var computed_level := 1
     for threshold in XP_LEVELS:
         if int(state["xp"]) >= int(threshold):
@@ -191,7 +242,87 @@ func award_xp_once(challenge_id: String, amount: int) -> bool:
     sync_attribute_milestones_075()
     ensure_build076_state()
     state_changed.emit()
+    if int(state["level"]) > level_before:
+        level_changed.emit(int(state["level"]))
     return true
+
+# ---- BUILD 08.9 / STANDARD PERKS (bible 7.2) ----
+# Levels 2, 4 and 6 each grant one perk; level 7 grants +1 attribute OR a fourth
+# perk. Only perks whose effect exists in the current game are offered; the rest of
+# the bible's 18 need systems (recoil, breaching, mods, dissonance) not built yet.
+const PERKS_089: Dictionary = {
+    "F3": {"name":"Anchor Hands", "stat":"Force", "min":6, "effect":"The first heavy hit (15+) in each district loses 30 damage."},
+    "R2": {"name":"Edge Runner", "stat":"Reflex", "min":5, "effect":"Dash costs 11 Breath instead of 14."},
+    "R3": {"name":"Narrow Escape", "stat":"Reflex", "min":6, "effect":"Once per district, a lethal hit leaves 1 HP."},
+    "S1": {"name":"Common Ground", "stat":"Speech", "min":3, "effect":"Once per district, +1 to a Speech check that already has documented evidence."},
+    "T2": {"name":"Careful Isolation", "stat":"Tech", "min":5, "effect":"Each machine isolation refunds 1 of its Energy cost."},
+    "V1": {"name":"Count Breath", "stat":"Resolve", "min":3, "effect":"+10 max Breath."},
+}
+
+## Office Trust is a signed score -3..+3 (bible 8). Actions adjust it; they never
+## overwrite earlier witnessed history (previously the last action replaced it).
+func adjust_trust_089(office: String, delta: int) -> void:
+    state["relationships"][office] = clampi(int(state["relationships"].get(office,0)) + delta, -3, 3)
+
+func has_perk(perk_id: String) -> bool:
+    return has_attempt() and state.get("perks",[]).has(perk_id)
+
+func perk_points_available() -> int:
+    if not has_attempt(): return 0
+    var level: int = int(state.get("level",1))
+    var earned: int = 0
+    for mark in [2,4,6]:
+        if level >= mark: earned += 1
+    if str(state.get("level7_bonus","")) == "perk": earned += 1
+    return maxi(0, earned - state.get("perks",[]).size())
+
+func level7_choice_pending() -> bool:
+    return has_attempt() and int(state.get("level",1)) >= 7 and str(state.get("level7_bonus","")) == ""
+
+func choose_level7_bonus(kind: String) -> bool:
+    if not level7_choice_pending() or not kind in ["attribute","perk"]: return false
+    if not record_event("rpg.level7_bonus", "level_bonus_choice", {"kind":kind}): return false
+    state["level7_bonus"] = kind
+    if kind == "attribute":
+        state["unspent_attribute_points"] = int(state.get("unspent_attribute_points",0)) + 1
+    state_changed.emit()
+    save_attempt()
+    return true
+
+func perk_check(perk_id: String) -> Dictionary:
+    var perk: Dictionary = PERKS_089[perk_id]
+    var value: int = stat(str(perk["stat"]))
+    var ok: bool = perk_points_available() > 0 and not has_perk(perk_id) and value >= int(perk["min"])
+    return {"ok": ok, "text": "[%s %d / %d]" % [perk["stat"], value, int(perk["min"])]}
+
+func choose_perk_089(perk_id: String) -> bool:
+    if not PERKS_089.has(perk_id) or not bool(perk_check(perk_id)["ok"]): return false
+    if not record_event("rpg.perk.%s" % perk_id, "perk_choice", {"perk":perk_id}): return false
+    var breath_cap_before: int = max_breath()
+    state["perks"].append(perk_id)
+    state["breath"] = int(state["breath"]) + maxi(0, max_breath() - breath_cap_before)
+    state_changed.emit()
+    save_attempt()
+    return true
+
+func _perk_use_key(perk_id: String) -> String:
+    return "%s:%s" % [perk_id, str(state.get("zone","hearth"))]
+
+func perk_ready_in_district(perk_id: String) -> bool:
+    return has_perk(perk_id) and not state.get("perk_uses_089",{}).has(_perk_use_key(perk_id))
+
+func spend_district_perk(perk_id: String) -> void:
+    if not state.has("perk_uses_089"): state["perk_uses_089"] = {}
+    state["perk_uses_089"][_perk_use_key(perk_id)] = true
+
+func dash_breath_cost() -> float:
+    return 11.0 if has_perk("R2") else 14.0
+
+## T2: refund recorded in the ledger so the finite-resource audit stays exact.
+func _careful_isolation_refund_089(event_id: String) -> void:
+    if not has_perk("T2"): return
+    state["resources"]["Energy"] = int(state["resources"]["Energy"]) + 1
+    state["ledger"].append({"event":"perk.T2." + event_id, "source":"Careful Isolation: staged shutdown kept one load online", "Energy":1})
 
 # ---- BUILD 04 / FIRST LABOUR DISTRICT ----
 # These are authored decisions on one physical Sootworks map. The full five-
@@ -227,7 +358,14 @@ func change_zone(zone_id: String) -> bool:
     if zone_id == "barracks": default_position = [-22.0,0.15,8.0]
     var known_position: Array = state["zone_positions"].get(zone_id,default_position)
     state["player_pos"] = known_position.duplicate()
-    state["yaw"] = 0.0
+    # Default spawns are authored for yaw 0. A remembered position is where Ninth
+    # left the district, normally facing its transfer gate, so turn around to face
+    # back into the district instead of a hard-coded world -Z (often a wall).
+    var known_yaws: Dictionary = state.get("zone_yaws",{})
+    if state["zone_positions"].has(zone_id) and known_yaws.has(zone_id):
+        state["yaw"] = wrapf(float(known_yaws[zone_id]) + PI, -PI, PI)
+    else:
+        state["yaw"] = 0.0
     state["pitch"] = 0.0
     record_event("travel:%d" % state["events"].size(),"physical_district_transfer",{"to":zone_id})
     save_attempt()
@@ -277,7 +415,7 @@ func decide_brin(outcome: String) -> bool:
         state["resources"]["Labour"] -= 2
         state["resources"]["Energy"] -= 1
         state["ledger"].append({"event":"sootworks.brin.decision","source":"staffed safe strike and reserved heat buffer","Energy":-1,"Labour":-2,"Air":0})
-        state["relationships"]["Labour"] = 1
+        adjust_trust_089("Labour", 1)
         state["inventory"]["relics"].append("Brin's Torque")
     elif outcome == "compromise":
         state["resources"]["Labour"] -= 1
@@ -287,7 +425,7 @@ func decide_brin(outcome: String) -> bool:
         state["resources"]["Energy"] = maxi(0,int(state["resources"]["Energy"])-3)
         state["resources"]["Air"] = maxi(0,int(state["resources"]["Air"])-2)
         state["ledger"].append({"event":"sootworks.brin.decision","source":"unsafe forced production/heat leak","Energy":-3,"Air":-2})
-        state["relationships"]["Labour"] = -2
+        adjust_trust_089("Labour", -2)
         state["inventory"]["vouchers"] = mini(99,int(state["inventory"]["vouchers"])+8)
         state["inventory"]["mod_rewards"].append("Chain of Wages")
     award_xp_once("npc.brin.arc",55)
@@ -327,6 +465,7 @@ func disable_sootworks_regulator() -> bool:
     state["resources"]["Energy"] = maxi(0,int(state["resources"]["Energy"])-3)
     state["resources"]["Labour"] = maxi(0,int(state["resources"]["Labour"])-2)
     state["ledger"].append({"event":"sootworks.regulator.isolated","source":"control bus isolation; factory stopped","Energy":-3,"Labour":-2})
+    _careful_isolation_refund_089("sootworks.regulator.isolated")
     save_attempt()
     return true
 
@@ -505,7 +644,7 @@ func decide_ossa(outcome: String) -> bool:
         state["resources"]["Energy"] = maxi(0,int(state["resources"]["Energy"])-1)
         state["resources"]["Labour"] = maxi(0,int(state["resources"]["Labour"])-2)
         state["ledger"].append({"event":"basilica.ossa.decision", "source":"authorised lay council, signal isolation crew", "Energy":-1,"Labour":-2})
-        state["relationships"]["Faith"] = 1
+        adjust_trust_089("Faith", 1)
         ensure_weapon_state()
         state["inventory"]["weapons"].append({"instance_id":"quest-choirbreaker-"+str(state["attempt_id"]),"definition_id":"wp_choirbreaker"})
         state["weapon_state"]["magazines"]["choir"] = 12
@@ -517,7 +656,7 @@ func decide_ossa(outcome: String) -> bool:
     elif outcome == "exploit":
         state["resources"]["Correction"] = maxi(0,int(state["resources"]["Correction"])-3)
         state["ledger"].append({"event":"basilica.ossa.decision", "source":"amplified coercive choir signal", "Correction":-3})
-        state["relationships"]["Faith"] = -2
+        adjust_trust_089("Faith", -2)
     award_xp_once("npc.ossa.arc",55)
     save_attempt()
     return true
@@ -549,6 +688,7 @@ func disable_basilica_governor() -> bool:
     state["resources"]["Energy"] = maxi(0,int(state["resources"]["Energy"])-2)
     state["resources"]["Labour"] = maxi(0,int(state["resources"]["Labour"])-1)
     state["ledger"].append({"event":"basilica.governor.isolated", "source":"isolated governor drive", "Energy":-2,"Labour":-1})
+    _careful_isolation_refund_089("basilica.governor.isolated")
     save_attempt()
     return true
 
@@ -595,6 +735,7 @@ func begin_public_hearing() -> bool:
     hearing["press_count"] = 0
     hearing["phase_offset"] = (int(state["world_plan"].get("seed",0)) + int(hearing["attempts"]) - 1) % 3
     hearing["last_phase"] = ""
+    hearing["last_command"] = ""
     hearing["participant"] = "Rootkin"
     hearing["accord_type"] = "loaner"
     hearing["opposition"] = "Bell Wretch signal field"
@@ -644,20 +785,23 @@ func hearing_command(command: String) -> Dictionary:
                     h["refusals"] = int(h["refusals"]) + 1
                     note = "The participant refuses a compelled unsafe instruction."
                 elif phase == "exposed":
-                    integrity_loss = 11
+                    integrity_loss = 13
                     note = "The exposed shutter is displaced cleanly."
                 elif phase == "shielded":
-                    integrity_loss = 2
+                    integrity_loss = 1
                     strain_loss += 4
                     note = "Pressure rebounds off the shielded signal."
                 else:
-                    integrity_loss = 3
+                    integrity_loss = 1
                     strain_loss += 2
                     note = "The rising field pushes back against raw pressure."
             "Attune":
-                integrity_loss = 12 if phase == "exposed" else (5 if phase == "shielded" else 8)
+                # Build 08.9 balance: Attune is the steady tool in rising/shielded
+                # phases; Press owns the exposed phase; repeating the same interval
+                # tires the participant. Repeating any single command now fails.
+                integrity_loss = 5 if phase == "exposed" else (5 if phase == "shielded" else 6)
                 integrity_loss += 3 if bool(h["observed"]) else 0
-                strain_loss = 4
+                strain_loss = 4 + (2 if str(h.get("last_command","")) == "Attune" else 0)
                 h["observed"] = false
                 note = "Rootkin aligns a recorded interval, preserving agency and field control."
             "Brace":
@@ -681,6 +825,7 @@ func hearing_command(command: String) -> Dictionary:
         backlash = maxi(0,backlash-guard_before)
         h["strain_margin"] = maxi(0,int(h["strain_margin"])-strain_loss-backlash)
         h["last_phase"] = phase
+        h["last_command"] = command
         if int(h["integrity"]) <= 0:
             h["passed"] = true
             h["active"] = false
@@ -698,6 +843,12 @@ func hearing_command(command: String) -> Dictionary:
 
 func take_damage(amount: int) -> void:
     if not has_attempt():return
+    if amount >= 15 and perk_ready_in_district("F3"):
+        spend_district_perk("F3")
+        amount = maxi(0, amount - 30)
+    if int(state["health"]) - amount <= 0 and perk_ready_in_district("R3"):
+        spend_district_perk("R3")
+        amount = int(state["health"]) - 1
     state["health"] = maxi(0, int(state["health"])-amount)
     state_changed.emit()
     if int(state["health"]) <= 0:
@@ -827,6 +978,11 @@ func fail_attempt(cause: String, witnessed: bool) -> void:
             "sootworks": zone_name = "Sootworks"
             "basilica": zone_name = "Flood Basilica"
             "ashmarket": zone_name = "Ashmarket"
+            "orchard": zone_name = "Glass Orchard"
+            "barracks": zone_name = "Quiet Barracks"
+            "core": zone_name = "the Central Archives"
+            "assembly": zone_name = "the Public Assembly"
+            "lift": zone_name = "the Freight Lift"
         var death_record := {"attempt_id":str(state["attempt_id"]),"site":zone_name, "cause":cause}
         profile["failed_deaths"].append(death_record)
         state["nix_archived_failures"].append(death_record)
@@ -859,6 +1015,23 @@ func save_attempt() -> bool:
 func has_saved_active() -> bool:
     var loaded = read_json(SAVE_PATH)
     return loaded is Dictionary and int(loaded.get("schema",0)) == 1 and loaded.get("status","") == "active"
+
+## The last attempt on disk, if it ended in a committed, witnessed death that has
+## not yet been reconstructed (starting any other attempt overwrites it).
+func failed_attempt_awaiting_reprint() -> Dictionary:
+    var loaded = read_json(SAVE_PATH)
+    if not (loaded is Dictionary): return {}
+    if int(loaded.get("schema",0)) != 1 or str(loaded.get("status","")) != "failed": return {}
+    var record = loaded.get("nix_archived_failures",[])
+    if not (record is Array) or record.is_empty(): return {}
+    return loaded
+
+## Loads that failed attempt so start_new(..., true) inherits Nix's witnessed record.
+func load_failed_chain_for_reprint() -> bool:
+    var loaded: Dictionary = failed_attempt_awaiting_reprint()
+    if loaded.is_empty(): return false
+    state = loaded
+    return true
 
 func load_attempt() -> bool:
     var loaded = read_json(SAVE_PATH)
@@ -967,8 +1140,14 @@ func choose_attribute_075(stat_name: String) -> bool:
     # The source is the finite level-up point, not extra XP or a resource.
     var next_index: int = int(state["attribute_milestones_075"].size())-int(state["unspent_attribute_points"])+1
     if not record_event("rpg.attribute_choice_075.%s" % next_index, "level_attribute_allocation", {"stat":stat_name,"value":int(state["attributes"][stat_name])+1}): return false
+    var health_cap_before: int = max_health()
+    var breath_cap_before: int = max_breath()
     state["attributes"][stat_name] = int(state["attributes"][stat_name])+1
     state["unspent_attribute_points"] = int(state["unspent_attribute_points"])-1
+    # A higher cap also raises current HP/Breath by the same amount.
+    state["health"] = int(state["health"]) + maxi(0, max_health() - health_cap_before)
+    state["breath"] = int(state["breath"]) + maxi(0, max_breath() - breath_cap_before)
+    state_changed.emit()
     save_attempt()
     return true
 
@@ -1033,6 +1212,7 @@ func isolate_market_counting_lock() -> bool:
     state["resources"]["Energy"] = int(state["resources"]["Energy"])-2
     state["resources"]["Labour"] = int(state["resources"]["Labour"])-1
     state["ledger"].append({"event":"ashmarket.counting_lock_isolated", "source":"physical counting actuator / public crew", "Energy":-2, "Labour":-1})
+    _careful_isolation_refund_089("ashmarket.counting_lock")
     award_xp_once("ashmarket.counting_lock",35)
     save_attempt()
     return true
@@ -1050,7 +1230,9 @@ func grant_trade_writ(method: String) -> bool:
     if not _in_ashmarket() or state["writs"].has("qobj_writ_of_trade"): return false
     match method:
         "coalition":
-            if not bool(state["trade"]["coalition_recorded"]) or stat("Speech") < 7 or not bool(state["actors"]["collector"].get("alive",true)): return false
+            var coalition: Dictionary = coalition_check()
+            if not bool(coalition["ok"]) or not bool(state["actors"]["collector"].get("alive",true)): return false
+            if str(coalition.get("perk","")) == "S1": spend_district_perk("S1")
         "sabotage":
             if not bool(state["trade"]["counting_lock_isolated"]): return false
         "intimidation":
@@ -1297,6 +1479,7 @@ func prepare_core_safety_bus_076() -> bool:
     state["resources"]["Energy"] = int(state["resources"]["Energy"])-3
     state["resources"]["Labour"] = int(state["resources"]["Labour"])-2
     state["ledger"].append({"event":"core.staffed_safety_bus_076","source":"wired manual fallback and scheduled technicians","Energy":-3,"Labour":-2,"Correction":0})
+    _careful_isolation_refund_089("core.safety_bus")
     award_xp_once("core.safety_bus",30)
     save_attempt()
     return true
@@ -1337,7 +1520,7 @@ func resolve_core_custodian_076(method: String) -> bool:
             fate = "tribunal_removed"
         "abdication":
             if evidence == "" or not bool(state["core"].get(evidence,false)): return false
-            if stat("Speech") < 5 and stat("Insight") < 5: return false
+            if not bool(abdication_check()["ok"]): return false
             fate = "abdicated_alive"
         "containment":
             if not bool(state["core"].get("safety_bus_prepared",false)): return false
@@ -1356,7 +1539,7 @@ func resolve_core_custodian_076(method: String) -> bool:
     state["actors"]["core_actuator"]["hostile"] = false
     state["actors"]["core_actuator"]["hp"] = 0
     state["core"]["actuator_disabled"] = true
-    state["relationships"]["Central Archive"] = 1 if method in ["tribunal","abdication"] else 0
+    adjust_trust_089("Central Archive", 1 if method in ["tribunal","abdication"] else 0)
     award_xp_once("core.custodian_resolved",75)
     save_attempt()
     return true
@@ -1447,6 +1630,7 @@ func isolate_orchard_feed_077() -> bool:
     state["resources"]["Energy"] = int(state["resources"]["Energy"])-2
     state["resources"]["Labour"] = int(state["resources"]["Labour"])-1
     state["ledger"].append({"event":"orchard.feed_line_isolation_077","source":"real crew and pump energy","Energy":-2,"Labour":-1,"Air":0,"Correction":0})
+    _careful_isolation_refund_089("orchard.feed_isolate")
     award_xp_once("orchard.feed_isolate",25)
     save_attempt()
     return true
@@ -1478,7 +1662,7 @@ func grant_growth_writ_077(method: String) -> bool:
     if not record_event("orchard.growth_writ_transferred_077","writ_transfer",{"office":"Growth","object_id":"qobj_writ_of_growth","method":method,"source":"public nursery registry"}): return false
     state["writs"].append("qobj_writ_of_growth")
     state["growth"]["method"] = method
-    state["relationships"]["Growth"] = 1 if method == "researchers" else (0 if method == "isolation" else -1)
+    adjust_trust_089("Growth", 1 if method == "researchers" else (0 if method == "isolation" else -1))
     award_xp_once("writ.orchard.growth",165)
     save_attempt()
     return true
@@ -1516,6 +1700,7 @@ func isolate_barracks_signal_077() -> bool:
     state["resources"]["Energy"] = int(state["resources"]["Energy"])-2
     state["resources"]["Labour"] = int(state["resources"]["Labour"])-2
     state["ledger"].append({"event":"barracks.signal_zero_isolation_077","source":"human guard detail and conventional electricity","Energy":-2,"Labour":-2,"Correction":0})
+    _careful_isolation_refund_089("barracks.signal_isolate")
     award_xp_once("barracks.signal_isolate",25)
     save_attempt()
     return true
@@ -1533,7 +1718,7 @@ func grant_defence_writ_077(method: String) -> bool:
     if not record_event("barracks.defence_writ_transferred_077","writ_transfer",{"office":"Defence","object_id":"qobj_writ_of_defence","method":method,"source":"public command-office succession"}): return false
     state["writs"].append("qobj_writ_of_defence")
     state["defence"]["method"] = method
-    state["relationships"]["Defence"] = 1 if method == "platoon" else (0 if method == "isolation" else -1)
+    adjust_trust_089("Defence", 1 if method == "platoon" else (0 if method == "isolation" else -1))
     award_xp_once("writ.barracks.defence",165)
     save_attempt()
     return true
@@ -1563,7 +1748,7 @@ func arc_event_077(person: String, step: String, choice: String = "") -> bool:
             if not bool(arc["investigated"]) or str(arc["decision"]) != "" or choice not in ["help","compromise","exploit","abandon"]: return false
             if not record_event("%s.decision_077" % person,"npc_arc_decision",{"choice":choice,"consent":"recorded with consequences"}): return false
             arc["decision"] = choice
-            state["relationships"]["Growth" if person == "venn" else "Defence"] = 1 if choice == "help" else (-1 if choice == "exploit" else 0)
+            adjust_trust_089("Growth" if person == "venn" else "Defence", 1 if choice == "help" else (-1 if choice == "exploit" else 0))
         "aftermath":
             if str(arc["decision"]) == "" or bool(arc["aftermath"]): return false
             if not record_event("%s.aftermath_077" % person,"npc_arc_aftermath",{"decision":arc["decision"],"rewards_repeatable":false}): return false
@@ -1682,6 +1867,71 @@ func assembly_support_078(group: String) -> bool:
         "defence":
             return state["writs"].has("qobj_writ_of_defence") and bool(state.get("defence",{}).get("platoon_vote",false)) and int(rel.get("Defence",0)) >= 0
     return false
+
+# ---- BUILD 08.9 / KNOWN FINAL PREREQUISITES (bible 13: docket) ----
+const CONSTITUENCY_NAMES_089: Dictionary = {"clinic":"Clinic (Hearth Nine)","labour":"Labour (Brin's workers)","choir":"Choir (Ossa's congregation)","market":"Market (Ashmarket buyers)","growth":"Growth (Orchard researchers)","defence":"Defence (Barracks platoon)"}
+
+## "verified" | "open" | "closed: <reason Ninth knows>"
+func constituency_status_089(group: String) -> String:
+    if not has_attempt(): return "open"
+    if assembly_support_078(group): return "verified"
+    var rel: Dictionary = state["relationships"]
+    match group:
+        "clinic":
+            if int(rel.get("Hearth Nine",0)) < 0: return "closed: Hearth Nine trust %d" % int(rel.get("Hearth Nine",0))
+        "labour", "choir":
+            var who: String = "brin" if group == "labour" else "ossa"
+            var actor: Dictionary = state.get(who,{})
+            var display: String = "Brin" if who == "brin" else "Ossa"
+            if not bool(actor.get("alive",true)): return "closed: %s is dead" % display
+            var decision: String = str(actor.get("decision",""))
+            if decision != "" and not decision in ["help","compromise"]: return "closed: %s's cause was %s" % [display, "abandoned" if decision == "abandon" else "exploited"]
+        "market":
+            if int(rel.get("Trade",0)) < 0: return "closed: Trade trust %d" % int(rel.get("Trade",0))
+            if state["writs"].has("qobj_writ_of_trade") and not bool(state.get("trade",{}).get("coalition_recorded",false)): return "closed: Trade Writ taken without the buyers' coalition"
+        "growth":
+            if int(rel.get("Growth",0)) < 0: return "closed: Growth trust %d" % int(rel.get("Growth",0))
+            if state["writs"].has("qobj_writ_of_growth") and not bool(state.get("growth",{}).get("researcher_vote",false)): return "closed: Growth Writ taken without the researchers' vote"
+        "defence":
+            if int(rel.get("Defence",0)) < 0: return "closed: Defence trust %d" % int(rel.get("Defence",0))
+            if state["writs"].has("qobj_writ_of_defence") and not bool(state.get("defence",{}).get("platoon_vote",false)): return "closed: Defence Writ taken without the platoon's vote"
+    return "open"
+
+func constituencies_possible_089() -> int:
+    var n: int = 0
+    for group in CONSTITUENCY_NAMES_089.keys():
+        if not constituency_status_089(group).begins_with("closed"): n += 1
+    return n
+
+## Constituencies an action would definitely close (only those still possible).
+func constituencies_closed_by_089(action: String) -> Array[String]:
+    var closes: Array[String] = []
+    match action:
+        "brin:abandon", "brin:exploit": closes.append("labour")
+        "ossa:abandon", "ossa:exploit": closes.append("choir")
+        "market:intimidate", "trade:intimidation": closes.append("market")
+        "trade:sabotage", "trade:registry":
+            if not bool(state.get("trade",{}).get("coalition_recorded",false)): closes.append("market")
+        "orchard:writ:isolation", "orchard:writ:registry":
+            if not bool(state.get("growth",{}).get("researcher_vote",false)): closes.append("growth")
+        "barracks:writ:isolation", "barracks:writ:registry":
+            if not bool(state.get("defence",{}).get("platoon_vote",false)): closes.append("defence")
+    var still_open: Array[String] = []
+    for group in closes:
+        if not constituency_status_089(group).begins_with("closed"): still_open.append(group)
+    return still_open
+
+## Non-empty when an action would leave fewer than the three constituencies the
+## True Dawn mandate needs. Ninth is told before committing, never after.
+func true_dawn_lockout_warning_089(action: String) -> String:
+    if not has_attempt() or bool(state.get("civic",{}).get("mandate_revoked",false)): return ""
+    var closes: Array[String] = constituencies_closed_by_089(action)
+    if closes.is_empty(): return ""
+    var after: int = constituencies_possible_089() - closes.size()
+    if after >= 3: return ""
+    var names: Array[String] = []
+    for group in closes: names.append(str(CONSTITUENCY_NAMES_089[group]))
+    return "This closes the %s constituency. Only %d constituenc%s could still vote for a public mandate, and True Dawn needs three. True Dawn would become impossible in this attempt. Liberation, Dominion and Crown remain open." % [", ".join(names), maxi(0, after), "y" if after == 1 else "ies"]
 
 func record_assembly_support_078(group: String) -> bool:
     if not _in_assembly_078() or not bool(state["civic"]["risk_disclosed"]): return false

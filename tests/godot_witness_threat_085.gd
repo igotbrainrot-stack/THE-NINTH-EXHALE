@@ -3,10 +3,13 @@ extends Node
 func _ready() -> void:
     call_deferred("_run")
 
+var failures_085: int = 0
+
 func _assert_ok(value: bool, label: String) -> void:
     if value:
         print("WITNESS_085_PASS: ",label)
     else:
+        failures_085 += 1
         push_error("WITNESS_085_FAIL: "+label)
 
 func _run() -> void:
@@ -31,7 +34,9 @@ func _run() -> void:
         _assert_ok(Game.state["event_ids"].has(event_key),zone_name+" intimidation recorded")
         _assert_ok(bool(witness.get_meta("threatened_085",false)),zone_name+" threatened state visible")
         _assert_ok(int(Game.state["actors"][actor_key]["hp"]) == 26,zone_name+" injury state stored")
-        _assert_ok(is_instance_valid(scene.guard) and scene.guard.hostile,zone_name+" district guard alerted")
+        # 09.2: no fiat alert. The keeper can only turn hostile after
+        # perceiving the assault and then seeing the attacker (perception test).
+        _assert_ok(is_instance_valid(scene.guard) and not scene.guard.hostile,zone_name+" district guard not alerted by fiat")
         var events_before: int = Game.state["events"].size()
         witness.take_hit(1)
         _assert_ok(Game.state["events"].size() == events_before,zone_name+" threat event not duplicated")
@@ -39,5 +44,5 @@ func _run() -> void:
         for i in range(4): await get_tree().process_frame
         var reloaded: Node = scene.world.get_node_or_null(node_name)
         _assert_ok(is_instance_valid(reloaded) and bool(reloaded.get_meta("threatened_085",false)),zone_name+" threatened state restored")
-    print("WITNESS_085_END")
-    get_tree().quit()
+    print("WITNESS_085_END: %d failure(s)" % failures_085)
+    Music.request_quit(1 if failures_085 > 0 else 0)

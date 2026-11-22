@@ -1,56 +1,68 @@
 # THE NINTH EXHALE
 
-Original retro-style first-person RPG / roguelite set in the city of Vesper, built in **Godot 4.4** (GL Compatibility renderer, 640×400 internal resolution).
+Original retro first-person civic-horror RPG / roguelite set in Vesper. Built in **Godot 4.4.1** with the GL Compatibility renderer and a 640×400 internal viewport.
 
-**Current build: 08.5 — Witness Response.** This is the complete, runnable Godot project.
+**Current development build on `main`: 09.3, immersive-sim phase 1b on top of the 09.2 weapon art.** Work happens on branches off `main` with draft PRs; CI runs on every PR. GPT's working brief: `docs/handover/GPT_HANDOVER_093_MAIN.md`.
+- 09.2 added deterministic sight and hearing, witnessed responses, first-person weapon animation strips and a runnable Linux package.
+- 09.3 adds guards that search and stay on high alert, threatened witnesses who run to report, cause-specific barks and a HUD stealth cue. It is playable, but **not the finished game or final content release**. The master game bible remains the production target; the current Godot build is still a development slice and has not had human full-campaign playtesting.
 
-## Run it
+## Run
 
-1. Install Godot 4.4.x (standard, not .NET), or put the Godot executable next to `launch_linux.sh`.
-2. Linux: `./launch_linux.sh`. Any OS: open `project.godot` in the Godot Project Manager and press **F5**.
+- In the repository with Godot 4.4.x standard (not .NET): `./launch_linux.sh`
+- From a packaged build folder: `./RUN_GAME.sh`
+- Or open `project.godot` in Godot Project Manager and press F5.
 
-Controls: WASD + mouse to move and look · LMB fire · R reload · 2–5 switch weapon · E interact · F / right-click intervene · TAB or ESC opens the dossier.
+Controls: WASD move · mouse look · LMB fire · R reload · 2–5 switch weapon · E interact · F / right-click intervene · TAB or ESC opens the dossier. Docket number keys 1–9 select choices; ←/→ or Q/E switch dossier tabs.
 
-## Status
+## Art drop-in slots
 
-Verified on 2026-11-19 with Godot 4.4.1 stable (Linux x86_64):
+- HUD/UI: `assets/ui/hud_091/` — see `docs/handover/GPT_HUD_UI_ART_HANDOVER_091.md`
+- NPC/enemy animation: `assets/sprites/anim_092/` — see `docs/handover/GPT_SPRITE_ANIMATION_HANDOVER_092.md`
+- First-person weapon animation: `assets/weapons/anim_092/<weapon>/` — see `docs/handover/GPT_WEAPON_ANIMATION_HANDOVER_092.md`
+- Validate strips: `python3 tools/anim_092.py check <folder>`
+- Weapon art corrections after 09.2: `docs/handover/GPT_WEAPON_ART_CORRECTIONS_093.md`
 
-| Check | Result |
-|---|---|
-| `python3 -m unittest discover -s tests -p 'test_*.py'` | 267 passed |
-| `python3 tests/validate_project.py` | 14 passed |
-| `res://tests/godot_scene_smoke_084.tscn` (headless) | all 8 districts load |
-| `res://tests/godot_witness_threat_085.tscn` (headless) | 14/14 witness checks |
-| Title screen start (headless) | no script errors |
-| Rendered capture of each district | all 8 render with HUD and weapon |
+**Stealth and witnesses (09.2–09.3):** sight and hearing are deterministic, with no dice.
+- Light, cover, movement and noise decide what guards notice. A guard that loses you searches, then stays on high alert.
+- Office-holders act only on assaults they saw, heard or were told about by a living witness. Brin and Ossa run to their keeper when nobody else noticed; stop or calm them and nothing is reported.
+- The pips above the vitals show how visible you are; the word beside them shows the most alarmed guard nearby.
+- F3 shows the perception debug labels.
 
-**Not yet playtested by a person.** No full F5 playthrough, ending playthrough, audio check or frame-time measurement has been done on this build. The last build confirmed playable by hand was Build 03.
+## Verified checks (Build 09.3)
 
-Known issues: see `docs/builds/BUILD_085_OPEN_ISSUES.md`. Godot also reports `16 resources still in use at exit` (an ObjectDB leak warning) on every run.
+- **297** Python tests passed
+- **14** project validations passed
+- Godot animation tests **18/18**
+- Perception tests **25/25**
+- Immersive-sim tests **36/36**
+- Weapon art tests **31/31**, including muzzle anchors on the weapon
+- HUD art override tests **8/8**
+- Project import, district scene smoke and weapon-art loader checks passed
+- Combat and pacifist full-campaign playbots both reached **VESPER / LIBERATION**, completing Labour, Faith and Trade Writs and passing the living-witness invariant (0 violations)
 
-Run the engine checks with an isolated `HOME`, because the witness test writes a temporary save:
+Automated playbot results are not human QA: the game is **not yet playtested by humans** and needs full human campaign sign-off.
 
-```
-HOME=$(mktemp -d) godot --headless --path . res://tests/godot_scene_smoke_084.tscn
-HOME=$(mktemp -d) godot --headless --path . res://tests/godot_witness_threat_085.tscn
-```
+## Known unfinished work
 
-## Layout
+- **Hearth Nine safe hub (needs the owner's ruling):** Hearth Nine still spawns an enforcer, a crawler, optional hostiles and a hazard. The 09.2 gap register calls this P0 and proposes moving them to a separate Intake Annex. The bible gives Hearth Nine "1 safe station" and puts a simple enemy there in milestone G1, so the change needs a decision first.
+- Only Liberation has been fully verified by automated playbots; Dominion, Crown and True Dawn require direct testing.
+- Human full-campaign, endings, audio and performance testing have not been signed off.
+- Weapon idle strips are small breathing variations from a master frame. Reload, dry, draw and intervene states are still procedural fallbacks; Nail Storm piston/vent animation and Choirbreaker shutter ripple are incomplete.
+- Nail Storm and Choirbreaker art is drawn side-on (barrel pointing left), and the Coil `fire` strip is held back because the hand disappears. Repaints are requested in `docs/handover/GPT_WEAPON_ART_CORRECTIONS_093.md`. Muzzle anchors were checked in game in 09.3.
+- NPC/enemy animation, voice and ambience assets still need completion/integration; procedural fallbacks remain.
+- The Tripo H3.1 weapon models are source references only; retopology/LOD is required before runtime use.
+- The master game bible describes a broader full game than this playable development slice. Do not call the project complete until the production-gap list, playthrough, human review and release QA are closed.
 
-| Path | Contents |
-|---|---|
-| `project.godot`, `scenes/`, `scripts/` | Godot project, scenes and GDScript |
-| `assets/` | Runtime assets: textures, sprites, weapons, UI, FX, audio, music, cinematics |
-| `art/` | Production source art (`production_sources/`), previews, import tools and Runway provenance manifests |
-| `data/` | Game data: master IDs, enemy roster, reference catalogue |
-| `tests/` | Python source tests and Godot headless test scenes |
-| `tools/` | Asset generation scripts |
-| `docs/` | Design docs (`MASTER_GAME_BIBLE_FINAL.md` is the source of truth). Ignored by the Godot importer. |
-| `docs/builds/` | Per-build changelogs, QA reports, open issues and checksum manifests, Build 02 → 08.5 |
+See `docs/handover/BUILD_092_COMPLETION_GAP_REGISTER.md` for the completion checklist.
 
-## Rules
+## Project layout
 
-- `main` holds the current runnable build. Do larger work on feature branches and merge once the tests above pass.
-- Keep the two-channel Lumen Engine, the three distinct Writs for full-game progression and the ethical Echoform hearing.
-- Art is original to this project. Do not add assets from Unity, Unreal, DOOM, Fallout, Pokémon, BioShock or any other third-party game. Generated art still needs a human visual/IP review (`docs/PROTECTED_ORIGINALITY_REGISTER.md`).
-- Runway task IDs and provenance are recorded in `art/*RUNWAY*` manifests. A task ID is not an imported asset; only files present in this repo are in the game.
+`project.godot`, `scenes/`, `scripts/` — Godot project/runtime
+`assets/` — runtime textures, sprites, UI, effects, audio and music
+`art/` — production sources, generated art, provenance manifests and import tooling
+`data/` — enemy roster, IDs and reference catalogue
+`tests/` — Python regression tests and Godot runtime test scenes
+`tools/` — importers, validators and scripted playbot
+`docs/` — game bible, handovers, build notes and QA
+
+Originality rules remain binding: no franchise assets, weapon silhouettes, monsters, characters or story elements are imported. Generated assets require human review; source provenance and hashes are preserved.

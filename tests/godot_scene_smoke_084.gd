@@ -17,4 +17,4 @@ func _run() -> void:
             await get_tree().process_frame
         print("SMOKE_ZONE_OK: ",zone_name, " world=", scene.world.name)
     print("SMOKE_END")
-    get_tree().quit()
+    Music.request_quit()

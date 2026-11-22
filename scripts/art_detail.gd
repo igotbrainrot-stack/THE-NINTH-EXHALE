@@ -9,12 +9,12 @@ func prepare(source: Dictionary) -> void:
     mats = source
     var enamel := StandardMaterial3D.new()
     enamel.albedo_color = Color("#9caeb0")
-    enamel.metallic = 0.23
+    enamel.metallic = 0.12
     enamel.roughness = 0.74
     mats["enamel_detail"] = enamel
     var copper := StandardMaterial3D.new()
     copper.albedo_color = Color("#7e6353")
-    copper.metallic = 0.62
+    copper.metallic = 0.2
     copper.roughness = 0.55
     mats["copper_detail"] = copper
     var porcelain := StandardMaterial3D.new()
@@ -31,7 +31,7 @@ func prepare(source: Dictionary) -> void:
     mats["red_detail"] = dull_red
     var dark_glass := StandardMaterial3D.new()
     dark_glass.albedo_color = Color("#41686a")
-    dark_glass.metallic = 0.35
+    dark_glass.metallic = 0.15
     dark_glass.roughness = 0.45
     mats["glass_detail"] = dark_glass
 

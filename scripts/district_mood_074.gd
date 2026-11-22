@@ -70,7 +70,7 @@ func _add_lamp(pos: Vector3, tint: Color, index: int) -> void:
     mount.mesh = shade
     var dark := StandardMaterial3D.new()
     dark.albedo_color = Color("#4b4f45")
-    dark.metallic = 0.65
+    dark.metallic = 0.2
     dark.roughness = 0.49
     mount.material_override = dark
     add_child(mount)

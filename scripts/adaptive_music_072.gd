@@ -31,9 +31,13 @@ var active_combat: bool = false
 var muted: bool = false
 var user_music_volume: float = 0.70
 var last_zone: String = "hearth"
+var quitting: bool = false
 
 func _ready() -> void:
     process_mode = Node.PROCESS_MODE_ALWAYS
+    # Window close goes through request_quit() so the music players are stopped
+    # before the engine shuts down (otherwise "16 resources still in use at exit").
+    get_tree().set_auto_accept_quit(false)
     for key in ["hearth","sootworks","basilica","ashmarket","orchard","barracks","core","assembly","combat"]:
         var path: String = str(MUSIC[key])
         if not ResourceLoader.exists(path):
@@ -48,7 +52,6 @@ func _ready() -> void:
         track.bus = "Master"
         track.volume_db = -72.0
         add_child(track)
-        track.play()
         tracks[key] = track
         gains[key] = 0.0
 
@@ -113,4 +116,39 @@ func _process(delta: float) -> void:
         gains[key] = current
         var gain: float = current * user_music_volume * (0.0 if muted else 1.0)
         track.volume_db = linear_to_db(maxf(0.0001,gain))
-        if not track.playing: track.play()
+        # Only audible layers decode. Previously all nine Ogg layers played
+        # forever at -72 dB, costing CPU and leaking at exit.
+        if current > 0.0 or target > 0.0:
+            if not track.playing: track.play()
+        elif track.playing:
+            track.stop()
+
+func _notification(what: int) -> void:
+    if what == NOTIFICATION_WM_CLOSE_REQUEST:
+        request_quit()
+
+## The single way the game should quit. Any AudioStreamPlayer still playing at
+## shutdown (music layers, weapon voices, enemy barks) is reported by Godot as a
+## leaked resource, so every player in the tree is stopped and released first,
+## and the audio server is given a moment to drop its playbacks.
+func request_quit(exit_code: int = 0) -> void:
+    if quitting: return
+    quitting = true
+    set_process(false)
+    _silence_all_players()
+    # A playback started in the last frame or two can still be registered by the
+    # audio server after the first stop, so silence again one frame later.
+    await get_tree().process_frame
+    _silence_all_players()
+    # Shared combat VFX caches (static, so not freed with the scene tree).
+    preload("res://scripts/combat_tracer_079x.gd").clear_shared_cache()
+    preload("res://scripts/combat_impact_079.gd").clear_shared_cache()
+    await get_tree().create_timer(0.2, true, false, true).timeout
+    await get_tree().process_frame
+    get_tree().quit(exit_code)
+
+func _silence_all_players() -> void:
+    for type_name in ["AudioStreamPlayer", "AudioStreamPlayer2D", "AudioStreamPlayer3D"]:
+        for node in get_tree().root.find_children("*", type_name, true, false):
+            node.stop()
+            node.stream = null

@@ -41,7 +41,7 @@ class Core076(unittest.TestCase):
         self.assertIn('"person_killed":false',segment)
         self.assertIn('"endings_offered":false',segment)
         self.assertIn('or not core_main_records_complete()',segment)
-        self.assertIn('if stat("Speech") < 5 and stat("Insight") < 5',segment)
+        self.assertIn('abdication_check()',segment)
         self.assertIn('if not bool(state["core"].get("safety_bus_prepared",false))',segment)
     def test_tech_containment_cost_and_finite_rail_repair(self):
         bus=STATE.split('func prepare_core_safety_bus_076(',1)[1].split('func claim_core_cipher_076()',1)[0]

@@ -1,0 +1,541 @@
+{
+  "project": "THE NINTH EXHALE",
+  "set": "HUD_086",
+  "requested_reference_image_task_id": "c9d38ddd-b52b-49d4-bcbb-7d00d5af135f",
+  "actual_reference_proxy_image_path": "/mnt/data/ghostwriter_images/generated/a_clean_detailed_ui_style_illustration_on_a_flat_1.png",
+  "license_review": "pending",
+  "notes": [
+    "The approved Runway task ID was provided by the user, but the exact Runway image could not be directly ingested in this environment. A locally generated surrogate style board matching board A was used as the visual anchor for all downstream generations.",
+    "All text and numerals are intentionally absent. Godot should draw live text.",
+    "Icon assets were exported as 24x24 PNGs because the requested filename list did not include separate 16x16 and 24x24 variants. They can be downscaled to 16x16 if needed.",
+    "08.7 verified all nine canonical HUD icons in game_ui.gd; removed 18 unused 16/24 derivative variants, retaining source and original 24px canonical PNGs."
+  ],
+  "issues": [
+    "Several icons remain more plaque-like than pure silhouette marks; the smallest 16x16 use case may benefit from a future simplification pass.",
+    "The prompt strip interior is slightly more saturated green than ideal and may warrant a flatter repaint if stricter low-contrast behavior is required.",
+    "The normal/hover/pressed button states are visually distinct, but the pressed-depth change is subtle.",
+    "Runway-approved board A remains externally hosted. This asset pack used a locally generated visual surrogate; no exact Runway HUD task media was imported. Per-element Runway task IDs are intentionally null."
+  ],
+  "elements": {
+    "hud_reticle": {
+      "source_file": "art/production_sources/hud_086/hud_reticle_source.png",
+      "asset_file": "assets/ui/hud_086/hud_reticle.png",
+      "runway_task_id": null,
+      "prompt_used": "Create a single source sheet on a perfectly flat solid magenta background (#FF00FF). Image A is the approved style-board reference and defines the exact style. Render TWO separate crosshair elements only, centered on the sheet one above the other with generous spacing and at least 12% outer margin, straight-on orthographic, no perspective, no tilt, no text. Both are thin, legible retro-FPS reticles that read clearly on both bright and dark scenes, made from this HUD's civic-industrial visual language rather than modern holograms. Top: default reticle, restrained and clean. Bottom: hit reticle, slightly brighter and tighter, more emphatic. Use approved palette roles only.",
+      "reference_image_task_id": null,
+      "pixel_size": {
+        "width": 32,
+        "height": 32
+      },
+      "source_pixel_size": {
+        "width": 408,
+        "height": 406
+      },
+      "nine_slice_margins": null,
+      "license_review": "pending",
+      "approved_style_board_task_id": "c9d38ddd-b52b-49d4-bcbb-7d00d5af135f",
+      "runtime_sha256": "e264e9b6471571b0338c19c6f32cb590a9c8563a6b02aabf19801a54ccc029d5",
+      "source_sha256": "7d919c0f16a5e9d9f5209bc18f724f0d484fd43513697ca48840cb7af37d08bd"
+    },
+    "hud_reticle_hit": {
+      "source_file": "art/production_sources/hud_086/hud_reticle_hit_source.png",
+      "asset_file": "assets/ui/hud_086/hud_reticle_hit.png",
+      "runway_task_id": null,
+      "prompt_used": "Create a single source sheet on a perfectly flat solid magenta background (#FF00FF). Image A is the approved style-board reference and defines the exact style. Render TWO separate crosshair elements only, centered on the sheet one above the other with generous spacing and at least 12% outer margin, straight-on orthographic, no perspective, no tilt, no text. Both are thin, legible retro-FPS reticles that read clearly on both bright and dark scenes, made from this HUD's civic-industrial visual language rather than modern holograms. Top: default reticle, restrained and clean. Bottom: hit reticle, slightly brighter and tighter, more emphatic. Use approved palette roles only.",
+      "reference_image_task_id": null,
+      "pixel_size": {
+        "width": 32,
+        "height": 32
+      },
+      "source_pixel_size": {
+        "width": 285,
+        "height": 276
+      },
+      "nine_slice_margins": null,
+      "license_review": "pending",
+      "approved_style_board_task_id": "c9d38ddd-b52b-49d4-bcbb-7d00d5af135f",
+      "runtime_sha256": "a60868a94dce3c03b9f340f038238369ce50d5e5b722ccebc72f23131b7af04d",
+      "source_sha256": "ee30a3aae072c85c611492922dc014ba4e255cf972a35179ecff9387473fe14a"
+    },
+    "hud_frame_brass": {
+      "source_file": "art/production_sources/hud_086/hud_frame_brass_source.png",
+      "asset_file": "assets/ui/hud_086/hud_frame_brass.png",
+      "runway_task_id": null,
+      "prompt_used": "Create a single source sheet on a perfectly flat solid magenta background (#FF00FF). Image A is the approved style-board reference and defines the visual language to match exactly: original 'Pressure Docket, made modern' civic record-keeping hardware with enamel, carbon steel, ceramic pressure plates, safety glass, pressed paperwork, tiny precise brass fittings, crisp machined edges, consistent bevels, restrained wear, excellent legibility, calm interiors and border-focused detail. Render TWO separate UI frame elements on the sheet, straight-on orthographic view, no perspective, no tilt, no background shadow, no text or glyphs. Keep at least 12% outer margin and generous spacing. Element 1: a brass-edge panel frame for major HUD panels, centered in the upper half, rectangular with elegant bevels and corner fittings, clean calm interior opening, designed for 9-slice use. Element 2: a steel-edge panel frame for secondary HUD panels, centered in the lower half, same family but steel/teal-steel edge instead of brass, calm interior opening, designed for 9-slice use. Use only the approved palette roles.",
+      "reference_image_task_id": null,
+      "pixel_size": {
+        "width": 128,
+        "height": 80
+      },
+      "source_pixel_size": {
+        "width": 1195,
+        "height": 345
+      },
+      "nine_slice_margins": {
+        "left": 16,
+        "top": 14,
+        "right": 16,
+        "bottom": 14
+      },
+      "license_review": "pending",
+      "approved_style_board_task_id": "c9d38ddd-b52b-49d4-bcbb-7d00d5af135f",
+      "runtime_sha256": "5a9d996bbb28caa3cae64edbaef982dce5a4838cc4658949586fc854430040c9",
+      "source_sha256": "b2fc9623e2754acc7b7b41a69eb2f5c943e531a57a65f946ae3a60ec07ed7d1b"
+    },
+    "hud_frame_steel": {
+      "source_file": "art/production_sources/hud_086/hud_frame_steel_source.png",
+      "asset_file": "assets/ui/hud_086/hud_frame_steel.png",
+      "runway_task_id": null,
+      "prompt_used": "Create a single source sheet on a perfectly flat solid magenta background (#FF00FF). Image A is the approved style-board reference and defines the visual language to match exactly: original 'Pressure Docket, made modern' civic record-keeping hardware with enamel, carbon steel, ceramic pressure plates, safety glass, pressed paperwork, tiny precise brass fittings, crisp machined edges, consistent bevels, restrained wear, excellent legibility, calm interiors and border-focused detail. Render TWO separate UI frame elements on the sheet, straight-on orthographic view, no perspective, no tilt, no background shadow, no text or glyphs. Keep at least 12% outer margin and generous spacing. Element 1: a brass-edge panel frame for major HUD panels, centered in the upper half, rectangular with elegant bevels and corner fittings, clean calm interior opening, designed for 9-slice use. Element 2: a steel-edge panel frame for secondary HUD panels, centered in the lower half, same family but steel/teal-steel edge instead of brass, calm interior opening, designed for 9-slice use. Use only the approved palette roles.",
+      "reference_image_task_id": null,
+      "pixel_size": {
+        "width": 128,
+        "height": 80
+      },
+      "source_pixel_size": {
+        "width": 1194,
+        "height": 346
+      },
+      "nine_slice_margins": {
+        "left": 16,
+        "top": 14,
+        "right": 16,
+        "bottom": 14
+      },
+      "license_review": "pending",
+      "approved_style_board_task_id": "c9d38ddd-b52b-49d4-bcbb-7d00d5af135f",
+      "runtime_sha256": "50f6633e06c6fa592ef169a7e5f256a1f51e26ce6b3ed354105bcfdee396c6c6",
+      "source_sha256": "536b6f468a81d38225dcb93df98d4140d89f176e84b104bf9edc659a8d38271b"
+    },
+    "hud_bar_track": {
+      "source_file": "art/production_sources/hud_086/hud_bar_track_source.png",
+      "asset_file": "assets/ui/hud_086/hud_bar_track.png",
+      "runway_task_id": null,
+      "prompt_used": "Create a single source sheet on a perfectly flat solid magenta background (#FF00FF). Image A is the approved style-board reference and defines the exact style. Render FOUR separate long narrow bar elements, stacked vertically with generous spacing and at least 12% outer margin, straight-on orthographic, no perspective, no tilt, no text or glyphs. Element 1: empty recessed bar track, suitable for 9-slice use. Element 2: health bar fill only, tileable, flat-ish with subtle machined grain, using muted health terracotta. Element 3: breath bar fill only, tileable, flat-ish with subtle machined grain, using muted breath green. Element 4: weapon heat bar fill only, tileable, slightly hotter amber-orange. Calm, legible, no extra symbols. Match Image A style exactly.",
+      "reference_image_task_id": null,
+      "pixel_size": {
+        "width": 96,
+        "height": 10
+      },
+      "source_pixel_size": {
+        "width": 1418,
+        "height": 114
+      },
+      "nine_slice_margins": {
+        "left": 6,
+        "top": 3,
+        "right": 6,
+        "bottom": 3
+      },
+      "license_review": "pending",
+      "approved_style_board_task_id": "c9d38ddd-b52b-49d4-bcbb-7d00d5af135f",
+      "runtime_sha256": "28a0fc52c2db9feb0dcd6ea66f51ce94137d5ab5bac5060872775576736c2e54",
+      "source_sha256": "cfea915ae06169345082ea487cf763af4a4c356e965ea1d671d525c7a7fce6ef"
+    },
+    "hud_bar_fill_health": {
+      "source_file": "art/production_sources/hud_086/hud_bar_fill_health_source.png",
+      "asset_file": "assets/ui/hud_086/hud_bar_fill_health.png",
+      "runway_task_id": null,
+      "prompt_used": "Create a single source sheet on a perfectly flat solid magenta background (#FF00FF). Image A is the approved style-board reference and defines the exact style. Render FOUR separate long narrow bar elements, stacked vertically with generous spacing and at least 12% outer margin, straight-on orthographic, no perspective, no tilt, no text or glyphs. Element 1: empty recessed bar track, suitable for 9-slice use. Element 2: health bar fill only, tileable, flat-ish with subtle machined grain, using muted health terracotta. Element 3: breath bar fill only, tileable, flat-ish with subtle machined grain, using muted breath green. Element 4: weapon heat bar fill only, tileable, slightly hotter amber-orange. Calm, legible, no extra symbols. Match Image A style exactly.",
+      "reference_image_task_id": null,
+      "pixel_size": {
+        "width": 96,
+        "height": 10
+      },
+      "source_pixel_size": {
+        "width": 1394,
+        "height": 62
+      },
+      "nine_slice_margins": null,
+      "license_review": "pending",
+      "approved_style_board_task_id": "c9d38ddd-b52b-49d4-bcbb-7d00d5af135f",
+      "runtime_sha256": "4fa2070b71f5c0211334d1287b385d512c457ade232d7f7d07a1c14088b23be6",
+      "source_sha256": "e9adf85794371c581973476f8c16f9fe612fc821b12c62173a13a4cc6a39f57c"
+    },
+    "hud_bar_fill_breath": {
+      "source_file": "art/production_sources/hud_086/hud_bar_fill_breath_source.png",
+      "asset_file": "assets/ui/hud_086/hud_bar_fill_breath.png",
+      "runway_task_id": null,
+      "prompt_used": "Create a single source sheet on a perfectly flat solid magenta background (#FF00FF). Image A is the approved style-board reference and defines the exact style. Render FOUR separate long narrow bar elements, stacked vertically with generous spacing and at least 12% outer margin, straight-on orthographic, no perspective, no tilt, no text or glyphs. Element 1: empty recessed bar track, suitable for 9-slice use. Element 2: health bar fill only, tileable, flat-ish with subtle machined grain, using muted health terracotta. Element 3: breath bar fill only, tileable, flat-ish with subtle machined grain, using muted breath green. Element 4: weapon heat bar fill only, tileable, slightly hotter amber-orange. Calm, legible, no extra symbols. Match Image A style exactly.",
+      "reference_image_task_id": null,
+      "pixel_size": {
+        "width": 96,
+        "height": 10
+      },
+      "source_pixel_size": {
+        "width": 1395,
+        "height": 63
+      },
+      "nine_slice_margins": null,
+      "license_review": "pending",
+      "approved_style_board_task_id": "c9d38ddd-b52b-49d4-bcbb-7d00d5af135f",
+      "runtime_sha256": "e02afadb041fdf380f0d1577858e2b0b61ddd9171ded7ba8c9763b038ab75fdf",
+      "source_sha256": "4ac7403caa708ef3edaaf3f85e1c5bdc38580d2e117a2e444fed85a0b7ba2aa8"
+    },
+    "hud_bar_fill_heat": {
+      "source_file": "art/production_sources/hud_086/hud_bar_fill_heat_source.png",
+      "asset_file": "assets/ui/hud_086/hud_bar_fill_heat.png",
+      "runway_task_id": null,
+      "prompt_used": "Create a single source sheet on a perfectly flat solid magenta background (#FF00FF). Image A is the approved style-board reference and defines the exact style. Render FOUR separate long narrow bar elements, stacked vertically with generous spacing and at least 12% outer margin, straight-on orthographic, no perspective, no tilt, no text or glyphs. Element 1: empty recessed bar track, suitable for 9-slice use. Element 2: health bar fill only, tileable, flat-ish with subtle machined grain, using muted health terracotta. Element 3: breath bar fill only, tileable, flat-ish with subtle machined grain, using muted breath green. Element 4: weapon heat bar fill only, tileable, slightly hotter amber-orange. Calm, legible, no extra symbols. Match Image A style exactly.",
+      "reference_image_task_id": null,
+      "pixel_size": {
+        "width": 145,
+        "height": 10
+      },
+      "source_pixel_size": {
+        "width": 1395,
+        "height": 63
+      },
+      "nine_slice_margins": null,
+      "license_review": "pending",
+      "approved_style_board_task_id": "c9d38ddd-b52b-49d4-bcbb-7d00d5af135f",
+      "runtime_sha256": "476fcdd9e5c3d9cf4bf53d1c3cfeeb1a5ca47bec8cbecbdb88a616381d69f169",
+      "source_sha256": "6b761ad12a01e767be4bd5d9744b250c2a57dac5961a023ac12f9b61b965e5fe"
+    },
+    "hud_prompt_tab": {
+      "source_file": "art/production_sources/hud_086/hud_prompt_tab_source.png",
+      "asset_file": "assets/ui/hud_086/hud_prompt_tab.png",
+      "runway_task_id": null,
+      "prompt_used": "Create a single source sheet on a perfectly flat solid magenta background (#FF00FF). Image A is the approved style-board reference and defines the exact style. Render TWO separate strip elements, straight-on orthographic, no perspective, no tilt, no text, no glyphs, no logos. Keep at least 12% outer margin and generous spacing. Top element: an interaction prompt strip, a thin service-window slot style 9-slice panel, long and narrow, steel-toned with restrained civic hardware character and calm low-contrast interior. Bottom element: an alert banner, larger and more emphatic, amber-accented stamped-notice feel, still without any text or markings, designed as a 9-slice banner with strong border detail and calm center field. Match the enamel-and-steel 'Pressure Docket' look from Image A exactly.",
+      "reference_image_task_id": null,
+      "pixel_size": {
+        "width": 268,
+        "height": 26
+      },
+      "source_pixel_size": {
+        "width": 1223,
+        "height": 108
+      },
+      "nine_slice_margins": {
+        "left": 13,
+        "top": 8,
+        "right": 13,
+        "bottom": 8
+      },
+      "license_review": "pending",
+      "approved_style_board_task_id": "c9d38ddd-b52b-49d4-bcbb-7d00d5af135f",
+      "runtime_sha256": "1ae26a89d739c1f27b7632e1cc2de90d6018f804ebd6c89bc93687c9e7b21949",
+      "source_sha256": "55c04f107de9e07b4332db5f32475515d63dcf7b961261fc4d4105107a960e01"
+    },
+    "hud_banner_alert": {
+      "source_file": "art/production_sources/hud_086/hud_banner_alert_source.png",
+      "asset_file": "assets/ui/hud_086/hud_banner_alert.png",
+      "runway_task_id": null,
+      "prompt_used": "Create a single source sheet on a perfectly flat solid magenta background (#FF00FF). Image A is the approved style-board reference and defines the exact style. Render TWO separate strip elements, straight-on orthographic, no perspective, no tilt, no text, no glyphs, no logos. Keep at least 12% outer margin and generous spacing. Top element: an interaction prompt strip, a thin service-window slot style 9-slice panel, long and narrow, steel-toned with restrained civic hardware character and calm low-contrast interior. Bottom element: an alert banner, larger and more emphatic, amber-accented stamped-notice feel, still without any text or markings, designed as a 9-slice banner with strong border detail and calm center field. Match the enamel-and-steel 'Pressure Docket' look from Image A exactly.",
+      "reference_image_task_id": null,
+      "pixel_size": {
+        "width": 344,
+        "height": 38
+      },
+      "source_pixel_size": {
+        "width": 1246,
+        "height": 313
+      },
+      "nine_slice_margins": {
+        "left": 18,
+        "top": 10,
+        "right": 18,
+        "bottom": 10
+      },
+      "license_review": "pending",
+      "approved_style_board_task_id": "c9d38ddd-b52b-49d4-bcbb-7d00d5af135f",
+      "runtime_sha256": "06136ec4f32a5b40c708f77505790be15ef12a7010770af5fdfe6cfb9d0382ed",
+      "source_sha256": "34d510322c126a37490307eb45f7cb8bd178a43687d0be162dc222194497c3a7"
+    },
+    "icon_health": {
+      "source_file": "art/production_sources/hud_086/icon_health_source.png",
+      "asset_file": "assets/ui/hud_086/icon_health.png",
+      "runway_task_id": null,
+      "prompt_used": "Create a single source sheet on a perfectly flat solid magenta background (#FF00FF). Image A is the approved style-board reference and defines the exact style. Render FIVE separate small HUD icons in a clean grid with generous spacing and at least 12% outer margin, straight-on orthographic, no perspective, no tilt, no text or glyphs. Each icon must read as a strong silhouette even if color is removed. Icons to render: health, breath as a pressure bellows, ampoule, ammo, and heat. Keep them simple, crisp, original, and consistent with civic-industrial record-keeping hardware aesthetics.",
+      "reference_image_task_id": null,
+      "pixel_size": {
+        "width": 24,
+        "height": 24
+      },
+      "source_pixel_size": {
+        "width": 334,
+        "height": 333
+      },
+      "nine_slice_margins": null,
+      "license_review": "pending",
+      "runtime_consumer": "scripts/game_ui.gd",
+      "approved_style_board_task_id": "c9d38ddd-b52b-49d4-bcbb-7d00d5af135f",
+      "runtime_sha256": "c480c9fd2ba4bd551505054782867311264adc844887f97814114c95e45584fe",
+      "source_sha256": "f7c6b5de940fd9c7e942ce628eaac68dbad7880388eb016cae3271bda3bdfce8"
+    },
+    "icon_breath": {
+      "source_file": "art/production_sources/hud_086/icon_breath_source.png",
+      "asset_file": "assets/ui/hud_086/icon_breath.png",
+      "runway_task_id": null,
+      "prompt_used": "Create a single source sheet on a perfectly flat solid magenta background (#FF00FF). Image A is the approved style-board reference and defines the exact style. Render FIVE separate small HUD icons in a clean grid with generous spacing and at least 12% outer margin, straight-on orthographic, no perspective, no tilt, no text or glyphs. Each icon must read as a strong silhouette even if color is removed. Icons to render: health, breath as a pressure bellows, ampoule, ammo, and heat. Keep them simple, crisp, original, and consistent with civic-industrial record-keeping hardware aesthetics.",
+      "reference_image_task_id": null,
+      "pixel_size": {
+        "width": 24,
+        "height": 24
+      },
+      "source_pixel_size": {
+        "width": 351,
+        "height": 334
+      },
+      "nine_slice_margins": null,
+      "license_review": "pending",
+      "runtime_consumer": "scripts/game_ui.gd",
+      "approved_style_board_task_id": "c9d38ddd-b52b-49d4-bcbb-7d00d5af135f",
+      "runtime_sha256": "5410a05ced992a34b149910e609bb984a56427722b06651ed7abf1274ba7e41f",
+      "source_sha256": "81cb0eea6cd940f3e4b4a8d74d3a48ead2f1dfcbc51f8d7e0dc53f67426a8d47"
+    },
+    "icon_ampoule": {
+      "source_file": "art/production_sources/hud_086/icon_ampoule_source.png",
+      "asset_file": "assets/ui/hud_086/icon_ampoule.png",
+      "runway_task_id": null,
+      "prompt_used": "Create a single source sheet on a perfectly flat solid magenta background (#FF00FF). Image A is the approved style-board reference and defines the exact style. Render FIVE separate small HUD icons in a clean grid with generous spacing and at least 12% outer margin, straight-on orthographic, no perspective, no tilt, no text or glyphs. Each icon must read as a strong silhouette even if color is removed. Icons to render: health, breath as a pressure bellows, ampoule, ammo, and heat. Keep them simple, crisp, original, and consistent with civic-industrial record-keeping hardware aesthetics.",
+      "reference_image_task_id": null,
+      "pixel_size": {
+        "width": 24,
+        "height": 24
+      },
+      "source_pixel_size": {
+        "width": 334,
+        "height": 333
+      },
+      "nine_slice_margins": null,
+      "license_review": "pending",
+      "runtime_consumer": "scripts/game_ui.gd",
+      "approved_style_board_task_id": "c9d38ddd-b52b-49d4-bcbb-7d00d5af135f",
+      "runtime_sha256": "c3c3dd642f16624245dbff2ef830d5d063f89776eb47fd62e18b69502d696aac",
+      "source_sha256": "c8da2c7df39beec83a6364774572fa8929dcfe5d5993fdf8dc1867128320b8ec"
+    },
+    "icon_ammo": {
+      "source_file": "art/production_sources/hud_086/icon_ammo_source.png",
+      "asset_file": "assets/ui/hud_086/icon_ammo.png",
+      "runway_task_id": null,
+      "prompt_used": "Create a single source sheet on a perfectly flat solid magenta background (#FF00FF). Image A is the approved style-board reference and defines the exact style. Render FIVE separate small HUD icons in a clean grid with generous spacing and at least 12% outer margin, straight-on orthographic, no perspective, no tilt, no text or glyphs. Each icon must read as a strong silhouette even if color is removed. Icons to render: health, breath as a pressure bellows, ampoule, ammo, and heat. Keep them simple, crisp, original, and consistent with civic-industrial record-keeping hardware aesthetics.",
+      "reference_image_task_id": null,
+      "pixel_size": {
+        "width": 24,
+        "height": 24
+      },
+      "source_pixel_size": {
+        "width": 346,
+        "height": 334
+      },
+      "nine_slice_margins": null,
+      "license_review": "pending",
+      "runtime_consumer": "scripts/game_ui.gd",
+      "approved_style_board_task_id": "c9d38ddd-b52b-49d4-bcbb-7d00d5af135f",
+      "runtime_sha256": "f11e4172f31215d405d9e1d15ca03e7cc52f036d01014354729ccf8711fec685",
+      "source_sha256": "c86de8d0f528a751cca4ad985724e31ec87c79bfbf32521c0aa0fac54ae7c211"
+    },
+    "icon_heat": {
+      "source_file": "art/production_sources/hud_086/icon_heat_source.png",
+      "asset_file": "assets/ui/hud_086/icon_heat.png",
+      "runway_task_id": null,
+      "prompt_used": "Create a single source sheet on a perfectly flat solid magenta background (#FF00FF). Image A is the approved style-board reference and defines the exact style. Render FIVE separate small HUD icons in a clean grid with generous spacing and at least 12% outer margin, straight-on orthographic, no perspective, no tilt, no text or glyphs. Each icon must read as a strong silhouette even if color is removed. Icons to render: health, breath as a pressure bellows, ampoule, ammo, and heat. Keep them simple, crisp, original, and consistent with civic-industrial record-keeping hardware aesthetics.",
+      "reference_image_task_id": null,
+      "pixel_size": {
+        "width": 24,
+        "height": 24
+      },
+      "source_pixel_size": {
+        "width": 347,
+        "height": 333
+      },
+      "nine_slice_margins": null,
+      "license_review": "pending",
+      "runtime_consumer": "scripts/game_ui.gd",
+      "approved_style_board_task_id": "c9d38ddd-b52b-49d4-bcbb-7d00d5af135f",
+      "runtime_sha256": "6c5c4348b0dff2ad075d679826e4146a69a67e1dc3cf983b67e1b31a8219a46a",
+      "source_sha256": "1d0bc3b4e5fd6034f4541804728c87bcff058a1c2c3e24ac6626bff6a1fce256"
+    },
+    "hud_button_normal": {
+      "source_file": "art/production_sources/hud_086/hud_button_normal_source.png",
+      "asset_file": "assets/ui/hud_086/hud_button_normal.png",
+      "runway_task_id": null,
+      "prompt_used": "Create a single source sheet on a perfectly flat solid magenta background (#FF00FF). Image A is the approved style-board reference and defines the exact style. Render THREE separate docket action buttons on the sheet, aligned vertically with generous spacing and at least 12% outer margin, straight-on orthographic, no perspective, no tilt, no text or glyphs. All three buttons share the exact same shape and family appearance. Top button: normal state with standard edge brightness. Middle button: hover state, same shape but slightly brighter edge highlights and a subtly more inviting raised look. Bottom button: pressed state, same shape but visibly more depressed and slightly darker inner plate. No other differences. Each must be suitable for 9-slice use.",
+      "reference_image_task_id": null,
+      "pixel_size": {
+        "width": 480,
+        "height": 36
+      },
+      "source_pixel_size": {
+        "width": 1052,
+        "height": 204
+      },
+      "nine_slice_margins": {
+        "left": 18,
+        "top": 12,
+        "right": 18,
+        "bottom": 12
+      },
+      "license_review": "pending",
+      "approved_style_board_task_id": "c9d38ddd-b52b-49d4-bcbb-7d00d5af135f",
+      "runtime_sha256": "cb5bb47ea1d46d1b5fc5544b88721f03396345c15ee9ae3e6bd92b9fec423b12",
+      "source_sha256": "9e1744276c2a6c574b3fd810ae09304841604b2ec195a88b96ca14adc87c9eff"
+    },
+    "hud_button_hover": {
+      "source_file": "art/production_sources/hud_086/hud_button_hover_source.png",
+      "asset_file": "assets/ui/hud_086/hud_button_hover.png",
+      "runway_task_id": null,
+      "prompt_used": "Create a single source sheet on a perfectly flat solid magenta background (#FF00FF). Image A is the approved style-board reference and defines the exact style. Render THREE separate docket action buttons on the sheet, aligned vertically with generous spacing and at least 12% outer margin, straight-on orthographic, no perspective, no tilt, no text or glyphs. All three buttons share the exact same shape and family appearance. Top button: normal state with standard edge brightness. Middle button: hover state, same shape but slightly brighter edge highlights and a subtly more inviting raised look. Bottom button: pressed state, same shape but visibly more depressed and slightly darker inner plate. No other differences. Each must be suitable for 9-slice use.",
+      "reference_image_task_id": null,
+      "pixel_size": {
+        "width": 480,
+        "height": 36
+      },
+      "source_pixel_size": {
+        "width": 1052,
+        "height": 204
+      },
+      "nine_slice_margins": {
+        "left": 18,
+        "top": 12,
+        "right": 18,
+        "bottom": 12
+      },
+      "license_review": "pending",
+      "approved_style_board_task_id": "c9d38ddd-b52b-49d4-bcbb-7d00d5af135f",
+      "runtime_sha256": "e8b9e535d3c1bd983b79831d779a4300cdf9e5f377358f9e28b3df9fada28a33",
+      "source_sha256": "9c7af71982cd05c515be2bdb9b0907aae999e5f4ae63046bf613104ac364d0d5"
+    },
+    "hud_button_pressed": {
+      "source_file": "art/production_sources/hud_086/hud_button_pressed_source.png",
+      "asset_file": "assets/ui/hud_086/hud_button_pressed.png",
+      "runway_task_id": null,
+      "prompt_used": "Create a single source sheet on a perfectly flat solid magenta background (#FF00FF). Image A is the approved style-board reference and defines the exact style. Render THREE separate docket action buttons on the sheet, aligned vertically with generous spacing and at least 12% outer margin, straight-on orthographic, no perspective, no tilt, no text or glyphs. All three buttons share the exact same shape and family appearance. Top button: normal state with standard edge brightness. Middle button: hover state, same shape but slightly brighter edge highlights and a subtly more inviting raised look. Bottom button: pressed state, same shape but visibly more depressed and slightly darker inner plate. No other differences. Each must be suitable for 9-slice use.",
+      "reference_image_task_id": null,
+      "pixel_size": {
+        "width": 480,
+        "height": 36
+      },
+      "source_pixel_size": {
+        "width": 1052,
+        "height": 205
+      },
+      "nine_slice_margins": {
+        "left": 18,
+        "top": 12,
+        "right": 18,
+        "bottom": 12
+      },
+      "license_review": "pending",
+      "approved_style_board_task_id": "c9d38ddd-b52b-49d4-bcbb-7d00d5af135f",
+      "runtime_sha256": "4fd19fe9815e8666e2512ee8c896e9b63afb5f854b11dc64e5d652edc2e3b481",
+      "source_sha256": "15ec75a706a3a7dbd4296df233471e03d52a5e6869523e5c46e029061bdab5f7"
+    },
+    "icon_writ": {
+      "source_file": "art/production_sources/hud_086/icon_writ_source.png",
+      "asset_file": "assets/ui/hud_086/icon_writ.png",
+      "runway_task_id": null,
+      "prompt_used": "Create a single source sheet on a perfectly flat solid magenta background (#FF00FF). Image A is the approved style-board reference and defines the exact style. Render FOUR separate small HUD icons in a clean grid with generous spacing and at least 12% outer margin, straight-on orthographic, no perspective, no tilt, no text or glyphs. Each icon must read as a strong silhouette even if color is removed. Icons to render: writ, evidence tab, interact, and route arrow. Keep them simple, crisp, original, and consistent with civic-industrial record-keeping hardware aesthetics.",
+      "reference_image_task_id": null,
+      "pixel_size": {
+        "width": 24,
+        "height": 24
+      },
+      "source_pixel_size": {
+        "width": 399,
+        "height": 363
+      },
+      "nine_slice_margins": null,
+      "license_review": "pending",
+      "runtime_consumer": "scripts/game_ui.gd",
+      "approved_style_board_task_id": "c9d38ddd-b52b-49d4-bcbb-7d00d5af135f",
+      "runtime_sha256": "3302373b50d7032fba0204f555113eb8d1d97a23b94a39501460570cd4d11340",
+      "source_sha256": "09b1e76df4d6de1e1cc4ab953af3bb209a981ab344ef3fc2bf15352e609ba745"
+    },
+    "icon_evidence_tab": {
+      "source_file": "art/production_sources/hud_086/icon_evidence_tab_source.png",
+      "asset_file": "assets/ui/hud_086/icon_evidence_tab.png",
+      "runway_task_id": null,
+      "prompt_used": "Create a single source sheet on a perfectly flat solid magenta background (#FF00FF). Image A is the approved style-board reference and defines the exact style. Render FOUR separate small HUD icons in a clean grid with generous spacing and at least 12% outer margin, straight-on orthographic, no perspective, no tilt, no text or glyphs. Each icon must read as a strong silhouette even if color is removed. Icons to render: writ, evidence tab, interact, and route arrow. Keep them simple, crisp, original, and consistent with civic-industrial record-keeping hardware aesthetics.",
+      "reference_image_task_id": null,
+      "pixel_size": {
+        "width": 24,
+        "height": 24
+      },
+      "source_pixel_size": {
+        "width": 401,
+        "height": 363
+      },
+      "nine_slice_margins": null,
+      "license_review": "pending",
+      "runtime_consumer": "scripts/game_ui.gd",
+      "approved_style_board_task_id": "c9d38ddd-b52b-49d4-bcbb-7d00d5af135f",
+      "runtime_sha256": "6faf1abe07630a644f0d0e8acd28105104010cd400f82c827a7ea60863a0346d",
+      "source_sha256": "8e3ba4326758eddf1acf3eaca4f48ad32b209da93b7701d37a8267c699d03414"
+    },
+    "icon_interact": {
+      "source_file": "art/production_sources/hud_086/icon_interact_source.png",
+      "asset_file": "assets/ui/hud_086/icon_interact.png",
+      "runway_task_id": null,
+      "prompt_used": "Create a single source sheet on a perfectly flat solid magenta background (#FF00FF). Image A is the approved style-board reference and defines the exact style. Render FOUR separate small HUD icons in a clean grid with generous spacing and at least 12% outer margin, straight-on orthographic, no perspective, no tilt, no text or glyphs. Each icon must read as a strong silhouette even if color is removed. Icons to render: writ, evidence tab, interact, and route arrow. Keep them simple, crisp, original, and consistent with civic-industrial record-keeping hardware aesthetics.",
+      "reference_image_task_id": null,
+      "pixel_size": {
+        "width": 24,
+        "height": 24
+      },
+      "source_pixel_size": {
+        "width": 401,
+        "height": 346
+      },
+      "nine_slice_margins": null,
+      "license_review": "pending",
+      "runtime_consumer": "scripts/game_ui.gd",
+      "approved_style_board_task_id": "c9d38ddd-b52b-49d4-bcbb-7d00d5af135f",
+      "runtime_sha256": "40c420a536d994a05e2a5365ba573119003a42c600f24de168870c6417164f0c",
+      "source_sha256": "8b53ba2ac389cfd27e0deff006c81f76d20dbd6d6adcc0850c11cc1cf82ccb28"
+    },
+    "icon_route_arrow": {
+      "source_file": "art/production_sources/hud_086/icon_route_arrow_source.png",
+      "asset_file": "assets/ui/hud_086/icon_route_arrow.png",
+      "runway_task_id": null,
+      "prompt_used": "Create a single source sheet on a perfectly flat solid magenta background (#FF00FF). Image A is the approved style-board reference and defines the exact style. Render FOUR separate small HUD icons in a clean grid with generous spacing and at least 12% outer margin, straight-on orthographic, no perspective, no tilt, no text or glyphs. Each icon must read as a strong silhouette even if color is removed. Icons to render: writ, evidence tab, interact, and route arrow. Keep them simple, crisp, original, and consistent with civic-industrial record-keeping hardware aesthetics.",
+      "reference_image_task_id": null,
+      "pixel_size": {
+        "width": 24,
+        "height": 24
+      },
+      "source_pixel_size": {
+        "width": 419,
+        "height": 346
+      },
+      "nine_slice_margins": null,
+      "license_review": "pending",
+      "runtime_consumer": "scripts/game_ui.gd",
+      "approved_style_board_task_id": "c9d38ddd-b52b-49d4-bcbb-7d00d5af135f",
+      "runtime_sha256": "2ea9a305cbf311f82fd9e7659ed97c75ca990421c6805455514b86b17ac772d4",
+      "source_sha256": "0f9b2ebdb0603495a6fc66f7208c0ac7c0dfdbc1bc34ca2e9325a4f24b7789b7"
+    },
+    "hud_docket_modal": {
+      "source_file": "art/production_sources/hud_086/hud_docket_modal_source.png",
+      "asset_file": "assets/ui/hud_086/hud_docket_modal.png",
+      "runway_task_id": null,
+      "prompt_used": "Create a single standalone docket modal card on a perfectly flat solid magenta background (#FF00FF). Image A is the approved style-board reference and defines the visual language. Render one large filing-card style dialogue / docket card only, centered with at least 12% empty margin, straight-on orthographic, no perspective, no tilt, no drop shadow on the background, no text or glyphs. It should feel like the calmest and largest HUD piece: layered filing card, corner punches, enamel plate perimeter, pressed paperwork and linen-paper interior field, crisp machined edges, subtle steel frame and tiny precise brass fittings, very calm low-contrast center suitable for live text overlays. Designed for 9-slice use. Use only the approved palette roles.",
+      "reference_image_task_id": null,
+      "pixel_size": {
+        "width": 550,
+        "height": 330
+      },
+      "source_pixel_size": {
+        "width": 1260,
+        "height": 856
+      },
+      "nine_slice_margins": {
+        "left": 26,
+        "top": 26,
+        "right": 26,
+        "bottom": 26
+      },
+      "license_review": "pending",
+      "approved_style_board_task_id": "c9d38ddd-b52b-49d4-bcbb-7d00d5af135f",
+      "runtime_sha256": "21302ddb309508b1a9afd0ab881e0259662041bc0774aed07082c57b3335c507",
+      "source_sha256": "8467452da52ab25ace7ed12833cfad1fbd8b7636000f885201d47c0a8d11692b"
+    }
+  },
+  "source_provenance": "Locally generated images using a surrogate of approved Runway board A; not exported from Runway tasks",
+  "approved_runway_style_board_task_id": "c9d38ddd-b52b-49d4-bcbb-7d00d5af135f",
+  "delivered_runway_task_ids": [],
+  "source_provider": "OpenAI image generation (local), NOT Runway",
+  "runtime_integrated_build": "08.7",
+  "in_game_icon_variants": "canonical 24x24 unsuffixed; scaled in TextureRects to 14x14 etc"
+}

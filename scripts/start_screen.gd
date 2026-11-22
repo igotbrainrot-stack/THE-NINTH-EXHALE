@@ -69,54 +69,66 @@ func _style_frame() -> void:
     frame.offset_bottom = 372.0
 
 func _style_labels() -> void:
+    # Build 09.0: the old copy was unwrapped and ran outside the frame and under
+    # the buttons. Every label now wraps inside a fixed column.
     title.text = "THE NINTH EXHALE"
     title.add_theme_font_size_override("font_size", 34)
     title.add_theme_color_override("font_color", Color("#efe2c7"))
-    subtitle.text = "BUILD 07.8 / PUBLIC ASSEMBLY + FOUR ENDINGS"
+    title.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.6))
+    title.add_theme_constant_override("shadow_offset_y", 2)
+    title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+    _place(title, Vector2(20, 14), Vector2(532, 44))
+    subtitle.text = "BUILD 09.2 / IMMERSIVE SIM"
     subtitle.add_theme_color_override("font_color", Color("#bda77e"))
-    description.text = "A municipal-industrial FPS/RPG of consent, scarcity and contested survival.\n\nExplore five Writ districts. Any three distinct Writs, an installed Lung and a voluntary Rootkin hearing open the central archive.\n\nConfront the Custodian, then enter the public assembly to choose among four irreversible settlements. The emergency railway is finite; True Dawn requires public consent and three restoration clues."
+    subtitle.add_theme_font_size_override("font_size", 13)
+    subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+    _place(subtitle, Vector2(20, 58), Vector2(532, 20))
+    description.text = "A municipal-industrial FPS/RPG of consent, scarcity and contested survival.\nWin any three Writs from five offices, pass the Rootkin hearing and confront the Custodian. Then the public assembly chooses one of four irreversible settlements."
+    description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+    description.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     description.add_theme_color_override("font_color", Color("#dae1d2"))
-    description.add_theme_font_size_override("font_size", 16)
+    description.add_theme_font_size_override("font_size", 13)
+    _place(description, Vector2(44, 116), Vector2(484, 92))
     footer.text = "WASD MOVE  •  LMB FIRE  •  E INTERACT  •  TAB DOCKET  •  F10 MUSIC ON/OFF"
     footer.add_theme_color_override("font_color", Color("#d2ba8f"))
+    footer.add_theme_font_size_override("font_size", 11)
+    footer.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+    footer.offset_left = 20
+    footer.offset_right = 620
+    footer.offset_top = 376
+    footer.offset_bottom = 396
+
+## Sets a Control's rectangle from code, overriding the scene's stale offsets.
+func _place(node: Control, at: Vector2, size_px: Vector2) -> void:
+    node.set_anchors_preset(Control.PRESET_TOP_LEFT)
+    node.offset_left = at.x
+    node.offset_top = at.y
+    node.offset_right = at.x + size_px.x
+    node.offset_bottom = at.y + size_px.y
 
 func _style_buttons() -> void:
     play_button.text = "ENTER HEARTH NINE"
-    gallery_button.text = "WEAPON GALLERY"
-    enemy_gallery_button.text = "ENEMY GALLERY"
-    prop_gallery_button.text = "3D PROP GALLERY"
-    npc_gallery_button.text = "NPC ROTATIONS 1–8"
+    gallery_button.text = "WEAPONS"
+    enemy_gallery_button.text = "ENEMIES"
+    prop_gallery_button.text = "3D PROPS"
+    npc_gallery_button.text = "NPC TURNS"
     quit_button.text = "QUIT"
     _apply_button_style(play_button, true)
-    _apply_button_style(gallery_button)
-    _apply_button_style(enemy_gallery_button)
-    _apply_button_style(prop_gallery_button)
-    _apply_button_style(npc_gallery_button)
-    _apply_button_style(quit_button)
-    play_button.offset_left = 114
-    play_button.offset_right = 458
-    gallery_button.offset_left = 33
-    gallery_button.offset_right = 280
-    gallery_button.offset_top = 249
-    gallery_button.offset_bottom = 279
-    enemy_gallery_button.offset_left = 288
-    enemy_gallery_button.offset_right = 537
-    enemy_gallery_button.offset_top = 249
-    enemy_gallery_button.offset_bottom = 279
-    prop_gallery_button.offset_left = 33
-    prop_gallery_button.offset_right = 280
-    prop_gallery_button.offset_top = 284
-    prop_gallery_button.offset_bottom = 311
-    npc_gallery_button.offset_left = 288
-    npc_gallery_button.offset_right = 537
-    npc_gallery_button.offset_top = 284
-    npc_gallery_button.offset_bottom = 311
-    quit_button.offset_top = 315
-    quit_button.offset_bottom = 336
+    for b in [gallery_button, enemy_gallery_button, prop_gallery_button, npc_gallery_button, quit_button]:
+        _apply_button_style(b)
+        b.add_theme_font_size_override("font_size", 11)
+    _place(play_button, Vector2(146, 216), Vector2(280, 38))
+    # The art galleries are review tools, so they sit in one quiet row.
+    var x: float = 66.0
+    for b in [gallery_button, enemy_gallery_button, prop_gallery_button, npc_gallery_button]:
+        _place(b, Vector2(x, 278), Vector2(104, 24))
+        x += 112.0
+    _place(quit_button, Vector2(236, 310), Vector2(100, 24))
+    play_button.focus_neighbor_bottom = play_button.get_path_to(enemy_gallery_button)
 
 func _add_status_chips() -> void:
     var save_chip := Panel.new()
-    save_chip.position = Vector2(24, 114)
+    save_chip.position = Vector2(20, 84)
     save_chip.size = Vector2(166, 24)
     save_chip.add_theme_stylebox_override("panel", _panel_style(Color(0.13,0.16,0.15,0.88), Color("#62766a"), 3, 1))
     frame.add_child(save_chip)
@@ -129,7 +141,7 @@ func _add_status_chips() -> void:
     save_chip.add_child(save_label)
 
     var note_chip := Panel.new()
-    note_chip.position = Vector2(382, 114)
+    note_chip.position = Vector2(386, 84)
     note_chip.size = Vector2(166, 24)
     note_chip.add_theme_stylebox_override("panel", _panel_style(Color(0.16,0.12,0.09,0.88), Color("#8f6f3d"), 3, 1))
     frame.add_child(note_chip)
@@ -139,16 +151,17 @@ func _add_status_chips() -> void:
     note_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
     note_label.add_theme_font_size_override("font_size", 10)
     note_label.add_theme_color_override("font_color", Color("#f0dfbe"))
-    note_label.text = "GALLERIES AVAILABLE"
+    note_label.text = "ART GALLERIES BELOW"
     note_chip.add_child(note_label)
 
     var lower_note := Label.new()
-    lower_note.position = Vector2(52, 339)
+    lower_note.position = Vector2(52, 260)
     lower_note.size = Vector2(468, 18)
     lower_note.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     lower_note.add_theme_font_size_override("font_size", 10)
     lower_note.add_theme_color_override("font_color", Color("#90a190"))
     lower_note.text = "New and resume attempt choices appear inside the diegetic docket after entering the ward."
+    lower_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
     frame.add_child(lower_note)
 
 func _enter_hearth_nine() -> void:
@@ -177,7 +190,7 @@ func _enter_npc_gallery() -> void:
         push_error("NPC ROTATION GALLERY FAILED: %d" % error)
 
 func _quit_game() -> void:
-    get_tree().quit()
+    Music.request_quit()
 
 func _unhandled_input(event: InputEvent) -> void:
     if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F10:
