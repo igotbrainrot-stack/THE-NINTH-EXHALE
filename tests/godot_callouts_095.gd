@@ -130,19 +130,23 @@ func _run() -> void:
     await physics(0.2)
     # Man down, witnessed (2)
     Callouts.reset()
-    scene.player.global_position = Vector3(-22, 0.05, -18)
-    var victim: Node = _spawn("chain_hauler", Vector3(10, 0.15, 6), 0.0)
-    var witness: Node = _spawn("slag_sifter", Vector3(10, 0.15, 11), 0.0)   # 5 m away, clear floor
+    scene.player.global_position = Vector3(8, 0.05, 4)   # out of the witness's sight
+    # More than 15 m from every district keeper and optional-enemy spot (the
+    # Millwright stands at (12, 6) or (14, -3) depending on the seed), so the
+    # nearest ally that sees the death is the witness placed here.
+    var victim: Node = _spawn("chain_hauler", Vector3(-14, 0.15, -16), 0.0)
+    var witness: Node = _spawn("slag_sifter", Vector3(-14, 0.15, -11), 0.0)   # 5 m away
     await physics(0.2)
     victim.take_hit(99999)
     await physics(0.1)
     check(witness.sense_092.bark_text in Callouts.MACHINE_LINES["MAN_DOWN"], "an ally machine that saw the death sounds its alarm: '%s'" % witness.sense_092.bark_text)
-    check(witness.sense_092.state in ["INVESTIGATE", "SEARCH"] and witness.sense_092.high_alert and witness.sense_092.last_known.distance_to(victim.global_position) < 0.5, "goes to the body and stays on high alert (%s)" % witness.sense_092.state)
+    check(witness.sense_092.state in ["INVESTIGATE", "SEARCH"] and witness.sense_092.high_alert and witness.sense_092.last_known.distance_to(victim.global_position) < 0.5, "goes to the body and stays on high alert (%s, alert %s, last known %s, body %s)" % [witness.sense_092.state, witness.sense_092.high_alert, witness.sense_092.last_known, victim.global_position])
     witness.queue_free()
     victim.queue_free()
     await physics(0.2)
     # Man down, unwitnessed (1)
     Callouts.reset()
+    scene.player.global_position = Vector3(-22, 0.05, -18)
     # A far corner: no district enemy within 15 m, the other ally 20 m off.
     var lone: Node = _spawn("chain_hauler", Vector3(-20, 0.15, -16), 0.0)
     var far: Node = _spawn("slag_sifter", Vector3(0, 0.15, -16), 0.0)
