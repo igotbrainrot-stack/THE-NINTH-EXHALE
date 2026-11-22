@@ -56,6 +56,10 @@ func _run() -> void:
     Game.state["zone"] = "sootworks"
     scene.reload_district_world()
     for i in range(4): await get_tree().process_frame
+    # 09.6: the district's resident Unsaid wanders; keep these checks to the
+    # actors they spawn (the Unsaid have their own suite).
+    for n in get_tree().get_nodes_in_group("hostile"):
+        if str(n.get("actor_key")) == "unsaid_residue": n.queue_free()
     scene.player.set_control_active(true)
     # Rate limit (2)
     Callouts.reset()

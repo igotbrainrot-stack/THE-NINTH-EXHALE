@@ -99,6 +99,7 @@ static func man_down(dead: Node3D) -> Node:
     var best_d: float = MAN_DOWN_REACH
     for n in dead.get_tree().get_nodes_in_group("hostile"):
         if n == dead or not is_instance_valid(n) or int(n.get("hp")) <= 0: continue
+        if voice_of(n) == "echo": continue   # 09.6: the Unsaid don't understand a death
         var d: float = (n as Node3D).global_position.distance_to(dead.global_position)
         if d > best_d: continue
         var excl: Array = [(n as CollisionObject3D).get_rid(), (dead as CollisionObject3D).get_rid()]

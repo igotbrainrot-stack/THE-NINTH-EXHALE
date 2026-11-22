@@ -157,6 +157,7 @@ class TheUnsaid(unittest.TestCase):
             self.assertTrue(line.startswith("..."), line)         # fragments, not commands
         self.assertNotIn("unsaid_residue", [e["id"] for e in roster["combat_enemies"]])  # provenance counts unchanged
         self.assertIn('weapon == "choir" and voice_kind() == "echo"', src("scripts/enemy.gd"))
+        self.assertIn('if voice_of(n) == "echo": continue', src("scripts/callouts_095.gd"))  # never a death witness
 
     def test_pellets_have_no_random_scatter(self):
         player = src("scripts/player.gd")
