@@ -56,8 +56,8 @@ class ImmersiveTripwires(unittest.TestCase):
 
     def test_hud_cue_sits_above_vitals(self):
         cue = src("awareness_cue_093.gd")
-        self.assertIn("position = Vector2(8, 314)", cue)
-        self.assertIn("size = Vector2(204, 24)", cue)  # ends at y = 338, vitals start at 340
+        self.assertIn("position = Vector2(8, 309)", cue)
+        self.assertIn("size = Vector2(204, 24)", cue)  # ends at y = 333; the vitals tab is drawn from 335
         # Labels are sized after their font is set and they're added to the tree;
         # sizing first leaves them clamped to the default font's 23 px height.
         self.assertLess(cue.index("add_child(lamp)"), cue.index("lamp.size ="))

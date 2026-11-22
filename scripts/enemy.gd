@@ -131,6 +131,7 @@ func _ready() -> void:
     sprite.alpha_cut = SpriteBase3D.ALPHA_CUT_DISCARD
     sprite.alpha_scissor_threshold = 0.26
     var texture_path: String = "res://assets/sprites/%s_front.png" % actor_key
+    if art_key_096() != actor_key: texture_path = "res://assets/sprites/%s_front.png" % art_key_096()
     if actor_key == "edda_machine": texture_path = "res://assets/sprites/millwright_front.png"
     if actor_key == "collector": texture_path = "res://assets/sprites/enforcer_front.png"
     if actor_key == "core_actuator": texture_path = "res://assets/sprites/edda_machine_front.png"
@@ -142,6 +143,7 @@ func _ready() -> void:
     for i in range(4): sprite_frames.append(standing_texture)
     sprite.texture = sprite_frames[0]
     add_child(sprite)
+    sprite.modulate = base_modulate_096()
     Grounding074.add_contact_shadow(self, 1.30 if short_body else 0.98, 0.82 if short_body else 0.57)
     _load_directional_animation()
     warning = MeshInstance3D.new()
@@ -218,6 +220,22 @@ func anger() -> void:
         if is_instance_valid(voice_083): voice_083.call("play_enemy", "alert")
         became_hostile.emit()
 
+## 09.6: a weapon hit carries the bible's stagger value (§8 weapon table:
+## Covenant 8, Coil 35 a shot, Nail Storm 3, Choirbreaker 17). Other hits
+## (intervention, hazards, scripted damage) build pain from their damage.
+var _incoming_stagger_096: float = -1.0
+
+func take_weapon_hit_096(damage: int, stagger: float, weapon: String = "") -> void:
+    _incoming_stagger_096 = stagger
+    take_hit(damage)
+    _incoming_stagger_096 = -1.0
+    # The Unsaid are interrupted by Sonic (bible §9): the Choirbreaker breaks
+    # the loop every time, wind-up included.
+    if hp > 0 and weapon == "choir" and voice_kind() == "echo":
+        apply_environmental_stagger(0.6)
+        flinches_095 += 1
+        Callouts095.say(self, "PAIN")
+
 func take_hit(damage: int) -> void:
     if hp <= 0: return
     anger()
@@ -225,14 +243,19 @@ func take_hit(damage: int) -> void:
     # Service screens reduce damage while braced; their recovery window is exposed.
     if role_move == "shield" and windup <= 0.0 and recovery <= 0.0:
         applied_damage = maxi(1,roundi(damage * 0.45))
+    # 09.6 difficulty (bible §14.10): Severe enemies have 12% more health,
+    # applied as damage taken so saved health values stay valid.
+    if Game.has_attempt():
+        applied_damage = maxi(1, roundi(float(applied_damage) / Game.difficulty_scale_096("enemy_hp")))
     hp -= applied_damage
     wounded_count += 1
     # 09.5: Doom's pain chance, made deterministic (no dice: bible L699).
-    # Damage builds toward a role threshold; crossing it flinches the enemy
+    # Stagger (09.6: the weapon's bible stagger value, else damage) builds
+    # toward a role threshold; crossing it flinches the enemy
     # (and cancels its attack), then it cannot flinch again for PAIN_GUARD s.
     # A wind-up takes twice the damage to interrupt. Before this every hit
     # staggered, so the Nail Storm (one shot per 0.09 s) stun-locked anything.
-    pain_damage_095 += float(applied_damage)
+    pain_damage_095 += _incoming_stagger_096 if _incoming_stagger_096 >= 0.0 else float(applied_damage)
     var pain_needed: float = pain_threshold_095() * (2.0 if windup > 0.0 else 1.0)
     if pain_guard_095 <= 0.0 and pain_damage_095 >= pain_needed:
         stagger_time = maxf(stagger_time,0.24 if actor_key != "millwright" else 0.11)
@@ -261,7 +284,50 @@ func take_hit(damage: int) -> void:
         # Death is a visible short animation, not an instant disappearing sprite.
         defeated.emit()
 
-## Damage that makes this enemy flinch, by role (fraction of max HP, 8..45).
+## 09.6: who can speak. People, and frames worked by a named office-holder,
+## speak; automata only make sounds (shown as bracketed captions). Roster
+## enemies carry "voice" in data/enemy_roster_068.json; the district keepers
+## below are not in the roster.
+const KEEPER_VOICE_096 := {"collector": "speech", "commandant": "speech", "core_actuator": "machine", "gardener": "machine"}
+
+## The sprite set to draw. The Unsaid borrow a worker's turnaround, tinted,
+## until their own art arrives (a placeholder, recorded in the roster).
+func art_key_096() -> String:
+    if actor_key == "unsaid_residue" and not has_own_art_096():
+        return "saltbound_porter"
+    return actor_key
+
+## True once the Unsaid's own art is delivered: a drop-in animation set
+## (assets/sprites/anim_092/unsaid_residue/) or an eight-view atlas.
+func has_own_art_096() -> bool:
+    return FileAccess.file_exists("res://assets/sprites/anim_092/unsaid_residue/unsaid_residue.anim.json") \
+        or ResourceLoader.exists("res://assets/sprites/enemies_088/unsaid_residue_1.png")
+
+## The Unsaid's lines come from the roster: fragments of what the district
+## said, repeated without understanding.
+func echo_bark(state_name: String) -> String:
+    return str(role.get("echo_barks", {}).get(state_name, ""))
+
+func echo_lines(event: String) -> Array:
+    return role.get("echo_callouts", {}).get(event, [])
+
+## Enemy damage to Ninth under the attempt's difficulty (Severe 115%, Testimony 80%).
+func _scaled_damage_096(amount: int) -> int:
+    if not Game.has_attempt(): return amount
+    return maxi(1, roundi(float(amount) * Game.difficulty_scale_096("enemy_damage")))
+
+func voice_kind() -> String:
+    var spec: Dictionary = EnemyRoster068.spec(actor_key)
+    if spec.has("voice"): return str(spec["voice"])
+    return str(KEEPER_VOICE_096.get(actor_key, "speech"))
+
+## The Unsaid: an incomplete figure in the memory-residue mauve of the
+## bible's palette (§11.1, #716076, lifted so the sprite still reads).
+func base_modulate_096() -> Color:
+    # Only the borrowed placeholder is tinted; delivered Unsaid art keeps its own colours.
+    return Color(0.80, 0.68, 0.90) if voice_kind() == "echo" and art_key_096() != actor_key else Color.WHITE
+
+## Stagger that makes this enemy flinch, by role (fraction of max HP, 8..45).
 func pain_threshold_095() -> float:
     var fraction: float = 0.15
     if role_attack == "rush": fraction = 0.10
@@ -292,6 +358,7 @@ func _attack_label() -> String:
         "collector": return "COLLECTOR / BONDED SECURITY — AVOID THE COUNTING SHUTTER"
         "gardener": return "GARDENER / ROOT MOTOR PULSE — BREAK SIGHTLINES"
         "commandant": return "COMMANDANT / HEAVY ARMOUR FRAME — SEEK COVER"
+        "unsaid_residue": return "UNSAID / REMEMBERED LUNGE — STEP ASIDE; SONIC BREAKS THE LOOP"
         _: return "ENFORCER / RAISING SERVICE CARBINE"
 
 func _has_clear_shot() -> bool:
@@ -317,6 +384,8 @@ func _ally_winding_up() -> bool:
 
 func _begin_windup() -> void:
     windup = 0.56 if role_attack == "rush" else (0.78 if role_attack == "heavy" else (0.71 if role_attack == "pull" else 0.64))
+    if role.has("windup"): windup = float(role["windup"])   # 09.6: the Unsaid's 0.65 s cue (bible §9)
+    if Game.has_attempt(): windup = maxf(windup, Game.difficulty_scale_096("telegraph_min"))   # Severe: never under 0.6 s
     warning.visible = true
     animation_timer = 0.0
     warning_audio.play()
@@ -375,7 +444,7 @@ func _line_attack(damage: int) -> bool:
     var endpoint: Vector3 = hit.get("position",destination)
     _draw_attack_streak_079y(origin,endpoint)
     if not hit.is_empty() and hit.get("collider") == player:
-        Game.take_damage(damage)
+        Game.take_damage(_scaled_damage_096(damage))
         return true
     return false
 
@@ -433,7 +502,7 @@ func _physics_process(delta: float) -> void:
     pain_guard_095 = maxf(0.0, pain_guard_095 - delta)
     # Chip damage spread thinly over time does not add up to a flinch.
     pain_damage_095 = maxf(0.0, pain_damage_095 - pain_threshold_095() * 0.5 * delta)
-    sprite.modulate = Color("#fff0ab") if flash_time > 0.0 else Color.WHITE
+    sprite.modulate = Color("#fff0ab") if flash_time > 0.0 else base_modulate_096()
     if not hostile:
         velocity.x = 0.0
         velocity.z = 0.0
@@ -489,7 +558,7 @@ func _physics_process(delta: float) -> void:
     if rush_time > 0.0:
         rush_time = maxf(0.0,rush_time-delta)
         if rush_hit_ready and distance < role_reach and _has_clear_shot():
-            Game.take_damage(role_damage)
+            Game.take_damage(_scaled_damage_096(role_damage))
             rush_hit_ready = false
         if rush_time <= 0.0: recovery = 0.45
     var move_speed: float = role_speed
@@ -567,14 +636,15 @@ func _physics_process(delta: float) -> void:
 
 # ---- BUILD 06.8 FRAME-ATLAS ANIMATION ----
 func _load_directional_animation() -> void:
-    anim_092 = SpriteAnim092.load_set(actor_key)
+    anim_092 = SpriteAnim092.load_set(art_key_096())
     if anim_092 != null and anim_092.pixel_size > 0.0 and is_instance_valid(sprite):
         sprite.pixel_size = anim_092.pixel_size
     for face in DIRECTIONS:
         # Build 08.8 Runway turnaround atlases first, then the 07.x procedural ones.
-        var atlas_path: String = "res://assets/sprites/enemies_088/%s_%d.png" % [actor_key,face]
+        var art: String = art_key_096()
+        var atlas_path: String = "res://assets/sprites/enemies_088/%s_%d.png" % [art,face]
         if not ResourceLoader.exists(atlas_path):
-            atlas_path = "res://assets/sprites/enemies_077/%s_%d.png" % [actor_key,face] if actor_key in ["gardener","commandant"] else ("res://assets/sprites/enemies_076/core_actuator_%d.png" % face if actor_key == "core_actuator" else ("res://assets/sprites/enemies_075/collector_%d.png" % face if actor_key == "collector" else "res://assets/sprites/enemies_074/%s_%d.png" % [actor_key,face]))
+            atlas_path = "res://assets/sprites/enemies_077/%s_%d.png" % [art,face] if art in ["gardener","commandant"] else ("res://assets/sprites/enemies_076/core_actuator_%d.png" % face if art == "core_actuator" else ("res://assets/sprites/enemies_075/collector_%d.png" % face if art == "collector" else "res://assets/sprites/enemies_074/%s_%d.png" % [art,face]))
         # 09.1: the 06.8/07.1/07.3 generations were removed; every actor has an
         # 07.4-07.7 atlas (see art/BUILD_091_REMOVED_SUPERSEDED.json).
         if not ResourceLoader.exists(atlas_path): continue

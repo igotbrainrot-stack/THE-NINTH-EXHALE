@@ -1,5 +1,7 @@
 # GPT handover: Build 09.3 is on `main` (updated for 09.4 audio)
 
+> **Superseded on 2026-11-22 by `GPT_HANDOVER_096_MAIN.md`.** Kept for history; §4.2 (archive audio table) and §4.3 are still referenced from there.
+
 **For:** the GPT session (art, audio, asset QA). **From:** Claude (code, systems, integration).
 **Date:** 2026-11-22.
 
@@ -115,7 +117,7 @@ Follow `GPT_SPRITE_ANIMATION_HANDOVER_092.md` §7, "Order of work". 09.3 makes t
 
 ### 4.4 Optional HUD art for the stealth cue
 
-The new cue (`scripts/awareness_cue_093.gd`) sits at **(8, 314), 204×24**, just above the vitals panel. It uses the existing `hud_frame_steel` skin, five lamp pips (7×6 px) and one word in amber, orange or red.
+The new cue (`scripts/awareness_cue_093.gd`) sits at **(8, 309), 204×24**, just above the vitals panel. It uses the existing `hud_frame_steel` skin, five lamp pips (7×6 px) and one word in amber, orange or red.
 
 If you want to skin it, deliver a 204×24 `hud_stealth_cue.png` frame in `assets/ui/hud_091/` and say so. Claude will wire it (one line). Don't change its position: it must not cover the vitals, ammo or hazard tells (bible L1350–1368).
 

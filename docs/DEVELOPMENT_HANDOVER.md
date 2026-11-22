@@ -1,5 +1,7 @@
 # THE NINTH EXHALE — DEVELOPMENT HANDOVER
 
+> **Historical (pre-engine handover of 17 November 2026).** Kept for provenance; it no longer describes the game. Current state, open rulings and next steps: `docs/research/CONSOLIDATION_REVIEW_096.md`, `README.md` and `CHANGELOG.md`. The bible (`docs/MASTER_GAME_BIBLE_FINAL.md`) remains the canon.
+
 **Handover date:** 17 November 2026  
 **Single authoritative specification:** `MASTER_GAME_BIBLE_FINAL.md`  
 **Status:** consolidated *production design candidate*. Python references exist and pass their reference tests; **no runnable Godot FPS was supplied or verified**.

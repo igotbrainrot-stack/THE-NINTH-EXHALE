@@ -364,13 +364,16 @@ func _set_state(next: String) -> void:
         state = next
         if next == "HOSTILE":
             preload("res://scripts/district_record_095.gd").bump("spotted")
-        var line: String = P.bark_for(next, last_cause)
+        var voice: String = str(owner_enemy.call("voice_kind")) if is_instance_valid(owner_enemy) and owner_enemy.has_method("voice_kind") else "speech"
+        var line: String = P.bark_for(next, last_cause, voice)
         if next in ["UNAWARE"] and previous in ["SUSPICIOUS", "INVESTIGATE"]:
-            line = P.bark_for("UNAWARE", "CALM")
+            line = P.bark_for("UNAWARE", "CALM", voice)
         elif next == "INVESTIGATE" and line == "":
-            line = P.bark_for("INVESTIGATE", "SOUND")
+            line = P.bark_for("INVESTIGATE", "SOUND", voice)
         elif next == "SUSPICIOUS" and line == "":
-            line = P.bark_for("SUSPICIOUS", "SOUND")
+            line = P.bark_for("SUSPICIOUS", "SOUND", voice)
+        if voice == "echo":
+            line = str(owner_enemy.call("echo_bark", next))   # the Unsaid repeat, never reason
         if line != "":
             _say(line)
         state_changed.emit(state)

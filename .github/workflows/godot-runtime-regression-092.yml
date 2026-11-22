@@ -6,6 +6,7 @@ on:
       - 'feature/build-093-*'
       - 'feature/build-094-*'
       - 'feature/build-095-*'
+      - 'feature/build-096-*'
       - main
     paths:
       - 'tests/godot_*'
@@ -43,6 +44,7 @@ jobs:
             res://tests/godot_audio_093.tscn \
             res://tests/godot_doom_095.tscn \
             res://tests/godot_callouts_095.tscn \
+            res://tests/godot_consolidation_096.tscn \
             res://tests/godot_witness_threat_085.tscn \
             res://tests/godot_hud_override_091.tscn \
             res://tests/godot_scene_smoke_084.tscn; do

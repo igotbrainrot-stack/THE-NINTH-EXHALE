@@ -41,6 +41,35 @@ func _ready() -> void:
 func has_attempt() -> bool:
     return not state.is_empty() and state.get("status", "") == "active"
 
+## 09.6: the bible's difficulty modes (§14.10). "Testimony" is the story-
+## access mode (the bible called it "Witness", which is also a build preset).
+## Modes change only enemy toughness, enemy damage, telegraph floor and ammo
+## pickups; never evidence, resources, endings or Dawn.
+const DIFFICULTY_096 := {
+    "Steady": {"enemy_hp": 1.0, "enemy_damage": 1.0, "ammo": 1.0, "telegraph_min": 0.0},
+    "Severe": {"enemy_hp": 1.12, "enemy_damage": 1.15, "ammo": 1.0, "telegraph_min": 0.6},
+    "Testimony": {"enemy_hp": 1.0, "enemy_damage": 0.8, "ammo": 1.2, "telegraph_min": 0.0},
+}
+const DIFFICULTY_ORDER_096 := ["Steady", "Severe", "Testimony"]
+
+func difficulty_096() -> String:
+    var mode: String = str(state.get("difficulty", profile.get("difficulty", "Steady"))) if has_attempt() else str(profile.get("difficulty", "Steady"))
+    return mode if DIFFICULTY_096.has(mode) else "Steady"
+
+func difficulty_scale_096(key: String) -> float:
+    return float(DIFFICULTY_096[difficulty_096()].get(key, 1.0))
+
+func ammo_gain_096(amount: int) -> int:
+    return roundi(float(amount) * difficulty_scale_096("ammo"))
+
+## Chosen on the title docket before a new Ninth; fixed for that attempt.
+func cycle_difficulty_096() -> String:
+    var current: String = str(profile.get("difficulty", "Steady"))
+    var i: int = DIFFICULTY_ORDER_096.find(current)
+    profile["difficulty"] = DIFFICULTY_ORDER_096[(i + 1) % DIFFICULTY_ORDER_096.size()]
+    save_profile()
+    return str(profile["difficulty"])
+
 func start_new(build: String, forced_seed: int = -1, continuing_failure_chain: bool = false) -> void:
     if not PRESETS.has(build):
         build = "Witness"
@@ -53,6 +82,7 @@ func start_new(build: String, forced_seed: int = -1, continuing_failure_chain: b
     state = {
         "schema": 1, "status":"active", "attempt_id": "attempt-%06d" % run_number,
         "build": build, "attributes":attrs, "world_plan":plan,
+        "difficulty": str(profile.get("difficulty", "Steady")) if DIFFICULTY_096.has(str(profile.get("difficulty", "Steady"))) else "Steady",
         "nix_archived_failures": inherited_failures,
         "player_pos": [-24.0,0.15,14.2], "yaw": 0.0, "pitch": 0.0,
         "zone":"hearth", "zone_positions":{"hearth":[-24.0,0.15,14.2], "sootworks":[-19.0,0.15,8.0], "basilica":[-20.0,0.15,8.0]}, "slice_mode":true,
@@ -497,7 +527,7 @@ func grant_labour_writ(method: String) -> bool:
 func sootworks_supplies() -> bool:
     if not record_event("sootworks.emergency_supplies", "finite_pickup", {"source":"single staffed district issue"}):
         return false
-    state["spare_ammo"] = mini(120,int(state["spare_ammo"])+24)
+    state["spare_ammo"] = mini(120,int(state["spare_ammo"])+ammo_gain_096(24))
     state["inventory"]["consumables"]["Breath Ampoule"] = int(state["inventory"]["consumables"].get("Breath Ampoule",0))+2
     save_attempt()
     return true
@@ -649,7 +679,7 @@ func decide_ossa(outcome: String) -> bool:
         ensure_weapon_state()
         state["inventory"]["weapons"].append({"instance_id":"quest-choirbreaker-"+str(state["attempt_id"]),"definition_id":"wp_choirbreaker"})
         state["weapon_state"]["magazines"]["choir"] = 12
-        state["weapon_state"]["reserves"]["choir"] += 12
+        state["weapon_state"]["reserves"]["choir"] += ammo_gain_096(12)
     elif outcome == "compromise":
         state["resources"]["Labour"] = maxi(0,int(state["resources"]["Labour"])-1)
         state["ledger"].append({"event":"basilica.ossa.decision", "source":"temporary staffed licence", "Labour":-1})
@@ -713,7 +743,7 @@ func grant_faith_writ(method: String) -> bool:
 
 func basilica_supplies() -> bool:
     if not record_event("basilica.emergency_supplies", "finite_pickup", {"source":"one staffed defence ration, Flood Basilica"}):return false
-    state["spare_ammo"] = mini(120,int(state["spare_ammo"])+24)
+    state["spare_ammo"] = mini(120,int(state["spare_ammo"])+ammo_gain_096(24))
     state["inventory"]["consumables"]["Breath Ampoule"] = int(state["inventory"]["consumables"].get("Breath Ampoule",0))+2
     save_attempt()
     return true
@@ -868,7 +898,7 @@ func heal_ampoule() -> bool:
 
 func ammo_pickup() -> bool:
     if not record_event("hearth.mandatory_ammo", "finite_pickup", {"source":"emergency locker"}):return false
-    state["spare_ammo"] = mini(120, int(state["spare_ammo"])+24)
+    state["spare_ammo"] = mini(120, int(state["spare_ammo"])+ammo_gain_096(24))
     state["inventory"]["consumables"]["Breath Ampoule"] = int(state["inventory"]["consumables"].get("Breath Ampoule",0))+2
     save_attempt()
     return true
@@ -1281,7 +1311,7 @@ func claim_market_emergency_lot() -> bool:
     if not _in_ashmarket() or bool(state["trade"]["supplies_claimed"]): return false
     if not record_event("ashmarket.one_public_defence_lot", "finite_pickup", {"source":"one sealed market emergency store"}): return false
     state["trade"]["supplies_claimed"] = true
-    state["spare_ammo"] = mini(120,int(state["spare_ammo"])+18)
+    state["spare_ammo"] = mini(120,int(state["spare_ammo"])+ammo_gain_096(18))
     state["inventory"]["consumables"]["Breath Ampoule"] = int(state["inventory"]["consumables"].get("Breath Ampoule",0))+1
     state["ledger"].append({"event":"ashmarket.one_public_defence_lot","source":"18 physical Ledger Slugs and one sealed Breath Ampoule"})
     save_attempt()

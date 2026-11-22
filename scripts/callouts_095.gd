@@ -11,6 +11,8 @@ extends RefCounted
 ## bible L699). One voice at a time: a global gap between callouts and a
 ## per-speaker gap, so a fight never turns into a wall of text. Dead
 ## enemies never speak. Ninth has no pronoun in the bible, so no line uses one.
+## 09.6: only people speak; machines get captioned sounds (MACHINE_LINES);
+## the Unsaid repeat their own roster fragments (echo_callouts), nothing tactical.
 
 const P = preload("res://scripts/perception_092.gd")
 
@@ -23,6 +25,18 @@ const LINES := {
     "PAIN": ["AGH — I'M HIT!", "HIT!", "STILL STANDING!"],
     "MAN_DOWN": ["MAN DOWN!", "WE LOST ONE!", "THEY DROPPED ONE!"],
     "RELOAD": ["RELOADING — PUSH!", "DRY — PUSH NOW!", "NOW, WHILE IT LOADS!"],
+}
+## 09.6: automata don't talk. A machine's callout is the sound it makes,
+## captioned: the same moment and the same information, no words. Machines
+## don't read Ninth's reload either; that is a person noticing a person.
+const MACHINE_LINES := {
+    "WINDUP_line": ["[BARREL CYCLES]"],
+    "WINDUP_heavy": ["[PRESSURE BUILDS]"],
+    "WINDUP_rush": ["[MOTOR REVS]"],
+    "WINDUP_signal": ["[EMITTER OPENS]"],
+    "WINDUP_pull": ["[WINCH LOCKS]"],
+    "PAIN": ["[PLATING BUCKLES]", "[VALVE SHRIEKS]"],
+    "MAN_DOWN": ["[ALARM TONE]"],
 }
 const GLOBAL_GAP_MS := 900          # at most about one callout per second
 const SPEAKER_GAP_MS := 3500        # the same enemy does not chatter
@@ -43,11 +57,12 @@ static func reset() -> void:
     spoken.clear()
 
 ## The next line for an event, in a fixed rotation.
-static func next_line(event: String) -> String:
-    var lines: Array = LINES.get(event, [])
+static func next_line(event: String, voice: String = "speech", own_lines: Array = []) -> String:
+    var lines: Array = own_lines if voice == "echo" else (MACHINE_LINES if voice == "machine" else LINES).get(event, [])
     if lines.is_empty(): return ""
-    var i: int = int(_rotation.get(event, 0))
-    _rotation[event] = i + 1
+    var slot: String = voice + ":" + event
+    var i: int = int(_rotation.get(slot, 0))
+    _rotation[slot] = i + 1
     return str(lines[i % lines.size()])
 
 ## Speak through the enemy's sense bark label. Returns true if it was said.
@@ -59,13 +74,18 @@ static func say(enemy: Node, event: String) -> bool:
     var key: int = enemy.get_instance_id()
     if now - int(_last_by_speaker.get(key, -100000)) < SPEAKER_GAP_MS: return false
     if not (event in URGENT) and now - _last_global_ms < GLOBAL_GAP_MS: return false
-    var line: String = next_line(event)
+    var voice: String = voice_of(enemy)
+    var own: Array = enemy.call("echo_lines", event) if voice == "echo" and enemy.has_method("echo_lines") else []
+    var line: String = next_line(event, voice, own)
     if line == "": return false
     sense.call("_say", line)
     _last_global_ms = now
     _last_by_speaker[key] = now
     spoken.append([str(enemy.get("actor_key")), event, line])
     return true
+
+static func voice_of(enemy: Node) -> String:
+    return str(enemy.call("voice_kind")) if enemy.has_method("voice_kind") else "speech"
 
 static func _sees(from_enemy: Node3D, point: Vector3, exclude: Array) -> bool:
     var eye: Vector3 = from_enemy.global_position + Vector3(0, P.EYE_HEIGHT, 0)
@@ -79,6 +99,7 @@ static func man_down(dead: Node3D) -> Node:
     var best_d: float = MAN_DOWN_REACH
     for n in dead.get_tree().get_nodes_in_group("hostile"):
         if n == dead or not is_instance_valid(n) or int(n.get("hp")) <= 0: continue
+        if voice_of(n) == "echo": continue   # 09.6: the Unsaid don't understand a death
         var d: float = (n as Node3D).global_position.distance_to(dead.global_position)
         if d > best_d: continue
         var excl: Array = [(n as CollisionObject3D).get_rid(), (dead as CollisionObject3D).get_rid()]
@@ -107,6 +128,7 @@ static func player_reloading(tree: SceneTree, player: Node3D) -> Node:
     var best_d: float = RELOAD_REACH
     for n in tree.get_nodes_in_group("hostile"):
         if not is_instance_valid(n) or int(n.get("hp")) <= 0 or not bool(n.get("hostile")): continue
+        if voice_of(n) != "speech": continue
         var d: float = (n as Node3D).global_position.distance_to(player.global_position)
         if d > best_d: continue
         var excl: Array = [(n as CollisionObject3D).get_rid()]

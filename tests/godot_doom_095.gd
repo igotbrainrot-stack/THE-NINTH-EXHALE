@@ -125,15 +125,16 @@ func _pain_checks() -> void:
     scene.player.global_position = Vector3(-22, 0.05, -18)   # out of the way
     await physics(0.1)
     var threshold: float = heavy.pain_threshold_095()
-    check(threshold > 8.0 and threshold < 45.0, "a heavy enemy needs %.0f damage to flinch" % threshold)
-    # Hold the Nail Storm on it for 3 s: 8 damage every 0.09 s (33 hits).
+    check(threshold > 8.0 and threshold < 45.0, "a heavy enemy needs %.0f stagger to flinch" % threshold)
+    # Hold the Nail Storm on it for 3 s: 8 damage and the bible's 3 stagger
+    # every 0.09 s (33 hits).
     var t: float = 0.0
     var since: float = 1.0
     var hits: int = 0
     heavy.hp = 9999
     while t < 3.0:
         if since >= 0.09:
-            heavy.take_hit(8)
+            heavy.take_weapon_hit_096(8, 3.0)
             hits += 1
             since = 0.0
         await get_tree().physics_frame
@@ -143,7 +144,8 @@ func _pain_checks() -> void:
     check(heavy.flinches_095 >= 2 and heavy.flinches_095 <= 5, "the Nail Storm flinches it %d times in 3 s, not on all %d hits (no stun-lock)" % [heavy.flinches_095, hits])
     await physics(1.0)
     var before: int = heavy.flinches_095
-    heavy.take_hit(64)   # one Coil blast: 8 pellets x 8
+    for p in range(8):   # one Coil blast: 8 pellets x 8 damage, 35 stagger a shot
+        heavy.take_weapon_hit_096(8, 35.0 / 8.0)
     check(heavy.flinches_095 == before + 1, "one Coil blast flinches it at once")
     var crawler: Node = _spawn("intake_crawler", Vector3(10, 0.15, 6))
     await physics(0.1)

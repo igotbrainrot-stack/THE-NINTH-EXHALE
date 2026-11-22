@@ -79,8 +79,24 @@ const BARKS := {
     "UNAWARE:CALM": "...NOTHING.",
 }
 
-static func bark_for(state: String, cause: String) -> String:
-    return str(BARKS.get("%s:%s" % [state, cause], ""))
+## 09.6: automata have no words (bible §9: infrastructure automata are
+## sensors, valves and sweeps; the Unsaid only repeat). A machine's state
+## change is shown as a bracketed sound caption instead, so the player still
+## reads its awareness, and subtitles cover the sound (bible §12).
+const MACHINE_BARKS := {
+    "SUSPICIOUS": "[SENSOR TICKS]",
+    "INVESTIGATE": "[SERVOS TURN]",
+    "HOSTILE": "[TARGET TONE]",
+    "SEARCH": "[SWEEP CYCLE]",
+    "HIGH_ALERT": "[ALARM HUM]",
+    "UNAWARE": "[IDLE HUM]",
+}
+
+static func bark_for(state: String, cause: String, voice: String = "speech") -> String:
+    var line: String = str(BARKS.get("%s:%s" % [state, cause], ""))
+    if voice == "machine" and line != "":
+        return str(MACHINE_BARKS.get(state, ""))
+    return line
 
 ## How visible the player is right now, 0..1, from the same light and motion
 ## factors the guards use. Drives the HUD cue; pure and testable headless.

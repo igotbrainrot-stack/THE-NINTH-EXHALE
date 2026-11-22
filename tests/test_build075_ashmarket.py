@@ -88,7 +88,7 @@ class Ashmarket075(unittest.TestCase):
         s=rules.split('func claim_market_emergency_lot() -> bool:')[1].split('func can_register_three_writ_quorum')[0]
         self.assertIn('bool(state["trade"]["supplies_claimed"])',s)
         self.assertIn('ashmarket.one_public_defence_lot',s)
-        self.assertIn('mini(120,int(state["spare_ammo"])+18)',s)
+        self.assertIn('mini(120,int(state["spare_ammo"])+ammo_gain_096(18))',s)  # 09.6: Testimony +20%
 
     def test_ashmarket_passable_in_approximate_geometry(self):
         from test_066_navigation_approx import obstacles,reachable

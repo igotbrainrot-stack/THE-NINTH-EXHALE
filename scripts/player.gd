@@ -36,7 +36,6 @@ var reload_item := ""
 var reload_attempt := ""
 var reload_zone := ""
 var nail_overheated := false
-var rng := RandomNumberGenerator.new()
 var prompt_refresh := 0.0
 var last_prompt := ""
 # 08.0 optional camera impulse, capped for accessibility and never changes ray origin.
@@ -46,7 +45,6 @@ var camera_impulse_080: float = 0.0
 
 
 func _ready() -> void:
-    rng.seed = 20261117
     add_to_group("player_controller")
     weapon_audio_093 = WeaponAudio093.new()
     add_child(weapon_audio_093)
@@ -268,7 +266,7 @@ func fire_equipped() -> void:
     var hit_enemy := false
     var pellets: int = int(spec.get("pellets",1))
     for i in range(pellets):
-        if _resolve_shot(id,int(spec["damage"])):
+        if _resolve_shot(id,int(spec["damage"]),i):
             hit_enemy=true
     if id=="nail":
         Game.state["weapon_state"]["nail_heat"]=float(Game.state["weapon_state"].get("nail_heat",0.0))+float(spec["heat"])
@@ -276,14 +274,29 @@ func fire_equipped() -> void:
     Perception092.emit_noise(get_tree(), global_position, float(Perception092.WEAPON_NOISE.get(id, 18.0)), "gunfire", true, self)
     shot_fired.emit(hit_enemy)
 
-func _resolve_shot(id: String, damage: int) -> bool:
+## 09.6: pellets follow a fixed pattern, not a random scatter (bible §8:
+## combat runs in fixed physics ticks, never narrative RNG). The Coil's eight
+## pellets are a centre and a ring of seven; the Nail Storm walks a six-step
+## cycle. Offsets are in units of the weapon's spread.
+const COIL_PATTERN_096 := [Vector2(0, 0), Vector2(0.8, 0), Vector2(0.5, 0.62), Vector2(-0.18, 0.78), Vector2(-0.72, 0.35), Vector2(-0.72, -0.35), Vector2(-0.18, -0.78), Vector2(0.5, -0.62)]
+const NAIL_PATTERN_096 := [Vector2(0, 0), Vector2(0.6, 0.3), Vector2(-0.5, 0.4), Vector2(0.2, -0.6), Vector2(-0.4, -0.3), Vector2(0.5, -0.2)]
+var nail_step_096: int = 0
+
+func spread_offset_096(id: String, pellet: int) -> Vector2:
+    if id == "coil":
+        return COIL_PATTERN_096[pellet % COIL_PATTERN_096.size()] * 0.075
+    if id == "nail":
+        var o: Vector2 = NAIL_PATTERN_096[nail_step_096 % NAIL_PATTERN_096.size()] * 0.023
+        nail_step_096 += 1
+        return o
+    return Vector2.ZERO
+
+func _resolve_shot(id: String, damage: int, pellet: int = 0) -> bool:
     var spec: Dictionary=WeaponCatalog.spec(id)
     var origin: Vector3=camera.global_position
     var forward: Vector3=-camera.global_transform.basis.z
-    var spread: float=0.0
-    if id=="coil":spread=0.075
-    elif id=="nail":spread=0.023
-    var aim: Vector3=(forward+camera.global_transform.basis.x*rng.randf_range(-spread,spread)+camera.global_transform.basis.y*rng.randf_range(-spread,spread)).normalized()
+    var offset: Vector2 = spread_offset_096(id, pellet)
+    var aim: Vector3=(forward+camera.global_transform.basis.x*offset.x+camera.global_transform.basis.y*offset.y).normalized()
     var query:=PhysicsRayQueryParameters3D.create(origin,origin+aim*48.0)
     query.exclude=[get_rid()]
     query.collision_mask=5
@@ -307,7 +320,14 @@ func _resolve_shot(id: String, damage: int) -> bool:
     var distance: float=origin.distance_to(hit["position"])
     var effective_range: float=float(spec["range"])
     var falloff: float=1.0 if distance<=effective_range else lerpf(1.0,0.40,clampf((distance-effective_range)/maxf(effective_range,1.0),0.0,1.0))
-    target.take_hit(maxi(1,roundi(float(damage)*falloff)))
+    var dealt: int = maxi(1,roundi(float(damage)*falloff))
+    if target.has_method("take_weapon_hit_096"):
+        # 09.6: the bible's per-weapon stagger column drives the pain meter
+        # (split across pellets; one Coil shot is one shot of stagger).
+        var stagger: float = float(spec.get("stagger", damage)) * falloff / float(maxi(1, int(spec.get("pellets", 1))))
+        target.take_weapon_hit_096(dealt, stagger, id)
+    else:
+        target.take_hit(dealt)
     _confirm_hit_090(target)
     return true
 
