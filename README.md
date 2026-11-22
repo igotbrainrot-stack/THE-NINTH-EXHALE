@@ -2,7 +2,7 @@
 
 Original retro first-person civic-horror RPG / roguelite set in Vesper. Built in **Godot 4.4.1** with the GL Compatibility renderer and a 640×400 internal viewport.
 
-**Current development build: 09.3, immersive-sim phase 1b on top of the 09.2 weapon art.**
+**Current development build on `main`: 09.3, immersive-sim phase 1b on top of the 09.2 weapon art.** Work happens on branches off `main` with draft PRs; CI runs on every PR. GPT's working brief: `docs/handover/GPT_HANDOVER_093_MAIN.md`.
 - 09.2 added deterministic sight and hearing, witnessed responses, first-person weapon animation strips and a runnable Linux package.
 - 09.3 adds guards that search and stay on high alert, threatened witnesses who run to report, cause-specific barks and a HUD stealth cue. It is playable, but **not the finished game or final content release**. The master game bible remains the production target; the current Godot build is still a development slice and has not had human full-campaign playtesting.
 
@@ -30,7 +30,7 @@ Controls: WASD move · mouse look · LMB fire · R reload · 2–5 switch weapon
 
 ## Verified checks (Build 09.3)
 
-- **296** Python tests passed
+- **297** Python tests passed
 - **14** project validations passed
 - Godot animation tests **18/18**
 - Perception tests **25/25**

@@ -4,12 +4,15 @@ on:
     branches:
       - feature/build-092-completion-qa-20261122
       - 'feature/build-093-*'
+      - main
     paths:
       - 'tests/godot_*'
       - 'scripts/**'
       - .github/workflows/godot-runtime-regression-092.yml
       - scripts/game_ui.gd
       - tests/godot_anim_092.gd
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 permissions:
   contents: read

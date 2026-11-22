@@ -4,6 +4,7 @@ on:
     branches:
       - feature/build-092-completion-qa-20261122
       - 'feature/build-093-*'
+      - main
     paths:
       - 'scripts/**'
       - .github/workflows/full-campaign-playtest-092.yml
@@ -11,6 +12,8 @@ on:
       - scripts/main.gd
       - scripts/run_state.gd
       - tools/playbot_090/**
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 permissions:
   contents: read

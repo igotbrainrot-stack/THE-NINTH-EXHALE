@@ -49,6 +49,11 @@ class ImmersiveTripwires(unittest.TestCase):
             self.assertIn(f'_witness_gate_093("{key}")', main)
         self.assertIn('"witness:calm:" + key', main)
 
+    def test_fleeing_witness_plays_flee(self):
+        npc = src("directional_npc_sprite.gd")
+        self.assertIn('get_node_or_null("WitnessRunner093")', npc)
+        self.assertIn('wanted = "flee"', npc)
+
     def test_hud_cue_sits_above_vitals(self):
         cue = src("awareness_cue_093.gd")
         self.assertIn("position = Vector2(8, 322)", cue)

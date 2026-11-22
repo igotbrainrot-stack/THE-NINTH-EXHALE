@@ -6,6 +6,11 @@ Full per-build notes, QA and open issues for every build since Build 02 are in `
 
 Builds on GPT's `feature/weapon-art-092-20261122` (PR #11, 05ac4d0) and includes it.
 
+**Merged to `main`** on the owner's instruction (PRs #5 → #13 in order), so `main` is now the playable 09.3 game.
+- CI now also runs on pushes to `main` and on PRs into it.
+- GPT's brief for working against `main`: `docs/handover/GPT_HANDOVER_093_MAIN.md`.
+- Brin and Ossa play a `flee` animation, when one is painted, while running to report.
+
 **Fixes to the 09.2 weapon delivery** (details for GPT in `docs/handover/GPT_WEAPON_ART_CORRECTIONS_093.md`):
 - **Muzzle anchors** are measured on each weapon's idle frame. Covenant still carried the brief's placeholder (404, 214); Nail and Choir were about 75 px off the barrel, so the flash floated in the air. They are now (422, 197), (284, 250) and (288, 208), and Coil is (238, 206).
 - **Coil `fire` held back.** All six frames lose the glove. The strip is moved byte-identical to `art/production_sources/weapons_092/held_back_093/` and recorded in the manifest; Coil fires on its idle frames with full code recoil until it's repainted.
