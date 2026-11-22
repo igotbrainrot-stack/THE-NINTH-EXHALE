@@ -40,5 +40,24 @@ class DoomTechniqueTripwires(unittest.TestCase):
         self.assertIn('preload("res://scripts/district_record_095.gd").bump("records")', src("run_state.gd"))
 
 
+class CalloutTripwires(unittest.TestCase):
+    def test_callouts_are_deterministic_and_witnessed(self):
+        c = src("callouts_095.gd")
+        for banned in ("randf", "randi", "pick_random", "shuffle", "RandomNumberGenerator"):
+            self.assertNotIn(banned, c)
+        man = c.split("static func man_down(", 1)[1].split("\nstatic func ", 1)[0]
+        self.assertIn("_sees(n, dead.global_position", man, "only an ally that saw the death reacts")
+        say = c.split("static func say(", 1)[1].split("\nstatic func ", 1)[0]
+        self.assertIn('int(enemy.get("hp")) <= 0: return false', say, "the dead never speak")
+
+    def test_each_callout_pairs_with_a_behaviour(self):
+        enemy = src("enemy.gd")
+        self.assertIn('Callouts095.say(self, "WINDUP_" + role_attack)', enemy.split("func _begin_windup", 1)[1].split("\nfunc ", 1)[0])
+        self.assertIn("Callouts095.man_down(self)", enemy)
+        c = src("callouts_095.gd")
+        reload_fn = c.split("static func player_reloading(", 1)[1]
+        self.assertIn('best.set("attack_timer"', reload_fn, "a reload callout makes the enemy press")
+
+
 if __name__ == "__main__":
     unittest.main()

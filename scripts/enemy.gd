@@ -64,6 +64,7 @@ var obstacle_dodge_time_084: float = 0.0
 ## Build 09.2 perception (immersive-sim Phase 1): replaces the distance wake.
 const Sense092 = preload("res://scripts/sense_092.gd")
 const Perception093 = preload("res://scripts/perception_092.gd")
+const Callouts095 = preload("res://scripts/callouts_095.gd")
 var sense_092: Node = null
 ## Build 09.2 drop-in animation (assets/sprites/anim_092/<actor_key>/). Any
 ## state it lacks falls back to the 12-cell atlas below.
@@ -238,6 +239,8 @@ func take_hit(damage: int) -> void:
         pain_damage_095 = 0.0
         pain_guard_095 = PAIN_GUARD_095
         flinches_095 += 1
+        if hp > 0:
+            Callouts095.say(self, "PAIN")
     flash_time = 0.22
     if is_instance_valid(voice_083): voice_083.call("play_enemy", "death" if hp <= 0 else "hurt")
     impact_audio.play()
@@ -246,6 +249,7 @@ func take_hit(damage: int) -> void:
         hp = 0
         hostile = false
         preload("res://scripts/district_record_095.gd").bump("put_down")
+        Callouts095.man_down(self)
         death_time = 0.84
         if anim_092 != null and anim_092.has_state("death"):
             death_time = maxf(0.84, anim_092.duration("death") + 0.12)
@@ -317,6 +321,7 @@ func _begin_windup() -> void:
     animation_timer = 0.0
     warning_audio.play()
     if is_instance_valid(voice_083): voice_083.call("play_enemy", "windup")
+    Callouts095.say(self, "WINDUP_" + role_attack)
     _update_aim_lane_079z()
     telegraph_started.emit(_attack_label())
 

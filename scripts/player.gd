@@ -330,6 +330,8 @@ func reload_weapon() -> void:
     reload_zone=str(Game.state.get("zone","hearth"))
     weapon_anim.emit("reload",reload_remaining)
     weapon_message.emit(str(spec["name"])+" / CYCLING SERVICE MAGAZINE")
+    # 09.5: a hostile that sees the reload calls it and presses the attack.
+    preload("res://scripts/callouts_095.gd").player_reloading(get_tree(), self)
 
 
 func _emit_prompt(message: String) -> void:

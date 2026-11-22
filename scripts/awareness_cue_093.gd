@@ -29,31 +29,37 @@ var alarm: String = "UNAWARE"   # last computed state (tests read it)
 func build(owner_hud: Node, skin: StyleBox) -> void:
     hud = owner_hud
     name = "AwarenessCue093"
-    position = Vector2(8, 322)
-    size = Vector2(204, 16)
+    # 24 px tall so its text (14 px at size 10) keeps a 5 px inset from the
+    # frame, and ends at y 338: two pixels clear of the vitals panel (340).
+    position = Vector2(8, 314)
+    size = Vector2(204, 24)
     mouse_filter = Control.MOUSE_FILTER_IGNORE
     if skin != null:
         add_theme_stylebox_override("panel", skin)
     for i in PIPS:
         var pip := ColorRect.new()
-        pip.position = Vector2(8 + i * 9, 5)
+        pip.position = Vector2(8 + i * 9, 9)
         pip.size = Vector2(7, 6)
         pip.mouse_filter = Control.MOUSE_FILTER_IGNORE
         add_child(pip)
         pips.append(pip)
+    # Font first, size last: a Label's size is clamped to its minimum when
+    # set, and never shrinks back, so sizing it under the default 16 px font
+    # left both labels 23 px tall and spilling onto the vitals panel.
     var lamp := Label.new()
     lamp.text = "LIT"
-    lamp.position = Vector2(56, 1)
-    lamp.size = Vector2(22, 13)
     lamp.add_theme_font_size_override("font_size", 9)
     lamp.add_theme_color_override("font_color", Color("#bda77e"))
     add_child(lamp)
+    lamp.position = Vector2(56, 5)
+    lamp.size = Vector2(22, 14)
     word = Label.new()
-    word.position = Vector2(84, 1)
-    word.size = Vector2(114, 13)
     word.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
     word.add_theme_font_size_override("font_size", 10)
+    word.clip_text = true
     add_child(word)
+    word.position = Vector2(84, 5)
+    word.size = Vector2(112, 14)
     visible = false
 
 func _process(delta: float) -> void:

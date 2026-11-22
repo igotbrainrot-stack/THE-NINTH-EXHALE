@@ -16,10 +16,18 @@ From a review of DOOM-like RPGs and RPG-leaning retro shooters: Strife, Hexen, D
   - Interrupting a wind-up takes double.
   - A held Nail Storm flinches a Slag Sifter 4 times in 3 s instead of 31.
 - **District record** (Doom's intermission, Dusk's stats). Each district's return-rail docket now ends with a tally: time spent, enemies put down and still standing (office-holders apart), times spotted, the named witness's state, and records written there. An unseen, bloodless visit says so.
+- **Combat callouts** (F.E.A.R.'s combat dialogue: "if the AI didn't say it, it didn't happen"). Enemies shout what they are really doing, at the moment they do it, so a fight explains itself:
+  - the wind-up before a strike, by attack role ("STAND CLEAR!" before a heavy blow), alongside the warning light;
+  - a flinch, when damage crosses the pain threshold;
+  - "MAN DOWN!" when an ally **sees** a death. It goes to the body and stays on high alert. A death nobody sees raises nothing;
+  - "RELOADING — PUSH!" when a hostile within 12 m sees Ninth start a reload. Its next attack comes within 0.3 s, so reloading in the open costs something.
+  - Deterministic (lines rotate in a fixed order) and paced: at most one callout about every 0.9 s, and the same enemy waits 3.5 s, though "man down" and "reload" may cut in. Dead enemies never speak. No line gives Ninth a pronoun.
+  - New `scripts/callouts_095.gd`, hooked into `enemy.gd` (wind-up, flinch, death) and `player.gd` (reload).
+- **Fix: stealth cue layout** (from 09.3). The cue's labels were sized before their font was set, so Godot clamped them to the default font's 23 px height and they spilled onto the vitals panel and the cue's own frame. The HUD layout test caught it only when the cue had already refreshed, so it failed intermittently. Labels are now sized after their font is set. The cue is 24 px tall at (8, 314), so its text keeps the 5 px frame inset and still ends above the vitals panel. The layout test now refreshes the cue before measuring.
 - **Tests:**
-  - `tests/godot_doom_095.tscn` (14 checks), added to CI;
+  - `tests/godot_doom_095.tscn` (14 checks) and `tests/godot_callouts_095.tscn` (11 checks), both added to CI;
   - `tests/test_build095_doom_techniques.py`.
-- **Next, from the review:** infighting, an automap with notes, secrets that pay out, posted "ambush" guards and combat callouts.
+- **Next, from the review:** infighting, an automap with notes, secrets that pay out and posted "ambush" guards.
 - **Rejected:** glory-kill refills (they break finite resources) and random loot (it breaks deterministic, authored outcomes).
 
 ## 09.4 Runway audio in game, stealth-safe combat music (2026-11-22)
