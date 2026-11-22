@@ -25,6 +25,8 @@ var navigation_panel: Panel
 var navigation: Label
 
 var vitals_panel: Panel
+const AwarenessCue093 = preload("res://scripts/awareness_cue_093.gd")
+var awareness_cue_093: Panel
 var hp_bar: ProgressBar
 var hp_text: Label
 var breath_bar: ProgressBar
@@ -469,6 +471,11 @@ func build_base() -> void:
     vitals_panel.add_child(med_text)
     med_text.size = Vector2(60, 13)
 
+    # 09.3: stealth cue (visibility + nearest guard's alarm), above the vitals.
+    awareness_cue_093 = AwarenessCue093.new()
+    overlay.add_child(awareness_cue_093)
+    awareness_cue_093.build(self, _hud086_skin("hud_frame_steel", Vector4(6, 2, 6, 2)))
+
     weapon_panel = Panel.new()
     weapon_panel.position = Vector2(428, 340)
     weapon_panel.size = Vector2(204, 54)
@@ -583,7 +590,7 @@ func build_base() -> void:
 
 func update_hud() -> void:
     if not Game.has_attempt():
-        zone_label.text = "THE NINTH EXHALE / BUILD 09.2"
+        zone_label.text = "THE NINTH EXHALE / BUILD 09.3"
         objective_label.text = "Enter Hearth Nine and open the civic pressure docket."
         navigation.text = "NO ACTIVE ROUTE"
         hp_text.text = "--"

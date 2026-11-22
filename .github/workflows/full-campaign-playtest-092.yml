@@ -3,7 +3,9 @@ on:
   push:
     branches:
       - feature/build-092-completion-qa-20261122
+      - 'feature/build-093-*'
     paths:
+      - 'scripts/**'
       - .github/workflows/full-campaign-playtest-092.yml
       - docs/handover/BUILD_092_FULL_CAMPAIGN_QA.md
       - scripts/main.gd

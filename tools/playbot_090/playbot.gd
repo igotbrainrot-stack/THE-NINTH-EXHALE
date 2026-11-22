@@ -191,9 +191,13 @@ func _witness_invariants() -> String:
     var records: int = 0
     var without_witness: int = 0
     for e in Game.state.get("events", []):
-        if str(e.get("id", "")).begins_with("witness.092."):
+        var eid: String = str(e.get("id", ""))
+        if eid.begins_with("witness.092.") or eid.begins_with("witness.093."):
             records += 1
-            if str(e.get("details", {}).get("witness_id", "")) == "": without_witness += 1
+            var details: Dictionary = e.get("details", {})
+            if str(details.get("witness_id", "")) == "": without_witness += 1
+            # 09.3 reports must have been written by a witness alive at the time.
+            elif eid.contains(".reported_to_") and not bool(details.get("witness_alive_at_record", false)): without_witness += 1
     return "witness_records=%d records_without_living_witness=%d" % [records, without_witness]
 
 func _watch_text() -> void:

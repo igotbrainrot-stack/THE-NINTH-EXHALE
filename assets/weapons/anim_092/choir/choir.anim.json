@@ -5,8 +5,8 @@
   ],
   "anchors": {
     "muzzle": [
-      223,
-      200
+      288,
+      208
     ]
   },
   "procedural": {
@@ -24,5 +24,6 @@
       "fps": 20,
       "loop": false
     }
-  }
+  },
+  "anchors_measured_093": "muzzle at the barrel mouth on idle frame 0 (640x400), measured by Claude in Build 09.3"
 }

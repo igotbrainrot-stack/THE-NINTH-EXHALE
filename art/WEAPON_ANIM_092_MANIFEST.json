@@ -161,7 +161,7 @@
           "runtime_sha256": "6aac49d7c4332969b182aa1f25a76aae00bd47c07ea4cd582895ff0b5e401cca"
         },
         "fire": {
-          "file": "assets/weapons/anim_092/coil/coil_fire.png",
+          "file": "art/production_sources/weapons_092/held_back_093/coil_fire.png",
           "frames": 6,
           "fps": 18,
           "loop": false,
@@ -180,7 +180,8 @@
               2
             ]
           },
-          "runtime_sha256": "c15cc50c7c264ec74aaf7f7e86c1a33b190d2a39e491334bb25b87abf20c337e"
+          "runtime_sha256": "c15cc50c7c264ec74aaf7f7e86c1a33b190d2a39e491334bb25b87abf20c337e",
+          "runtime_status_093": "Held back from runtime in Build 09.3: all six frames lose the gloved hand shown in idle. Bytes unchanged (same SHA-256). See docs/handover/GPT_WEAPON_ART_CORRECTIONS_093.md."
         }
       },
       "source_files": [
@@ -588,7 +589,7 @@
     {
       "weapon": "coil",
       "state": "fire",
-      "asset_file": "assets/weapons/anim_092/coil/coil_fire.png",
+      "asset_file": "art/production_sources/weapons_092/held_back_093/coil_fire.png",
       "runtime_sha256": "c15cc50c7c264ec74aaf7f7e86c1a33b190d2a39e491334bb25b87abf20c337e",
       "source_files": [
         {
@@ -614,7 +615,8 @@
       "frames": 6,
       "fps": 18,
       "loop": false,
-      "license_review": "pending"
+      "license_review": "pending",
+      "runtime_status_093": "Held back from runtime in Build 09.3: all six frames lose the gloved hand shown in idle. Bytes unchanged (same SHA-256). See docs/handover/GPT_WEAPON_ART_CORRECTIONS_093.md."
     },
     {
       "weapon": "nail",
