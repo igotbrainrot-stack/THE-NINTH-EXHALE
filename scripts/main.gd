@@ -721,9 +721,10 @@ func open_main_menu() -> void:
         opts.append({"label":"ARCHIVED SETTLEMENTS / NOT REWOUND","action":"ending:archive"})
     var mode: String = Game.difficulty_096() if not Game.has_attempt() else str(Game.profile.get("difficulty", "Steady"))
     var blurb: Dictionary = {"Steady": "as designed", "Severe": "enemies tougher and harder-hitting; wind-ups at least 0.6 s", "Testimony": "story access: enemies hit 20% softer, 20% more ammunition"}
-    opts.append({"label":"DIFFICULTY / %s — %s (change)" % [mode.to_upper(), str(blurb.get(mode, ""))],"action":"difficulty:cycle"})
     for name in ["Witness","Breaker","Mechanist","Stalker"]:
         opts.append({"label":"NEW NINTH / %s" % name,"action":"new:"+name})
+    # After the builds, so key 1 / Enter still starts a new Ninth as before.
+    opts.append({"label":"DIFFICULTY / %s — %s (change)" % [mode.to_upper(), str(blurb.get(mode, ""))],"action":"difficulty:cycle"})
     opts.append({"label":"QUIT TO DESKTOP","action":"quit"})
     hud.open_modal("THE NINTH EXHALE", "An original municipal horror FPS/RPG. Five founding offices, the central Custodian and a finite civic assembly now form a full authored campaign route.\n\nVesper is still running. A reserve Cinder Lung has been withheld by the allocation office. Every method of retrieving it affects someone else's allotment.",opts)
 

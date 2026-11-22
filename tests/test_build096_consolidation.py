@@ -139,6 +139,11 @@ class BibleErrata096(unittest.TestCase):
         self.assertEqual(len(appendix), 2)
         self.assertIn("The four moves are 'strike', 'resonate', 'guard', 'listen'.", appendix[1])  # old text kept
 
+    def test_difficulty_option_never_displaces_new_ninth(self):
+        main = src("scripts/main.gd")
+        menu = main.split("func open_main_menu", 1)[1].split("func begin_attempt", 1)[0]
+        self.assertLess(menu.index('"NEW NINTH / %s"'), menu.index('"DIFFICULTY / %s'))
+
     def test_difficulty_matches_the_bible(self):
         rs = src("scripts/run_state.gd")
         self.assertIn('"Severe": {"enemy_hp": 1.12, "enemy_damage": 1.15, "ammo": 1.0, "telegraph_min": 0.6}', rs)
