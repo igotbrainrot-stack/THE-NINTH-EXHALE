@@ -16,6 +16,8 @@ const MUSIC = {
     "assembly": "res://assets/music/core_first_signature_076.ogg",
     "combat": "res://assets/music/pressure_breach_combat.ogg"
 }
+const AudioMix093 = preload("res://scripts/audio_mix_093.gd")
+const MusicLooper093 = preload("res://scripts/music_looper_093.gd")
 const AMBIENT_GAIN: float = 0.30
 const COMBAT_GAIN: float = 0.43
 const CROSSFADE_TIME: float = 2.2
@@ -26,6 +28,7 @@ const CALM_DELAY: float = 7.0
 var listener: Node3D = null
 var tracks: Dictionary = {}
 var gains: Dictionary = {}
+var trims: Dictionary = {}          # 09.3: per-layer level match (linear)
 var combat_hold: float = 0.0
 var active_combat: bool = false
 var muted: bool = false
@@ -40,6 +43,20 @@ func _ready() -> void:
     get_tree().set_auto_accept_quit(false)
     for key in ["hearth","sootworks","basilica","ashmarket","orchard","barracks","core","assembly","combat"]:
         var path: String = str(MUSIC[key])
+        # 09.3: the combat layer can be a replacement track looped on bar lines
+        # (data/audio_mix_093.json); the original Ogg stays the fallback.
+        if key == "combat":
+            var profile: Dictionary = AudioMix093.music_profile("combat")
+            if not profile.is_empty():
+                var looper = MusicLooper093.new()
+                looper.name = "Original music / combat (runway, looped)"
+                add_child(looper)
+                looper.configure(AudioMix093.stream_for(str(profile["path"])), float(profile.get("loop_start", 0.0)), float(profile.get("loop_end", 0.0)), float(profile.get("crossfade", 0.06)))
+                looper.volume_db = -72.0
+                tracks[key] = looper
+                gains[key] = 0.0
+                trims[key] = db_to_linear(float(profile.get("trim_db", 0.0)))
+                continue
         if not ResourceLoader.exists(path):
             push_warning("Missing music layer: " + path)
             continue
@@ -85,11 +102,10 @@ func _combat_threat_nearby() -> bool:
         if hp <= 0: continue
         var distance: float = listener.global_position.distance_to(foe.global_position)
         var is_fighting: bool = bool(foe.get("hostile"))
-        # Optional autonomous hazards wake on proximity. Story officials do not.
-        var wake: float = float(foe.get("wake_distance"))
+        # 09.3: only enemies actually fighting start combat music. The old
+        # "near an optional enemy" trigger played battle music beside guards
+        # that had not noticed you, which gave stealth away (perception 09.2).
         if is_fighting and distance <= COMBAT_ENGAGE_DISTANCE:
-            return true
-        if wake > 0.0 and distance <= minf(wake + 1.0,AUTO_THREAT_DISTANCE):
             return true
     return false
 
@@ -107,14 +123,14 @@ func _process(delta: float) -> void:
         if combat_hold <= 0.0: active_combat = false
     var transition_speed: float = delta / CROSSFADE_TIME
     for key in tracks.keys():
-        var track: AudioStreamPlayer = tracks[key]
+        var track = tracks[key]
         var is_ambient: bool = str(key) == zone and not active_combat
         var is_battle: bool = str(key) == "combat" and active_combat
         var target: float = AMBIENT_GAIN if is_ambient else (COMBAT_GAIN if is_battle else 0.0)
         var current: float = float(gains[key])
         current = move_toward(current,target,transition_speed * COMBAT_GAIN)
         gains[key] = current
-        var gain: float = current * user_music_volume * (0.0 if muted else 1.0)
+        var gain: float = current * user_music_volume * (0.0 if muted else 1.0) * float(trims.get(key, 1.0))
         track.volume_db = linear_to_db(maxf(0.0001,gain))
         # Only audible layers decode. Previously all nine Ogg layers played
         # forever at -72 dB, costing CPU and leaking at exit.

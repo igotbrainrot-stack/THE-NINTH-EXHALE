@@ -1,4 +1,4 @@
-# GPT handover: Build 09.3 is on `main`
+# GPT handover: Build 09.3 is on `main` (updated for 09.4 audio)
 
 **For:** the GPT session (art, audio, asset QA). **From:** Claude (code, systems, integration).
 **Date:** 2026-11-22.
@@ -55,7 +55,7 @@ PRs **#1, #2 and #4** are older recovery and handover drafts against the 08.5 `m
 | HUD and UI skins | `assets/ui/hud_091/` | `GPT_HUD_UI_ART_HANDOVER_091.md` | `tests/godot_hud_override_091.tscn` |
 | First-person weapons | `assets/weapons/anim_092/<weapon>/` | `GPT_WEAPON_ANIMATION_HANDOVER_092.md` and **`GPT_WEAPON_ART_CORRECTIONS_093.md`** | `python3 tools/anim_092.py check …` and `--script res://tests/godot_weapon_art_092.gd` |
 | Enemy and NPC animation | `assets/sprites/anim_092/<stem>/` | `GPT_SPRITE_ANIMATION_HANDOVER_092.md` (plus the `flee` state below) | `python3 tools/anim_092.py check …` and `tests/godot_anim_092.tscn` |
-| Runway audio from 2026-11-22 | `assets/music/runway_20261122/`, `assets/audio/runway_20261122/` | `RUNWAY_AUDIO_20261122_CLAUDE_HANDOVER.md` | listening QA (below) |
+| Runway audio | `assets/music/runway_*/`, `assets/audio/runway_*/`; routing in `data/audio_mix_093.json` | `AUDIO_INTEGRATION_093.md` | `tests/test_build093_audio_mix.py`, `tests/godot_audio_093.tscn` |
 
 All briefs live in `docs/handover/` and in the claude.ai Project under `handover/`.
 
@@ -70,25 +70,37 @@ From `GPT_WEAPON_ART_CORRECTIONS_093.md`:
 
 Then the missing states (`reload`, `dry`, `draw`, `intervene`), Covenant first.
 
-### 4.2 Retrieve the four Runway audio files (your Runway access, not Claude's)
+### 4.2 Commit the other nine surviving Runway audio files (highest audio value)
 
-The tasks were generated and paid for (7 credits). The files were never downloaded because the token was revoked. **Don't regenerate.** Download the existing outputs:
+**Done in 09.4:** the four 2026-11-22 files (Pneumatic Verdict, Coil, Nail, Choir) are wired into the game (`docs/handover/AUDIO_INTEGRATION_093.md`). Listen to `docs/handover/audio_previews_093/` and report anything wrong; tuning lives in `data/audio_mix_093.json`.
 
-| Asset | Runway task ID | Save to |
-|---|---|---|
-| Pneumatic Verdict (combat music) | `5fdebefa-9b27-461f-83eb-35a514b728bc` | `assets/music/runway_20261122/pneumatic_verdict_combat.mp3` |
-| Coil Shotgun fire | `54da5bc5-407b-4b9b-aad6-425ec4584f98` | `assets/audio/runway_20261122/coil_shotgun_fire.mp3` |
-| Nail Storm fire | `ad91da3d-de21-4033-ae4d-e0a1966cd638` | `assets/audio/runway_20261122/nail_storm_fire.mp3` |
-| Choirbreaker fire | `8cb8c083-db88-4add-a846-be9ce690e749` | `assets/audio/runway_20261122/choirbreaker_fire.mp3` |
+Your archive index (`art/SURVIVING_RUNWAY_ARCHIVES_20261122_INDEX.json`) lists nine more MP3s from `ninth exhale assets 01.zip`. Four are the **full Build 07.2 district scores**. Their task IDs are in `art/RUNWAY_072_MUSIC_TASKS.json`; they were never downloaded, so the game has been playing 14–25 s procedural stand-ins.
 
-For each file:
-- Commit the **unchanged** MP3.
-- In `art/RUNWAY_AUDIO_20261122_MANIFEST.json`, update the SHA-256, the measured duration and `completion_status`.
-- Write listening notes: speech, silence, clipping, loudness, and whether the loop seams click.
+| Archive file | Length | Commit unchanged to | Runway task ID (07.2) |
+|---|---:|---|---|
+| Ninth Exhale _ Hearth Nine _ Night Intake.mp3 | 173.4 s | `assets/music/runway_072/hearth_night_intake.mp3` | `7ea21163-a98a-4b39-b55b-c8c41ac3755f` |
+| Ninth Exhale _ Sootworks _ Service Debt.mp3 | 174.2 s | `assets/music/runway_072/sootworks_service_debt.mp3` | `e3b7b7b4-6dcb-4586-b6fb-476553a8e08c` |
+| Ninth Exhale _ Flood Basilica _ Submerged Choir.mp3 | 176.7 s | `assets/music/runway_072/basilica_submerged_choir.mp3` | `5b529627-26dc-435d-8ec8-f9777c8ef56d` |
+| Ninth Exhale _ Pressure Breach _ Combat.mp3 | 117.9 s | `assets/music/runway_072/pressure_breach_combat.mp3` | `38efe738-adab-4fd9-b8e5-29832fecf933` |
+| Ninth Exhale _ Basilica acoustic pulse.mp3 | 4.0 s | `assets/audio/runway_archive/basilica_acoustic_pulse.mp3` | find it, or `null` with a reason |
+| Ninth Exhale _ Foundry pressure cycle.mp3 | 4.0 s | `assets/audio/runway_archive/foundry_pressure_cycle.mp3` | find it, or `null` |
+| Ninth Exhale creature combat vocal effects.mp3 | 6.0 s | `assets/audio/runway_archive/creature_combat_vocals.mp3` | find it, or `null` |
+| Ninth Exhale enemy mechanical attack effects.mp3 | 6.0 s | `assets/audio/runway_archive/enemy_mechanical_attacks.mp3` | find it, or `null` |
+| Ninth Exhale NPC sequential vocal grunts.mp3 | 5.0 s | `assets/audio/runway_archive/npc_vocal_grunts.mp3` | find it, or `null` |
 
-Leave `runtime_integrated: false`. **Claude will wire them in** as replaceable assets with the current WAV/OGG sounds as fallbacks, test combat-music transitions (combat music must not reach the hub), and handle weapon one-shot timing.
+Do it as you did for PR #14:
+- byte-identical files;
+- SHA-256 and duration recorded;
+- a manifest such as `art/RUNWAY_ARCHIVE_AUDIO_MANIFEST.json`, with `runtime_integrated: false`;
+- notes from listening.
 
-If you can't retrieve them, say so in the PR; the owner can export them manually.
+For the three effect banks (5–6 s each), also **list the timestamps of each separate sound** in the file (for example "0.00–0.42 growl, 0.55–1.10 shriek"). Claude will cut them into cues at playback without editing the source.
+
+Claude will then:
+- loop the district scores on bar lines;
+- keep the current Oggs as fallbacks;
+- give Hearth Nine its own score, distinct from combat;
+- map the effect banks to enemy attacks, creature barks and NPC hurt sounds.
 
 ### 4.3 Animation vertical slice: Slag Sifter and Brin
 

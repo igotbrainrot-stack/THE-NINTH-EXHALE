@@ -2,6 +2,27 @@
 
 Full per-build notes, QA and open issues for every build since Build 02 are in `docs/builds/`.
 
+## 09.4 Runway audio in game, stealth-safe combat music (2026-11-22)
+
+Builds on GPT's PR #14 (the four original Runway MP3s recovered byte-identical from the owner's archive) and includes it. Details and measurements: `docs/handover/AUDIO_INTEGRATION_093.md`.
+
+**Runway audio wired in, sources untouched.** All shaping happens at playback, set in `data/audio_mix_093.json` (new `scripts/audio_mix_093.gd`, `weapon_audio_093.gd`, `music_looper_093.gd`):
+- **Coil Shotgun:** the file swells for 330 ms before its peak. It plays from 0.12 s, with the original crack layered underneath for an instant attack.
+- **Nail Storm:** the file is a 0.6 s burst, and the gun fires every 0.09 s. It plays as a bed, restarted at most every 0.5 s while firing and faded on release, with the original tick per shot.
+- **Choirbreaker:** a sustained 1 s tone, 17 dB quieter than the Nail. Each shot cuts the previous tone so they never stack.
+- **Covenant:** unchanged (no Runway sound).
+- **Combat music "Pneumatic Verdict"** (145 BPM) ends mid-phrase. It plays bar 1 once, then loops bars 2–18 exactly on bar lines with a 60 ms crossfade, trimmed −2.5 dB. An offline render of the seam shows no measurable click. The original combat Ogg is the fallback.
+- **Any weapon or the music** returns to its original sound by setting `"source": "fallback"` in the data file.
+- **Previews** for listening (before/after weapons, loop seam): `docs/handover/audio_previews_093/`.
+
+**Combat music now needs a real fight.** It used to start within about 13 m of any optional enemy, even an unaware one, which gave stealth away. It now starts only when an enemy within 23 m is hostile.
+
+**Tests:**
+- `tests/godot_audio_093.tscn` (17 checks), added to CI;
+- `tests/test_build093_audio_mix.py` (the sources still match the manifest hashes, and the loop is a whole number of bars).
+
+The manifest marks each sound `runtime_integrated` and records how; `human_listening` stays `pending`.
+
 ## 09.3 Weapon art fixes, immersive-sim phase 1b: search, witnesses who run, stealth cue (2026-11-22)
 
 Builds on GPT's `feature/weapon-art-092-20261122` (PR #11, 05ac4d0) and includes it.

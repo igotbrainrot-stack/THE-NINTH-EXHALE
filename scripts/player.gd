@@ -48,6 +48,8 @@ var camera_impulse_080: float = 0.0
 func _ready() -> void:
     rng.seed = 20261117
     add_to_group("player_controller")
+    weapon_audio_093 = WeaponAudio093.new()
+    add_child(weapon_audio_093)
 
 func set_control_active(enabled: bool) -> void:
     active = enabled
@@ -165,6 +167,8 @@ func select_weapon(id: String) -> void:
 
 
 const ACTION_AUDIO_VOICES: int = 8
+const WeaponAudio093 = preload("res://scripts/weapon_audio_093.gd")
+var weapon_audio_093: Node
 var _action_voices: Array[AudioStreamPlayer] = []
 var _action_voice_next: int = 0
 
@@ -236,7 +240,10 @@ func fire_equipped() -> void:
     if camera_impulse_enabled_080:
         var impulse: float = 0.013 if Game.equipped_weapon() == "nail" else (0.038 if Game.equipped_weapon() == "coil" else 0.024)
         camera_impulse_080 = clampf(camera_impulse_080-impulse*camera_impulse_strength_080,-0.055,0.0)
-    _play_action_audio("%s_fire.wav" % id,-10.0)
+    # 09.3: Runway replacements where configured (data/audio_mix_093.json),
+    # otherwise the original WAV, exactly as before.
+    if not is_instance_valid(weapon_audio_093) or not weapon_audio_093.fire(id, Callable(self, "_play_action_audio")):
+        _play_action_audio("%s_fire.wav" % id,-10.0)
     var hit_enemy := false
     var pellets: int = int(spec.get("pellets",1))
     for i in range(pellets):

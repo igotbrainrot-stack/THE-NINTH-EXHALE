@@ -21,7 +21,7 @@
       "submission_status": "accepted_by_runway",
       "completion_status": "source_export_verified",
       "binary_committed": true,
-      "runtime_integrated": false,
+      "runtime_integrated": true,
       "sha256": "9694fd00f6144c885f0e6c169a7839106fe9e03ac1db5bd92e09982ba37d845f",
       "size_bytes": 746250,
       "duration_seconds": 30.772167,
@@ -29,7 +29,14 @@
       "channels": 2,
       "source_archive_member": "ninth exhale assets 01/THE NINTH EXHALE _ Combat_ Pneumatic Verdict.mp3",
       "technical_qa": "mp3_decode_ffprobe_sha256_passed",
-      "human_listening_qa": "not_yet_performed"
+      "human_listening_qa": "not_yet_performed",
+      "runtime_integration_093": {
+        "how": "Combat layer via data/audio_mix_093.json: 145 BPM, bar 1 plays once, bars 2-18 loop (1.6854-29.8272 s) with a 60 ms equal-power handover; -2.5 dB trim. Original Ogg kept as fallback.",
+        "config": "data/audio_mix_093.json",
+        "source_unmodified": true,
+        "verified": "tests/godot_audio_093.tscn (routing, modes, loop handover), tests/test_build093_audio_mix.py (hashes, bar-aligned loop), offline render of the in-game behaviour in docs/handover/audio_previews_093/",
+        "human_listening": "pending"
+      }
     },
     {
       "key": "coil_shotgun_fire",
@@ -44,7 +51,7 @@
       "submission_status": "accepted_by_runway",
       "completion_status": "source_export_verified",
       "binary_committed": true,
-      "runtime_integrated": false,
+      "runtime_integrated": true,
       "sha256": "c0a9bb3caf38949697de3cab6280ba3dd30a5895ef0acea20a7f23778b9f2bfe",
       "size_bytes": 17179,
       "duration_seconds": 1.044898,
@@ -52,7 +59,14 @@
       "channels": 2,
       "source_archive_member": "ninth exhale assets 01/THE NINTH EXHALE _ Coil Shotgun Fire _1s_.mp3",
       "technical_qa": "mp3_decode_ffprobe_sha256_passed",
-      "human_listening_qa": "not_yet_performed"
+      "human_listening_qa": "not_yet_performed",
+      "runtime_integration_093": {
+        "how": "one_shot from 0.12 s at -11 dB, fallback crack layered at -16 dB (the source swells 330 ms before its peak).",
+        "config": "data/audio_mix_093.json",
+        "source_unmodified": true,
+        "verified": "tests/godot_audio_093.tscn (routing, modes, loop handover), tests/test_build093_audio_mix.py (hashes, bar-aligned loop), offline render of the in-game behaviour in docs/handover/audio_previews_093/",
+        "human_listening": "pending"
+      }
     },
     {
       "key": "nail_storm_fire",
@@ -67,7 +81,7 @@
       "submission_status": "accepted_by_runway",
       "completion_status": "source_export_verified",
       "binary_committed": true,
-      "runtime_integrated": false,
+      "runtime_integrated": true,
       "sha256": "065c74be8319ec5a7df753263637e1c9b77b39f7e892bed6b58d98356b74b1a2",
       "size_bytes": 17179,
       "duration_seconds": 1.044898,
@@ -75,7 +89,14 @@
       "channels": 2,
       "source_archive_member": "ninth exhale assets 01/THE NINTH EXHALE _ Nail Storm Fire _1s_.mp3",
       "technical_qa": "mp3_decode_ffprobe_sha256_passed",
-      "human_listening_qa": "not_yet_performed"
+      "human_listening_qa": "not_yet_performed",
+      "runtime_integration_093": {
+        "how": "burst bed at -17 dB retriggered every 0.5 s while firing, 0.12 s release fade; fallback tick at -14 dB per shot (fires every 0.09 s).",
+        "config": "data/audio_mix_093.json",
+        "source_unmodified": true,
+        "verified": "tests/godot_audio_093.tscn (routing, modes, loop handover), tests/test_build093_audio_mix.py (hashes, bar-aligned loop), offline render of the in-game behaviour in docs/handover/audio_previews_093/",
+        "human_listening": "pending"
+      }
     },
     {
       "key": "choirbreaker_fire",
@@ -90,7 +111,7 @@
       "submission_status": "accepted_by_runway",
       "completion_status": "source_export_verified",
       "binary_committed": true,
-      "runtime_integrated": false,
+      "runtime_integrated": true,
       "sha256": "0954c8a944243771c5b200862a59d30b800b820f25750ed53bc0f1f921949740",
       "size_bytes": 17179,
       "duration_seconds": 1.044898,
@@ -98,7 +119,14 @@
       "channels": 2,
       "source_archive_member": "ninth exhale assets 01/THE NINTH EXHALE _ Choirbreaker Fire _1s_.mp3",
       "technical_qa": "mp3_decode_ffprobe_sha256_passed",
-      "human_listening_qa": "not_yet_performed"
+      "human_listening_qa": "not_yet_performed",
+      "runtime_integration_093": {
+        "how": "mono at -9 dB: each shot cuts the previous tone (1 s tone, 0.44 s refire).",
+        "config": "data/audio_mix_093.json",
+        "source_unmodified": true,
+        "verified": "tests/godot_audio_093.tscn (routing, modes, loop handover), tests/test_build093_audio_mix.py (hashes, bar-aligned loop), offline render of the in-game behaviour in docs/handover/audio_previews_093/",
+        "human_listening": "pending"
+      }
     }
   ],
   "source_archive": "ninth exhale assets 01.zip",
