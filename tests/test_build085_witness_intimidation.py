@@ -15,9 +15,14 @@ class WitnessIntimidationTests(unittest.TestCase):
    s=(ROOT/'scripts'/f'{k}_actor.gd').read_text()
    self.assertNotIn('OfficeEnforcer.new()',s)
  def test_guard_response_connected(self):
+  # 09.2: the keeper is no longer alerted by fiat. The threatened witness
+  # cries out and only office-holders who perceive it react (bible L1398).
   s=(ROOT/'scripts'/'main.gd').read_text()
   self.assertIn('func _hook_named_witnesses_085()',s)
-  self.assertIn('guard.anger()',s)
+  body=s.split('func _on_named_witness_threatened_085(',1)[1].split('\nfunc ',1)[0]
+  self.assertNotIn('guard.anger()',body)
+  self.assertIn('Perception092.witness_assault(',body)
+  self.assertIn('"cry_for_help"',body)
  def test_sprite_threatens_without_scale(self):
   s=(ROOT/'scripts'/'directional_npc_sprite.gd').read_text()
   self.assertIn('set_threatened_085',s)

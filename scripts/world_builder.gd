@@ -61,7 +61,7 @@ func build() -> void:
     add_actor("Requisition Clerk","clerk",Vector3(8.0,0,-7.5),"clerk.png","C L E R K   /  A L L O T M E N T S")
     add_console("Freight Lift trial berth","slice_lift",Vector3(23,0,13),"SLICE TEST LIFT / 2 WRITS + HEARING")
     add_transition_frame("Trial freight lift", Vector3(23,0,15.9), 3.4, 3.1, "lift", "FREIGHT LIFT", "TWO WRITS + HEARING")
-    add_console("Three Writ public authentication","quorum_audit_desk",Vector3(22,0,-5),"PUBLIC QUORUM / LABOUR + FAITH + TRADE")
+    add_console("Three Writ public authentication","quorum_audit_desk",Vector3(22,0,-5),"PUBLIC QUORUM / ANY THREE WRITS")
     add_console("Reprint pressure relay", "wake_panel", Vector3(-24.5,0,10.2),"INTAKE / PRESS E TO WAKE")
     add_console("Intake quench vent", "intake_quench", Vector3(-11.1,0,14.5),"QUENCH / ONE PRESSURE CHARGE")
     add_console("Manual pressure valve", "intake_valve", Vector3(-17.2,0,5.2),"AIRLOCK / REPAIR VALVE")

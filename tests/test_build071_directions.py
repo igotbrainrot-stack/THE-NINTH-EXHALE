@@ -37,17 +37,16 @@ class EightDirection071(unittest.TestCase):
         self.assertEqual(17,len(ACTORS))
         for id in ACTORS:
             for direction in range(1,9):
-                p=ROOT/'assets/sprites/enemies_071'/f'{id}_{direction}.png'
+                p=ROOT/'assets/sprites/enemies_074'/f'{id}_{direction}.png'  # 09.1: 07.1 removed
                 self.assertTrue(p.is_file(),str(p))
                 with Image.open(p) as im:
                     self.assertEqual((768,768),im.size)
                     self.assertEqual('RGBA',im.mode)
                     self.assertIsNotNone(im.crop((0,0,192,256)).getchannel('A').getbbox())
-    def test_legacy_cardinals_are_preserved_identically(self):
-        for enemy in ACTORS:
-            for d,side in [(1,'front'),(3,'left'),(5,'back'),(7,'right')]:
-                with Image.open(ROOT/'assets/sprites/enemies_068'/f'{enemy}_{side}.png') as old, Image.open(ROOT/'assets/sprites/enemies_071'/f'{enemy}_{d}.png') as new:
-                    self.assertIsNone(ImageChops.difference(old.convert('RGBA'),new.convert('RGBA')).getbbox())
+    # 09.1: test_legacy_cardinals_are_preserved_identically compared the 06.8
+    # and 07.1 generations with each other; both were removed as superseded
+    # (art/BUILD_091_REMOVED_SUPERSEDED.json), so there is nothing left to compare.
+
     def test_3d_prop_geometry_not_replaced_by_billboards(self):
         source=(ROOT/'scripts/prop_mesh_070.gd').read_text()
         self.assertIn('extends Node3D',source)
