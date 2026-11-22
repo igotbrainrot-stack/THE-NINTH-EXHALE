@@ -7,6 +7,7 @@ Original retro first-person civic-horror RPG / roguelite set in Vesper. Built in
 - 09.3 adds guards that search and stay on high alert, threatened witnesses who run to report, cause-specific barks and a HUD stealth cue.
 - 09.4 wires in the recovered Runway combat music and weapon sounds (`data/audio_mix_093.json`). Combat music now plays only when something is actually fighting you.
 - 09.5 brings in DOOM-era techniques. Sound travels round walls by route, firing lights you up, enemies flinch at damage thresholds (no more stun-lock), each district's return rail shows what you did there, and enemies call out what they are doing (wind-ups, flinches, a fallen ally they saw, your reload).
+- 09.6 consolidates story, gameplay and art against the bible. Only people speak (machines get captioned sounds), flinches use the bible's stagger values, the HUD frames no longer cut their titles, and district light follows the bible. Review and open rulings: `docs/research/CONSOLIDATION_REVIEW_096.md`.
 
 It is playable, but **not the finished game or final content release**. The master game bible remains the production target; the current Godot build is still a development slice and has not had human full-campaign playtesting.
 

@@ -22,7 +22,8 @@
       ],
       "rank": 0,
       "runway_task_id": "08e04dd9-52d1-4846-826b-4219acf44b66",
-      "sprite_origin": "Runway original source turnaround"
+      "sprite_origin": "Runway original source turnaround",
+      "voice": "machine"
     },
     {
       "id": "enforcer",
@@ -43,7 +44,8 @@
       ],
       "rank": 0,
       "runway_task_id": "f200e985-8e21-4c84-886c-362d032b1fb1",
-      "sprite_origin": "Runway original source turnaround"
+      "sprite_origin": "Runway original source turnaround",
+      "voice": "speech"
     },
     {
       "id": "millwright",
@@ -64,7 +66,8 @@
       ],
       "rank": 0,
       "runway_task_id": "801d69fe-8518-43f3-b8f2-8687412e9040",
-      "sprite_origin": "Runway original source turnaround"
+      "sprite_origin": "Runway original source turnaround",
+      "voice": "speech"
     },
     {
       "id": "cantor",
@@ -85,7 +88,8 @@
       ],
       "rank": 0,
       "runway_task_id": "b005c780-2b5c-4fd3-9cde-7c86f60b5922",
-      "sprite_origin": "Runway original source turnaround"
+      "sprite_origin": "Runway original source turnaround",
+      "voice": "speech"
     },
     {
       "id": "edda_machine",
@@ -106,7 +110,8 @@
       ],
       "rank": 0,
       "runway_task_id": "cd0635f9-a474-48f0-9e92-4ce44e9894a2",
-      "sprite_origin": "Runway original source turnaround"
+      "sprite_origin": "Runway original source turnaround",
+      "voice": "machine"
     },
     {
       "id": "pressure_mite",
@@ -127,7 +132,8 @@
       ],
       "rank": 1,
       "runway_task_id": "b43ef69b-9714-4c20-b569-5ee11e22741b",
-      "sprite_origin": "Runway original source turnaround"
+      "sprite_origin": "Runway original source turnaround",
+      "voice": "machine"
     },
     {
       "id": "registry_bailiff",
@@ -148,7 +154,8 @@
       ],
       "rank": 2,
       "runway_task_id": "34c95596-677e-462f-9109-82363eac7f55",
-      "sprite_origin": "Runway original source turnaround"
+      "sprite_origin": "Runway original source turnaround",
+      "voice": "speech"
     },
     {
       "id": "vent_whistler",
@@ -169,7 +176,8 @@
       ],
       "rank": 3,
       "runway_task_id": "5f97904a-f8bb-4346-bbe1-5518edf27704",
-      "sprite_origin": "Runway original source turnaround"
+      "sprite_origin": "Runway original source turnaround",
+      "voice": "machine"
     },
     {
       "id": "rivet_courier",
@@ -190,7 +198,8 @@
       ],
       "rank": 1,
       "runway_task_id": "e0d3997e-177a-4ef6-8d36-c6a7f2bd12a4",
-      "sprite_origin": "Runway original source turnaround"
+      "sprite_origin": "Runway original source turnaround",
+      "voice": "machine"
     },
     {
       "id": "slag_sifter",
@@ -211,7 +220,8 @@
       ],
       "rank": 2,
       "runway_task_id": "cb7335bb-9e1b-4f9a-948b-ebcb6c1fd3b2",
-      "sprite_origin": "Runway original source turnaround"
+      "sprite_origin": "Runway original source turnaround",
+      "voice": "machine"
     },
     {
       "id": "chain_hauler",
@@ -232,7 +242,8 @@
       ],
       "rank": 3,
       "runway_task_id": "8410cd9b-222b-4437-b422-26493cca634f",
-      "sprite_origin": "Runway original source turnaround"
+      "sprite_origin": "Runway original source turnaround",
+      "voice": "machine"
     },
     {
       "id": "choir_reed",
@@ -253,7 +264,8 @@
       ],
       "rank": 1,
       "runway_task_id": "f0e88654-027d-4c27-b13b-9372e730a01b",
-      "sprite_origin": "Runway original source turnaround"
+      "sprite_origin": "Runway original source turnaround",
+      "voice": "machine"
     },
     {
       "id": "saltbound_porter",
@@ -274,7 +286,8 @@
       ],
       "rank": 2,
       "runway_task_id": "3bf61745-2947-4bd1-9847-0d1d369105ed",
-      "sprite_origin": "Runway original source turnaround"
+      "sprite_origin": "Runway original source turnaround",
+      "voice": "speech"
     },
     {
       "id": "sluice_beadle",
@@ -295,7 +308,8 @@
       ],
       "rank": 3,
       "runway_task_id": "bc1d1c2a-990e-461e-8475-14deb8357384",
-      "sprite_origin": "Runway original source turnaround"
+      "sprite_origin": "Runway original source turnaround",
+      "voice": "speech"
     },
     {
       "id": "triage_warden",
@@ -316,7 +330,8 @@
       ],
       "rank": 1,
       "runway_task_id": "5b8727db-ad85-47c0-b889-4dc0c160588a",
-      "sprite_origin": "Runway original source turnaround"
+      "sprite_origin": "Runway original source turnaround",
+      "voice": "machine"
     }
   ],
   "hearing_only": [
@@ -327,5 +342,16 @@
     "bell_wretch": "1857db79-9466-49d9-bf82-860b98f03db8",
     "rootkin": "678186a5-30c4-4085-832f-8a0bc7243201"
   },
-  "sprite_status": "Render requested via Runway; image outputs are only marked integrated after source PNG export and atlas validation"
+  "sprite_status": "Render requested via Runway; image outputs are only marked integrated after source PNG export and atlas validation",
+  "voice_kinds_096": {
+    "speech": "a person, or a frame worked by a named office-holder: speaks barks and callouts",
+    "machine": "an automaton: no words; its barks and callouts are bracketed sound captions",
+    "owner_to_confirm": [
+      "millwright",
+      "chain_hauler",
+      "choir_reed",
+      "triage_warden",
+      "saltbound_porter"
+    ]
+  }
 }

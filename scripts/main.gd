@@ -95,13 +95,22 @@ func setup_environment() -> void:
     add_child(direction)
     key_light = direction
 
+## 09.6: ambient tints follow the bible's space table (§11.2). Hearth Nine:
+## warm clinical lamps over pale blue enamel. Sootworks: pulsing furnace
+## light. Quiet Barracks: white security light over dark blue. The others
+## already matched. Cosmetic only: guards read the district's lamps
+## (perception_092), never the ambient colour or its pulse.
+const FURNACE_PULSE_SECONDS_096 := 2.6
+const FURNACE_PULSE_DEPTH_096 := 0.04
+var furnace_clock_096: float = 0.0
+
 func _tune_district_illumination(zone: String) -> void:
     if not is_instance_valid(world_environment): return
     var env: Environment = world_environment.environment
     match zone:
         "sootworks":
-            env.background_color = Color("#24251f")
-            env.ambient_light_color = Color("#b09d84")
+            env.background_color = Color("#251f1a")
+            env.ambient_light_color = Color("#c39a74")
         "basilica":
             env.background_color = Color("#1b2d2d")
             env.ambient_light_color = Color("#94b0ac")
@@ -112,8 +121,8 @@ func _tune_district_illumination(zone: String) -> void:
             env.background_color = Color("#23392e")
             env.ambient_light_color = Color("#aac8a8")
         "barracks":
-            env.background_color = Color("#262b2a")
-            env.ambient_light_color = Color("#b7b4a2")
+            env.background_color = Color("#1f262c")
+            env.ambient_light_color = Color("#b8c0c4")
         "assembly":
             env.background_color = Color("#282b26")
             env.ambient_light_color = Color("#b8bba8")
@@ -124,8 +133,8 @@ func _tune_district_illumination(zone: String) -> void:
             env.background_color = Color("#282320")
             env.ambient_light_color = Color("#ae9c94")
         _:
-            env.background_color = Color("#202b29")
-            env.ambient_light_color = Color("#aeb4a6")
+            env.background_color = Color("#22292c")
+            env.ambient_light_color = Color("#c4bca8")
     env.ambient_light_energy = 0.43
     if is_instance_valid(key_light):
         key_light.light_energy = 0.33
@@ -545,6 +554,9 @@ func _process(delta: float) -> void:
     if not is_instance_valid(hud) or not Game.has_attempt(): return
     if not hud.modal_open and bool(player.get("active")):
         DistrictRecord095.bump("seconds", delta)
+    if is_instance_valid(world_environment) and str(Game.state.get("zone", "")) == "sootworks":
+        furnace_clock_096 = fmod(furnace_clock_096 + delta, FURNACE_PULSE_SECONDS_096)
+        world_environment.environment.ambient_light_energy = 0.43 + FURNACE_PULSE_DEPTH_096 * sin(TAU * furnace_clock_096 / FURNACE_PULSE_SECONDS_096)
     nav_refresh_clock -= delta
     if nav_refresh_clock > 0.0: return
     nav_refresh_clock = 0.20
@@ -1581,7 +1593,7 @@ func assembly_interaction_078(interaction_id: String) -> void:
             show_choice("PATIENT PETITION / EXPLICIT LIMITED CONSENT", "The original signed voluntary-risk petition must be copied from the central archives and read aloud here. It cannot be used as universal consent for all patients.",[
                 {"label":"PRESENT ORIGINAL PETITION / ACKNOWLEDGE REVOCATION","action":"assembly:petition"},go_back()])
         "assembly_mandate_078":
-            var lines: String = "Public deliberation requires full disclosure, an original patient petition, and at least three separately verified affirmative constituencies. High Speech cannot invent a voter.\n\nAffirmative rolls: %d / 3.\n" % Game.assembly_vote_count_078()
+            var lines: String = "Public deliberation requires full disclosure, an original patient petition, and at least three separately verified affirmative constituencies. High Speech cannot invent a voter.\n\nAffirmative constituencies: %d / 3.\n" % Game.assembly_vote_count_078()
             if bool(c.get("mandate",false)):
                 lines += "Public authority has approved a LIMITED, REVOCABLE trial. A public withdrawal can cancel the attempt before the settlement is chosen."
             elif bool(c.get("mandate_revoked",false)):

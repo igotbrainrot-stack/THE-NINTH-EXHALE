@@ -200,9 +200,18 @@ func hud_optional_skin(name: String, fallback: StyleBox) -> StyleBox:
     style.content_margin_bottom = fallback.content_margin_bottom
     return style
 
+## 09.6: the 09.1 frames carry a file-card tab above their rim (the top
+## rows are transparent but for the tab), so drawn inside the panel the rim
+## sat 5 px down and cut through titles and the top line of numbers. The tab
+## is drawn above the panel instead, so the rim is the panel's top edge and
+## the HUD's 5 px text inset clears it. Values are the tab heights in px.
+const HUD091_TAB_096 := {"hud_frame_brass": 5, "hud_frame_steel": 5, "hud_frame_route": 3, "hud_docket_modal": 3}
+
 func _hud086_skin(name: String, padding: Vector4 = Vector4.ZERO) -> StyleBoxTexture:
     var style := StyleBoxTexture.new()
     style.texture = _hud086_texture(name)
+    if hud_art_has_override(name) and HUD091_TAB_096.has(name):
+        style.expand_margin_top = float(HUD091_TAB_096[name])
     var margins: Array = _hud091_margins(name)
     style.texture_margin_left = float(margins[0])
     style.texture_margin_top = float(margins[1])

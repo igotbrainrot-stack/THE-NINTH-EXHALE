@@ -2,10 +2,11 @@ extends Node
 ## Build 09.5 combat callouts (after F.E.A.R.): every line matches a real
 ## behaviour, lines rotate deterministically, one voice at a time, deaths are
 ## only called out by an ally that saw them, the dead never speak.
+## 09.6: only people speak; automata get captioned sounds and ignore reloads.
 ## Counts declared vs completed checks and exits 1 on any failure.
 const Callouts = preload("res://scripts/callouts_095.gd")
 const Enemy = preload("res://scripts/enemy.gd")
-const DECLARED := 11
+const DECLARED := 15
 var scene: Node
 var passes: int = 0
 var failures: Array[String] = []
@@ -44,6 +45,8 @@ func _run() -> void:
     var b: Array = [Callouts.next_line("MAN_DOWN"), Callouts.next_line("MAN_DOWN"), Callouts.next_line("MAN_DOWN"), Callouts.next_line("MAN_DOWN")]
     check(a == b and a[0] != a[1] and a[3] == a[0], "lines rotate in a fixed order, the same every run: " + str(a))
     check(Callouts.next_line("NOT_AN_EVENT") == "", "unknown events stay silent")
+    var P = preload("res://scripts/perception_092.gd")
+    check(P.bark_for("HOSTILE", "SIGHT", "machine") == "[TARGET TONE]" and P.bark_for("HOSTILE", "SIGHT") == "THERE!" and Callouts.next_line("MAN_DOWN", "machine").begins_with("["), "a machine's bark and callout are bracketed sounds, a person's are words")
     scene = load("res://scenes/hearth_nine.tscn").instantiate()
     add_child(scene)
     await get_tree().process_frame
@@ -67,10 +70,31 @@ func _run() -> void:
     talker.queue_free()
     other.queue_free()
     await physics(0.2)
+    # Voice kinds (1): roster people speak, automata and actuators do not.
+    var kinds: Array = []
+    for k in ["registry_bailiff", "slag_sifter", "collector", "core_actuator"]:
+        var probe: Node = Enemy.new()
+        probe.actor_key = k
+        kinds.append(probe.voice_kind())
+        probe.free()
+    check(kinds == ["speech", "machine", "speech", "machine"], "voice kinds: bailiff and collector speak, sifter and actuator are machines " + str(kinds))
+    # Machine wind-up (1): captioned, not spoken.
+    Callouts.reset()
+    scene.player.global_position = Vector3(8, 0.05, 4)
+    var machine: Node = _spawn("slag_sifter", Vector3(8, 0.15, 10), 0.0)
+    await physics(0.1)
+    machine.anger()
+    var tm: float = 0.0
+    while machine.windup <= 0.0 and tm < 6.0:
+        await get_tree().physics_frame
+        tm += 1.0 / Engine.physics_ticks_per_second
+    check(machine.windup > 0.0 and machine.sense_092.bark_text in Callouts.MACHINE_LINES["WINDUP_" + machine.role_attack], "a machine's wind-up is a captioned sound: '%s'" % machine.sense_092.bark_text)
+    machine.queue_free()
+    await physics(0.2)
     # Wind-up callout (1): a hostile in reach telegraphs and says what it does.
     Callouts.reset()
     scene.player.global_position = Vector3(8, 0.05, 4)
-    var shooter: Node = _spawn("slag_sifter", Vector3(8, 0.15, 10), 0.0)
+    var shooter: Node = _spawn("registry_bailiff", Vector3(8, 0.15, 10), 0.0)
     await physics(0.1)
     shooter.anger()
     var t: float = 0.0
@@ -79,9 +103,15 @@ func _run() -> void:
         t += 1.0 / Engine.physics_ticks_per_second
     var said: String = shooter.sense_092.bark_text
     check(shooter.windup > 0.0 and said in Callouts.LINES["WINDUP_" + shooter.role_attack], "its wind-up is called as it starts: '%s' (%s attack)" % [said, shooter.role_attack])
-    # Reload callout (2): it sees the reload, says so, and presses.
+    # Reload callout (3): it sees the reload, says so, and presses; a machine
+    # that sees it too does neither.
+    var bystander: Node = _spawn("slag_sifter", Vector3(5, 0.15, 8), 0.0)
+    await physics(0.1)
+    bystander.anger()
     await physics(2.0)
     Callouts.reset()
+    bystander.attack_timer = 2.0
+    bystander.windup = 0.0
     shooter.attack_timer = 2.0
     shooter.windup = 0.0
     Game.state["magazine"] = 1   # the Covenant's magazine lives at the top level
@@ -90,7 +120,9 @@ func _run() -> void:
     scene.player.reload_weapon()
     check(shooter.sense_092.bark_text in Callouts.LINES["RELOAD"], "a hostile that sees Ninth reload calls it: '%s'" % shooter.sense_092.bark_text)
     check(shooter.attack_timer <= Callouts.RELOAD_PRESS + 0.001, "and attacks sooner (next attack in %.2f s)" % shooter.attack_timer)
+    check(bystander.attack_timer > 1.5 and not (bystander.sense_092.bark_text in Callouts.LINES["RELOAD"]), "a machine in view does not call the reload or press (next attack in %.2f s)" % bystander.attack_timer)
     shooter.queue_free()
+    bystander.queue_free()
     await physics(0.2)
     # Man down, witnessed (2)
     Callouts.reset()
@@ -100,7 +132,7 @@ func _run() -> void:
     await physics(0.2)
     victim.take_hit(99999)
     await physics(0.1)
-    check(witness.sense_092.bark_text in Callouts.LINES["MAN_DOWN"], "an ally who saw the death calls it: '%s'" % witness.sense_092.bark_text)
+    check(witness.sense_092.bark_text in Callouts.MACHINE_LINES["MAN_DOWN"], "an ally machine that saw the death sounds its alarm: '%s'" % witness.sense_092.bark_text)
     check(witness.sense_092.state in ["INVESTIGATE", "SEARCH"] and witness.sense_092.high_alert and witness.sense_092.last_known.distance_to(victim.global_position) < 0.5, "goes to the body and stays on high alert (%s)" % witness.sense_092.state)
     witness.queue_free()
     victim.queue_free()

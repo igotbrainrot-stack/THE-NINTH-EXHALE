@@ -107,6 +107,21 @@ func _check_hud_layout(tag: String) -> void:
         if parent is Panel and not parent.get_global_rect().grow(-5.0).encloses(leaf.get_global_rect()):
             on_border.append("%s in %s" % [_label_of(leaf), parent.name])
     check(on_border.is_empty(), "%s: HUD content clear of panel borders %s" % [tag, on_border])
+    # 09.6: frames as drawn (a frame's tab is drawn above its panel) must not
+    # overlap each other either.
+    var drawn: Array = []
+    for panel in panels:
+        var r: Rect2 = panel.get_global_rect()
+        var sb = panel.get_theme_stylebox("panel")
+        if sb is StyleBoxTexture:
+            r = r.grow_individual(sb.expand_margin_left, sb.expand_margin_top, sb.expand_margin_right, sb.expand_margin_bottom)
+        drawn.append([panel, r])
+    var frame_clash: Array[String] = []
+    for i in range(drawn.size()):
+        for j in range(i + 1, drawn.size()):
+            if (drawn[i][1] as Rect2).grow(-0.5).intersects(drawn[j][1]):
+                frame_clash.append("%s x %s" % [drawn[i][0].name, drawn[j][0].name])
+    check(frame_clash.is_empty(), "%s: drawn HUD frames do not overlap %s" % [tag, frame_clash])
 
 ## Firing must not allocate fresh meshes/materials/audio players per pellet, and
 ## vertical tracers must not trigger the colinear look_at warning.

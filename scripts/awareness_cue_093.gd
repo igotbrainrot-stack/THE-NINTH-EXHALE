@@ -30,8 +30,9 @@ func build(owner_hud: Node, skin: StyleBox) -> void:
     hud = owner_hud
     name = "AwarenessCue093"
     # 24 px tall so its text (14 px at size 10) keeps a 5 px inset from the
-    # frame, and ends at y 338: two pixels clear of the vitals panel (340).
-    position = Vector2(8, 314)
+    # frame. It ends at y 333, clear of the vitals frame, whose file-card tab
+    # is drawn 5 px above the vitals panel (09.6), from y 335.
+    position = Vector2(8, 309)
     size = Vector2(204, 24)
     mouse_filter = Control.MOUSE_FILTER_IGNORE
     if skin != null:

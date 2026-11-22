@@ -218,6 +218,16 @@ func anger() -> void:
         if is_instance_valid(voice_083): voice_083.call("play_enemy", "alert")
         became_hostile.emit()
 
+## 09.6: a weapon hit carries the bible's stagger value (§8 weapon table:
+## Covenant 8, Coil 35 a shot, Nail Storm 3, Choirbreaker 17). Other hits
+## (intervention, hazards, scripted damage) build pain from their damage.
+var _incoming_stagger_096: float = -1.0
+
+func take_weapon_hit_096(damage: int, stagger: float) -> void:
+    _incoming_stagger_096 = stagger
+    take_hit(damage)
+    _incoming_stagger_096 = -1.0
+
 func take_hit(damage: int) -> void:
     if hp <= 0: return
     anger()
@@ -228,11 +238,12 @@ func take_hit(damage: int) -> void:
     hp -= applied_damage
     wounded_count += 1
     # 09.5: Doom's pain chance, made deterministic (no dice: bible L699).
-    # Damage builds toward a role threshold; crossing it flinches the enemy
+    # Stagger (09.6: the weapon's bible stagger value, else damage) builds
+    # toward a role threshold; crossing it flinches the enemy
     # (and cancels its attack), then it cannot flinch again for PAIN_GUARD s.
     # A wind-up takes twice the damage to interrupt. Before this every hit
     # staggered, so the Nail Storm (one shot per 0.09 s) stun-locked anything.
-    pain_damage_095 += float(applied_damage)
+    pain_damage_095 += _incoming_stagger_096 if _incoming_stagger_096 >= 0.0 else float(applied_damage)
     var pain_needed: float = pain_threshold_095() * (2.0 if windup > 0.0 else 1.0)
     if pain_guard_095 <= 0.0 and pain_damage_095 >= pain_needed:
         stagger_time = maxf(stagger_time,0.24 if actor_key != "millwright" else 0.11)
@@ -261,7 +272,18 @@ func take_hit(damage: int) -> void:
         # Death is a visible short animation, not an instant disappearing sprite.
         defeated.emit()
 
-## Damage that makes this enemy flinch, by role (fraction of max HP, 8..45).
+## Stagger that makes this enemy flinch, by role (fraction of max HP, 8..45).
+## 09.6: who can speak. People, and frames worked by a named office-holder,
+## speak; automata only make sounds (shown as bracketed captions). Roster
+## enemies carry "voice" in data/enemy_roster_068.json; the district keepers
+## below are not in the roster.
+const KEEPER_VOICE_096 := {"collector": "speech", "commandant": "speech", "core_actuator": "machine", "gardener": "machine"}
+
+func voice_kind() -> String:
+    var spec: Dictionary = EnemyRoster068.spec(actor_key)
+    if spec.has("voice"): return str(spec["voice"])
+    return str(KEEPER_VOICE_096.get(actor_key, "speech"))
+
 func pain_threshold_095() -> float:
     var fraction: float = 0.15
     if role_attack == "rush": fraction = 0.10

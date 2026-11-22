@@ -1,5 +1,7 @@
 # The Ninth Exhale — current progression after Build 05
 
+> **Historical (roadmap after Build 05).** Kept for provenance; it no longer describes the game. Current state, open rulings and next steps: `docs/research/CONSOLIDATION_REVIEW_096.md`, `README.md` and `CHANGELOG.md`. The bible (`docs/MASTER_GAME_BIBLE_FINAL.md`) remains the canon.
+
 ## Where the playable source stands
 
 Build 03's startup and first scenario were confirmed working by the user. Build 04 added the second district, Sootworks, Brin's four-stage authored scenario and the Labour Writ with evidence/council, Tech, and keeper-death registry routes; it still needs a user Godot runtime check. Build 05 carries those systems forward and adds a non-colliding detailed architecture/material/sprite art pass. Godot runtime is still not available to this authoring environment.

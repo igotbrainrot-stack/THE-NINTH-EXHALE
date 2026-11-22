@@ -99,12 +99,12 @@ func _search_checks() -> void:
         t += 1.0 / Engine.physics_ticks_per_second
     check(not foe.hostile and foe.sense_092.state == "SEARCH", "a patrol that loses its target drops to SEARCH (after %.1f s)" % t)
     check(t >= P.LOSE_TRACK_SECONDS - 0.2, "it does not give up before %.0f s" % P.LOSE_TRACK_SECONDS)
-    check(foe.sense_092.bark_text == P.bark_for("SEARCH", "LOST"), "it says why: '%s'" % foe.sense_092.bark_text)
+    check(foe.sense_092.bark_text == P.bark_for("SEARCH", "LOST", foe.voice_kind()), "it says why, in its own voice (09.6: a machine's is a caption): '%s'" % foe.sense_092.bark_text)
     var saved: Dictionary = Game.state["actors"]["slag_sifter"]
     check(not bool(saved.get("hostile", true)) and bool(saved.get("high_alert_093", false)), "the save says: not hostile, high alert")
     await physics(P.SEARCH_SECONDS + 0.5)
     check(foe.sense_092.state == "HIGH_ALERT" and foe.sense_092.high_alert, "after searching it stays on HIGH ALERT, not calm")
-    check(foe.sense_092.bark_text == P.bark_for("HIGH_ALERT", "END"), "and says so: '%s'" % foe.sense_092.bark_text)
+    check(foe.sense_092.bark_text == P.bark_for("HIGH_ALERT", "END", foe.voice_kind()), "and says so: '%s'" % foe.sense_092.bark_text)
     # High alert sees further: 15 m is outside normal range (13 m), inside 16.9 m.
     foe.queue_free()
     await physics(0.1)

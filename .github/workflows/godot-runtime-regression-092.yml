@@ -6,6 +6,7 @@ on:
       - 'feature/build-093-*'
       - 'feature/build-094-*'
       - 'feature/build-095-*'
+      - 'feature/build-096-*'
       - main
     paths:
       - 'tests/godot_*'

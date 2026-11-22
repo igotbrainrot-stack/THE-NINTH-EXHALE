@@ -307,7 +307,14 @@ func _resolve_shot(id: String, damage: int) -> bool:
     var distance: float=origin.distance_to(hit["position"])
     var effective_range: float=float(spec["range"])
     var falloff: float=1.0 if distance<=effective_range else lerpf(1.0,0.40,clampf((distance-effective_range)/maxf(effective_range,1.0),0.0,1.0))
-    target.take_hit(maxi(1,roundi(float(damage)*falloff)))
+    var dealt: int = maxi(1,roundi(float(damage)*falloff))
+    if target.has_method("take_weapon_hit_096"):
+        # 09.6: the bible's per-weapon stagger column drives the pain meter
+        # (split across pellets; one Coil shot is one shot of stagger).
+        var stagger: float = float(spec.get("stagger", damage)) * falloff / float(maxi(1, int(spec.get("pellets", 1))))
+        target.take_weapon_hit_096(dealt, stagger)
+    else:
+        target.take_hit(dealt)
     _confirm_hit_090(target)
     return true
 

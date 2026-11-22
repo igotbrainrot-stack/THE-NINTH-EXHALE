@@ -2,6 +2,25 @@
 
 Full per-build notes, QA and open issues for every build since Build 02 are in `docs/builds/`.
 
+## 09.6 Consolidation: story, gameplay and art kept to the bible (2026-11-22)
+
+A review of the whole game against `docs/MASTER_GAME_BIBLE_FINAL.md`: `docs/research/CONSOLIDATION_REVIEW_096.md` (also a Claude doc). Builds on 09.5 (PR #16).
+
+- **Only people speak.** The 09.3 barks and 09.5 callouts gave every enemy human speech, including crawlers, turrets and actuators. The bible's automata are sensors and valves, and the Unsaid only repeat.
+  - Each roster enemy now has a `voice` (`speech` or `machine`) in `data/enemy_roster_068.json`.
+  - Machines show captioned sounds instead ("[SENSOR TICKS]", "[PRESSURE BUILDS]", "[ALARM TONE]").
+  - Machines don't call or punish Ninth's reload; that is a person noticing a person.
+- **Flinch uses the bible's stagger column** (§8: Covenant 8, Coil 35 a shot, Nail Storm 3, Choirbreaker 17) instead of raw damage. A held Nail Storm flinches a Slag Sifter 2 times in 3 s (was 4); one Coil shot still flinches it at once.
+- **No dice words:** the assembly counts "Affirmative constituencies", not "rolls".
+- **HUD frames:** the 09.1 frame art has a 5 px file-card tab above its rim, so the rim cut through panel titles and the top line of numbers. The tab is now drawn above the panel. The stealth cue moves to (8, 309) to clear the vitals tab. The HUD layout test now also fails if drawn frames overlap.
+- **District light per the bible's space table:** Hearth Nine warm clinical, Sootworks a slow furnace glow (±0.04 over 2.6 s; cosmetic, since guards read lamps), Quiet Barracks white security light.
+- **Docs:** the Build 05 roadmap and the pre-engine handover are marked historical. New GPT brief for the off-model and placeholder sprites: `docs/handover/GPT_ART_CONSOLIDATION_096.md`.
+- **Tests:**
+  - `tests/test_build096_consolidation.py` checks the four weapons against the bible table, voice kinds, captions, no pronoun for Ninth, frame tabs, light and doc banners.
+  - `godot_callouts_095` has 15 checks (was 11).
+  - `godot_codefix_regressions` has 40.
+- **Owner rulings needed (7):** which borderline enemies are machines, whether to add the Unsaid, two bible errata, the double use of "Witness", enemy health against the bible's pacing, and random pellet spread. See the review.
+
 ## 09.5 DOOM-era techniques: route-based sound, muzzle flash, pain thresholds, district record (2026-11-22)
 
 From a review of DOOM-like RPGs and RPG-leaning retro shooters: Strife, Hexen, Doom, Doom RPG, Doom (2016), Ultima Underworld, Dusk, Project Warlock, Nightmare Reaper, Cultic and F.E.A.R. The review is the Claude doc "DOOM-like RPG techniques for THE NINTH EXHALE", also summarised in `docs/research/DOOM_LIKE_RPG_TECHNIQUES_095.md`. Builds on 09.4 (PR #15).
