@@ -134,8 +134,10 @@ func _layout_slips(animate_newest: bool) -> void:
         y += s.size.y + 3.0
         # A slip still sliding in from the previous notice must not finish its
         # old move after this one, or two slips end up stacked on one spot.
-        var old_tween = s.get_meta("move_tween", null)
-        if old_tween is Tween and (old_tween as Tween).is_valid(): (old_tween as Tween).kill()
+        # (get_meta with a null default still errors in 4.4, so test first.)
+        if s.has_meta("move_tween"):
+            var old_tween = s.get_meta("move_tween")
+            if old_tween is Tween and (old_tween as Tween).is_valid(): (old_tween as Tween).kill()
         if i == 0 and animate_newest:
             s.position = target + Vector2(40, 0)
             s.modulate.a = 0.0

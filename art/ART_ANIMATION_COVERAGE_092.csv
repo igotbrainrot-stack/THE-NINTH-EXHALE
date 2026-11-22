@@ -1,0 +1,27 @@
+weapon,state,frames,fps,loop,status,notes
+covenant,idle,4,4,true,generated_provisional,single master pose with <=2px breathing offsets
+covenant,fire,4,24,false,generated_provisional,4 unique poses; duplicated holds=[]
+covenant,reload,0,0,false,procedural_fallback,art pending
+covenant,dry,0,0,false,procedural_fallback,art pending
+covenant,draw,0,0,false,procedural_fallback,art pending
+covenant,intervene,0,0,false,procedural_fallback,art pending
+coil,idle,4,4,true,generated_provisional,single master pose with <=2px breathing offsets
+coil,fire,6,18,false,generated_provisional,4 unique poses; duplicated holds=[1, 2]
+coil,reload,0,0,false,procedural_fallback,art pending
+coil,dry,0,0,false,procedural_fallback,art pending
+coil,draw,0,0,false,procedural_fallback,art pending
+coil,intervene,0,0,false,procedural_fallback,art pending
+nail,idle,4,4,true,generated_provisional,single master pose with <=2px breathing offsets
+nail,fire,2,24,false,generated_provisional,2 unique poses; duplicated holds=[]
+nail,reload,0,0,false,procedural_fallback,art pending
+nail,dry,0,0,false,procedural_fallback,art pending
+nail,draw,0,0,false,procedural_fallback,art pending
+nail,intervene,0,0,false,procedural_fallback,art pending
+nail,vent,0,0,false,procedural_fallback,art pending
+choir,idle,4,4,true,generated_provisional,single master pose with <=2px breathing offsets
+choir,fire,5,20,false,generated_provisional,4 unique poses; duplicated holds=[2]
+choir,reload,0,0,false,procedural_fallback,art pending
+choir,dry,0,0,false,procedural_fallback,art pending
+choir,draw,0,0,false,procedural_fallback,art pending
+choir,intervene,0,0,false,procedural_fallback,art pending
+choir,idle_shutter_ripple,0,0,true,missing_variant,needs authored resonator shutter motion

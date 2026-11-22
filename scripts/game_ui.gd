@@ -25,6 +25,8 @@ var navigation_panel: Panel
 var navigation: Label
 
 var vitals_panel: Panel
+const AwarenessCue093 = preload("res://scripts/awareness_cue_093.gd")
+var awareness_cue_093: Panel
 var hp_bar: ProgressBar
 var hp_text: Label
 var breath_bar: ProgressBar
@@ -58,6 +60,11 @@ var reload_clock := 0.0
 var switch_duration := 0.0
 var switch_clock := 0.0
 var dry_kick := 0.0
+var intervene_active_092 := false
+var intervene_clock_092 := 0.0
+var intervene_duration_092 := 0.34
+var intervene_offset_092 := Vector2.ZERO
+var intervene_rotation_092 := 0.0
 var shell_life := 0.0
 var current_prompt := ""
 var damage_flash_079: ColorRect
@@ -75,6 +82,14 @@ var modal_tab_index: int = 0
 var modal_tab_buttons: Array[Button] = []
 var modal_story: RichTextLabel
 var legend_clock: float = 0.0            # seconds of active play; legend fades at 45 s
+## Build 09.2 drop-in weapon animation (assets/weapons/anim_092/<weapon>/).
+## Spec: docs/handover/GPT_WEAPON_ANIMATION_HANDOVER_092.md
+const SpriteAnim092 = preload("res://scripts/sprite_anim_092.gd")
+const WEAPON_ANIM_ROOT_092: String = "res://assets/weapons/anim_092/"
+var weapon_anim_092: RefCounted = null
+var weapon_state_092: String = "idle"
+var weapon_clock_092: float = 0.0
+var weapon_speed_092: float = 1.0
 
 func _ready() -> void:
     add_to_group("game_ui")
@@ -117,12 +132,15 @@ const HUD_086_STYLE: Dictionary = {
 ## assets/ui/hud_091/hud_091_slices.json ({"slot": [left, top, right, bottom]}).
 ## See docs/handover/GPT_HUD_UI_ART_HANDOVER_091.md.
 const HUD_091_PATH: String = "res://assets/ui/hud_091/"
+## 09.2: the override folder is a static setting so tests can point it at a
+## scratch directory instead of writing over delivered art.
+static var art_override_dir: String = HUD_091_PATH
 var _hud091_slices: Dictionary = {}
 var _hud091_slices_loaded: bool = false
 var _hud_texture_cache: Dictionary = {}
 
 func hud_art_path(name: String) -> String:
-    var override: String = HUD_091_PATH + name + ".png"
+    var override: String = art_override_dir + name + ".png"
     if hud_art_has_override(name):
         return override
     return HUD_086_PATH + name + ".png"
@@ -130,7 +148,7 @@ func hud_art_path(name: String) -> String:
 ## True for an imported PNG and for one just copied in before Godot has
 ## imported it (so new art shows on the next run without opening the editor).
 func hud_art_has_override(name: String) -> bool:
-    var path: String = HUD_091_PATH + name + ".png"
+    var path: String = art_override_dir + name + ".png"
     return ResourceLoader.exists(path) or FileAccess.file_exists(path)
 
 func _load_hud_texture(path: String) -> Texture2D:
@@ -149,7 +167,7 @@ func _load_hud_texture(path: String) -> Texture2D:
 func _hud091_margins(name: String) -> Array:
     if not _hud091_slices_loaded:
         _hud091_slices_loaded = true
-        var path: String = HUD_091_PATH + "hud_091_slices.json"
+        var path: String = art_override_dir + "hud_091_slices.json"
         if FileAccess.file_exists(path):
             var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
             if parsed is Dictionary: _hud091_slices = parsed
@@ -168,7 +186,7 @@ func _hud086_texture(name: String) -> Texture2D:
 func hud_optional_skin(name: String, fallback: StyleBox) -> StyleBox:
     if not hud_art_has_override(name):
         return fallback
-    var tex: Texture2D = _load_hud_texture(HUD_091_PATH + name + ".png")
+    var tex: Texture2D = _load_hud_texture(art_override_dir + name + ".png")
     if tex == null:
         return fallback
     var style := StyleBoxTexture.new()
@@ -453,6 +471,11 @@ func build_base() -> void:
     vitals_panel.add_child(med_text)
     med_text.size = Vector2(60, 13)
 
+    # 09.3: stealth cue (visibility + nearest guard's alarm), above the vitals.
+    awareness_cue_093 = AwarenessCue093.new()
+    overlay.add_child(awareness_cue_093)
+    awareness_cue_093.build(self, _hud086_skin("hud_frame_steel", Vector4(6, 2, 6, 2)))
+
     weapon_panel = Panel.new()
     weapon_panel.position = Vector2(428, 340)
     weapon_panel.size = Vector2(204, 54)
@@ -567,7 +590,7 @@ func build_base() -> void:
 
 func update_hud() -> void:
     if not Game.has_attempt():
-        zone_label.text = "THE NINTH EXHALE / BUILD 08.7"
+        zone_label.text = "THE NINTH EXHALE / BUILD 09.3"
         objective_label.text = "Enter Hearth Nine and open the civic pressure docket."
         navigation.text = "NO ACTIVE ROUTE"
         hp_text.text = "--"
@@ -829,15 +852,53 @@ func set_weapon(id: String) -> void:
     var path: String = "res://assets/weapons/%s_idle.png" % id
     if ResourceLoader.exists(path):
         gun.texture = load(path)
+    weapon_anim_092 = SpriteAnim092.load_set(id, WEAPON_ANIM_ROOT_092)
+    _weapon_play_092("draw" if weapon_anim_092 != null and weapon_anim_092.has_state("draw") else "idle", 1.0)
     recoil_strength = 0.0
     shot_flash = 0.0
     reload_clock = 0.0
     dry_kick = 0.0
+    intervene_active_092 = false
+    intervene_clock_092 = 0.0
+    intervene_offset_092 = Vector2.ZERO
+    intervene_rotation_092 = 0.0
     muzzle.visible = false
     shell.visible = false
     update_hud()
 
+## Painted weapon state, scaled to fit `fit_seconds` when given (reloads follow
+## the catalog reload time, whatever the frame count).
+func _weapon_play_092(state: String, fit_seconds: float = 0.0) -> void:
+    if weapon_anim_092 == null or not weapon_anim_092.has_state(state):
+        return
+    weapon_state_092 = state
+    weapon_clock_092 = 0.0
+    var natural: float = weapon_anim_092.duration(state)
+    weapon_speed_092 = natural / fit_seconds if fit_seconds > 0.05 and natural > 0.0 else 1.0
+
+func weapon_anchor_092(name: String, fallback: Vector2) -> Vector2:
+    if weapon_anim_092 == null: return fallback
+    var anchors: Dictionary = weapon_anim_092.meta.get("anchors", {})
+    var a: Array = anchors.get(name, [])
+    return Vector2(float(a[0]), float(a[1])) if a.size() == 2 else fallback
+
 func weapon_event(kind: String, duration: float) -> void:
+    if weapon_anim_092 != null:
+        match kind:
+            "fire": _weapon_play_092("fire")
+            "reload": _weapon_play_092("reload", duration)
+            "reload_complete": _weapon_play_092("idle")
+            "switch": _weapon_play_092("draw", duration)
+            "dry": _weapon_play_092("dry" if weapon_anim_092.has_state("dry") else "idle")
+            "intervene": _weapon_play_092("intervene" if weapon_anim_092.has_state("intervene") else "idle")
+    if kind == "intervene":
+        intervene_active_092 = true
+        intervene_clock_092 = 0.0
+        intervene_duration_092 = 0.34
+        intervene_offset_092 = Vector2.ZERO
+        intervene_rotation_092 = 0.0
+        dry_kick = 0.0
+        shot_flash = 0.0
     if kind == "reload":
         reload_duration = maxf(0.01, duration)
         reload_clock = reload_duration
@@ -864,19 +925,60 @@ func _advance_viewmodel(delta: float) -> void:
     var sway: float = sin(anim_clock * 9.0) * 2.3 if walking else sin(anim_clock * 1.45) * 0.65
     var bounce: float = absf(sin(anim_clock * 9.0)) * 2.5 if walking else sin(anim_clock * 1.8) * 0.65
     var recoil_px: float = 15.0 if active_weapon == "coil" else (3.2 if active_weapon == "nail" else 9.0)
+    var painted: bool = weapon_anim_092 != null
+    if painted:
+        # Painted frames carry their own recoil and reload; keep only sway and
+        # the share of procedural kick the weapon's manifest asks for.
+        var procedural: Dictionary = weapon_anim_092.meta.get("procedural", {})
+        recoil_px *= float(procedural.get("recoil", 0.35 if weapon_anim_092.has_state("fire") else 1.0))
+        _advance_weapon_frames_092(delta)
     var kick: Vector2 = Vector2(-0.30 * recoil_px * recoil_strength, recoil_px * recoil_strength)
     var reload_dip: float = 0.0
     if reload_clock > 0.0:
         reload_clock = maxf(0.0, reload_clock - delta)
         var progress: float = 1.0 - reload_clock / maxf(0.01, reload_duration)
         reload_dip = pow(sin(PI * progress), 0.85)
+        if painted and weapon_anim_092.has_state("reload") and not bool(weapon_anim_092.meta.get("procedural", {}).get("reload_dip", false)):
+            reload_dip = 0.0
     var switch_dip: float = 0.0
     if switch_clock > 0.0:
         switch_clock = maxf(0.0, switch_clock - delta)
         switch_dip = sin(PI * (1.0 - switch_clock / maxf(0.01, switch_duration)))
-    gun.position=Vector2(sway - 20.0 * reload_dip, bounce + 105.0 * reload_dip + 85.0 * switch_dip) + kick + Vector2(1.5 * sin(anim_clock * 43.0) * dry_kick / 0.14, 0)
-    gun.rotation = -0.11 * reload_dip + 0.015 * recoil_strength
-    muzzle.position = Vector2(310, 91) + Vector2(sway, bounce) + kick
+    # When no authored intervene strip exists, use a separate forward jab and
+    # recovery rather than reusing the empty-trigger rattle.
+    var intervene_offset := Vector2.ZERO
+    var intervene_rotation := 0.0
+    if intervene_active_092:
+        intervene_clock_092 += delta
+        var progress: float = clampf(intervene_clock_092 / maxf(0.01, intervene_duration_092), 0.0, 1.0)
+        if weapon_anim_092 != null and weapon_anim_092.has_state("intervene"):
+            # Painted animation supplies the movement; still advance the event timer.
+            intervene_offset_092 = Vector2.ZERO
+            intervene_rotation_092 = 0.0
+        else:
+            var thrust: float
+            if progress < 0.38:
+                thrust = progress / 0.38
+            elif progress < 0.62:
+                thrust = 1.0
+            else:
+                thrust = 1.0 - (progress - 0.62) / 0.38
+            thrust = clampf(thrust, 0.0, 1.0)
+            intervene_offset_092 = Vector2(-26.0 * thrust, -46.0 * thrust)
+            intervene_rotation_092 = -0.17 * thrust
+        if progress >= 1.0:
+            intervene_active_092 = false
+            intervene_offset_092 = Vector2.ZERO
+            intervene_rotation_092 = 0.0
+        intervene_offset = intervene_offset_092
+        intervene_rotation = intervene_rotation_092
+    else:
+        intervene_offset_092 = Vector2.ZERO
+        intervene_rotation_092 = 0.0
+    gun.position=Vector2(sway - 20.0 * reload_dip, bounce + 105.0 * reload_dip + 85.0 * switch_dip) + kick + Vector2(1.5 * sin(anim_clock * 43.0) * dry_kick / 0.14, 0) + intervene_offset
+    gun.rotation = -0.11 * reload_dip + 0.015 * recoil_strength + intervene_rotation
+    # The muzzle anchor is the flash centre in 640x400 viewmodel space.
+    muzzle.position = weapon_anchor_092("muzzle", Vector2(372, 153)) - muzzle.size * 0.5 + Vector2(sway, bounce) + kick
     if shot_flash > 0.0 and not muzzle_frames_079x.is_empty():
         var pulse_index: int = clampi(int((1.0-shot_flash/0.075)*4.0),0,3)
         muzzle.texture = muzzle_frames_079x[pulse_index]
@@ -885,11 +987,24 @@ func _advance_viewmodel(delta: float) -> void:
     if shell_life > 0.0:
         shell_life = maxf(0.0, shell_life - delta)
         var flight: float = 1.0 - shell_life / 0.42
-        shell.position = Vector2(454 + 65 * flight, 173 + 130 * flight * flight)
+        var port: Vector2 = weapon_anchor_092("shell_port", Vector2(454, 173))
+        shell.position = Vector2(port.x + 65 * flight, port.y + 130 * flight * flight)
         shell.rotation = flight * 5.0
         shell.visible = not modal_open
     else:
         shell.visible = false
+
+func _advance_weapon_frames_092(delta: float) -> void:
+    if not weapon_anim_092.has_state(weapon_state_092):
+        weapon_state_092 = "idle"
+        if not weapon_anim_092.has_state("idle"): return
+    weapon_clock_092 += delta * weapon_speed_092
+    var state_len: float = weapon_anim_092.duration(weapon_state_092)
+    var looping: bool = bool(weapon_anim_092.states[weapon_state_092]["loop"])
+    if not looping and weapon_clock_092 >= state_len:
+        _weapon_play_092("idle")
+    var tex: Texture2D = weapon_anim_092.frame(weapon_state_092, 0, weapon_clock_092)
+    if tex != null: gun.texture = tex
 
 func open_modal(heading: String, description: String, choices: Array, tabs: Array = []) -> void:
     close_modal(false)
@@ -997,7 +1112,9 @@ func open_modal(heading: String, description: String, choices: Array, tabs: Arra
 
     var scroll := ScrollContainer.new()
     scroll.position = Vector2(16, options_y + 20.0)
-    scroll.size = Vector2(524, 309.0 - options_y - 20.0)
+    # 09.2: the 09.1 docket art has a ~16 px bottom border; choices and the
+    # shortcut footer end above it instead of being drawn over the frame.
+    scroll.size = Vector2(524, 300.0 - options_y - 20.0)
     scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
     modal.add_child(scroll)
 
@@ -1035,13 +1152,13 @@ func open_modal(heading: String, description: String, choices: Array, tabs: Arra
             focus_taken = true
 
     var footer := Label.new()
-    footer.position = Vector2(16, 309)
-    footer.size = Vector2(524, 14)
+    footer.position = Vector2(16, 300)
+    footer.size = Vector2(524, 12)
     footer.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     var hint: String = "1-%d choose" % mini(9, choices.size()) if choices.size() > 1 else "1 or ENTER continues"
     if tabbed: hint += " • ←/→ or Q/E switch tabs"
     footer.text = hint + " • TAB or ESC returns here during play"
-    footer.add_theme_font_size_override("font_size", 10)
+    footer.add_theme_font_size_override("font_size", 9)
     footer.add_theme_color_override("font_color", Color("#90a190"))
     modal.add_child(footer)
     Input.mouse_mode = Input.MOUSE_MODE_VISIBLE

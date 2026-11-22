@@ -1,0 +1,585 @@
+{
+  "project": "THE NINTH EXHALE",
+  "set": "HUD_091",
+  "generation_date": "2026-11-21",
+  "source_provider": "OpenAI Image Generation and original deterministic Pillow drawing",
+  "license_review": "pending",
+  "runway_note": "No individual HUD 09.1 image is a Runway export. All Runway task IDs intentionally null. The former Runway Style A task c9d38ddd-b52b-49d4-bcbb-7d00d5af135f was a historical reference only.",
+  "provenance_note": "generator_job_id values refer to actual OpenAI image-generation gen IDs shown in the session; prompts were inferred from conversation and not directly retrievable as exact API arguments.",
+  "elements": {
+    "hud_frame_brass": {
+      "asset_file": "assets/ui/hud_091/hud_frame_brass.png",
+      "runtime_sha256": "aef5cc3dfe745775753c8e3ddda54c33bfc529329128e209406036b1bd0d32d4",
+      "source_file": "art/production_sources/hud_091/ornate_industrial_pressure_hud_frame.png",
+      "source_sha256": "b5e2396e6bcdb6c712089ebd9dcc6325a137617f0b88c7054394440dfa8df92f",
+      "source_provider": "OpenAI Image Generation",
+      "generator_job_id": "64667e00-c40c-47aa-8329-9c8634e70bab",
+      "runway_task_id": null,
+      "prompt": null,
+      "prompt_status": "implicit-context prompt, exact API prompt not available",
+      "pixel_size": {
+        "width": 96,
+        "height": 48
+      },
+      "nine_slice_margins": {
+        "left": 10,
+        "top": 9,
+        "right": 10,
+        "bottom": 9
+      },
+      "processing": "Crop and resample original transparent hud_frame_brass to canonical Godot HUD source dimensions; quantize to 24–28 colours; retain alpha and clean fringe.",
+      "license_review": "pending"
+    },
+    "hud_frame_steel": {
+      "asset_file": "assets/ui/hud_091/hud_frame_steel.png",
+      "runtime_sha256": "b697969b1b693a2af48c4ad76839c1bf41c6f905f685310b5b54c0a28d801116",
+      "source_file": "art/production_sources/hud_091/teal_steel_industrial_hud_panel.png",
+      "source_sha256": "a8017adca6d928a0b85ca81ee26448e04f71a94d1d6cc6a98632dc1f73918805",
+      "source_provider": "OpenAI Image Generation",
+      "generator_job_id": "483040f9-bfe8-4754-9fb0-b47d5f4d9227",
+      "runway_task_id": null,
+      "prompt": null,
+      "prompt_status": "implicit-context prompt, exact API prompt not available",
+      "pixel_size": {
+        "width": 96,
+        "height": 48
+      },
+      "nine_slice_margins": {
+        "left": 10,
+        "top": 9,
+        "right": 10,
+        "bottom": 9
+      },
+      "processing": "Crop and resample original transparent hud_frame_steel to canonical Godot HUD source dimensions; quantize to 24–28 colours; retain alpha and clean fringe.",
+      "license_review": "pending"
+    },
+    "hud_prompt_tab": {
+      "asset_file": "assets/ui/hud_091/hud_prompt_tab.png",
+      "runtime_sha256": "ea2f3d926135aadaefb62a1bb9b7e9306e0dea9399149e670c00ead46469a20a",
+      "source_file": "art/production_sources/hud_091/industrial_brass_service_prompt_bar.png",
+      "source_sha256": "5eb8cb9cedc2d14ea3ef689761694a67831265e8d6740690372cd17b054891a4",
+      "source_provider": "OpenAI Image Generation",
+      "generator_job_id": "e8710948-7d08-4b3c-9a64-caf817e111a2",
+      "runway_task_id": null,
+      "prompt": null,
+      "prompt_status": "implicit-context prompt, exact API prompt not available",
+      "pixel_size": {
+        "width": 128,
+        "height": 26
+      },
+      "nine_slice_margins": {
+        "left": 12,
+        "top": 6,
+        "right": 12,
+        "bottom": 6
+      },
+      "processing": "Crop and resample original transparent hud_prompt_tab to canonical Godot HUD source dimensions; quantize to 24–28 colours; retain alpha and clean fringe.",
+      "license_review": "pending"
+    },
+    "hud_button_normal": {
+      "asset_file": "assets/ui/hud_091/hud_button_normal.png",
+      "runtime_sha256": "2ff4f3f0bfda9de6006374c7a26773b2894ac99e4f0059a7fa89539e5c744f4c",
+      "source_file": "art/production_sources/hud_091/worn_brass_framed_docket_button.png",
+      "source_sha256": "52ac3ffb1d3315f56880044df0fe13fa528912c1634b9a64a6c0bdd17b657082",
+      "source_provider": "OpenAI Image Generation",
+      "generator_job_id": "62582e3a-ea39-47ae-8d39-9ed86c01ab73",
+      "runway_task_id": null,
+      "prompt": null,
+      "prompt_status": "implicit-context prompt, exact API prompt not available",
+      "pixel_size": {
+        "width": 160,
+        "height": 32
+      },
+      "nine_slice_margins": {
+        "left": 14,
+        "top": 7,
+        "right": 14,
+        "bottom": 7
+      },
+      "processing": "Crop and resample original transparent hud_button_normal to canonical Godot HUD source dimensions; quantize to 24–28 colours; retain alpha and clean fringe.",
+      "license_review": "pending"
+    },
+    "hud_button_hover": {
+      "asset_file": "assets/ui/hud_091/hud_button_hover.png",
+      "runtime_sha256": "9dea7eb416b6aa5a45f807ca7688cb90b0caf4ab3b4b56e9c4d6461a55d034e1",
+      "source_file": "art/production_sources/hud_091/premium_brass_docket_hover_button.png",
+      "source_sha256": "ea17b3a39092330247ed0f864571103b2b4661f081aa92b1f366558af7b1a59c",
+      "source_provider": "OpenAI Image Generation",
+      "generator_job_id": "542eae8e-4fe4-4494-9b6a-0a331bbdd993",
+      "runway_task_id": null,
+      "prompt": null,
+      "prompt_status": "implicit-context prompt, exact API prompt not available",
+      "pixel_size": {
+        "width": 160,
+        "height": 32
+      },
+      "nine_slice_margins": {
+        "left": 14,
+        "top": 7,
+        "right": 14,
+        "bottom": 7
+      },
+      "processing": "Crop and resample original transparent hud_button_hover to canonical Godot HUD source dimensions; quantize to 24–28 colours; retain alpha and clean fringe.",
+      "license_review": "pending"
+    },
+    "hud_button_pressed": {
+      "asset_file": "assets/ui/hud_091/hud_button_pressed.png",
+      "runtime_sha256": "a95ccbb9e4b2088d6f7b6360bcd0e42ac2414e8cf6cd797ee51e4270aeacdcc3",
+      "source_file": "art/production_sources/hud_091/pressed_steampunk_brass_docket_button.png",
+      "source_sha256": "b167c1818233e51af3d1d315dcccc6def9caa55c420d99dcaf7e2b807c00f7c7",
+      "source_provider": "OpenAI Image Generation",
+      "generator_job_id": "3e7bd8bc-5ccf-4438-9390-328b234d7702",
+      "runway_task_id": null,
+      "prompt": null,
+      "prompt_status": "implicit-context prompt, exact API prompt not available",
+      "pixel_size": {
+        "width": 160,
+        "height": 32
+      },
+      "nine_slice_margins": {
+        "left": 14,
+        "top": 7,
+        "right": 14,
+        "bottom": 7
+      },
+      "processing": "Crop and resample original transparent hud_button_pressed to canonical Godot HUD source dimensions; quantize to 24–28 colours; retain alpha and clean fringe.",
+      "license_review": "pending"
+    },
+    "hud_slip": {
+      "asset_file": "assets/ui/hud_091/hud_slip.png",
+      "runtime_sha256": "2f6b363a3f130bd02a948b03032accf12db32275d50a2b63590d8960c90ea25e",
+      "source_file": "art/production_sources/hud_091/steampunk_brass_bound_filing_slip.png",
+      "source_sha256": "07f31cbf364acf8d2e9bbe7904430034b8624a48b50315f5102587edcb4b6d77",
+      "source_provider": "OpenAI Image Generation",
+      "generator_job_id": "f812ee3e-70bf-4e16-a59f-97430026e0f7",
+      "runway_task_id": null,
+      "prompt": null,
+      "prompt_status": "implicit-context prompt, exact API prompt not available",
+      "pixel_size": {
+        "width": 64,
+        "height": 22
+      },
+      "nine_slice_margins": {
+        "left": 6,
+        "top": 4,
+        "right": 6,
+        "bottom": 4
+      },
+      "processing": "Crop and resample original transparent hud_slip to canonical Godot HUD source dimensions; quantize to 24–28 colours; retain alpha and clean fringe.",
+      "license_review": "pending"
+    },
+    "hud_stamp_frame": {
+      "asset_file": "assets/ui/hud_091/hud_stamp_frame.png",
+      "runtime_sha256": "d06db4ce4148bb833c46c1a78a732dc70ace6fccc93b88779a6255b69a80b7b7",
+      "source_file": "art/production_sources/hud_091/distressed_vermilion_dossier_frame.png",
+      "source_sha256": "953c7d02f6b00302901b7d910ec682d0c0664cf22765c6a2ea8b86cdf3b05495",
+      "source_provider": "OpenAI Image Generation",
+      "generator_job_id": "9e343161-7f73-4381-bfca-2463d12465bc",
+      "runway_task_id": null,
+      "prompt": null,
+      "prompt_status": "implicit-context prompt, exact API prompt not available",
+      "pixel_size": {
+        "width": 150,
+        "height": 37
+      },
+      "nine_slice_margins": {
+        "left": 12,
+        "top": 8,
+        "right": 12,
+        "bottom": 8
+      },
+      "processing": "Crop and resample original transparent hud_stamp_frame to canonical Godot HUD source dimensions; quantize to 24–28 colours; retain alpha and clean fringe.",
+      "license_review": "pending"
+    },
+    "hud_keycap": {
+      "asset_file": "assets/ui/hud_091/hud_keycap.png",
+      "runtime_sha256": "fde9bc90f27744de85d500d5c30fa9dd7a0186be66f35e56354426bae19c8aec",
+      "source_file": "art/production_sources/hud_091/worn_brass_industrial_keycap.png",
+      "source_sha256": "7b890951aec5f79c6b947bf947e6e976946e7d376ec802382fc6cd5d31be1abb",
+      "source_provider": "OpenAI Image Generation",
+      "generator_job_id": "d9f55a7c-e903-40bd-88d9-7aa34c8bfc8c",
+      "runway_task_id": null,
+      "prompt": null,
+      "prompt_status": "implicit-context prompt, exact API prompt not available",
+      "pixel_size": {
+        "width": 17,
+        "height": 16
+      },
+      "nine_slice_margins": {
+        "left": 3,
+        "top": 2,
+        "right": 3,
+        "bottom": 4
+      },
+      "processing": "Crop and resample original transparent hud_keycap to canonical Godot HUD source dimensions; quantize to 24–28 colours; retain alpha and clean fringe.",
+      "license_review": "pending"
+    },
+    "hud_docket_modal": {
+      "asset_file": "assets/ui/hud_091/hud_docket_modal.png",
+      "runtime_sha256": "3578099beff8256f4afd90ecc7078590d58596ebe9b0cb8eb7510f214d8afeb7",
+      "source_file": "art/production_sources/hud_091/industrial_pressure_dossier_panel.png",
+      "source_sha256": "b08c64436ed798e233e2742840bf3ce67b29601ea271dd0fb4d859aafd076052",
+      "source_provider": "OpenAI Image Generation",
+      "generator_job_id": "98a72207-51dd-48be-979e-93db72d09ada",
+      "runway_task_id": null,
+      "prompt": null,
+      "prompt_status": "implicit-context prompt, exact API prompt not available",
+      "pixel_size": {
+        "width": 280,
+        "height": 166
+      },
+      "nine_slice_margins": {
+        "left": 20,
+        "top": 20,
+        "right": 20,
+        "bottom": 20
+      },
+      "processing": "Reconstruct generated dossier frame: retain outer edge, paint neutral dark content area and header; remove all baked-in action bars and tab replicas before Godot draws live buttons.",
+      "license_review": "pending"
+    },
+    "hud_frame_route": {
+      "asset_file": "assets/ui/hud_091/hud_frame_route.png",
+      "runtime_sha256": "f34ed7b16ba30b5272364db1cb67c77171791a20cbcad126ed8f32663ddc2e62",
+      "source_file": "art/production_sources/hud_091/teal_steel_industrial_hud_panel.png",
+      "source_sha256": "a8017adca6d928a0b85ca81ee26448e04f71a94d1d6cc6a98632dc1f73918805",
+      "source_provider": "OpenAI Image Generation",
+      "generator_job_id": "483040f9-bfe8-4754-9fb0-b47d5f4d9227",
+      "runway_task_id": null,
+      "prompt": null,
+      "prompt_status": "implicit-context prompt, exact API prompt not available",
+      "pixel_size": {
+        "width": 96,
+        "height": 28
+      },
+      "nine_slice_margins": {
+        "left": 8,
+        "top": 5,
+        "right": 8,
+        "bottom": 5
+      },
+      "processing": "Derivative crop of steel frame for 248x28 route compass; 9-slice corners reduced to 8x5; dark centre.",
+      "license_review": "pending"
+    },
+    "hud_tab_active": {
+      "asset_file": "assets/ui/hud_091/hud_tab_active.png",
+      "runtime_sha256": "e96afab8d7c318160c453fc9cda1642a01eb6d3cedcc4d15ceae72fb25b0151d",
+      "source_file": "art/production_sources/hud_091/hud_tab_active_programmatic_source.png",
+      "source_sha256": "2c3c9e78841655c0c58950b17ef736a5f36c77cc889826dee7dba0998112709b",
+      "source_provider": "Pillow procedural drawing",
+      "generator_job_id": null,
+      "runway_task_id": null,
+      "prompt": "Activated docket tab, stale paper and brass upper rule, plain dark-text face, no label.",
+      "prompt_status": "not a model prompt: original drawing specification",
+      "pixel_size": {
+        "width": 48,
+        "height": 18
+      },
+      "nine_slice_margins": {
+        "left": 6,
+        "top": 5,
+        "right": 6,
+        "bottom": 1
+      },
+      "processing": "Original deterministic 4x vector/pixel drawing; Box downsample to game size, 16-colour quantization.",
+      "license_review": "pending"
+    },
+    "hud_tab_idle": {
+      "asset_file": "assets/ui/hud_091/hud_tab_idle.png",
+      "runtime_sha256": "6bb820b0e1e541aff3292e7585fc9d252be0f3f210d379b95e127ee2df248801",
+      "source_file": "art/production_sources/hud_091/hud_tab_idle_programmatic_source.png",
+      "source_sha256": "f6441b9bc99254664619e93b96d4cbb11388bd44d5856c01c7c5888db046a52a",
+      "source_provider": "Pillow procedural drawing",
+      "generator_job_id": null,
+      "runway_task_id": null,
+      "prompt": "Inactive docket tab, dark iron face for cream text, reduced glint, no label.",
+      "prompt_status": "not a model prompt: original drawing specification",
+      "pixel_size": {
+        "width": 48,
+        "height": 18
+      },
+      "nine_slice_margins": {
+        "left": 6,
+        "top": 5,
+        "right": 6,
+        "bottom": 1
+      },
+      "processing": "Original deterministic 4x vector/pixel drawing; Box downsample to game size, 16-colour quantization.",
+      "license_review": "pending"
+    },
+    "hud_bar_track": {
+      "asset_file": "assets/ui/hud_091/hud_bar_track.png",
+      "runtime_sha256": "8ddadafea90945c3b46486fa7847ecb5c1b8416ae4f64a6215e3e710da20e8d3",
+      "source_file": "art/production_sources/hud_091/hud_bar_track_programmatic_source.png",
+      "source_sha256": "7aa91f4104959c910f0360ef5f6870fe51a46fcc2dabebfe9bb0dbb3b88abda1",
+      "source_provider": "Pillow procedural drawing",
+      "generator_job_id": null,
+      "runway_task_id": null,
+      "prompt": "Recessed uniform pressure-gauge channel with retained 6,3,6,3 nine-slice ends.",
+      "prompt_status": "not a model prompt: original drawing specification",
+      "pixel_size": {
+        "width": 96,
+        "height": 10
+      },
+      "nine_slice_margins": {
+        "left": 4,
+        "top": 1,
+        "right": 4,
+        "bottom": 1
+      },
+      "processing": "Original deterministic 4x vector/pixel drawing; Box downsample to game size, 16-colour quantization.",
+      "license_review": "pending"
+    },
+    "hud_bar_fill_health": {
+      "asset_file": "assets/ui/hud_091/hud_bar_fill_health.png",
+      "runtime_sha256": "de9cbd946e11eff6c9d6ec5cdfbc9fce7c9167de063634a60db98c470b64b3ec",
+      "source_file": "art/production_sources/hud_091/hud_bar_fill_health_programmatic_source.png",
+      "source_sha256": "bb7a760a43a85333c9b068f50efc40805c704bc082b38bd242885877a932c656",
+      "source_provider": "Pillow procedural drawing",
+      "generator_job_id": null,
+      "runway_task_id": null,
+      "prompt": "Flat tileable warm red ochre fill with one-pixel top edge, no endcaps.",
+      "prompt_status": "not a model prompt: original drawing specification",
+      "pixel_size": {
+        "width": 96,
+        "height": 10
+      },
+      "nine_slice_margins": null,
+      "processing": "Original deterministic 4x vector/pixel drawing; Box downsample to game size, 16-colour quantization.",
+      "license_review": "pending"
+    },
+    "hud_bar_fill_breath": {
+      "asset_file": "assets/ui/hud_091/hud_bar_fill_breath.png",
+      "runtime_sha256": "812d5432211de0dcb7563e8141435e5a55a14fe0f107419c2a69ccb25fcdb0bc",
+      "source_file": "art/production_sources/hud_091/hud_bar_fill_breath_programmatic_source.png",
+      "source_sha256": "9982440658666524b4c00f42ae256e582b2951425d2e17ca1bea65046a1800dc",
+      "source_provider": "Pillow procedural drawing",
+      "generator_job_id": null,
+      "runway_task_id": null,
+      "prompt": "Flat tileable oxide teal pressure fill, no endcaps.",
+      "prompt_status": "not a model prompt: original drawing specification",
+      "pixel_size": {
+        "width": 96,
+        "height": 10
+      },
+      "nine_slice_margins": null,
+      "processing": "Original deterministic 4x vector/pixel drawing; Box downsample to game size, 16-colour quantization.",
+      "license_review": "pending"
+    },
+    "hud_bar_fill_heat": {
+      "asset_file": "assets/ui/hud_091/hud_bar_fill_heat.png",
+      "runtime_sha256": "89049aadcdc3f46781e55e119d0981bb48d972644a3de186a168c2cc076799ae",
+      "source_file": "art/production_sources/hud_091/hud_bar_fill_heat_programmatic_source.png",
+      "source_sha256": "5f356ef25cfa12d6b0beccaafb7282ebbdbcc25bd3ddc3110fb746eb746a05ca",
+      "source_provider": "Pillow procedural drawing",
+      "generator_job_id": null,
+      "runway_task_id": null,
+      "prompt": "Flat tileable amber heat fill, no endcaps and no left-to-right gradient.",
+      "prompt_status": "not a model prompt: original drawing specification",
+      "pixel_size": {
+        "width": 145,
+        "height": 10
+      },
+      "nine_slice_margins": null,
+      "processing": "Original deterministic 4x vector/pixel drawing; Box downsample to game size, 16-colour quantization.",
+      "license_review": "pending"
+    },
+    "hud_reticle": {
+      "asset_file": "assets/ui/hud_091/hud_reticle.png",
+      "runtime_sha256": "bd7d329dbbe71e85c14390b51a18e1f41bb79f63286220f3f40ccadc02e7429b",
+      "source_file": "art/production_sources/hud_091/hud_reticle_programmatic_source.png",
+      "source_sha256": "050151b119e40ca8948b212aa0382fcbd4d065a1abbed9e76bff78a47478aced",
+      "source_provider": "Pillow procedural drawing",
+      "generator_job_id": null,
+      "runway_task_id": null,
+      "prompt": "32x32 4-arm crosshair with 6x6 open centre and crisp outlined strokes.",
+      "prompt_status": "not a model prompt: original drawing specification",
+      "pixel_size": {
+        "width": 32,
+        "height": 32
+      },
+      "nine_slice_margins": null,
+      "processing": "Original deterministic 4x vector/pixel drawing; Box downsample to game size, 16-colour quantization.",
+      "license_review": "pending"
+    },
+    "hud_reticle_hit": {
+      "asset_file": "assets/ui/hud_091/hud_reticle_hit.png",
+      "runtime_sha256": "27ba67e7172c44e841c28ad26bcb4498b144465ce9bc6c37d3c551a367dea46c",
+      "source_file": "art/production_sources/hud_091/hud_reticle_hit_programmatic_source.png",
+      "source_sha256": "e531de6417756aa6734ff86f4f5e744a80a8fde18cc82ad6ae1c6d07193a5ea1",
+      "source_provider": "Pillow procedural drawing",
+      "generator_job_id": null,
+      "runway_task_id": null,
+      "prompt": "32x32 brighter impact state, close ink ticks without blocking centre.",
+      "prompt_status": "not a model prompt: original drawing specification",
+      "pixel_size": {
+        "width": 32,
+        "height": 32
+      },
+      "nine_slice_margins": null,
+      "processing": "Original deterministic 4x vector/pixel drawing; Box downsample to game size, 16-colour quantization.",
+      "license_review": "pending"
+    },
+    "icon_health": {
+      "asset_file": "assets/ui/hud_091/icon_health.png",
+      "runtime_sha256": "a77acafbe8eeb914e4b17077fb0007de6bedb3420c9d4e3a8b49525a2e733b25",
+      "source_file": "art/production_sources/hud_091/icon_health_programmatic_source.png",
+      "source_sha256": "0e70dfcd5a0ffa0ef535f6ea787dfb0734dae2cbb6e17e626023bbd1e3038c4c",
+      "source_provider": "Pillow procedural drawing",
+      "generator_job_id": null,
+      "runway_task_id": null,
+      "prompt": "Original 24px two-tone symbol redrawn from generated concept to remain legible at the 12px Godot draw size; icon_health.",
+      "prompt_status": "not a model prompt: original drawing specification",
+      "pixel_size": {
+        "width": 24,
+        "height": 24
+      },
+      "nine_slice_margins": null,
+      "processing": "Pillow pixel polygons at native 24x24; high-resolution 96px nearest-neighbour master source; no model task ID.",
+      "license_review": "pending"
+    },
+    "icon_breath": {
+      "asset_file": "assets/ui/hud_091/icon_breath.png",
+      "runtime_sha256": "1c2631ebe29110e5520087a5e9f1943b7c1ab730ecf85398dd46128156bed711",
+      "source_file": "art/production_sources/hud_091/a_clean_graphic_sprite_sheet_icon_set_on_a_trans.png",
+      "source_sha256": "60317ffb0f1bd94b9ed9b8fba941260af6ac05429494c9606b4bbb631d9addc5",
+      "source_provider": "OpenAI Image Generation",
+      "generator_job_id": "f53f3ae5-6416-4884-af58-de1c822fc6ce",
+      "runway_task_id": null,
+      "prompt": null,
+      "prompt_status": "implicit-context prompt, exact API prompt not available",
+      "pixel_size": {
+        "width": 24,
+        "height": 24
+      },
+      "nine_slice_margins": null,
+      "processing": "Icon cropped from 3x3 OpenAI-generated concept sheet; checkerboard background removed, 20px fit into 24px alpha PNG, quantized to 11 colours and nearest-neighbour-ready silhouette.",
+      "license_review": "pending"
+    },
+    "icon_ampoule": {
+      "asset_file": "assets/ui/hud_091/icon_ampoule.png",
+      "runtime_sha256": "bbed9574f60a55345287efef9c9d0c17db7b248e093626bea8c844b04db8f06b",
+      "source_file": "art/production_sources/hud_091/icon_ampoule_programmatic_source.png",
+      "source_sha256": "1f5f2b6c7aa0c9360f91ea4afe5631443d265f418631b397ae368cf724b2b7a9",
+      "source_provider": "Pillow procedural drawing",
+      "generator_job_id": null,
+      "runway_task_id": null,
+      "prompt": "Original 24px two-tone symbol redrawn from generated concept to remain legible at the 12px Godot draw size; icon_ampoule.",
+      "prompt_status": "not a model prompt: original drawing specification",
+      "pixel_size": {
+        "width": 24,
+        "height": 24
+      },
+      "nine_slice_margins": null,
+      "processing": "Pillow pixel polygons at native 24x24; high-resolution 96px nearest-neighbour master source; no model task ID.",
+      "license_review": "pending"
+    },
+    "icon_ammo": {
+      "asset_file": "assets/ui/hud_091/icon_ammo.png",
+      "runtime_sha256": "3c95f6860c323b819ab1c634e2acedadfc3969f3f91c709ede05ad2930c39a2c",
+      "source_file": "art/production_sources/hud_091/icon_ammo_programmatic_source.png",
+      "source_sha256": "5c3145a3b3cde5e09d1a8a061d38cfd1d410d04471350479f14ef2f4c117ffd5",
+      "source_provider": "Pillow procedural drawing",
+      "generator_job_id": null,
+      "runway_task_id": null,
+      "prompt": "Original 24px two-tone symbol redrawn from generated concept to remain legible at the 12px Godot draw size; icon_ammo.",
+      "prompt_status": "not a model prompt: original drawing specification",
+      "pixel_size": {
+        "width": 24,
+        "height": 24
+      },
+      "nine_slice_margins": null,
+      "processing": "Pillow pixel polygons at native 24x24; high-resolution 96px nearest-neighbour master source; no model task ID.",
+      "license_review": "pending"
+    },
+    "icon_heat": {
+      "asset_file": "assets/ui/hud_091/icon_heat.png",
+      "runtime_sha256": "2218ddafa738539bbeffc221b85abd833d553ab109a53c27d665d47ca4ae137b",
+      "source_file": "art/production_sources/hud_091/a_clean_graphic_sprite_sheet_icon_set_on_a_trans.png",
+      "source_sha256": "60317ffb0f1bd94b9ed9b8fba941260af6ac05429494c9606b4bbb631d9addc5",
+      "source_provider": "OpenAI Image Generation",
+      "generator_job_id": "f53f3ae5-6416-4884-af58-de1c822fc6ce",
+      "runway_task_id": null,
+      "prompt": null,
+      "prompt_status": "implicit-context prompt, exact API prompt not available",
+      "pixel_size": {
+        "width": 24,
+        "height": 24
+      },
+      "nine_slice_margins": null,
+      "processing": "Icon cropped from 3x3 OpenAI-generated concept sheet; checkerboard background removed, 20px fit into 24px alpha PNG, quantized to 11 colours and nearest-neighbour-ready silhouette.",
+      "license_review": "pending"
+    },
+    "icon_writ": {
+      "asset_file": "assets/ui/hud_091/icon_writ.png",
+      "runtime_sha256": "e9490337c6f5fa947e3f2ccf2b67e9b4e183ce9e53ebcb8e2fbe40823c8f1c51",
+      "source_file": "art/production_sources/hud_091/a_clean_graphic_sprite_sheet_icon_set_on_a_trans.png",
+      "source_sha256": "60317ffb0f1bd94b9ed9b8fba941260af6ac05429494c9606b4bbb631d9addc5",
+      "source_provider": "OpenAI Image Generation",
+      "generator_job_id": "f53f3ae5-6416-4884-af58-de1c822fc6ce",
+      "runway_task_id": null,
+      "prompt": null,
+      "prompt_status": "implicit-context prompt, exact API prompt not available",
+      "pixel_size": {
+        "width": 24,
+        "height": 24
+      },
+      "nine_slice_margins": null,
+      "processing": "Icon cropped from 3x3 OpenAI-generated concept sheet; checkerboard background removed, 20px fit into 24px alpha PNG, quantized to 11 colours and nearest-neighbour-ready silhouette.",
+      "license_review": "pending"
+    },
+    "icon_evidence_tab": {
+      "asset_file": "assets/ui/hud_091/icon_evidence_tab.png",
+      "runtime_sha256": "a33186c4774dcc905685c9a98cc223991d49db8cb0097a6c7310d956be888ceb",
+      "source_file": "art/production_sources/hud_091/a_clean_graphic_sprite_sheet_icon_set_on_a_trans.png",
+      "source_sha256": "60317ffb0f1bd94b9ed9b8fba941260af6ac05429494c9606b4bbb631d9addc5",
+      "source_provider": "OpenAI Image Generation",
+      "generator_job_id": "f53f3ae5-6416-4884-af58-de1c822fc6ce",
+      "runway_task_id": null,
+      "prompt": null,
+      "prompt_status": "implicit-context prompt, exact API prompt not available",
+      "pixel_size": {
+        "width": 24,
+        "height": 24
+      },
+      "nine_slice_margins": null,
+      "processing": "Icon cropped from 3x3 OpenAI-generated concept sheet; checkerboard background removed, 20px fit into 24px alpha PNG, quantized to 11 colours and nearest-neighbour-ready silhouette.",
+      "license_review": "pending"
+    },
+    "icon_interact": {
+      "asset_file": "assets/ui/hud_091/icon_interact.png",
+      "runtime_sha256": "b0c4ee5d356247fb686c85806c472a1e3e5d84795d1f9b732c8b3b5be591bbb1",
+      "source_file": "art/production_sources/hud_091/icon_interact_programmatic_source.png",
+      "source_sha256": "45c8bfe461b27d267f3ab6a45b77e0b43798c7782d83753a7bdcea40a3d15eb0",
+      "source_provider": "Pillow procedural drawing",
+      "generator_job_id": null,
+      "runway_task_id": null,
+      "prompt": "Original 24px two-tone symbol redrawn from generated concept to remain legible at the 12px Godot draw size; icon_interact.",
+      "prompt_status": "not a model prompt: original drawing specification",
+      "pixel_size": {
+        "width": 24,
+        "height": 24
+      },
+      "nine_slice_margins": null,
+      "processing": "Pillow pixel polygons at native 24x24; high-resolution 96px nearest-neighbour master source; no model task ID.",
+      "license_review": "pending"
+    },
+    "icon_route_arrow": {
+      "asset_file": "assets/ui/hud_091/icon_route_arrow.png",
+      "runtime_sha256": "794d984920bfa65cdac68c9d3d2d93c1cda81bb7e4375d2e2c39ea2c108791b5",
+      "source_file": "art/production_sources/hud_091/a_clean_graphic_sprite_sheet_icon_set_on_a_trans.png",
+      "source_sha256": "60317ffb0f1bd94b9ed9b8fba941260af6ac05429494c9606b4bbb631d9addc5",
+      "source_provider": "OpenAI Image Generation",
+      "generator_job_id": "f53f3ae5-6416-4884-af58-de1c822fc6ce",
+      "runway_task_id": null,
+      "prompt": null,
+      "prompt_status": "implicit-context prompt, exact API prompt not available",
+      "pixel_size": {
+        "width": 24,
+        "height": 24
+      },
+      "nine_slice_margins": null,
+      "processing": "Icon cropped from 3x3 OpenAI-generated concept sheet; checkerboard background removed, 20px fit into 24px alpha PNG, quantized to 11 colours and nearest-neighbour-ready silhouette.",
+      "license_review": "pending"
+    }
+  }
+}

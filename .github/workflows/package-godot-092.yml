@@ -1,0 +1,128 @@
+name: Package complete Godot 4.4.1 project
+on:
+  push:
+    branches:
+      - feature/weapon-art-092-20261122
+    paths:
+      - .github/workflows/package-godot-092.yml
+      - docs/handover/PACKAGE_092_TRIGGER*.md
+      - scripts/game_ui.gd
+      - tests/godot_anim_092.gd
+      - README.md
+      - docs/handover/BUILD_092_COMPLETION_GAP_REGISTER.md
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  package-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install test and rendering tools
+        run: |
+          python -m pip install --upgrade pip pillow pytest numpy
+          sudo apt-get update
+          sudo apt-get install -y xvfb libgl1-mesa-dri rsync unzip zip
+      - name: Download Godot 4.4.1 stable Linux x86_64
+        run: |
+          curl -fL --retry 3 -o godot.zip https://github.com/godotengine/godot/releases/download/4.4.1-stable/Godot_v4.4.1-stable_linux.x86_64.zip
+          unzip -q godot.zip
+          chmod +x Godot_v4.4.1-stable_linux.x86_64
+          ./Godot_v4.4.1-stable_linux.x86_64 --version
+      - name: Import complete project
+        run: ./Godot_v4.4.1-stable_linux.x86_64 --headless --editor --path . --quit
+      - name: Python regression suite
+        run: |
+          python3 -m pytest tests
+          python3 tests/validate_project.py
+      - name: Godot runtime suites
+        run: |
+          GODOT=./Godot_v4.4.1-stable_linux.x86_64
+          $GODOT --headless --path . res://tests/godot_scene_smoke_084.tscn
+          $GODOT --headless --path . res://tests/godot_anim_092.tscn
+          $GODOT --headless --path . --script res://tests/godot_weapon_art_092.gd
+          $GODOT --headless --path . res://tests/godot_perception_092.tscn
+          $GODOT --headless --path . res://tests/godot_hud_override_091.tscn
+      - name: Rendered startup smoke (zero-duration playbot)
+        env:
+          GODOT: ${{ github.workspace }}/Godot_v4.4.1-stable_linux.x86_64
+          BOT_SECONDS: "0"
+          BOT_POLICY: combat
+          CAP_DIR: ${{ github.workspace }}/artifacts/package_playbot
+        run: |
+          mkdir -p "$CAP_DIR"
+          xvfb-run -a env LIBGL_ALWAYS_SOFTWARE=1 GODOT="$GODOT" BOT_SECONDS="$BOT_SECONDS" BOT_POLICY="$BOT_POLICY" CAP_DIR="$CAP_DIR" tools/playbot_090/run_playbot.sh "$CAP_DIR" 0
+      - name: Assemble complete runnable project
+        run: |
+          mkdir -p package/THE_NINTH_EXHALE
+          rsync -a --delete \
+            --exclude='.git/' --exclude='.godot/' --exclude='.pytest_cache/' --exclude='package/' \
+            --exclude='artifacts/' --exclude='*.zip' --exclude='godot.zip' \
+            --exclude='Godot_v4.4.1-stable_linux.x86_64' \
+            ./ package/THE_NINTH_EXHALE/
+          cp Godot_v4.4.1-stable_linux.x86_64 package/THE_NINTH_EXHALE/
+          cat > package/THE_NINTH_EXHALE/RUN_GAME.sh <<'EOF'
+          #!/usr/bin/env bash
+          set -euo pipefail
+          ROOT="$(cd -- "$(dirname -- "$0")" && pwd)"
+          GODOT="$ROOT/Godot_v4.4.1-stable_linux.x86_64"
+          if [[ ! -x "$GODOT" ]]; then chmod +x "$GODOT"; fi
+          exec "$GODOT" --path "$ROOT" "$@"
+          EOF
+          chmod +x package/THE_NINTH_EXHALE/RUN_GAME.sh
+          cat > package/THE_NINTH_EXHALE/RUN_TESTS.sh <<'EOF'
+          #!/usr/bin/env bash
+          set -euo pipefail
+          ROOT="$(cd -- "$(dirname -- "$0")" && pwd)"
+          GODOT="$ROOT/Godot_v4.4.1-stable_linux.x86_64"
+          "$GODOT" --headless --editor --path "$ROOT" --quit
+          "$GODOT" --headless --path "$ROOT" res://tests/godot_scene_smoke_084.tscn
+          "$GODOT" --headless --path "$ROOT" res://tests/godot_anim_092.tscn
+          "$GODOT" --headless --script res://tests/godot_weapon_art_092.gd --path "$ROOT"
+          "$GODOT" --headless --path "$ROOT" res://tests/godot_perception_092.tscn
+          "$GODOT" --headless --path "$ROOT" res://tests/godot_hud_override_091.tscn
+          EOF
+          chmod +x package/THE_NINTH_EXHALE/RUN_TESTS.sh
+          cat > package/THE_NINTH_EXHALE/PACKAGED_RUNTIME_README.md <<'EOF'
+          # THE NINTH EXHALE — Build 09.2 runnable Linux package
+          
+          Includes the complete Godot project source/assets and the official Godot 4.4.1 stable Linux x86_64 executable used for verification.
+          
+          ## Run
+          From this directory:
+          
+              ./RUN_GAME.sh
+          
+          The first launch may take longer while Godot imports project assets. No external Python packages are required to play.
+          
+          ## Test
+          
+              ./RUN_TESTS.sh
+          
+          The package targets Linux x86_64. The game uses a 640x400 viewport and Godot's GL Compatibility renderer.
+          
+          Controls: WASD + mouse to move/look; LMB fire; R reload; 2–5 switch weapon; E interact; F/right-click intervene; TAB or ESC opens dossier.
+          
+          Weapon animation coverage is documented in art/ART_ANIMATION_COVERAGE_092.csv and docs/handover/WEAPON_092_QA.md. Reload, dry, draw and intervene still use the existing procedural fallback; Nail Storm vent and Choirbreaker shutter ripple are not yet authored.
+          EOF
+          cd package
+          zip -qr -1 THE_NINTH_EXHALE_BUILD_092_GODOT_441_LINUX.zip THE_NINTH_EXHALE
+          sha256sum THE_NINTH_EXHALE_BUILD_092_GODOT_441_LINUX.zip > THE_NINTH_EXHALE_BUILD_092_GODOT_441_LINUX.zip.sha256
+          ls -lh THE_NINTH_EXHALE_BUILD_092_GODOT_441_LINUX.zip
+      - name: Upload complete game and verification captures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: the-ninth-exhale-092-godot-441-linux
+          path: |
+            package/THE_NINTH_EXHALE_BUILD_092_GODOT_441_LINUX.zip
+            package/THE_NINTH_EXHALE_BUILD_092_GODOT_441_LINUX.zip.sha256
+            artifacts/package_playbot
+          if-no-files-found: warn
+          retention-days: 30

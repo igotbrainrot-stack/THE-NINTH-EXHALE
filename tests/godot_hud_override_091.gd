@@ -2,12 +2,14 @@ extends Node
 ## Build 09.1: art dropped into assets/ui/hud_091/ overrides HUD slots without
 ## code changes, including PNGs Godot has not imported yet, with 9-slice
 ## margins from hud_091_slices.json. Missing or broken slots fall back to the
-## 08.6 set. The test removes everything it writes. Exits 1 on failure.
-const DIR := "res://assets/ui/hud_091/"
+## 08.6 set. 09.2: it writes only into a scratch folder under user:// and
+## points the loader there, so delivered hud_091 art is never touched.
+## Exits 1 on failure.
+const GameUI = preload("res://scripts/game_ui.gd")
+const DIR := "user://hud_override_test_091/"
 var failures: Array[String] = []
 var passes: int = 0
 var written: Array[String] = []
-var slices_backup: String = ""
 
 func _ready() -> void:
     call_deferred("_run")
@@ -24,7 +26,9 @@ func _png(slot: String, size: Vector2i, color: Color) -> void:
     written.append(path)
 
 func _run() -> void:
-    slices_backup = FileAccess.get_file_as_string(DIR + "hud_091_slices.json")
+    DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(DIR))
+    var real_before: Dictionary = _snapshot_real_art()
+    GameUI.art_override_dir = DIR
     _png("hud_frame_brass", Vector2i(96, 48), Color("#7a3b2e"))
     _png("hud_keycap", Vector2i(18, 18), Color("#efe2c7"))
     _png("hud_slip", Vector2i(64, 22), Color("#d8c8a0"))
@@ -51,12 +55,21 @@ func _run() -> void:
     check(hud.hud_optional_skin("hud_tab_active", StyleBoxFlat.new()) is StyleBoxFlat, "optional slot without art keeps its flat style")
     check(hud._hud086_texture("hud_reticle") == hud._hud086_texture("hud_reticle"), "textures are cached, not reloaded per frame")
     _cleanup()
+    GameUI.art_override_dir = GameUI.HUD_091_PATH
+    check(_snapshot_real_art() == real_before, "delivered hud_091 art is byte-identical after the test")
     print("OVR091_SUMMARY: %d passed, %d failed" % [passes, failures.size()])
     Music.request_quit(1 if failures.size() > 0 else 0)
 
 func _cleanup() -> void:
-    for path in written:
+    for path in written + [DIR + "hud_091_slices.json"]:
         DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
-    var f := FileAccess.open(DIR + "hud_091_slices.json", FileAccess.WRITE)
-    f.store_string(slices_backup)
-    f.close()
+    DirAccess.remove_absolute(ProjectSettings.globalize_path(DIR))
+
+func _snapshot_real_art() -> Dictionary:
+    var out: Dictionary = {}
+    var d := DirAccess.open(GameUI.HUD_091_PATH)
+    if d == null: return out
+    for f in d.get_files():
+        if f.ends_with(".png") or f.ends_with(".json"):
+            out[f] = FileAccess.get_sha256(GameUI.HUD_091_PATH + f)
+    return out

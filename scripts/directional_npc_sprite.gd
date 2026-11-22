@@ -15,6 +15,12 @@ var listen_time_080: float = 0.0
 var pose_clock_080: float = 0.0
 var hurt_flash_079z: float = 0.0
 var threatened_085: bool = false
+## Build 09.2 drop-in animation (assets/sprites/anim_092/<stem>/): idle, talk,
+## listen, threatened and hurt strips replace the stretched breathing cells.
+const SpriteAnim092 = preload("res://scripts/sprite_anim_092.gd")
+var anim_092: RefCounted = null
+var anim_state_092: String = ""
+var anim_clock_092: float = 0.0
 
 func set_threatened_085(value: bool) -> void:
     threatened_085 = value
@@ -75,7 +81,10 @@ func _ready() -> void:
         current_face = 1
     if get_parent() is Node3D:
         Grounding074.add_contact_shadow(get_parent() as Node3D, 0.82, 0.50)
-    set_process(face_textures.size() > 1 or not ambient_frames.is_empty())
+    anim_092 = SpriteAnim092.load_set(sprite_stem)
+    if anim_092 != null and anim_092.pixel_size > 0.0:
+        pixel_size = anim_092.pixel_size
+    set_process(face_textures.size() > 1 or not ambient_frames.is_empty() or anim_092 != null)
 
 func _process(delta: float) -> void:
     idle_clock += delta
@@ -90,6 +99,23 @@ func _process(delta: float) -> void:
     var actor: Node3D = get_parent() as Node3D
     if actor == null: return
     var selected: int = 0 if rotation_mode == 0 else Rotation8.view_from_world(view_camera.global_position, actor.global_transform)
+    if anim_092 != null:
+        var wanted: String = "hurt" if hurt_flash_079z > 0.0 else ("talk" if talk_time_079x > 0.0 else ("listen" if listen_time_080 > 0.0 else ("threatened" if threatened_085 else "idle")))
+        # 09.3: a witness running to report plays "flee" when it is painted.
+        var runner: Node = actor.get_node_or_null("WitnessRunner093")
+        if wanted != "hurt" and runner != null and str(runner.get("status")) == "running":
+            wanted = "flee"
+        if not anim_092.has_state(wanted) and wanted != "idle": wanted = "threatened" if threatened_085 and anim_092.has_state("threatened") else "idle"
+        if anim_092.has_state(wanted):
+            if wanted != anim_state_092:
+                anim_state_092 = wanted
+                anim_clock_092 = 0.0
+            anim_clock_092 += delta
+            var tex: Texture2D = anim_092.frame(wanted, selected if selected > 0 else 1, anim_clock_092)
+            if tex != null:
+                texture = tex
+                current_face = selected
+                return
     if not face_textures.has(selected):
         # Legacy fallback if a production cell is accidentally missing.
         selected = [1,1,3,3,5,5,7,7][selected-1] if selected > 0 else 1
