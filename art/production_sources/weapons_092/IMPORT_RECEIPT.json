@@ -1,0 +1,12 @@
+{
+  "build": "09.2",
+  "weapons": [
+    "covenant",
+    "coil",
+    "nail",
+    "choir"
+  ],
+  "background_removal": "rembg/isnet-general-use",
+  "alpha_curve": "8->0, 48->255",
+  "solid_crop": "threshold128 + 8px padding"
+}

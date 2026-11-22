@@ -118,6 +118,7 @@ Enemies have **no separate weapon sprite**: the weapon is part of the body paint
 | `threatened` | 4 @ 6 | yes | After being hurt below 60% (Brin, Ossa) | Defensive: arms up, shrinking back. A **civilian, not a fighter**: never draw a weapon (canon: "no magic gun") |
 | `hurt` | 2 @ 12 | no | The moment they are hit | A flinch |
 | `death` | 6–8 @ 10 | no | Killed. The last frame stays as silent remains | A collapse. Respectful, no gore. The final frame is the body at rest |
+| `flee` *(09.3, Brin and Ossa)* | 6 @ 10 | yes | Running to tell their keeper after an unseen threat | A frightened civilian run, all 8 facings (they cross the district). Carry nothing new |
 
 **The NPC roster** (identity from the 08.8 turnarounds and bible §4):
 

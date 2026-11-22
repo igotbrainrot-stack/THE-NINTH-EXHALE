@@ -11,7 +11,8 @@ extends RefCounted
 ##   SOUND  noise events (shots, footsteps, bursts, a witness crying out),
 ##          heard when within radius after an occlusion penalty;
 ##   TOLD   a living witness delivering what they saw (bible L1398: patrol
-##          knowledge travels only via surviving radios or runners).
+##          knowledge travels only via surviving radios or runners). 09.3:
+##          Brin and Ossa run to their keeper when nobody perceived an assault.
 ## The pure functions below are testable headless; sense_092.gd applies them.
 
 const GROUP_PERCEIVERS := "perceivers_092"
@@ -49,6 +50,62 @@ const MOTION_WALK := 1.0
 const MOTION_SPRINT := 1.45
 
 static var debug: bool = false     # F3 overlay
+
+# 09.3 SEARCH and HIGH ALERT (Blacklist rule: never drop straight back to calm).
+# A patrol that loses a hostile target walks to the last known position and
+# searches; afterwards it stays on HIGH ALERT for the rest of the visit.
+const LOSE_TRACK_SECONDS := 6.0    # hostile but unseen this long -> SEARCH
+const SEARCH_SECONDS := 12.0       # look around the last known position
+const HIGH_ALERT_RANGE_SCALE := 1.3
+const HIGH_ALERT_RISE_SCALE := 1.4
+const SEARCH_RISE_SCALE := 1.8     # a searcher re-acquires fast
+const REPORT_REACH := 3.5          # a fleeing witness tells a keeper within this
+const RUNNER_SPEED := 3.2          # frightened civilian, slower than a sprinting player
+
+# Deterministic barks (no random pick): the stimulus decides the line, so the
+# player can always tell what caused a change (Mark of the Ninja's rule).
+const BARKS := {
+    "SUSPICIOUS:SIGHT": "SOMEONE THERE?",
+    "SUSPICIOUS:SOUND": "HEARD THAT.",
+    "INVESTIGATE:SIGHT": "CHECKING IT.",
+    "INVESTIGATE:SOUND": "THAT CAME FROM OVER THERE.",
+    "INVESTIGATE:VIOLENT": "THAT WAS A WEAPON.",
+    "INVESTIGATE:CRY": "WHO'S HURT?",
+    "INVESTIGATE:TOLD": "SHOW ME WHERE.",
+    "HOSTILE:SIGHT": "THERE!",
+    "HOSTILE:WITNESS": "I SAW THAT.",
+    "SEARCH:LOST": "LOST THEM. SEARCHING.",
+    "HIGH_ALERT:END": "STAYING SHARP.",
+    "UNAWARE:CALM": "...NOTHING.",
+}
+
+static func bark_for(state: String, cause: String) -> String:
+    return str(BARKS.get("%s:%s" % [state, cause], ""))
+
+## How visible the player is right now, 0..1, from the same light and motion
+## factors the guards use. Drives the HUD cue; pure and testable headless.
+static func player_visibility(light: float, speed: float) -> float:
+    var motion: float = MOTION_SPRINT if speed > 6.0 else (MOTION_WALK if speed > 0.5 else MOTION_STILL)
+    return clampf(clampf(light, LIGHT_FLOOR, 1.0) * motion / MOTION_SPRINT, 0.0, 1.0)
+
+## The most alarmed perceiver within `reach` of `at`: [state, awareness].
+## States rank UNAWARE < HIGH_ALERT < SUSPICIOUS < SEARCH < INVESTIGATE < HOSTILE.
+const STATE_RANK := {"UNAWARE": 0, "HIGH_ALERT": 1, "SUSPICIOUS": 2, "SEARCH": 3, "INVESTIGATE": 4, "HOSTILE": 5}
+static func most_alarmed(tree: SceneTree, at: Vector3, reach: float) -> Array:
+    var best: Array = ["UNAWARE", 0.0]
+    if tree == null: return best
+    for sense in tree.get_nodes_in_group(GROUP_PERCEIVERS):
+        if not is_instance_valid(sense) or not sense.is_inside_tree(): continue
+        var body = sense.get("owner_enemy")
+        if not is_instance_valid(body) or int(body.get("hp")) <= 0: continue
+        if (body as Node3D).global_position.distance_to(at) > reach: continue
+        # The body's flag is the truth for combat; a sense left saying HOSTILE
+        # by a body that stopped ticking (an isolated keeper) is not a threat.
+        var st: String = "HOSTILE" if bool(body.get("hostile")) else str(sense.get("state"))
+        if st == "HOSTILE" and not bool(body.get("hostile")): st = "UNAWARE"
+        if int(STATE_RANK.get(st, 0)) > int(STATE_RANK.get(str(best[0]), 0)):
+            best = [st, float(sense.get("awareness"))]
+    return best
 
 ## Rise in awareness per second for one sighting. Pure: tested headless.
 static func sight_rate(distance: float, view_range: float, light: float, motion: float) -> float:

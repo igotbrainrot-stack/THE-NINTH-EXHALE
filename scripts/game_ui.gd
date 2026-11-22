@@ -25,6 +25,8 @@ var navigation_panel: Panel
 var navigation: Label
 
 var vitals_panel: Panel
+const AwarenessCue093 = preload("res://scripts/awareness_cue_093.gd")
+var awareness_cue_093: Panel
 var hp_bar: ProgressBar
 var hp_text: Label
 var breath_bar: ProgressBar
@@ -58,6 +60,11 @@ var reload_clock := 0.0
 var switch_duration := 0.0
 var switch_clock := 0.0
 var dry_kick := 0.0
+var intervene_active_092 := false
+var intervene_clock_092 := 0.0
+var intervene_duration_092 := 0.34
+var intervene_offset_092 := Vector2.ZERO
+var intervene_rotation_092 := 0.0
 var shell_life := 0.0
 var current_prompt := ""
 var damage_flash_079: ColorRect
@@ -464,6 +471,11 @@ func build_base() -> void:
     vitals_panel.add_child(med_text)
     med_text.size = Vector2(60, 13)
 
+    # 09.3: stealth cue (visibility + nearest guard's alarm), above the vitals.
+    awareness_cue_093 = AwarenessCue093.new()
+    overlay.add_child(awareness_cue_093)
+    awareness_cue_093.build(self, _hud086_skin("hud_frame_steel", Vector4(6, 2, 6, 2)))
+
     weapon_panel = Panel.new()
     weapon_panel.position = Vector2(428, 340)
     weapon_panel.size = Vector2(204, 54)
@@ -578,7 +590,7 @@ func build_base() -> void:
 
 func update_hud() -> void:
     if not Game.has_attempt():
-        zone_label.text = "THE NINTH EXHALE / BUILD 08.7"
+        zone_label.text = "THE NINTH EXHALE / BUILD 09.3"
         objective_label.text = "Enter Hearth Nine and open the civic pressure docket."
         navigation.text = "NO ACTIVE ROUTE"
         hp_text.text = "--"
@@ -846,6 +858,10 @@ func set_weapon(id: String) -> void:
     shot_flash = 0.0
     reload_clock = 0.0
     dry_kick = 0.0
+    intervene_active_092 = false
+    intervene_clock_092 = 0.0
+    intervene_offset_092 = Vector2.ZERO
+    intervene_rotation_092 = 0.0
     muzzle.visible = false
     shell.visible = false
     update_hud()
@@ -873,10 +889,16 @@ func weapon_event(kind: String, duration: float) -> void:
             "reload": _weapon_play_092("reload", duration)
             "reload_complete": _weapon_play_092("idle")
             "switch": _weapon_play_092("draw", duration)
-            "dry": _weapon_play_092("dry")
-            "intervene": _weapon_play_092("intervene")
+            "dry": _weapon_play_092("dry" if weapon_anim_092.has_state("dry") else "idle")
+            "intervene": _weapon_play_092("intervene" if weapon_anim_092.has_state("intervene") else "idle")
     if kind == "intervene":
-        kind = "dry"
+        intervene_active_092 = true
+        intervene_clock_092 = 0.0
+        intervene_duration_092 = 0.34
+        intervene_offset_092 = Vector2.ZERO
+        intervene_rotation_092 = 0.0
+        dry_kick = 0.0
+        shot_flash = 0.0
     if kind == "reload":
         reload_duration = maxf(0.01, duration)
         reload_clock = reload_duration
@@ -922,8 +944,39 @@ func _advance_viewmodel(delta: float) -> void:
     if switch_clock > 0.0:
         switch_clock = maxf(0.0, switch_clock - delta)
         switch_dip = sin(PI * (1.0 - switch_clock / maxf(0.01, switch_duration)))
-    gun.position=Vector2(sway - 20.0 * reload_dip, bounce + 105.0 * reload_dip + 85.0 * switch_dip) + kick + Vector2(1.5 * sin(anim_clock * 43.0) * dry_kick / 0.14, 0)
-    gun.rotation = -0.11 * reload_dip + 0.015 * recoil_strength
+    # When no authored intervene strip exists, use a separate forward jab and
+    # recovery rather than reusing the empty-trigger rattle.
+    var intervene_offset := Vector2.ZERO
+    var intervene_rotation := 0.0
+    if intervene_active_092:
+        intervene_clock_092 += delta
+        var progress: float = clampf(intervene_clock_092 / maxf(0.01, intervene_duration_092), 0.0, 1.0)
+        if weapon_anim_092 != null and weapon_anim_092.has_state("intervene"):
+            # Painted animation supplies the movement; still advance the event timer.
+            intervene_offset_092 = Vector2.ZERO
+            intervene_rotation_092 = 0.0
+        else:
+            var thrust: float
+            if progress < 0.38:
+                thrust = progress / 0.38
+            elif progress < 0.62:
+                thrust = 1.0
+            else:
+                thrust = 1.0 - (progress - 0.62) / 0.38
+            thrust = clampf(thrust, 0.0, 1.0)
+            intervene_offset_092 = Vector2(-26.0 * thrust, -46.0 * thrust)
+            intervene_rotation_092 = -0.17 * thrust
+        if progress >= 1.0:
+            intervene_active_092 = false
+            intervene_offset_092 = Vector2.ZERO
+            intervene_rotation_092 = 0.0
+        intervene_offset = intervene_offset_092
+        intervene_rotation = intervene_rotation_092
+    else:
+        intervene_offset_092 = Vector2.ZERO
+        intervene_rotation_092 = 0.0
+    gun.position=Vector2(sway - 20.0 * reload_dip, bounce + 105.0 * reload_dip + 85.0 * switch_dip) + kick + Vector2(1.5 * sin(anim_clock * 43.0) * dry_kick / 0.14, 0) + intervene_offset
+    gun.rotation = -0.11 * reload_dip + 0.015 * recoil_strength + intervene_rotation
     # The muzzle anchor is the flash centre in 640x400 viewmodel space.
     muzzle.position = weapon_anchor_092("muzzle", Vector2(372, 153)) - muzzle.size * 0.5 + Vector2(sway, bounce) + kick
     if shot_flash > 0.0 and not muzzle_frames_079x.is_empty():

@@ -1,0 +1,29 @@
+{
+  "cell": [
+    640,
+    400
+  ],
+  "anchors": {
+    "muzzle": [
+      288,
+      208
+    ]
+  },
+  "procedural": {
+    "recoil": 0.22,
+    "reload_dip": true
+  },
+  "states": {
+    "idle": {
+      "frames": 4,
+      "fps": 4,
+      "loop": true
+    },
+    "fire": {
+      "frames": 5,
+      "fps": 20,
+      "loop": false
+    }
+  },
+  "anchors_measured_093": "muzzle at the barrel mouth on idle frame 0 (640x400), measured by Claude in Build 09.3"
+}
