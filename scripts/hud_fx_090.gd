@@ -96,7 +96,7 @@ func slip(message: String, seconds: float = 4.0) -> void:
     paper.shadow_color = Color(0, 0, 0, 0.45)
     paper.shadow_size = 2
     paper.shadow_offset = Vector2(1, 1)
-    panel.add_theme_stylebox_override("panel", paper)
+    panel.add_theme_stylebox_override("panel", ui.hud_optional_skin("hud_slip", paper))
     add_child(panel)
     var label := Label.new()
     label.text = message
@@ -134,8 +134,10 @@ func _layout_slips(animate_newest: bool) -> void:
         y += s.size.y + 3.0
         # A slip still sliding in from the previous notice must not finish its
         # old move after this one, or two slips end up stacked on one spot.
-        var old_tween = s.get_meta("move_tween", null)
-        if old_tween is Tween and (old_tween as Tween).is_valid(): (old_tween as Tween).kill()
+        # (get_meta with a null default still errors in 4.4, so test first.)
+        if s.has_meta("move_tween"):
+            var old_tween = s.get_meta("move_tween")
+            if old_tween is Tween and (old_tween as Tween).is_valid(): (old_tween as Tween).kill()
         if i == 0 and animate_newest:
             s.position = target + Vector2(40, 0)
             s.modulate.a = 0.0
@@ -167,7 +169,10 @@ func _next_stamp() -> void:
     outer.border_color = INK
     outer.set_border_width_all(3)
     outer.set_corner_radius_all(3)
-    box.add_theme_stylebox_override("panel", outer)
+    # A painted stamp frame (hud_091/hud_stamp_frame.png) replaces both the
+    # flat border and the inner rule when GPT delivers one.
+    var painted: bool = ui.hud_art_has_override("hud_stamp_frame")
+    box.add_theme_stylebox_override("panel", ui.hud_optional_skin("hud_stamp_frame", outer))
     add_child(box)
     box.size = Vector2(300, 74)
     box.position = Vector2(170, 128)
@@ -179,6 +184,7 @@ func _next_stamp() -> void:
     inner_style.border_color = Color(INK, 0.85)
     inner_style.set_border_width_all(1)
     inner.add_theme_stylebox_override("panel", inner_style)
+    inner.visible = not painted
     box.add_child(inner)
     inner.position = Vector2(6, 6)
     inner.size = box.size - Vector2(12, 12)

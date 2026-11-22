@@ -27,6 +27,14 @@ var acted_clock: float = 0.0
 var target_label: String = ""
 var target_since: float = 0.0
 var hit_count: int = 0
+## 09.2 (immersive-sim Phase 0): BOT_POLICY=combat (default, shoots any visible
+## enemy) or pacifist (fires only at enemies already HOSTILE). The bot logs
+## every awareness change and checks the witness invariants at the end.
+var policy: String = OS.get_environment("BOT_POLICY") if OS.get_environment("BOT_POLICY") != "" else "combat"
+var watched_senses: Dictionary = {}
+var ending_seen: String = ""
+var sense_transitions: int = 0
+var hostile_transitions: int = 0
 var astar: AStarGrid2D
 var grid_zone: String = ""
 var path: PackedVector2Array = PackedVector2Array()
@@ -149,6 +157,7 @@ func _run() -> void:
         elapsed += dt
         fps_samples.append(Engine.get_frames_per_second())
         _watch_text()
+        _watch_senses()
         shot_clock += dt
         if shot_clock > 4.0:
             shot_clock = 0.0
@@ -156,15 +165,40 @@ func _run() -> void:
         if game.hud.modal_open:
             _release_moves()
             await _handle_modal()
+            if ending_seen != "": break
             continue
         if not Game.has_attempt(): break
         await _drive(dt)
     _release_moves()
     var avg: float = 0.0
     for f in fps_samples: avg += f
-    log_line("SUMMARY fps_avg=%.1f min=%.1f writs=%s zone=%s level=%s hp=%s hits=%d" % [avg / maxf(1, fps_samples.size()), fps_samples.min() if not fps_samples.is_empty() else 0.0, str(Game.state.get("writs",[])), str(Game.state.get("zone","")), str(Game.state.get("level",0)), str(Game.state.get("health",0)), hit_count])
+    log_line("SUMMARY ending=%s policy=%s fps_avg=%.1f min=%.1f writs=%s zone=%s level=%s hp=%s hits=%d sense_changes=%d hostile=%d %s" % [ending_seen if ending_seen != "" else "none", policy, avg / maxf(1, fps_samples.size()), fps_samples.min() if not fps_samples.is_empty() else 0.0, str(Game.state.get("writs",[])), str(Game.state.get("zone","")), str(Game.state.get("level",0)), str(Game.state.get("health",0)), hit_count, sense_transitions, hostile_transitions, _witness_invariants()])
     await snap("end")
     get_tree().quit()
+
+func _watch_senses() -> void:
+    for sense in get_tree().get_nodes_in_group("perceivers_092"):
+        if watched_senses.has(sense.get_instance_id()): continue
+        watched_senses[sense.get_instance_id()] = true
+        var who: String = str(sense.owner_enemy.get("actor_key")) if is_instance_valid(sense.owner_enemy) else "?"
+        sense.state_changed.connect(func(st: String):
+            sense_transitions += 1
+            if st == "HOSTILE": hostile_transitions += 1
+            log_line("SENSE %s -> %s" % [who, st]))
+
+## Canon invariants as log checks (plan section "the playbot needs three changes").
+func _witness_invariants() -> String:
+    var records: int = 0
+    var without_witness: int = 0
+    for e in Game.state.get("events", []):
+        var eid: String = str(e.get("id", ""))
+        if eid.begins_with("witness.092.") or eid.begins_with("witness.093."):
+            records += 1
+            var details: Dictionary = e.get("details", {})
+            if str(details.get("witness_id", "")) == "": without_witness += 1
+            # 09.3 reports must have been written by a witness alive at the time.
+            elif eid.contains(".reported_to_") and not bool(details.get("witness_alive_at_record", false)): without_witness += 1
+    return "witness_records=%d records_without_living_witness=%d" % [records, without_witness]
 
 func _watch_text() -> void:
     var hud = game.hud
@@ -204,6 +238,13 @@ func _handle_modal() -> void:
     var hud = game.hud
     _log_modal()
     var title_sig: String = last_modal.get_slice("|", 0)
+    # 09.2: the run is complete at the first ending card. Stop there instead
+    # of starting a counterfactual campaign with stale docket counters.
+    if title_sig.begins_with("VESPER /") and "NEW COUNTERFACTUAL CAMPAIGN" in last_modal:
+        ending_seen = title_sig
+        log_line("ENDING REACHED: %s" % title_sig)
+        await snap("ending")
+        return
     modal_seen[title_sig] = int(modal_seen.get(title_sig, 0)) + 1
     if int(modal_seen[title_sig]) == 1:
         await snap("docket")
@@ -265,6 +306,7 @@ func _nearest_hostile() -> Node3D:
     for h in get_tree().get_nodes_in_group("hostile"):
         if not (h is Node3D) or not h.visible: continue
         if "hp" in h and int(h.hp) <= 0: continue
+        if policy == "pacifist" and "hostile" in h and not bool(h.hostile): continue
         var d: float = h.global_position.distance_to(game.player.global_position)
         # Only fight what can be seen, as a player would.
         var los := PhysicsRayQueryParameters3D.create(game.player.camera.global_position, h.global_position + Vector3(0, 0.9, 0))

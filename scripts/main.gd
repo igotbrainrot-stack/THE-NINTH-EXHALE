@@ -12,6 +12,8 @@ const CoreBuilder076 = preload("res://scripts/core_builder_076.gd")
 const AssemblyBuilder078 = preload("res://scripts/assembly_builder_078.gd")
 const LiftBuilder = preload("res://scripts/lift_builder.gd")
 const OfficeEnforcer = preload("res://scripts/enemy.gd")
+const NamedWitness093 = preload("res://scripts/named_witness_093.gd")
+const Perception092 = preload("res://scripts/perception_092.gd")
 const CombatTracer079X = preload("res://scripts/combat_tracer_079x.gd")
 const EnemyRoster068 = preload("res://scripts/enemy_roster_068.gd")
 const PressureFixture = preload("res://scripts/pressure_fixture.gd")
@@ -203,12 +205,52 @@ func _hook_named_witnesses_085() -> void:
         if is_instance_valid(witness) and witness.has_signal("threatened_085"):
             witness.connect("threatened_085",Callable(self,"_on_named_witness_threatened_085").bind(witness_name))
 
+## 09.2: the 08.5 shortcut (alert the district keeper by fiat) is replaced
+## by perception, as bible L1398 requires: the threatened civilian cries out,
+## and only office-holders who see the assault or hear the cry react. They turn
+## hostile, and record what they witnessed, only if they then see the attacker.
+## A keeper out of earshot never learns of it from this event.
 func _on_named_witness_threatened_085(witness_name: String) -> void:
     if not Game.has_attempt(): return
-    if is_instance_valid(guard) and int(guard.hp) > 0:
-        guard.anger()
+    var witness: Node3D = world.get_node_or_null(witness_name)
+    var at: Vector3 = witness.global_position if is_instance_valid(witness) else player.global_position
     player._play_action_audio("pressure_warning.wav",-10.0)
-    hud.notify("WITNESS UNDER THREAT / %s / DISTRICT SECURITY ALERTED" % witness_name.to_upper(),4.5)
+    Perception092.emit_noise(get_tree(), at, Perception092.NOISE_CRY, "cry_for_help", true, witness)
+    var heard_by: Array = Perception092.witness_assault(get_tree(), witness_name, at, player.global_position)
+    if heard_by.is_empty():
+        # 09.3: nobody perceived it, so the witness runs to tell the office.
+        # Intercepting (calming) or losing them is the player's problem now.
+        var key: String = "brin" if witness_name == "Brin Harker" else "ossa"
+        var runner = NamedWitness093.start_run(witness, key, player.global_position) if is_instance_valid(witness) else null
+        if runner != null and str(runner.status) == "running":
+            runner.delivered.connect(_on_witness_report_delivered_093)
+            hud.notify("%s CRIES FOR HELP / RUNNING TO TELL THE %s" % [witness_name.to_upper(), str(runner.KEEPER_LABEL.get(runner.keeper_key, "OFFICE"))],4.5)
+        else:
+            hud.notify("%s CRIES FOR HELP / NO OFFICE-HOLDER IN EARSHOT" % witness_name.to_upper(),4.5)
+    else:
+        var channel: String = str(heard_by[0][1])
+        hud.notify("%s CRIES FOR HELP / THE OFFICE %s IT" % [witness_name.to_upper(), "SAW" if channel == "SIGHT" else "HEARD"],4.5)
+
+func _on_witness_report_delivered_093(victim: String, keeper: String) -> void:
+    var who: String = "BRIN" if victim == "brin" else "OSSA"
+    hud.notify("%s REACHED THE %s / THE OFFICE IS WATCHING FOR YOU" % [who, keeper.to_upper()],5.0)
+    Game.save_attempt()
+
+func _witness_gate_093(key: String) -> Dictionary:
+    # A threatened witness pauses their arc with the person who hurt them.
+    var actor: Node = world.get_node_or_null("Brin Harker" if key == "brin" else "Sister Ossa")
+    if not NamedWitness093.is_threatened(actor): return {}
+    var name_up: String = "BRIN" if key == "brin" else "OSSA"
+    var keeper: String = "Millwright" if key == "brin" else "Cantor"
+    var where: String
+    match NamedWitness093.status(key):
+        "running": where = "keeps out of reach and heads for the %s." % keeper
+        "delivered": where = "stays close to the %s and has told what you did." % keeper
+        "no_listener": where = "has found a corner and will not come out."
+        _: where = "backs away, watching your hands."
+    return {"title": "%s / THREATENED WITNESS" % name_up,
+        "text": "%s %s Nothing more will be said to the person who hurt them until you stand down and answer for it." % ["Brin" if key == "brin" else "Ossa", where],
+        "options": [check_option("APOLOGISE / LOWER THE WEAPON", "witness:calm:" + key, NamedWitness093.calm_check()), go_back()]}
 
 func _setup_environmental_encounter_079(zone: String) -> void:
     if not Game.has_attempt() or zone not in ["hearth","sootworks","basilica"]: return
@@ -238,7 +280,10 @@ func _shutdown_environmental_encounter_079(zone: String, method: String) -> void
         pending_quiet_service_079 = ""
         pending_quiet_service_deadline_079 = 0
     if Game.shut_down_hazard_079(zone,method):
-        if is_instance_valid(service_hazard_079): service_hazard_079.call("confirm_shutdown")
+        if is_instance_valid(service_hazard_079):
+            service_hazard_079.call("confirm_shutdown")
+            if method != "quiet":
+                Perception092.emit_noise(get_tree(), service_hazard_079.global_position, Perception092.NOISE_BURST, "rupture", true)
         player._play_action_audio("mechanical_reload.wav",-12.0)
         hud.notify("%s / %s / SERVICE DISABLED / %s" % [zone.to_upper(),method.to_upper(),"1 ENERGY + 1 LABOUR" if method == "quiet" else "2 ENERGY"],3.1)
     else:
@@ -336,6 +381,7 @@ func _pressure_fixture_has_path_079z(point: Vector3, actor: Node3D) -> bool:
 
 func _on_pressure_fixture_burst(fixture_id: String, at: Vector3) -> void:
     if not Game.vent_pressure_fixture(fixture_id): return
+    Perception092.emit_noise(get_tree(), at, Perception092.NOISE_BURST, "pressure_burst", true)
     var distance: float = INF
     var affected: bool = false
     if is_instance_valid(guard):
@@ -400,6 +446,18 @@ func _nav_target() -> Dictionary:
         if not bool(Game.state["hearing"].get("passed",false)):
             return {"label":"ROOTKIN HEARING","pos":Vector3(10,0,-17)}
         if not Game.state["writs"].has("qobj_writ_of_faith"):
+            # 09.2: the peaceful route goes through Ossa's lay council, as the
+            # Sootworks one goes through the workers' council. The wicket only
+            # answers once the Cantor has fallen.
+            var ossa_nav: Dictionary = Game.state.get("ossa",{})
+            var cantor_down: bool = bool(Game.state.get("faith",{}).get("cantor_defeated",false))
+            if not cantor_down and bool(ossa_nav.get("alive",true)):
+                var ossa_stage: String = str(ossa_nav.get("stage","unmet"))
+                if ossa_stage in ["unmet","encountered"] and str(ossa_nav.get("decision","")) == "":
+                    # Meet her, then compare the reel with her (investigate).
+                    return {"label":"SISTER OSSA","pos":Vector3(-19,0,5)}
+                if ossa_stage == "investigated" or str(ossa_nav.get("decision","")) == "help":
+                    return {"label":"LAY COUNCIL","pos":Vector3(-8,0,-18)}
             return {"label":"FAITH PUBLIC WICKET","pos":Vector3(-22,0,15)}
         return {"label":"RETURN SERVICE RAIL","pos":Vector3(-22,0,21)}
     if zone == "ashmarket":
@@ -411,7 +469,12 @@ func _nav_target() -> Dictionary:
         if not bool(trade.get("coalition_recorded",false)):
             return {"label":"BUYER COALITION","pos":Vector3(-18,0,14)}
         if not Game.state["writs"].has("qobj_writ_of_trade"):
-            return {"label":"TRADE WRIT REGISTRY","pos":Vector3(20,0,14)}
+            # 09.2: the registry only lists lock isolation, succession or a
+            # witnessed threat. Until one exists, the Writ is settled at the
+            # Collector's board (coalition challenge, force or a fight).
+            if bool(trade.get("counting_lock_isolated",false)) or bool(trade.get("collector_defeated",false)) or bool(trade.get("intimidation_recorded",false)):
+                return {"label":"TRADE WRIT REGISTRY","pos":Vector3(20,0,14)}
+            return {"label":"COLLECTOR'S BOARD","pos":Vector3(14,0,4)}
         return {"label":"RETURN SERVICE RAIL","pos":Vector3(-22,0,19)}
     if zone == "orchard":
         var growth: Dictionary = Game.state.get("growth",{})
@@ -439,7 +502,11 @@ func _nav_target() -> Dictionary:
         var civic: Dictionary = Game.state.get("civic",{})
         if not bool(civic.get("risk_disclosed",false)):
             return {"label":"PUBLIC RISK DISCLOSURE","pos":Vector3(-21,0,-14)}
-        if not bool(civic.get("petition_read",false)):
+        # 09.2: only route to the petition when the Ninth actually copied it in
+        # the Core. Under Latch or Voss it is never targeted there, and the
+        # marker used to strand players (and the playbot) at a console that can
+        # only answer NOT RECORDED.
+        if not bool(civic.get("petition_read",false)) and bool(Game.state.get("core",{}).get("voluntary_petition",false)):
             return {"label":"SIGNED PATIENT PETITION","pos":Vector3(-14,0,-14)}
         if Game.dawn_technical_prerequisites_078() and not bool(civic.get("mandate",false)):
             return {"label":"CIVIC WITNESS ROLLS","pos":Vector3(-7,0,-3)}
@@ -1196,8 +1263,11 @@ func sootworks_interaction(interaction_id: String) -> void:
         "hearth_return":
             show_choice("SERVICE RAIL / HEARTH NINE", "The municipal transfer remains open. The current district, quest events and enemy damage will be saved before departing.",[{"label":"RETURN TO HEARTH NINE","action":"travel:hearth"},go_back()])
         "brin":
+            var gate_brin: Dictionary = _witness_gate_093("brin") if bool(brin["alive"]) else {}
             if not bool(brin["alive"]):
                 show_choice("BRIN / ABSENT", "The workshop has no living speaker. The payroll record and public Writ remain accessible.",[go_back()])
+            elif not gate_brin.is_empty():
+                show_choice(gate_brin["title"], gate_brin["text"], gate_brin["options"])
             elif str(brin["stage"])=="unmet":
                 show_choice("BRIN HARKER / THE SHIFT CARD", "Brin repairs a spoon with wire. 'It isn't the work. It's that they charge rent for the hours I'm asleep.' His old card records ninety-one years across printed bodies. He asks you to inspect the original freight payroll cylinder.",[{"label":"HEAR HIM OUT / RECORD THE MEETING","action":"brin:meet"},go_back()])
             elif str(brin["stage"])=="encountered" and bool(brin["payroll_seen"]):
@@ -1220,6 +1290,8 @@ func sootworks_interaction(interaction_id: String) -> void:
                 show_choice("LABOUR COUNCIL / TRANSFER COMPLETE","The Writ of Labour has been transferred once. The record can be read, not claimed again.",[go_back()])
             elif not bool(brin["alive"]):
                 show_choice("LABOUR COUNCIL / BRIN DEAD", "The workers cannot hear Brin now. His record remains, but Ninth cannot stage his living testimony. Other Writ routes are available.",[go_back()])
+            elif str(brin["stage"])=="investigated" and not _witness_gate_093("brin").is_empty():
+                show_choice("LABOUR COUNCIL / NO TESTIMONY", "Brin will not stand beside the person who hurt him. The stewards will not hear his case through you until he is calm. Other Writ routes are available.",[go_back()])
             elif str(brin["stage"])=="investigated":
                 show_choice("LABOUR COUNCIL / SUBMIT THE CYLINDER", "The workers inspect the clear debt. An orderly stoppage can preserve the neighbouring ward's heat with real labour and energy costs. A partial emergency-crew compromise is also possible. Betrayal earns an immediate material reward but loses workshop support.",[
                     {"label":"SAFE STRIKE / RELEASE WORKERS / BRIN'S TORQUE","action":"brin:help"},
@@ -1275,8 +1347,11 @@ func basilica_interaction(interaction_id: String) -> void:
     var writ_owned: bool = Game.state["writs"].has("qobj_writ_of_faith")
     match interaction_id:
         "ossa":
+            var gate_ossa: Dictionary = _witness_gate_093("ossa") if bool(ossa["alive"]) else {}
             if not bool(ossa["alive"]):
                 show_choice("OSSA / NO LIVING SPEAKER","Only the reel and public documents remain; nobody may ventriloquise Ossa's testimony.",[go_back()])
+            elif not gate_ossa.is_empty():
+                show_choice(gate_ossa["title"], gate_ossa["text"], gate_ossa["options"])
             elif str(ossa["stage"]) == "unmet":
                 show_choice("SISTER OSSA / AN OMITTED NOTE","'There used to be a sixth note. We sang it when the west ward flooded. Then we kept singing after the water went away.' She wants to know what the maintenance reel proves.",[ {"label":"MEET OSSA / HEAR HER ACCOUNT","action":"ossa:meet"},go_back()])
             elif str(ossa["stage"]) == "encountered" and bool(ossa["hymn_seen"]):
@@ -1299,6 +1374,8 @@ func basilica_interaction(interaction_id: String) -> void:
                 show_choice("LAY COUNCIL / CREDENTIAL SEALED","The Faith Writ has already been recorded in the Quorum ledger; no duplicate can be awarded.",[go_back()])
             elif not bool(ossa["alive"]):
                 show_choice("COUNCIL / OSSA ABSENT","The congregation retains autonomy but Ossa cannot lead this petition from the grave. The Cantor's technical or combat/registry route remains open.",[go_back()])
+            elif str(ossa["stage"]) == "investigated" and not _witness_gate_093("ossa").is_empty():
+                show_choice("LAY COUNCIL / NO PETITION","Ossa will not lead the congregation beside the person who hurt her. Calm her first, or take the Cantor's technical or registry route.",[go_back()])
             elif str(ossa["stage"]) == "investigated":
                 show_choice("LAY COUNCIL / GOVERNOR'S SIXTH NOTE","The congregation must decide whether to disconnect the coercive signal while retaining their shared prayers. The actions impose different recorded costs.",[
                     {"label":"PUBLIC VOTE / FREE THE CHOIR / CHOIRBREAKER","action":"ossa:help"},
@@ -1923,6 +2000,16 @@ func _on_action(action: String) -> void:
             show_choice("MUNICIPAL SERVICE TRANSFER",message,[go_back()])
         else:
             show_choice("TRANSFER DENIED","Install the Lung before district travel.",[go_back()])
+        return
+    if action.begins_with("witness:calm:"):
+        var calm_key: String = action.trim_prefix("witness:calm:")
+        var calm_actor: Node = world.get_node_or_null("Brin Harker" if calm_key == "brin" else "Sister Ossa")
+        var calm_name: String = "BRIN" if calm_key == "brin" else "OSSA"
+        if NamedWitness093.calm(calm_actor, calm_key):
+            var told: bool = NamedWitness093.status(calm_key) == "delivered"
+            show_choice("%s / STANDING DOWN" % calm_name, "You lower the weapon and say it plainly. They stay wary, but they will talk again.%s" % (" What they already told the office stays told." if told else " They stop where they are."),[go_back()])
+        else:
+            show_choice("%s / NOT READY" % calm_name, "They are not ready to hear it from you. %s" % NamedWitness093.calm_check()["text"],[go_back()])
         return
     if action.begins_with("ossa:"):
         var verb_ossa: String = action.trim_prefix("ossa:")

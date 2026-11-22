@@ -78,7 +78,7 @@ func _style_labels() -> void:
     title.add_theme_constant_override("shadow_offset_y", 2)
     title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     _place(title, Vector2(20, 14), Vector2(532, 44))
-    subtitle.text = "BUILD 08.7 / ASSET INTEGRATION"
+    subtitle.text = "BUILD 09.2 / IMMERSIVE SIM"
     subtitle.add_theme_color_override("font_color", Color("#bda77e"))
     subtitle.add_theme_font_size_override("font_size", 13)
     subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
