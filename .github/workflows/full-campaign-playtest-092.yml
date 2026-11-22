@@ -5,6 +5,7 @@ on:
       - feature/build-092-completion-qa-20261122
       - 'feature/build-093-*'
       - 'feature/build-094-*'
+      - 'feature/build-095-*'
       - main
     paths:
       - 'scripts/**'

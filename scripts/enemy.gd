@@ -11,6 +11,10 @@ const CombatTracer079X = preload("res://scripts/combat_tracer_079x.gd")
 const CombatCorpse080 = preload("res://scripts/combat_corpse_080.gd")
 var actor_key: String = "enforcer"
 var max_hp: int = 70
+const PAIN_GUARD_095: float = 0.7
+var pain_damage_095: float = 0.0
+var pain_guard_095: float = 0.0
+var flinches_095: int = 0          # tests and the district record read this
 var hp: int = 70
 var hostile: bool = false
 var player: CharacterBody3D
@@ -222,7 +226,18 @@ func take_hit(damage: int) -> void:
         applied_damage = maxi(1,roundi(damage * 0.45))
     hp -= applied_damage
     wounded_count += 1
-    stagger_time = maxf(stagger_time,0.24 if actor_key != "millwright" else 0.11)
+    # 09.5: Doom's pain chance, made deterministic (no dice: bible L699).
+    # Damage builds toward a role threshold; crossing it flinches the enemy
+    # (and cancels its attack), then it cannot flinch again for PAIN_GUARD s.
+    # A wind-up takes twice the damage to interrupt. Before this every hit
+    # staggered, so the Nail Storm (one shot per 0.09 s) stun-locked anything.
+    pain_damage_095 += float(applied_damage)
+    var pain_needed: float = pain_threshold_095() * (2.0 if windup > 0.0 else 1.0)
+    if pain_guard_095 <= 0.0 and pain_damage_095 >= pain_needed:
+        stagger_time = maxf(stagger_time,0.24 if actor_key != "millwright" else 0.11)
+        pain_damage_095 = 0.0
+        pain_guard_095 = PAIN_GUARD_095
+        flinches_095 += 1
     flash_time = 0.22
     if is_instance_valid(voice_083): voice_083.call("play_enemy", "death" if hp <= 0 else "hurt")
     impact_audio.play()
@@ -230,6 +245,7 @@ func take_hit(damage: int) -> void:
     if hp <= 0:
         hp = 0
         hostile = false
+        preload("res://scripts/district_record_095.gd").bump("put_down")
         death_time = 0.84
         if anim_092 != null and anim_092.has_state("death"):
             death_time = maxf(0.84, anim_092.duration("death") + 0.12)
@@ -240,6 +256,15 @@ func take_hit(damage: int) -> void:
         aim_lane_079z.visible = false
         # Death is a visible short animation, not an instant disappearing sprite.
         defeated.emit()
+
+## Damage that makes this enemy flinch, by role (fraction of max HP, 8..45).
+func pain_threshold_095() -> float:
+    var fraction: float = 0.15
+    if role_attack == "rush": fraction = 0.10
+    elif role_move in ["boss", "shield", "siege"]: fraction = 0.30
+    elif role_attack in ["heavy", "pull"]: fraction = 0.24
+    elif role_attack == "signal": fraction = 0.18
+    return clampf(float(max_hp) * fraction, 8.0, 45.0)
 
 func apply_environmental_stagger(seconds: float) -> void:
     if hp <= 0: return
@@ -400,6 +425,9 @@ func _physics_process(delta: float) -> void:
     else: velocity.y = -0.2
     flash_time = maxf(0.0,flash_time-delta)
     alert_time_079x = maxf(0.0,alert_time_079x-delta)
+    pain_guard_095 = maxf(0.0, pain_guard_095 - delta)
+    # Chip damage spread thinly over time does not add up to a flinch.
+    pain_damage_095 = maxf(0.0, pain_damage_095 - pain_threshold_095() * 0.5 * delta)
     sprite.modulate = Color("#fff0ab") if flash_time > 0.0 else Color.WHITE
     if not hostile:
         velocity.x = 0.0

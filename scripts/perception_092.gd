@@ -133,11 +133,39 @@ static func clear_line(space: PhysicsDirectSpaceState3D, from: Vector3, to: Vect
     var hit: Dictionary = space.intersect_ray(query)
     return hit.is_empty()
 
-## Effective distance a sound travels: straight line, or longer round a wall.
-static func heard_distance(space: PhysicsDirectSpaceState3D, source: Vector3, listener: Vector3, exclude: Array) -> float:
+## Effective distance a sound travels. In the open it is the straight line.
+## 09.5 (after Doom's sector flood, which carries gunfire through open space
+## but not through solid walls or shut doors): behind a wall it is the length
+## of the walking route round it, from walk_grid_093; a sealed room is never
+## heard (INF). Without a world to route through it falls back to the 09.2
+## estimate (a wall roughly doubles the distance). Pass `radius` so sounds
+## that could not carry that far anyway skip the route search.
+static func heard_distance(space: PhysicsDirectSpaceState3D, source: Vector3, listener: Vector3, exclude: Array, world: Node3D = null, radius: float = INF) -> float:
     var direct: float = source.distance_to(listener)
     var open: bool = clear_line(space, source + Vector3(0, 1.0, 0), listener + Vector3(0, 1.0, 0), exclude)
-    return direct if open else direct * OCCLUDED_DISTANCE_FACTOR
+    if open: return direct
+    if world == null or not world.is_inside_tree(): return direct * OCCLUDED_DISTANCE_FACTOR
+    if direct > radius: return direct * OCCLUDED_DISTANCE_FACTOR
+    return preload("res://scripts/walk_grid_093.gd").path_length(world, source, listener)
+
+# 09.5 muzzle flash: firing lights the shooter for a moment (Doom's flash
+# frames, Cultic's dynamic light). Guards and the HUD cue both read it through
+# player_light(); deterministic, and gone FLASH_SECONDS after the last shot.
+const FLASH_SECONDS := 0.22
+const MUZZLE_FLASH := {"covenant": 0.55, "coil": 0.9, "nail": 0.45, "choir": 0.25}
+static var flash_level: float = 0.0
+static var flash_until_ms: int = 0
+
+static func register_shot(weapon_id: String) -> void:
+    flash_level = float(MUZZLE_FLASH.get(weapon_id, 0.5))
+    flash_until_ms = Time.get_ticks_msec() + int(FLASH_SECONDS * 1000.0)
+
+static func flash_now() -> float:
+    return flash_level if Time.get_ticks_msec() < flash_until_ms else 0.0
+
+## Light on the player: the district's lamps, raised by a recent muzzle flash.
+static func player_light(world_root: Node, point: Vector3) -> float:
+    return maxf(light_at(world_root, point), flash_now())
 
 ## Light at a point, 0..1, summed analytically from the OmniLight3D nodes under
 ## `root`. Renderer-independent and identical in headless tests.

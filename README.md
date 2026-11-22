@@ -6,6 +6,7 @@ Original retro first-person civic-horror RPG / roguelite set in Vesper. Built in
 - 09.2 added deterministic sight and hearing, witnessed responses, first-person weapon animation strips and a runnable Linux package.
 - 09.3 adds guards that search and stay on high alert, threatened witnesses who run to report, cause-specific barks and a HUD stealth cue.
 - 09.4 wires in the recovered Runway combat music and weapon sounds (`data/audio_mix_093.json`). Combat music now plays only when something is actually fighting you.
+- 09.5 brings in DOOM-era techniques. Sound travels round walls by route, firing lights you up, enemies flinch at damage thresholds (no more stun-lock), and each district's return rail shows what you did there.
 
 It is playable, but **not the finished game or final content release**. The master game bible remains the production target; the current Godot build is still a development slice and has not had human full-campaign playtesting.
 
@@ -33,12 +34,13 @@ Controls: WASD move · mouse look · LMB fire · R reload · 2–5 switch weapon
 
 ## Verified checks (Build 09.3)
 
-- **302** Python tests passed
+- **306** Python tests passed
 - **14** project validations passed
 - Godot animation tests **18/18**
 - Perception tests **25/25**
 - Immersive-sim tests **36/36**
 - Audio integration tests **17/17**
+- DOOM-technique tests **14/14**
 - Weapon art tests **31/31**, including muzzle anchors on the weapon
 - HUD art override tests **8/8**
 - Project import, district scene smoke and weapon-art loader checks passed

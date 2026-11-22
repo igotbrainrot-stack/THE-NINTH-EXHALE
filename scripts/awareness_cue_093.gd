@@ -71,7 +71,11 @@ func refresh() -> void:
     if player is CharacterBody3D:
         var v: Vector3 = (player as CharacterBody3D).velocity
         speed = Vector2(v.x, v.z).length()
-    var light: float = P.light_at(player.get_parent(), player.global_position + Vector3(0, 0.2, 0))
+    # Same light the guards use: the district's lamps (not the player's own
+    # flash lamp), raised by a recent muzzle flash.
+    var main_scene: Node = player.get_parent()
+    var world_root: Node = main_scene.get("world") if main_scene != null and main_scene.get("world") != null else main_scene
+    var light: float = P.player_light(world_root, player.global_position + Vector3(0, 0.2, 0))
     visibility = P.player_visibility(light, speed)
     var lit: int = clampi(int(ceil(visibility * PIPS)), 1, PIPS)
     for i in PIPS:
