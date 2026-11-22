@@ -1,0 +1,27 @@
+{
+  "cell": [
+    640,
+    400
+  ],
+  "anchors": {
+    "muzzle": [
+      238,
+      206
+    ]
+  },
+  "procedural": {
+    "recoil": 1.0,
+    "reload_dip": true
+  },
+  "states": {
+    "idle": {
+      "frames": 4,
+      "fps": 4,
+      "loop": true
+    }
+  },
+  "disabled_states_093": {
+    "fire": "all six frames lose the gloved hand that idle shows; re-enable when GPT repaints (see docs/handover/GPT_WEAPON_ART_CORRECTIONS_093.md)"
+  },
+  "anchors_measured_093": "muzzle at the barrel mouth on idle frame 0 (640x400), measured by Claude in Build 09.3"
+}

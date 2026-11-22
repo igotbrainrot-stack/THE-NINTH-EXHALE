@@ -1,6 +1,7 @@
 extends StaticBody3D
 signal threatened_085
 const FEAR_HP_THRESHOLD_085: int = 27 # below 60% of 45 maximum HP
+const NamedWitness093 = preload("res://scripts/named_witness_093.gd")
 ## Sister Ossa is an autonomous civic witness, not a disposable Writ token.
 ## A lethal attack is an irreversible event, and cannot trigger later dialogue.
 var hp: int = 45
@@ -36,8 +37,10 @@ func _ready() -> void:
     label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
     label.modulate = Color("#e1d1a6")
     add_child(label)
-    if hp < FEAR_HP_THRESHOLD_085 and hp > 0:
+    if hp < FEAR_HP_THRESHOLD_085 and hp > 0 and not NamedWitness093.calmed("ossa"):
         _show_threatened_state_085()
+    # 09.3: restore where a fleeing witness got to, and resume an undelivered run.
+    NamedWitness093.setup(self, "ossa")
     var voice := preload("res://scripts/actor_voice_083.gd").new()
     voice.name = "Voice083"
     add_child(voice)
@@ -67,10 +70,12 @@ func take_hit(damage: int) -> void:
     get_node("Voice083").call("play_npc_grunt")
     var hp_before_085: int = hp
     hp = maxi(0, hp-damage)
-    if hp > 0 and hp < FEAR_HP_THRESHOLD_085 and hp_before_085 >= FEAR_HP_THRESHOLD_085:
+    if hp > 0 and hp < FEAR_HP_THRESHOLD_085 and hp_before_085 >= FEAR_HP_THRESHOLD_085 and not NamedWitness093.calmed("ossa"):
         _enter_threatened_state_085()
     Game.state["actors"]["ossa"]["hp"] = hp
     if hp > 0: Game.save_attempt() # Intimidation and injury survive reload.
     if hp == 0:
         if Game.kill_ossa():
+            # 09.2: a painted death plays and stays as silent remains, if delivered.
+            preload("res://scripts/sprite_anim_092.gd").spawn_death(get_parent(), global_position, "ossa", 0.0072)
             queue_free()

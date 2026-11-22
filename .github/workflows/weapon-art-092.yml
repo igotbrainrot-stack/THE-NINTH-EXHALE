@@ -1,0 +1,83 @@
+name: Import Runway weapon art 09.2
+on:
+  push:
+    branches: [feature/weapon-art-092-20261122]
+    paths: [art/production_sources/weapons_092/IMPORT_SOURCES.json]
+permissions:
+  contents: write
+  actions: read
+jobs:
+  import-and-test:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install asset tooling and segmentation model
+        run: |
+          python -m pip install --upgrade pip pillow "rembg[cpu]"
+          sudo apt-get update
+          sudo apt-get install -y xvfb libgl1-mesa-dri unzip
+      - name: Import and validate Runway weapon art
+        run: |
+          python tools/import_runway_weapon_art_092.py
+          python tools/anim_092.py check assets/weapons/anim_092/covenant assets/weapons/anim_092/coil assets/weapons/anim_092/nail assets/weapons/anim_092/choir
+          for weapon in covenant coil nail choir; do
+            python tools/anim_092.py preview "assets/weapons/anim_092/$weapon" --out "docs/handover/WEAPON_092_PREVIEWS/$weapon"
+          done
+      - name: Python regressions
+        run: |
+          python3 -m unittest discover -s tests -p 'test_*.py'
+          python3 tests/validate_project.py
+      - name: Download Godot 4.4.1
+        run: |
+          curl -fL --retry 3 -o godot.zip https://github.com/godotengine/godot/releases/download/4.4.1-stable/Godot_v4.4.1-stable_linux.x86_64.zip
+          unzip -q godot.zip
+          chmod +x Godot_v4.4.1-stable_linux.x86_64
+      - name: Godot import and weapon atlas tests
+        run: |
+          ./Godot_v4.4.1-stable_linux.x86_64 --headless --editor --path . --quit
+          ./Godot_v4.4.1-stable_linux.x86_64 --headless --path . --script res://tests/godot_weapon_art_092.gd
+          ./Godot_v4.4.1-stable_linux.x86_64 --headless --path . res://tests/godot_anim_092.tscn
+      - name: Capture all weapon states in the real game
+        continue-on-error: true
+        env:
+          CAP_DIR: ${{ github.workspace }}/artifacts/weapon_capture_092
+        run: |
+          mkdir -p "$CAP_DIR"
+          xvfb-run -a env LIBGL_ALWAYS_SOFTWARE=1 CAP_DIR="$CAP_DIR" ./Godot_v4.4.1-stable_linux.x86_64 --path . --rendering-driver opengl3 --script res://tests/godot_weapon_art_capture_092.gd
+      - name: Play the game with rendered frame capture
+        continue-on-error: true
+        env:
+          GODOT: ${{ github.workspace }}/Godot_v4.4.1-stable_linux.x86_64
+        run: tools/playbot_090/run_playbot.sh artifacts/playbot_092 90
+      - name: Commit generated assets
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/weapons/anim_092 art/production_sources/weapons_092 art/WEAPON_ANIM_092_MANIFEST.json art/ART_ANIMATION_COVERAGE_092.csv docs/handover/WEAPON_092_*
+          git commit -m "assets: import Runway weapon art 09.2" || exit 0
+          git push origin HEAD:feature/weapon-art-092-20261122
+      - name: Upload QA and rendered frames
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: weapon-art-092-godot-qa
+          path: |
+            assets/weapons/anim_092
+            art/production_sources/weapons_092
+            art/ART_ANIMATION_COVERAGE_092.csv
+            docs/handover/WEAPON_092_CONTACT_SHEET.png
+            docs/handover/WEAPON_092_BEFORE_AFTER.png
+            docs/handover/WEAPON_092_ALPHA_MASKS.png
+            docs/handover/WEAPON_092_QA.md
+            docs/handover/WEAPON_092_RESEARCH_NOTES.md
+            docs/handover/WEAPON_092_PREVIEWS
+            artifacts/weapon_capture_092
+            artifacts/playbot_092
+          if-no-files-found: warn

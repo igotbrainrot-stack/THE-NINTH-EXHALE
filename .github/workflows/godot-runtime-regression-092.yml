@@ -1,0 +1,45 @@
+name: Godot runtime regression 09.2
+on:
+  push:
+    branches:
+      - feature/build-092-completion-qa-20261122
+      - 'feature/build-093-*'
+      - main
+    paths:
+      - 'tests/godot_*'
+      - 'scripts/**'
+      - .github/workflows/godot-runtime-regression-092.yml
+      - scripts/game_ui.gd
+      - tests/godot_anim_092.gd
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Godot 4.4.1 stable Linux x86_64
+        run: |
+          curl -fL --retry 3 -o godot.zip https://github.com/godotengine/godot/releases/download/4.4.1-stable/Godot_v4.4.1-stable_linux.x86_64.zip
+          unzip -q godot.zip
+          chmod +x Godot_v4.4.1-stable_linux.x86_64
+          ./Godot_v4.4.1-stable_linux.x86_64 --version
+      - name: Import project
+        run: HOME=$(mktemp -d) ./Godot_v4.4.1-stable_linux.x86_64 --headless --editor --path . --quit
+      - name: Run Godot runtime regressions
+        run: |
+          set -e
+          GODOT=./Godot_v4.4.1-stable_linux.x86_64
+          for scene in \
+            res://tests/godot_anim_092.tscn \
+            res://tests/godot_perception_092.tscn \
+            res://tests/godot_immersive_093.tscn \
+            res://tests/godot_witness_threat_085.tscn \
+            res://tests/godot_hud_override_091.tscn \
+            res://tests/godot_scene_smoke_084.tscn; do
+            HOME=$(mktemp -d) "$GODOT" --headless --path . "$scene"
+          done

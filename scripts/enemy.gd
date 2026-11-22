@@ -57,6 +57,14 @@ var positional_memory: float = 4.0
 # 08.4: bounded navigation fallback for colliding with scenery. No new AI goals,
 # teleportation, phantom projectiles, or expensive per-frame path searches.
 var obstacle_dodge_time_084: float = 0.0
+## Build 09.2 perception (immersive-sim Phase 1): replaces the distance wake.
+const Sense092 = preload("res://scripts/sense_092.gd")
+const Perception093 = preload("res://scripts/perception_092.gd")
+var sense_092: Node = null
+## Build 09.2 drop-in animation (assets/sprites/anim_092/<actor_key>/). Any
+## state it lacks falls back to the 12-cell atlas below.
+const SpriteAnim092 = preload("res://scripts/sprite_anim_092.gd")
+var anim_092: RefCounted = null
 var obstacle_dodge_side_084: float = 1.0
 var obstacle_dodge_direction_084: Vector3 = Vector3.ZERO
 var obstacle_dodge_cooldown_084: float = 0.0
@@ -180,11 +188,27 @@ func _ready() -> void:
         # rather than silently stacking every unrecorded actor at one point.
         var location: Array = saved.get("position",[position.x,position.y,position.z])
         position = Vector3(float(location[0]),float(location[1]),float(location[2]))
+        if hostile:
+            # 09.3: a reloaded hostile has no fresh sighting; if it cannot
+            # see the player it searches where it stands, not at the origin.
+            last_seen_position = position
+            time_since_sighted = 0.0
+    # Optional enemies (wake > 0) perceive the player; office-holders and the
+    # Edda machine (wake 0) react to perceived violence instead (sense_092.gd).
+    # Set up after the saved position is restored, so home and facing are true.
+    sense_092 = Sense092.new()
+    add_child(sense_092)
+    sense_092.setup(self, "patrol" if wake_distance > 0.0 else "civic")
 
 func anger() -> void:
     if not hostile:
         hostile = true
         alert_time_079x = 0.36
+        # 09.3: turning hostile means knowing where the attacker is now; the
+        # search memory starts from here, not from a stale default.
+        if is_instance_valid(player):
+            last_seen_position = player.global_position
+        time_since_sighted = 0.0
         if Game.has_attempt(): Game.state["actors"][actor_key]["hostile"] = true
         if is_instance_valid(voice_083): voice_083.call("play_enemy", "alert")
         became_hostile.emit()
@@ -207,6 +231,8 @@ func take_hit(damage: int) -> void:
         hp = 0
         hostile = false
         death_time = 0.84
+        if anim_092 != null and anim_092.has_state("death"):
+            death_time = maxf(0.84, anim_092.duration("death") + 0.12)
         animation_timer = 0.0
         animation_state = "death"
         velocity = Vector3.ZERO
@@ -378,12 +404,20 @@ func _physics_process(delta: float) -> void:
     if not hostile:
         velocity.x = 0.0
         velocity.z = 0.0
-        # Optional encounters wake at a bounded range; the original legal-route
-        # requisition enforcer, Millwright, Cantor and Edda machine do not.
-        if wake_distance > 0.0 and global_position.distance_to(player.global_position) < wake_distance:
-            anger()
+        # 09.2: sight, sound and witnessed violence decide when an enemy turns
+        # hostile (sense_092.gd); the old "inside N metres" wake is gone.
+        if is_instance_valid(sense_092):
+            sense_092.tick(delta)
+        if not hostile:
+            animation_state = "walk" if Vector2(velocity.x, velocity.z).length() > 0.2 else "idle"
         move_and_slide()
         return
+    if is_instance_valid(sense_092):
+        sense_092.hostile_tick(delta)
+    # Hostile actors face their target so the eight-view sprite reads true.
+    var face_to: Vector3 = player.global_position - global_position
+    if Vector2(face_to.x, face_to.z).length() > 0.3:
+        rotation.y = lerp_angle(rotation.y, atan2(-face_to.x, -face_to.z), clampf(delta * 6.0, 0.0, 1.0))
     var toward: Vector3 = player.global_position-global_position
     toward.y = 0.0
     var distance: float = toward.length()
@@ -395,6 +429,16 @@ func _physics_process(delta: float) -> void:
         time_since_sighted = 0.0
     else:
         time_since_sighted += delta
+    # 09.3: a patrol that has lost its target searches, then stays on high
+    # alert (sense_092.gd). Keepers hold their post and stay in combat.
+    if not sees_player and time_since_sighted >= Perception093.LOSE_TRACK_SECONDS and windup <= 0.0 and rush_time <= 0.0 and is_instance_valid(sense_092) and sense_092.temperament == "patrol":
+        warning.visible = false
+        aim_lane_079z.visible = false
+        sense_092.lose_track(last_seen_position)
+        velocity.x = 0.0
+        velocity.z = 0.0
+        move_and_slide()
+        return
     frame_timer += delta
     var hold: bool = windup > 0.0 or recovery > 0.0 or stagger_time > 0.0
     if stagger_time > 0.0:
@@ -490,18 +534,16 @@ func _physics_process(delta: float) -> void:
 
 # ---- BUILD 06.8 FRAME-ATLAS ANIMATION ----
 func _load_directional_animation() -> void:
+    anim_092 = SpriteAnim092.load_set(actor_key)
+    if anim_092 != null and anim_092.pixel_size > 0.0 and is_instance_valid(sprite):
+        sprite.pixel_size = anim_092.pixel_size
     for face in DIRECTIONS:
         # Build 08.8 Runway turnaround atlases first, then the 07.x procedural ones.
         var atlas_path: String = "res://assets/sprites/enemies_088/%s_%d.png" % [actor_key,face]
         if not ResourceLoader.exists(atlas_path):
             atlas_path = "res://assets/sprites/enemies_077/%s_%d.png" % [actor_key,face] if actor_key in ["gardener","commandant"] else ("res://assets/sprites/enemies_076/core_actuator_%d.png" % face if actor_key == "core_actuator" else ("res://assets/sprites/enemies_075/collector_%d.png" % face if actor_key == "collector" else "res://assets/sprites/enemies_074/%s_%d.png" % [actor_key,face]))
-        if not ResourceLoader.exists(atlas_path):
-            atlas_path = "res://assets/sprites/enemies_073/%s_%d.png" % [actor_key,face]
-        if not ResourceLoader.exists(atlas_path):
-            atlas_path = "res://assets/sprites/enemies_071/%s_%d.png" % [actor_key,face]
-        if not ResourceLoader.exists(atlas_path):
-            var legacy: String = "front" if face == 1 else ("left" if face in [2,3] else ("back" if face in [4,5,6] else "right"))
-            atlas_path = "res://assets/sprites/enemies_068/%s_%s.png" % [actor_key,legacy]
+        # 09.1: the 06.8/07.1/07.3 generations were removed; every actor has an
+        # 07.4-07.7 atlas (see art/BUILD_091_REMOVED_SUPERSEDED.json).
         if not ResourceLoader.exists(atlas_path): continue
         var atlas: Texture2D = load(atlas_path)
         var frames: Array[Texture2D] = []
@@ -511,6 +553,24 @@ func _load_directional_animation() -> void:
             sub.region = Rect2((idx % 4) * ATLAS_W,int(idx / 4) * ATLAS_H,ATLAS_W,ATLAS_H)
             frames.append(sub)
         animated_textures[face] = frames
+
+## 09.2 art path. Returns false to let the legacy atlas handle this frame.
+func _play_anim_092(delta: float) -> bool:
+    var wanted: String = "death" if hp <= 0 else animation_state
+    if wanted == "rush" and not anim_092.has_state("rush"): wanted = "walk"
+    if not anim_092.has_state(wanted): return false
+    animation_timer += delta
+    var facing: int = 1
+    var view_camera: Camera3D = get_viewport().get_camera_3d()
+    if sprite_rotation_mode != 0 and view_camera != null:
+        facing = Rotation8.view_from_world(view_camera.global_position, global_transform)
+    var speed: float = 1.7 if animation_state == "rush" and wanted == "walk" else 1.0
+    var tex: Texture2D = anim_092.frame(wanted, facing, animation_timer * speed)
+    if tex != null: sprite.texture = tex
+    if hp <= 0:
+        death_time -= delta
+        if death_time <= 0.0: _finish_death_080()
+    return true
 
 func _finish_death_080() -> void:
     # Final pose remains in the same district and evaporates on zone unload.
@@ -528,6 +588,8 @@ func _process(delta: float) -> void:
     if animation_state != displayed_animation_state_079y:
         animation_timer = 0.0
         displayed_animation_state_079y = animation_state
+    if anim_092 != null and _play_anim_092(delta):
+        return
     if animated_textures.is_empty():
         if hp <= 0:
             death_time -= delta

@@ -41,7 +41,7 @@ class Build072VisualAudio(unittest.TestCase):
         self.assertEqual(manifest['enemy_atlas_count'],136)
         for key in manifest['enemy_ids']:
             for direction in range(1,9):
-                path=ROOT/'assets/sprites/enemies_071'/f'{key}_{direction}.png'
+                path=ROOT/'assets/sprites/enemies_074'/f'{key}_{direction}.png'  # 09.1: 07.1 removed
                 self.assertTrue(path.is_file(),str(path))
                 with Image.open(path) as im:self.assertEqual(im.size,(768,768))
         for key in ['sela','brin','ossa','oren','clerk']:

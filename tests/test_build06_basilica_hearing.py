@@ -66,8 +66,8 @@ class BasilicaAndHearingContracts(unittest.TestCase):
         self.assertIn('"source":"isolated governor drive"',self.rules)
         self.assertIn('"source":"authorised lay council, signal isolation crew"',self.rules)
         self.assertIn('"Correction":-3',self.rules)
-        self.assertIn('"Faith"] = -2',self.rules)
-        self.assertIn('"Faith"] = 1',self.rules)
+        self.assertIn('adjust_trust_089("Faith", -2)',self.rules)
+        self.assertIn('adjust_trust_089("Faith", 1)',self.rules)
 
     def test_honor_hearing_five_canonical_commands_and_safe_exit(self):
         commands=set(re.findall(r'"action":"hearing:([A-Za-z]+)"',self.main)) - {'start'}

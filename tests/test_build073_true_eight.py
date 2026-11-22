@@ -9,7 +9,9 @@ import itertools,unittest,sys,json
 import numpy as np
 from PIL import Image
 ROOT=Path(__file__).resolve().parents[1]
-SRC=ROOT/'assets/sprites/enemies_073'
+# 09.1: the 07.3 outputs were removed; their 07.4 polish keeps the eight
+# genuinely rotated views and is what every actor falls back to.
+SRC=ROOT/'assets/sprites/enemies_074'
 NPC=ROOT/'assets/sprites/directional8'
 SOURCES=ROOT/'art/production_sources/turntable_073'
 MANIFEST=json.loads((ROOT/'art/RUNWAY_073_REGENERATION.json').read_text())
@@ -56,9 +58,11 @@ class TrueEightRegression(unittest.TestCase):
  def test_runtime_and_gallery_use_new_atlases_first(self):
     for filename in ['enemy.gd','animated_echoform_068.gd']:
        text=(ROOT/'scripts'/filename).read_text()
-       self.assertIn('res://assets/sprites/enemies_073/%s_%d.png',text)
+       self.assertIn('res://assets/sprites/enemies_088/%s_%d.png',text)
+       self.assertIn('enemies_074/%s_%d.png',text)
     gallery=(ROOT/'scripts/enemy_gallery_068.gd').read_text()
-    self.assertIn('"enemies_073" if compare_legacy else "enemies_074"',gallery)
+    self.assertIn('var source_dir: String = "enemies_074"',gallery)
+    self.assertIn('source_dir = "enemies_088"',gallery)
     self.assertIn('KEY_T:',gallery)
     self.assertIn('view_from_world',(ROOT/'scripts/enemy.gd').read_text())
     self.assertIn('view_from_world',(ROOT/'scripts/directional_npc_sprite.gd').read_text())

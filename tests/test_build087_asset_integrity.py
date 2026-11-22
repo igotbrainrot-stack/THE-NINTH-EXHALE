@@ -37,7 +37,9 @@ class Build087Assets(unittest.TestCase):
 
     def test_registry_all_current_files_exist(self):
         d=json.loads((ROOT/'art/BUILD_087_RUNTIME_ASSET_REGISTRY.json').read_text())
-        self.assertEqual(778, d['summary']['total_media_files'])
+        # 09.1 removed 360 superseded sprites (art/BUILD_091_REMOVED_SUPERSEDED.json).
+        self.assertEqual(418, d['summary']['total_media_files'])
+        self.assertEqual(418, len(d['assets']))
         for item in d['assets']:
             self.assertEqual(hashlib.sha256((ROOT/item['path']).read_bytes()).hexdigest(),item['sha256'])
 

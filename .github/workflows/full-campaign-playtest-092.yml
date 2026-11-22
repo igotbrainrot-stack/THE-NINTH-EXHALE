@@ -1,0 +1,66 @@
+name: Full campaign playtest 09.2
+on:
+  push:
+    branches:
+      - feature/build-092-completion-qa-20261122
+      - 'feature/build-093-*'
+      - main
+    paths:
+      - 'scripts/**'
+      - .github/workflows/full-campaign-playtest-092.yml
+      - docs/handover/BUILD_092_FULL_CAMPAIGN_QA.md
+      - scripts/main.gd
+      - scripts/run_state.gd
+      - tools/playbot_090/**
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  playtest:
+    name: 420-second campaign (${{ matrix.policy }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        policy: [combat, pacifist]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Godot 4.4.1 stable Linux x86_64
+        run: |
+          curl -fL --retry 3 -o godot.zip https://github.com/godotengine/godot/releases/download/4.4.1-stable/Godot_v4.4.1-stable_linux.x86_64.zip
+          unzip -q godot.zip
+          chmod +x Godot_v4.4.1-stable_linux.x86_64
+          ./Godot_v4.4.1-stable_linux.x86_64 --version
+      - name: Install software-rendered display
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb libgl1-mesa-dri rsync
+      - name: Import project
+        run: ./Godot_v4.4.1-stable_linux.x86_64 --headless --editor --path . --quit
+      - name: Run 420-second scripted campaign
+        env:
+          GODOT: ${{ github.workspace }}/Godot_v4.4.1-stable_linux.x86_64
+          BOT_POLICY: ${{ matrix.policy }}
+        run: tools/playbot_090/run_playbot.sh artifacts/full_campaign/${{ matrix.policy }} 420
+      - name: Require an ending and witness invariants
+        run: |
+          LOG="artifacts/full_campaign/${{ matrix.policy }}/log.txt"
+          test -s "$LOG"
+          grep -q "ENDING REACHED: VESPER /" "$LOG" || { echo "Bot did not reach an ending within 420 seconds"; exit 1; }
+          grep -q "SUMMARY ending=VESPER /" "$LOG" || { echo "No ending recorded in summary"; exit 1; }
+          if grep -Eq "records_without_living_witness=[1-9][0-9]*" "$LOG"; then
+            echo "Witness invariant failed"; exit 1
+          fi
+          grep "SUMMARY ending=" "$LOG"
+          sha256sum "$LOG" > "$LOG.sha256"
+      - name: Upload playtest logs and captures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-092-playtest-${{ matrix.policy }}
+          path: artifacts/full_campaign/${{ matrix.policy }}/ 
+          if-no-files-found: warn
+          retention-days: 14

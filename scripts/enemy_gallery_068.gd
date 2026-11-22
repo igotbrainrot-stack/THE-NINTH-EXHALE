@@ -114,11 +114,15 @@ func _refresh() -> void:
     var id: String = str(ids[at])
     var spec: Dictionary = EnemyRoster068.spec(id)
     var caption: String = id.replace("_"," ").to_upper() if spec.is_empty() else str(spec.get("name",id)).to_upper()
-    heading.text = "ENEMY ECOLOGY / %s    %02d / %02d\n%s" % ["ORIGINAL 07.3" if compare_legacy else "POLISHED 07.4",at+1,ids.size(),caption]
+    heading.text = "ENEMY ECOLOGY / %s    %02d / %02d\n%s" % ["FALLBACK 07.4" if compare_legacy else "IN GAME",at+1,ids.size(),caption]
     var detail: String = "HEARING-ONLY\nNOT an FPS enemy\nVoluntary public-loaner or opposition field" if spec.is_empty() else "ZONE: %s\nHEALTH: %d\nROLE: %s\nATTACK: %s\nDAMAGE: %d\nREACH: %.1fm\n\nEight genuinely rotated views, with improved material texture and silhouette readability. These remain 3D maquette derivatives, not the external Runway paintings." % [str(spec["zone"]).to_upper(),int(spec["hp"]),str(spec["move"]).to_upper(),str(spec["attack"]).to_upper(),int(spec["damage"]),float(spec["reach"])]
     description.text = detail + "\n\nVIEW %d: " % face + str(FACES[face]).to_upper() + ("\nATTACK CYCLE" if attack_mode else "\nWALK CYCLE")
     var file_view: int = 1 if face == 0 else face
-    var source_dir: String = "enemies_073" if compare_legacy else "enemies_074"
+    # 09.1: compare what the game draws (08.8 where it exists) with the 07.4
+    # fallback that remains while the 08.8 provenance review is pending.
+    var source_dir: String = "enemies_074"
+    if not compare_legacy and ResourceLoader.exists("res://assets/sprites/enemies_088/%s_1.png" % id):
+        source_dir = "enemies_088"
     var path: String = "res://assets/sprites/%s/%s_%d.png" % [source_dir,id,file_view]
     active_atlas = load(path) if ResourceLoader.exists(path) else null
     clock = 0.0
