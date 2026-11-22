@@ -2,12 +2,12 @@
 
 Original retro first-person civic-horror RPG / roguelite set in Vesper. Built in **Godot 4.4.1** with the GL Compatibility renderer and a 640×400 internal viewport.
 
-**Current development build on `main`: 09.3, immersive-sim phase 1b on top of the 09.2 weapon art.** Work happens on branches off `main` with draft PRs; CI runs on every PR. GPT's working brief: `docs/handover/GPT_HANDOVER_093_MAIN.md`.
+**Current development build on `main`: 09.3, immersive-sim phase 1b on top of the 09.2 weapon art.** Work happens on branches off `main` with draft PRs; CI runs on every PR. GPT's working brief: `docs/handover/GPT_HANDOVER_096_MAIN.md`.
 - 09.2 added deterministic sight and hearing, witnessed responses, first-person weapon animation strips and a runnable Linux package.
 - 09.3 adds guards that search and stay on high alert, threatened witnesses who run to report, cause-specific barks and a HUD stealth cue.
 - 09.4 wires in the recovered Runway combat music and weapon sounds (`data/audio_mix_093.json`). Combat music now plays only when something is actually fighting you.
 - 09.5 brings in DOOM-era techniques. Sound travels round walls by route, firing lights you up, enemies flinch at damage thresholds (no more stun-lock), each district's return rail shows what you did there, and enemies call out what they are doing (wind-ups, flinches, a fallen ally they saw, your reload).
-- 09.6 consolidates story, gameplay and art against the bible. Only people speak (machines get captioned sounds), flinches use the bible's stagger values, the HUD frames no longer cut their titles, and district light follows the bible. Review and open rulings: `docs/research/CONSOLIDATION_REVIEW_096.md`.
+- 09.6 consolidates story, gameplay and art against the bible. Only people speak (machines get captioned sounds), flinches use the bible's stagger values, the HUD frames no longer cut their titles, and district light follows the bible. The bible's errata are logged in its Appendix F. The Unsaid now appear (one in Sootworks, placeholder art), pellets fly a fixed pattern, and you can pick Steady, Severe or Testimony difficulty on the title docket. Review: `docs/research/CONSOLIDATION_REVIEW_096.md`.
 
 It is playable, but **not the finished game or final content release**. The master game bible remains the production target; the current Godot build is still a development slice and has not had human full-campaign playtesting.
 

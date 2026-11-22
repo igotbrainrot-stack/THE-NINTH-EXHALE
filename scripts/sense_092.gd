@@ -372,6 +372,8 @@ func _set_state(next: String) -> void:
             line = P.bark_for("INVESTIGATE", "SOUND", voice)
         elif next == "SUSPICIOUS" and line == "":
             line = P.bark_for("SUSPICIOUS", "SOUND", voice)
+        if voice == "echo":
+            line = str(owner_enemy.call("echo_bark", next))   # the Unsaid repeat, never reason
         if line != "":
             _say(line)
         state_changed.emit(state)

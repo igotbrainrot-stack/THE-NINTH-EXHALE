@@ -12,14 +12,14 @@ What had drifted:
 - **Gameplay:** 09.5's flinch ignored the bible's per-weapon stagger column and invented a damage rule instead. The assembly vote was counted in "rolls".
 - **Art:** the 09.1 HUD frames cut through their own titles. Hearth Nine, Sootworks and Quiet Barracks were lit off the bible's space table. Eight sprites are flat placeholders or off-model, and two more need small proportion fixes.
 
-Build 09.6 (branch `feature/build-096-consolidation-20261122`, stacked on PR #16) fixes the code-side items, with tests. The sprites need new GPT art: `docs/handover/GPT_ART_CONSOLIDATION_096.md`. Seven points need the owner's ruling (below).
+Build 09.6 (branch `feature/build-096-consolidation-20261122`, stacked on PR #16) fixes the code-side items, with tests. The sprites need new GPT art: `docs/handover/GPT_ART_CONSOLIDATION_096.md`. The owner's seven rulings are made and built (below).
 
 ## Story
 
 | Finding | Bible | In the game | Status |
 |---|---|---|---|
 | Every enemy spoke human lines ("SOMEONE THERE?", "MAN DOWN!"), including the Intake Crawler, Vent Whistler turret, Slag Sifter and the actuators | Automata are sensors, valves and sweeps (§9 matrix); the Unsaid only repeat without understanding (§2.2) | 09.3 barks and 09.5 callouts used one table for all 19 combat actors | **Fixed in 09.6.** People speak; machines show captioned sounds ("[SENSOR TICKS]", "[PRESSURE BUILDS]") and don't read Ninth's reload |
-| The Unsaid never appear | The basic enemy (§2.2, §9: "Unsaid residue", grunt tier) and a P0 art target (§11.9) | No enemy, line or record names them | **Owner ruling**, then GPT art |
+| The Unsaid never appear | The basic enemy (§2.2, §9: "Unsaid residue", grunt tier) and a P0 art target (§11.9) | No enemy, line or record names them | **Ruled and built:** one Sootworks resident; placeholder art until GPT delivers |
 | Vote count read "Affirmative rolls: 2 / 3" | No hidden roll decides the ending (§13) | Reads like dice | **Fixed in 09.6:** "Affirmative constituencies" |
 | Ninth given a pronoun ("HE'S RELOADING") | Ninth has no pronoun in the bible | Draft 09.5 lines | Fixed in 09.5; 09.6 adds a test |
 | Two planning docs describe Build 05 and "no runnable Godot FPS" | — | `docs/NEXT_STEPS_ROADMAP.md`, `docs/DEVELOPMENT_HANDOVER.md` | **Fixed in 09.6:** marked historical |
@@ -30,9 +30,9 @@ Build 09.6 (branch `feature/build-096-consolidation-20261122`, stacked on PR #16
 |---|---|---|---|
 | Flinch built from raw damage | §8 stagger column: Covenant 8, Coil 35 a shot, Nail Storm 3, Choirbreaker 17 | 09.5 pain meter counted damage | **Fixed in 09.6.** A held Nail Storm flinches a Slag Sifter 2 times in 3 s (was 4); one Coil shot still flinches it at once |
 | Machines punished Ninth's reload | Office enforcers have the "exposed reload window" (§9) | Any hostile in view attacked within 0.3 s | **Fixed in 09.6:** only people call and press a reload |
-| Enemy health below the bible's pacing | Grunt 70, enforcer 125, elite 240, mini-boss 420, Custodian 650 HP (§8) | Crawler 32, Pressure Mite 20, Enforcer 70, keepers 90–210 | **Owner ruling** (provisional numbers) |
-| Coil and Nail pellets scatter randomly | "Fixed physics ticks, not narrative RNG" (§8) | Unseeded random spread | **Owner ruling** |
-| Difficulty modes missing | Steady, Severe, Witness (§13) | None; "Witness" is also a preset (§7) | **Owner ruling** |
+| Enemy health below the bible's pacing | Grunt 70, enforcer 125, elite 240, mini-boss 420, Custodian 650 HP (§8) | Crawler 32, Pressure Mite 20, Enforcer 70, keepers 90–210 | **Ruled:** the build's values are the current provisional target (bible §8, Appendix F) |
+| Coil and Nail pellets scatter randomly | "Fixed physics ticks, not narrative RNG" (§8) | A seeded pseudo-random scatter | **Ruled and fixed:** fixed pellet pattern |
+| Difficulty modes missing | Steady, Severe, Witness (§13) | None; "Witness" is also a preset (§7) | **Ruled and built:** Steady, Severe, Testimony |
 
 ## Art style
 
@@ -63,15 +63,19 @@ Before/after captures: `docs/research/consolidation_096/`.
 | District light per the bible | `main.gd` | `test_build096_consolidation.py` (glow ≤ 0.05, ≥ 2 s period) |
 | Old planning docs marked historical | two docs | `test_build096_consolidation.py` |
 
-## Owner rulings needed
+## Owner rulings (made 22 November 2026)
 
-1. **Which enemies are machines?** Five are a judgement call: Millwright Power Frame (set to speak, as a frame worked by an office-holder), Chain Hauler, Choir Reed, Triage Warden (all set to machine) and Saltbound Porter (set to speak). One word each in `data/enemy_roster_068.json`.
-2. **Bring in the Unsaid?** The bible's basic enemy and the city's own monster; the game has none.
-3. **Bible erratum, hearing moves:** §11.6 (line 1258) lists four moves; §2 and the game use five commands.
-4. **Bible erratum, status lines:** the header says "SPECIFIED, NOT ENGINE-IMPLEMENTED" and §11.9 says no sprites exist. Both are out of date since the early builds.
-5. **"Witness" names two things:** a build preset (§7) and a difficulty mode (§13). Difficulty modes are not built yet.
-6. **Enemy health:** raise to the bible's provisional pacing, or record the lower numbers as targets.
-7. **Random pellet spread:** keep, or use a fixed pellet pattern.
+The owner asked for the bible and the open points to be fixed. All seven are done in Build 09.6, and the bible logs each change in **Appendix F**:
+
+1. **Borderline voices:** the Millwright Power Frame and Saltbound Porter speak; the Chain Hauler, Choir Reed and Triage Warden are machines.
+2. **The Unsaid:** one resident "Unsaid Residue" in Sootworks (70 HP, 12-damage lunge, 0.65 s cue, broken by Sonic, repeats Sootworks speech). It uses placeholder art until GPT delivers.
+3. **Bible erratum, hearing:** §11.6 now names the five commands.
+4. **Bible erratum, status:** the readiness line, §11.9 and §12 describe the Godot build.
+5. **Difficulty:** built as Steady, Severe and Testimony. The story-access mode was renamed from "Witness".
+6. **Enemy health:** the build's lighter values are the current provisional target until a human playtest. The bible's figures stay as the longer-term reference.
+7. **Pellets:** a fixed pattern replaces the seeded random scatter.
+
+Still open from earlier builds: an enemy-free Hearth Nine, sprint speed (bible 6.2 m/s, code 8.5 m/s), F9 quickload inside districts, and merging PRs #15–#17.
 
 ## Checked and consistent
 

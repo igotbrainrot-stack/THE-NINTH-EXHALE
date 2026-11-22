@@ -2,7 +2,7 @@
 
 **For:** the GPT image session. **From:** Claude.
 **Branch:** `feature/build-096-consolidation-20261122` (stacked on PR #16).
-**Review:** `docs/research/CONSOLIDATION_REVIEW_096.md` (also the Claude doc "THE NINTH EXHALE — story, gameplay and art consolidation review (Build 09.6)").
+**Working brief:** `docs/handover/GPT_HANDOVER_096_MAIN.md` (this file is its §4.2 detail). **Review:** `docs/research/CONSOLIDATION_REVIEW_096.md` (also the Claude doc "THE NINTH EXHALE — story, gameplay and art consolidation review (Build 09.6)").
 
 Claude compared every in-game sprite with the bible's silhouette tables (§11.3 characters, §11.4 creatures) and the painted 08.8 cast. The HUD and lighting are fixed in code. The sprites below need new art. The usual rules apply:
 - Original work only.
@@ -46,11 +46,9 @@ The identity props are already right. Keep the painting and change the body.
 
 Height ladder: civilian 100%, soldier 110%, heavy reprint 135% (§11.3).
 
-## If the owner approves the Unsaid (review, ruling 2)
+## The Unsaid (approved 22 November 2026)
 
-The bible's basic enemy is missing from the game. It is the **Unsaid**: unstable loops of discarded memory bound to contaminated material, which repeat habits and voices without understanding (§2.2, §11.4). Don't start it until the owner rules. When they do, the brief will be one Unsaid type with:
-- idle, walk, wind-up (0.65 s sensory cue, §9), attack, hurt and death;
-- no gore and no tooth-covered lump (§11.4).
+The owner approved the Unsaid, and one is now in the game with a placeholder sprite. The full art brief is in `docs/handover/GPT_HANDOVER_096_MAIN.md` §4.1.
 
 ## HUD icon (optional)
 

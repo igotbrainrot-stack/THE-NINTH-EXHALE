@@ -1,7 +1,7 @@
 # THE NINTH EXHALE — MASTER GAME BIBLE
 
-**Edition:** 17 November 2026 consolidated production candidate (V6 canon; targeted clarifications).  
-**Readiness:** **SPECIFIED, NOT ENGINE-IMPLEMENTED.** All core narrative routes and data catalogues are retained; FPS combat, Godot traversal, enemies, controls, audio and player balance still need implementation and testing. It is not appropriate to call this a completed game.
+**Edition:** 17 November 2026 consolidated production candidate (V6 canon; targeted clarifications), with **Build 09.6 errata of 22 November 2026** (Appendix F lists every change and the text it replaced).  
+**Readiness:** **PARTLY ENGINE-IMPLEMENTED (Godot 4.4 development build 09.6).** The playable build covers Hearth Nine, the five Writ districts, the civic Echoform hearing, the archive lift, the Custodian, the public assembly and all four endings, with four of the sixteen weapons, nineteen combat actors plus the Unsaid, deterministic sight and hearing, and Runway combat audio. Most catalogue content (weapons, armour, consumables, NPC arcs and storylets) and final balance are still to build, and no human has played a full campaign. It is not appropriate to call this a completed game.
 
 **Single source of truth:** This document replaces the need to consult historical bible versions for retained world, narrative and mechanical specifications. Companion audit, changelog and handover record provenance; they do not introduce alternative rules. The source Python story generator is a narrative reference, not an implemented shooter.
 
@@ -814,7 +814,7 @@ Godot's official save documentation notes JSON can store simple state but needs 
 
 **Baseline combat and damage:** Player aim/attack is evaluated in fixed physics ticks, not narrative RNG. For a non-crit hit, `final_damage=max(1, round(base × range_factor × armor_factor × exposure_factor))`; range_factor 1.0 up to listed range, linearly falls to .55 at twice range (beyond 2× range remains .55 or ray limit); armour_factor 0.8 for plated grunts, .65 for elites, .55 for boss plates, except appropriate Puncture/Shear 1.1× against vulnerable plates; exposed machinery may amplify Arc ×1.25. Do **not** infer damage or eligibility from the ecological label of an Echoform. Weak-point multiplier 1.35, max modifier stack 1.65. Friendly civilian damage is an actual resource/relationship event with a visible warning icon. No static RNG critical chance is required.
 
-**Provisional pacing:** grunt 70 HP, enforcer 125 HP, elite 240 HP, mini-boss 420 HP, Custodian 650 HP with mechanical phases; ordinary gunfights 20–50 seconds, major room 45–90 seconds, boss 2–4 minutes; tuned for one player at 320×200 readability. An encounter must provide visible cover/recovery; never assume fully loaded rare weapons. The base Covenant Pistol and map-placed ammo must be capable of resolving every mandatory combat fallback.
+**Provisional pacing:** grunt 70 HP, enforcer 125 HP, elite 240 HP, mini-boss 420 HP, Custodian 650 HP with mechanical phases (**Build 09.6 ruling:** the implemented build runs lighter, and its values are the current provisional targets until a human playtest: the Intake Crawler 32, Pressure Mite 20, Requisition Enforcer 70, the other optional district types 32–88 and district keepers 90–210 HP; the Unsaid keep the grunt's 70); ordinary gunfights 20–50 seconds, major room 45–90 seconds, boss 2–4 minutes; tuned for one player at 320×200 readability. An encounter must provide visible cover/recovery; never assume fully loaded rare weapons. The base Covenant Pistol and map-placed ammo must be capable of resolving every mandatory combat fallback.
 
 #### Weapon-by-weapon numeric definitions (all 16)
 
@@ -839,7 +839,7 @@ Godot's official save documentation notes JSON can store simple state but needs 
 
 **Timing and animation contracts:** Weapons with magazines reserve ammunition on a validated fire event and decrement it exactly once. Melee free swipes use zero cartridges; charged effects consume one Pressure Cartridge. Shotguns spend one Coil Shell per trigger pull (eight pellets are one shot). Flamer consumes one fuel per 0.1-s tick. All reloads can be interrupted with current magazine preserved; first-person sprites must distinguish idle, discharge, recovery, reload and blocked/refusal (where relevant). Rare weapons are unique instance IDs, not duplicate loot rolls. Enemy wreckage can be salvaged once; no unlimited ammo from re-entering a room.
 
-**Range / knockback safety:** Stagger does not apply to civilian dialogue actors except explicit threat/hostility; stunned enemies enter `staggered` for 1.3 s, with 2.5 s immunity afterward. A close-range finisher on a staggered combatant restores 18 personal Breath (max 100+Resolve-derived extension) and 5 HP, once per target; an optional nonlethal version restores 12 Breath and 0 HP. Finishers consume 0.7 s and commit Ninth to a position, avoiding infinite invulnerability. Max finisher healing per encounter 30 HP.
+**Range / knockback safety:** Stagger does not apply to civilian dialogue actors except explicit threat/hostility; stunned enemies enter `staggered` for 1.3 s, with 2.5 s immunity afterward. **Flinch (Build 09.6):** below that stun, each hit adds the weapon's Stagger value from the table above (a Coil shot's 35 is split across its pellets) to the target's pain meter; crossing its role threshold (10–30% of max HP, kept between 8 and 45) flinches it for 0.24 s and cancels its attack, followed by 0.7 s without another flinch; interrupting a wind-up takes double. No dice. **Pellets (Build 09.6):** the Coil's eight pellets fly in a fixed pattern (a centre and a ring of seven) and the Nail Storm walks a fixed six-step cycle, never a random scatter. A close-range finisher on a staggered combatant restores 18 personal Breath (max 100+Resolve-derived extension) and 5 HP, once per target; an optional nonlethal version restores 12 Breath and 0 HP. Finishers consume 0.7 s and commit Ninth to a position, avoiding infinite invulnerability. Max finisher healing per encounter 30 HP.
 
 #### Authored major modifications — one active per standard weapon
 
@@ -1039,6 +1039,10 @@ The bible establishes grunts, enforcers, elites, mini-bosses and three Custodian
 | Infrastructure automaton | Fixed pumps, sentries and defence machinery | Turret sweep and tagged hazard; active while power supplied | Visible rotation/valve cue ≥0.6 s; Arc affects electronics | 125–240 HP as selected | Collateral damage posts to CivicResourceLedger |
 | Reprint casualty / coerced worker | Finite biomass and corrupted identity records | Physically forceful but intermittent, may avoid targets after recognised personal memory evidence | Wind-up 0.8 s, breaks stance on physical obstruction | Elite target 240 HP, impact 15–24 | Treatment versus elimination affects local witness state |
 | Boss-level encounter | office heavy elite or relevant Custodian mechanism | 2–3 distinct state phases; bounded adds; genuine alternative solution | Key arena machinery visible before attack, ≥0.85 s major signal | Mini-boss 420; Custodian 650 HP target, not tested | Custodian fate and method recorded independently |
+
+**Voice rule (Build 09.6):** only people speak. Office staff, guards and frames worked by a named office-holder (the Millwright, the Commandant) bark and call out what they are actually doing. Automata and actuators (crawlers, mites, turrets, sifters, haulers, the Choir Reed, the Triage Warden, regulators) have no words: their state changes and attacks appear as bracketed sound captions. The Unsaid repeat fragments of their district's remembered speech without understanding, never tactical words. Only people notice and punish Ninth's reload.
+
+**The Unsaid in the build (09.6):** one resident "Unsaid Residue" in Sootworks, outside the optional enemy rotation, behaves per the row above: 70 HP, a 12-damage contact lunge, a 0.65 s cue, interrupted by Sonic (the Choirbreaker breaks its loop every time). It repeats Sootworks speech ("...MITTENS FOR STOVE COAL...", "...SHIFT NINETY-ONE... SIGN HERE..."). "Lose interest when source field cut" is not yet built.
 
 **No invented infinite respawns:** every combat arena consumes a finite encounter budget. Attack damage and telegraph numbers are trial defaults only. Each combat encounter must provide attack feedback, stagger/recovery, line-of-sight cover and a means of retreat. AI navigation cannot substitute for collider validation. NPC civilians are never anonymous explosive props: their harm changes a reported consequence.
 
@@ -1255,7 +1259,7 @@ Every species needs an exact sketch of plausible joints, balance and movement, a
 
 **FPS weapon sprites:** 320×200 virtual screen, 128×128 or 160×128 working area with fixed lower baseline; muzzle, hands and stock cannot jitter across frames. Prepare separate idle, equip, ready, shoot, recoil, reload, melee/secondary, muzzle flash and empty/blocked states. Compare silhouettes at real screen size. Recoil is a controlled movement with a return to the identical idle anchor.
 
-**Tactical Echoform sprites:** Large left/right portraits or opposed sprites within the same palette. The four moves are 'strike', 'resonate', 'guard', 'listen'. Each requires a distinguishable visual cue. Never imply turn counts are a supernatural time-stop: the ring uses mechanical shutters and the world keeps moving.
+**Tactical Echoform sprites:** Large left/right portraits or opposed sprites within the same palette. The five commands are `Press`, `Attune`, `Brace`, `Observe` and `Withdraw` (§2, §9; corrected in Build 09.6 from the retired four-move list). Each requires a distinguishable visual cue. Never imply turn counts are a supernatural time-stop: the ring uses mechanical shutters and the world keeps moving.
 
 **Textures:** Author 64×64 core tiles, with 128×128 for selected feature panels if supported by engine; tile seamlessly on all intended axes. Variations should break repetition without randomized blur. Common 2.5D sector features: consistent wall height, door insets, stair-step platforms, signage overlays, clean sightlines and nearest-neighbour sampling where configured. Use original artwork only.
 
@@ -1323,7 +1327,7 @@ No character, monster, prop, logo, texture, gun silhouette or map layout copied 
 
 **P3:** Full regional art kit, additional weapons/armour, environmental narrative panels and differentiated Custodian arenas after actual playtesting.
 
-**Visual precedence:** V5 Pressure Docket overrides any conflicting earlier “legacy” weapon pose, creature battle UI or catalogue description. Art prompts specify source requirements; no sprites or animation files have actually been produced. All visual outputs require separate original-art and licensing review.
+**Visual precedence:** V5 Pressure Docket overrides any conflicting earlier “legacy” weapon pose, creature battle UI or catalogue description. Art prompts specify source requirements. Sprites, animation strips and HUD art now exist in the Godot build (Runway and GPT originals with recorded provenance; see the GPT handovers in `docs/handover/`). All visual outputs still require separate original-art and licensing review.
 
 
 
@@ -1343,7 +1347,7 @@ No character, monster, prop, logo, texture, gun silhouette or map layout copied 
 
 **Implementation:** separate music, dialogue, weapons, enemy, ambient, UI and accessibility buses; dynamic-range modes; subtitles for every speech and narratively important sound, speaker identification and nonaudio cues for positional threats. Each weapon requires distinct shot, cycling/reload, empty, impact and recovery recordings (original or licensed); each enemy attack telegraph needs audio cue unique enough to distinguish it at 320×200. Hearing commands produce non-musical short cues, including visible equivalent indicators.
 
-**Provisional acceptance:** no peak clipping, no important speech masked by effects at defaults, no unlabelled audio-only mandatory puzzle, subtitle tests with sound muted, stereo/mono compatibility and listener positional coverage. Final LUFS, latency and voice-cast budgets are OPEN until the audio implementation and hardware target exist. No actual audio asset has been created here.
+**Provisional acceptance:** no peak clipping, no important speech masked by effects at defaults, no unlabelled audio-only mandatory puzzle, subtitle tests with sound muted, stereo/mono compatibility and listener positional coverage. Final LUFS, latency and voice-cast budgets are OPEN until the audio implementation and hardware target exist. Build 09.4 added Runway-generated combat music and weapon sounds (`data/audio_mix_093.json`); everything else in this section remains a proposal.
 
 
 
@@ -1364,7 +1368,7 @@ The in-world identity is the **Pressure Docket**: staggered filing cards, pressu
 
 **Onboarding proposal (first 6–10 minutes):** a safe walk/aim and basic pistol target in Hearth Nine; contested air unit introduces interaction and journal evidence; an authored micro-conversation demonstrates visibly disabled skill checks with a safe fallback; a Writ chart and rail notice foreshadow the campaign. The trial must provide a public Rootkin with no account/ownership requirement. Give a single overlay cue the first time Breath reaches zero, and never suppress basic walking and fire.
 
-**Accessibility:** remappable controls; readable scalings with pixel-accurate gameplay and separately scalable text; high-contrast interactables, colourblind-safe patterns; reduced flashing and screen shake; motion/aim assistance optional; subtitles and sound indicators; readable default 4:3 and widescreen modes; difficulty modes Steady, Severe, Witness preserving story access. Test with actual devices: no claim of verified accessibility until playtest.
+**Accessibility:** remappable controls; readable scalings with pixel-accurate gameplay and separately scalable text; high-contrast interactables, colourblind-safe patterns; reduced flashing and screen shake; motion/aim assistance optional; subtitles and sound indicators; readable default 4:3 and widescreen modes; difficulty modes Steady, Severe, Testimony preserving story access. Test with actual devices: no claim of verified accessibility until playtest.
 
 **Save/reload feedback:** show last committed timestamp, active attempt status and selected seed; only resume a valid atomic snapshot; never resurrect completed campaigns as an active attempt; failed writes retain the last intact save. UI promises must correspond to the real transaction status.
 
@@ -1421,7 +1425,7 @@ After `lung_installed && unique_writ_count >= 3 && hearing_passed && core_record
 | Final civic decision | 5–10 min | 1 policy decision, coherent epilogues |
 | **Total** | **73–108 min** | No mandatory optional quest or level-grind gate |
 
-**Difficulty modes:** `Steady` 100% enemy HP/damage; `Severe` enemy HP ×1.12, damage ×1.15, pickups identical, AI telegraph times ≥0.6s; `Witness` story access mode 80% enemy damage, +20% ammo pickup, all endings unchanged. Modes are not diegetic moral states and do not alter evidence or resource conservation. Do not gate achievements or Dawn to higher difficulty. Vertical slice targets 20–35 minutes with **Hearth Nine, Sootworks, Flood Basilica, two-Writ *slice-only* lift, Brin/Ossa, four V5-named weapons, two sets, eight supplies, one real hearing and two end cards**. The full game must still require three unique Writs. Never confuse a playable prototype with a production-complete campaign.
+**Difficulty modes:** `Steady` 100% enemy HP/damage; `Severe` enemy HP ×1.12, damage ×1.15, pickups identical, AI telegraph times ≥0.6s; `Testimony` story access mode (named `Witness` before Build 09.6, which clashed with the Witness build preset) 80% enemy damage, +20% ammo pickup, all endings unchanged. Modes are not diegetic moral states and do not alter evidence or resource conservation. Do not gate achievements or Dawn to higher difficulty. Vertical slice targets 20–35 minutes with **Hearth Nine, Sootworks, Flood Basilica, two-Writ *slice-only* lift, Brin/Ossa, four V5-named weapons, two sets, eight supplies, one real hearing and two end cards**. The full game must still require three unique Writs. Never confuse a playable prototype with a production-complete campaign.
 
 **Balance worked examples:** (1) Breaker Force 6, Resolve 4: HP=100+6×2+3×3=121; Reflex 3 speed 5.6 m/s. (2) Witness Force 2, Resolve 3: HP=100+6−3=103; 100+4×1=104 Breath. (3) Coil Shotgun point-blank base=8×8=64 kinetic; versus plated enforcer ×.80 ≈51, with head/weak-point ×1.35 =69 before range falloff. (4) A standard NPC contract challenge is Speech threshold 6 + documented original contract; Witness Speech 5 + an explicitly applicable approved evidence bonus +1 can qualify, while Breaker has a separate hatch/assault fallback. (5) Mod install: 3 salvage from tagged crate and two pickups → spend 3 at a staffed bench; cannot regain the same scrap by uninstalling the mod. (6) City air-valve repair: E 72→71, L 58→56, available pipe throughput A 54→59; report existing blocked line, not conjured air.
 
@@ -2329,3 +2333,24 @@ All identifiers below are **new technical keys**, not renamed lore. The V5 Pytho
 | hearing_commands | cmd_brace | Brace |
 | hearing_commands | cmd_observe | Observe |
 | hearing_commands | cmd_withdraw | Withdraw |
+
+
+## Appendix F — Build 09.6 errata and rulings (22 November 2026)
+
+The owner asked for these on 22 November 2026 ("fix the bible and the other issues"), after the 09.6 consolidation review (`docs/research/CONSOLIDATION_REVIEW_096.md`). They are recorded here so that no canon changes silently. Each entry gives the section, the change and the text it replaced.
+
+| Section | Change | Replaced text |
+|---|---|---|
+| Header | Edition notes these errata | "17 November 2026 consolidated production candidate (V6 canon; targeted clarifications)." |
+| Header | Readiness describes the Godot build | "SPECIFIED, NOT ENGINE-IMPLEMENTED. … FPS combat, Godot traversal, enemies, controls, audio and player balance still need implementation and testing." |
+| §8 Provisional pacing | The build's lighter enemy health is the current provisional target until a human playtest | (none; the bible values remain, marked as the longer-term figures) |
+| §8 Range / knockback | Flinch rule from the Stagger column; fixed pellet patterns | (new) |
+| §9 Enemy matrix | Voice rule: only people speak; automata are captioned; the Unsaid repeat | (new) |
+| §9 Enemy matrix | The Unsaid implemented as one Sootworks resident | (new) |
+| §11.6 Tactical Echoform sprites | Five hearing commands | "The four moves are 'strike', 'resonate', 'guard', 'listen'." |
+| §11.9 Visual precedence | Sprites and animation exist in the build | "no sprites or animation files have actually been produced." |
+| §12 Provisional acceptance | Runway combat audio exists in the build | "No actual audio asset has been created here." |
+| §13 Accessibility and §14.10 Difficulty | Story-access mode renamed `Testimony` | "Witness" (it clashed with the Witness build preset in §7) |
+
+**Rulings on borderline enemies (voice rule):** the Millwright Power Frame and the Saltbound Porter speak; the Chain Hauler, Choir Reed and Triage Warden are machines. They are recorded in `data/enemy_roster_068.json` (`voice`).
+

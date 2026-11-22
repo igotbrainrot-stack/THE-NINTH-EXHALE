@@ -345,13 +345,51 @@
   "sprite_status": "Render requested via Runway; image outputs are only marked integrated after source PNG export and atlas validation",
   "voice_kinds_096": {
     "speech": "a person, or a frame worked by a named office-holder: speaks barks and callouts",
-    "machine": "an automaton: no words; its barks and callouts are bracketed sound captions",
-    "owner_to_confirm": [
-      "millwright",
-      "chain_hauler",
-      "choir_reed",
-      "triage_warden",
-      "saltbound_porter"
-    ]
-  }
+    "machine": "an automaton: no words; barks and callouts are bracketed sound captions",
+    "echo": "the Unsaid: repeat fragments of remembered district speech without understanding (bible §2.2); never tactical words",
+    "ruling_096": "Millwright Power Frame and Saltbound Porter speak; Chain Hauler, Choir Reed and Triage Warden are machines (owner request 2026-11-22: 'fix the other issues')"
+  },
+  "residents_096": [
+    {
+      "id": "unsaid_residue",
+      "name": "Unsaid Residue",
+      "zone": "sootworks",
+      "hp": 70,
+      "interval": 2.6,
+      "attack": "rush",
+      "move": "flanker",
+      "speed": 2.6,
+      "reach": 2.0,
+      "wake": 9,
+      "damage": 12,
+      "pos": [
+        -18.0,
+        0.15,
+        14.0
+      ],
+      "rank": 0,
+      "voice": "echo",
+      "windup": 0.65,
+      "bible": "§2.2 the Unsaid; §9 matrix 'Unsaid residue': grunt 70 HP, contact 12-16, 0.65 s sensory cue, interrupted by Sonic",
+      "art_096": "PLACEHOLDER: saltbound_porter turnaround tinted memory-residue mauve until GPT delivers unsaid_residue art (docs/handover/GPT_HANDOVER_096_MAIN.md)",
+      "echo_barks": {
+        "UNAWARE": "...MIND THE PRESS... MIND THE PRESS...",
+        "SUSPICIOUS": "...WHO'S ON THE NIGHT PRESS...",
+        "INVESTIGATE": "...MITTENS FOR STOVE COAL... FAIR TRADE...",
+        "HOSTILE": "...SHIFT NINETY-ONE... SIGN HERE... SIGN HERE...",
+        "SEARCH": "...WHERE DID I PUT THE TOY...",
+        "HIGH_ALERT": "...THE CANTEEN BELL... THE CANTEEN BELL..."
+      },
+      "echo_callouts": {
+        "WINDUP_rush": [
+          "...CLOCK IN... CLOCK IN...",
+          "...LAST SHIFT... LAST SHIFT..."
+        ],
+        "PAIN": [
+          "...NOT MY CONTRACT...",
+          "...WHO SIGNED FOR ME..."
+        ]
+      }
+    }
+  ]
 }

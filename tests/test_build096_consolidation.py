@@ -48,7 +48,7 @@ class WeaponsMatchTheBible(unittest.TestCase):
     def test_stagger_drives_the_pain_meter(self):
         enemy = src("scripts/enemy.gd")
         player = src("scripts/player.gd")
-        self.assertIn("func take_weapon_hit_096(damage: int, stagger: float)", enemy)
+        self.assertIn("func take_weapon_hit_096(damage: int, stagger: float, weapon: String = \"\")", enemy)
         self.assertIn("_incoming_stagger_096 if _incoming_stagger_096 >= 0.0 else float(applied_damage)", enemy)
         self.assertIn('spec.get("stagger", damage)', player)
         self.assertIn('int(spec.get("pellets", 1))', player)  # one Coil shot is one shot of stagger
@@ -119,6 +119,50 @@ class DocsPointAtTheCurrentState(unittest.TestCase):
     def test_review_and_art_brief_exist(self):
         self.assertTrue((ROOT / "docs/research/CONSOLIDATION_REVIEW_096.md").exists())
         self.assertTrue((ROOT / "docs/handover/GPT_ART_CONSOLIDATION_096.md").exists())
+
+
+class BibleErrata096(unittest.TestCase):
+    """The owner's 22 Nov 2026 rulings, logged in the bible's Appendix F."""
+
+    def test_errata_are_applied_and_logged(self):
+        self.assertIn("Build 09.6 errata of 22 November 2026", BIBLE[:600])
+        self.assertIn("PARTLY ENGINE-IMPLEMENTED", BIBLE[:1200])
+        self.assertNotIn("SPECIFIED, NOT ENGINE-IMPLEMENTED.**", BIBLE.split("## Appendix F")[0])
+        self.assertIn("The five commands are `Press`, `Attune`, `Brace`, `Observe` and `Withdraw`", BIBLE)
+        self.assertNotIn("The four moves are", BIBLE.split("## Appendix F")[0])
+        self.assertNotIn("no sprites or animation files have actually been produced", BIBLE.split("## Appendix F")[0])
+        self.assertNotIn("No actual audio asset has been created here", BIBLE.split("## Appendix F")[0])
+        self.assertIn("difficulty modes Steady, Severe, Testimony", BIBLE)
+        self.assertIn("`Testimony` story access mode", BIBLE)
+        self.assertIn("**Voice rule (Build 09.6):** only people speak.", BIBLE)
+        appendix = BIBLE.split("## Appendix F — Build 09.6 errata and rulings", 1)
+        self.assertEqual(len(appendix), 2)
+        self.assertIn("The four moves are 'strike', 'resonate', 'guard', 'listen'.", appendix[1])  # old text kept
+
+    def test_difficulty_matches_the_bible(self):
+        rs = src("scripts/run_state.gd")
+        self.assertIn('"Severe": {"enemy_hp": 1.12, "enemy_damage": 1.15, "ammo": 1.0, "telegraph_min": 0.6}', rs)
+        self.assertIn('"Testimony": {"enemy_hp": 1.0, "enemy_damage": 0.8, "ammo": 1.2, "telegraph_min": 0.0}', rs)
+        self.assertIn("Severe` enemy HP ×1.12, damage ×1.15", BIBLE)
+        self.assertGreaterEqual(rs.count("ammo_gain_096("), 6)
+
+
+class TheUnsaid(unittest.TestCase):
+    def test_resident_follows_the_bible_row(self):
+        roster = json.loads(src("data/enemy_roster_068.json"))
+        unsaid = {e["id"]: e for e in roster["residents_096"]}["unsaid_residue"]
+        self.assertEqual((unsaid["hp"], unsaid["damage"], unsaid["windup"], unsaid["voice"]), (70, 12, 0.65, "echo"))
+        self.assertIn("PLACEHOLDER", unsaid["art_096"])
+        for line in list(unsaid["echo_barks"].values()) + sum(unsaid["echo_callouts"].values(), []):
+            self.assertTrue(line.startswith("..."), line)         # fragments, not commands
+        self.assertNotIn("unsaid_residue", [e["id"] for e in roster["combat_enemies"]])  # provenance counts unchanged
+        self.assertIn('weapon == "choir" and voice_kind() == "echo"', src("scripts/enemy.gd"))
+
+    def test_pellets_have_no_random_scatter(self):
+        player = src("scripts/player.gd")
+        self.assertNotIn("randf", player)
+        self.assertNotIn("RandomNumberGenerator", player)
+        self.assertIn("const COIL_PATTERN_096", player)
 
 
 if __name__ == "__main__":

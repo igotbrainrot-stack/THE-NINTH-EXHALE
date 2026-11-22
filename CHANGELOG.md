@@ -19,7 +19,29 @@ A review of the whole game against `docs/MASTER_GAME_BIBLE_FINAL.md`: `docs/rese
   - `tests/test_build096_consolidation.py` checks the four weapons against the bible table, voice kinds, captions, no pronoun for Ninth, frame tabs, light and doc banners.
   - `godot_callouts_095` has 15 checks (was 11).
   - `godot_codefix_regressions` has 40.
-- **Owner rulings needed (7):** which borderline enemies are machines, whether to add the Unsaid, two bible errata, the double use of "Witness", enemy health against the bible's pacing, and random pellet spread. See the review.
+- **Owner rulings, then fixed (same day).** The owner asked for the bible and the open points to be fixed:
+  - **Bible errata**, each logged with the replaced text in a new **Appendix F**:
+    - the readiness line now describes the Godot build;
+    - five hearing commands, not four moves;
+    - sprites and Runway audio exist;
+    - the voice rule;
+    - the flinch and pellet rules;
+    - the lighter enemy health is the current provisional target;
+    - the story-access difficulty is renamed **Testimony** (it clashed with the Witness preset).
+  - **The Unsaid:** one resident "Unsaid Residue" in Sootworks, outside the optional rotation, per the bible's §9 row:
+    - 70 HP, a 12-damage lunge and a 0.65 s cue;
+    - the Choirbreaker (Sonic) always breaks its loop;
+    - it repeats Sootworks speech (`residents_096` in the roster);
+    - it is put down once and stays down;
+    - placeholder art (the Saltbound Porter, tinted mauve) gives way automatically when GPT delivers `assets/sprites/anim_092/unsaid_residue/`.
+  - **Difficulty modes** (bible §14.10), picked on the title docket and fixed per attempt:
+    - Steady;
+    - Severe: enemies take 1/1.12 damage, hit 15% harder, and wind up for at least 0.6 s;
+    - Testimony: enemies hit 20% softer, and pickups give 20% more ammunition.
+  - **Fixed pellet pattern:** the Coil fires a centre and a ring of seven; the Nail Storm walks a six-step cycle. The seeded random scatter is gone.
+  - **Borderline voices settled:** the Millwright and the Saltbound Porter speak; the Chain Hauler, Choir Reed and Triage Warden are machines.
+  - **Tests:** new `tests/godot_consolidation_096.tscn` (14 checks, in CI); more bible, Unsaid, difficulty and pellet tripwires in `test_build096_consolidation.py`.
+  - **GPT:** new working brief `docs/handover/GPT_HANDOVER_096_MAIN.md`. It covers Unsaid art, the placeholder replacements, sounds for the machine captions and the carried-over weapon and audio work.
 
 ## 09.5 DOOM-era techniques: route-based sound, muzzle flash, pain thresholds, district record (2026-11-22)
 

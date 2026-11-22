@@ -78,4 +78,7 @@ func _scan(scene: Node, entries: Dictionary, zone_name: String) -> void:
             if seen.has(k) or node.animated_textures.is_empty(): continue
             seen[k] = true
             var atlas: String = _atlas_path(node.animated_textures[1][0])
-            check(atlas.contains("/enemies_088/") == entries.has(k) and node.animated_textures[1].size() == 12, "%s enemy atlas in %s (%s)" % [k, zone_name, atlas.get_file()])
+            # 09.6: an actor drawing borrowed placeholder art (the Unsaid) is
+            # judged by the art key it actually draws.
+            var art: String = str(node.call("art_key_096")) if node.has_method("art_key_096") else k
+            check(atlas.contains("/enemies_088/") == entries.has(art) and node.animated_textures[1].size() == 12, "%s enemy atlas in %s (%s)" % [k, zone_name, atlas.get_file()])

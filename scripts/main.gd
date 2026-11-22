@@ -334,9 +334,12 @@ func _spawn_additional_enemies_068() -> void:
     if zone == "hearth" and Game.intro_stage() in ["unwoken","alarm","cleared"]:
         # The opening combat remains a readable single-crawler tutorial.
         return
-    for id in Game.selected_enemy_068(zone):
+    # 09.6: plus the district's guaranteed residents (the Unsaid), once each.
+    for id in Game.selected_enemy_068(zone) + EnemyRoster068.residents(zone):
         var key: String = str(id)
         var spec: Dictionary = EnemyRoster068.spec(key)
+        if not spec.is_empty() and not Game.state["actors"].has(key):
+            Game.state["actors"][key] = {"hp": int(spec["hp"]), "hostile": false, "alive": true}
         var saved: Dictionary = Game.state["actors"].get(key,{})
         if not bool(saved.get("alive",true)) or spec.is_empty(): continue
         var foe := OfficeEnforcer.new()
@@ -716,6 +719,9 @@ func open_main_menu() -> void:
             opts.append({"label":"RECONSTRUCT / %s after death at %s" % [str(failed.get("build","Witness")).to_upper(), str(last_death.get("site","Vesper"))],"action":"reprint_saved"})
     if Game.profile.get("completed_endings",[]).size() > 0:
         opts.append({"label":"ARCHIVED SETTLEMENTS / NOT REWOUND","action":"ending:archive"})
+    var mode: String = Game.difficulty_096() if not Game.has_attempt() else str(Game.profile.get("difficulty", "Steady"))
+    var blurb: Dictionary = {"Steady": "as designed", "Severe": "enemies tougher and harder-hitting; wind-ups at least 0.6 s", "Testimony": "story access: enemies hit 20% softer, 20% more ammunition"}
+    opts.append({"label":"DIFFICULTY / %s — %s (change)" % [mode.to_upper(), str(blurb.get(mode, ""))],"action":"difficulty:cycle"})
     for name in ["Witness","Breaker","Mechanist","Stalker"]:
         opts.append({"label":"NEW NINTH / %s" % name,"action":"new:"+name})
     opts.append({"label":"QUIT TO DESKTOP","action":"quit"})
@@ -1968,6 +1974,10 @@ func _on_action(action: String) -> void:
             hud.notify("TOOL ISSUE DENIED / ALREADY ISSUED OR WRONG DISTRICT")
         hud.close_modal()
         player.set_control_active(true)
+        return
+    if action == "difficulty:cycle":
+        Game.cycle_difficulty_096()
+        open_main_menu()
         return
     if action.begins_with("new:"):
         begin_attempt(action.trim_prefix("new:"))

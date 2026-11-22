@@ -20,7 +20,7 @@ class NewOpeningAndTrial(unittest.TestCase):
         self.assertIn('sentry.defeated.connect(_intro_sentry_defeated)',code)
         self.assertIn('record_intake_sentry_defeat()',code)
         self.assertIn('actor_key == "sentry"',foe)
-        self.assertIn('Game.take_damage(role_damage)',foe)
+        self.assertIn('Game.take_damage(_scaled_damage_096(role_damage))',foe)  # 09.6: difficulty-scaled
         self.assertEqual(4,__import__("json").loads((R/"data/enemy_roster_068.json").read_text())["combat_enemies"][0]["damage"])
         self.assertIn('rush_hit_ready',foe)
         self.assertIn('telegraph_started',foe)

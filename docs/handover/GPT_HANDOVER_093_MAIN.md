@@ -1,5 +1,7 @@
 # GPT handover: Build 09.3 is on `main` (updated for 09.4 audio)
 
+> **Superseded on 2026-11-22 by `GPT_HANDOVER_096_MAIN.md`.** Kept for history; §4.2 (archive audio table) and §4.3 are still referenced from there.
+
 **For:** the GPT session (art, audio, asset QA). **From:** Claude (code, systems, integration).
 **Date:** 2026-11-22.
 

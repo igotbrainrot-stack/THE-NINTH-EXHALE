@@ -11,7 +11,8 @@ extends RefCounted
 ## bible L699). One voice at a time: a global gap between callouts and a
 ## per-speaker gap, so a fight never turns into a wall of text. Dead
 ## enemies never speak. Ninth has no pronoun in the bible, so no line uses one.
-## 09.6: only people speak; machines get captioned sounds (MACHINE_LINES).
+## 09.6: only people speak; machines get captioned sounds (MACHINE_LINES);
+## the Unsaid repeat their own roster fragments (echo_callouts), nothing tactical.
 
 const P = preload("res://scripts/perception_092.gd")
 
@@ -56,8 +57,8 @@ static func reset() -> void:
     spoken.clear()
 
 ## The next line for an event, in a fixed rotation.
-static func next_line(event: String, voice: String = "speech") -> String:
-    var lines: Array = (MACHINE_LINES if voice == "machine" else LINES).get(event, [])
+static func next_line(event: String, voice: String = "speech", own_lines: Array = []) -> String:
+    var lines: Array = own_lines if voice == "echo" else (MACHINE_LINES if voice == "machine" else LINES).get(event, [])
     if lines.is_empty(): return ""
     var slot: String = voice + ":" + event
     var i: int = int(_rotation.get(slot, 0))
@@ -73,7 +74,9 @@ static func say(enemy: Node, event: String) -> bool:
     var key: int = enemy.get_instance_id()
     if now - int(_last_by_speaker.get(key, -100000)) < SPEAKER_GAP_MS: return false
     if not (event in URGENT) and now - _last_global_ms < GLOBAL_GAP_MS: return false
-    var line: String = next_line(event, voice_of(enemy))
+    var voice: String = voice_of(enemy)
+    var own: Array = enemy.call("echo_lines", event) if voice == "echo" and enemy.has_method("echo_lines") else []
+    var line: String = next_line(event, voice, own)
     if line == "": return false
     sense.call("_say", line)
     _last_global_ms = now
