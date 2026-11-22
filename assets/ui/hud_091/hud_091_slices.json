@@ -1,0 +1,86 @@
+{
+  "hud_frame_brass": [
+    10,
+    9,
+    10,
+    9
+  ],
+  "hud_frame_steel": [
+    10,
+    9,
+    10,
+    9
+  ],
+  "hud_frame_route": [
+    8,
+    5,
+    8,
+    5
+  ],
+  "hud_prompt_tab": [
+    12,
+    6,
+    12,
+    6
+  ],
+  "hud_docket_modal": [
+    20,
+    20,
+    20,
+    20
+  ],
+  "hud_button_normal": [
+    14,
+    7,
+    14,
+    7
+  ],
+  "hud_button_hover": [
+    14,
+    7,
+    14,
+    7
+  ],
+  "hud_button_pressed": [
+    14,
+    7,
+    14,
+    7
+  ],
+  "hud_slip": [
+    6,
+    4,
+    6,
+    4
+  ],
+  "hud_stamp_frame": [
+    12,
+    8,
+    12,
+    8
+  ],
+  "hud_keycap": [
+    3,
+    2,
+    3,
+    4
+  ],
+  "hud_bar_track": [
+    4,
+    1,
+    4,
+    1
+  ],
+  "hud_tab_active": [
+    6,
+    5,
+    6,
+    1
+  ],
+  "hud_tab_idle": [
+    6,
+    5,
+    6,
+    1
+  ]
+}

@@ -10,14 +10,9 @@ var clock: float = 0.0
 
 func _ready() -> void:
     for face in range(1,9):
-        var file_path: String = "res://assets/sprites/enemies_074/%s_%d.png" % [echoform_id,face]
+        var file_path: String = "res://assets/sprites/enemies_088/%s_%d.png" % [echoform_id,face]
         if not ResourceLoader.exists(file_path):
-            file_path = "res://assets/sprites/enemies_073/%s_%d.png" % [echoform_id,face]
-        if not ResourceLoader.exists(file_path):
-            file_path = "res://assets/sprites/enemies_071/%s_%d.png" % [echoform_id,face]
-        if not ResourceLoader.exists(file_path):
-            var legacy: String = "front" if face == 1 else ("left" if face in [2,3] else ("back" if face in [4,5,6] else "right"))
-            file_path = "res://assets/sprites/enemies_068/%s_%s.png" % [echoform_id,legacy]
+            file_path = "res://assets/sprites/enemies_074/%s_%d.png" % [echoform_id,face]
         if not ResourceLoader.exists(file_path): continue
         var atlas: Texture2D = load(file_path)
         var frames: Array[Texture2D] = []
