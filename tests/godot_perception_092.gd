@@ -137,6 +137,8 @@ func _civic_checks() -> void:
     # Same act within sight: the office-holder sees it and records it.
     Game.state["actors"]["brin"]["hp"] = 45
     _forget("witness.085.brin.threatened")
+    # 09.3: the first scenario sent Brin running to report; reset that too.
+    Game.state.erase("witness_093")
     scene.reload_district_world()
     for i in range(4): await get_tree().process_frame
     keeper = scene.guard

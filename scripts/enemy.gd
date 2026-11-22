@@ -59,6 +59,7 @@ var positional_memory: float = 4.0
 var obstacle_dodge_time_084: float = 0.0
 ## Build 09.2 perception (immersive-sim Phase 1): replaces the distance wake.
 const Sense092 = preload("res://scripts/sense_092.gd")
+const Perception093 = preload("res://scripts/perception_092.gd")
 var sense_092: Node = null
 ## Build 09.2 drop-in animation (assets/sprites/anim_092/<actor_key>/). Any
 ## state it lacks falls back to the 12-cell atlas below.
@@ -187,6 +188,11 @@ func _ready() -> void:
         # rather than silently stacking every unrecorded actor at one point.
         var location: Array = saved.get("position",[position.x,position.y,position.z])
         position = Vector3(float(location[0]),float(location[1]),float(location[2]))
+        if hostile:
+            # 09.3: a reloaded hostile has no fresh sighting; if it cannot
+            # see the player it searches where it stands, not at the origin.
+            last_seen_position = position
+            time_since_sighted = 0.0
     # Optional enemies (wake > 0) perceive the player; office-holders and the
     # Edda machine (wake 0) react to perceived violence instead (sense_092.gd).
     # Set up after the saved position is restored, so home and facing are true.
@@ -198,6 +204,11 @@ func anger() -> void:
     if not hostile:
         hostile = true
         alert_time_079x = 0.36
+        # 09.3: turning hostile means knowing where the attacker is now; the
+        # search memory starts from here, not from a stale default.
+        if is_instance_valid(player):
+            last_seen_position = player.global_position
+        time_since_sighted = 0.0
         if Game.has_attempt(): Game.state["actors"][actor_key]["hostile"] = true
         if is_instance_valid(voice_083): voice_083.call("play_enemy", "alert")
         became_hostile.emit()
@@ -418,6 +429,16 @@ func _physics_process(delta: float) -> void:
         time_since_sighted = 0.0
     else:
         time_since_sighted += delta
+    # 09.3: a patrol that has lost its target searches, then stays on high
+    # alert (sense_092.gd). Keepers hold their post and stay in combat.
+    if not sees_player and time_since_sighted >= Perception093.LOSE_TRACK_SECONDS and windup <= 0.0 and rush_time <= 0.0 and is_instance_valid(sense_092) and sense_092.temperament == "patrol":
+        warning.visible = false
+        aim_lane_079z.visible = false
+        sense_092.lose_track(last_seen_position)
+        velocity.x = 0.0
+        velocity.z = 0.0
+        move_and_slide()
+        return
     frame_timer += delta
     var hold: bool = windup > 0.0 or recovery > 0.0 or stagger_time > 0.0
     if stagger_time > 0.0:

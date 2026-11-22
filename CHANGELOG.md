@@ -2,6 +2,51 @@
 
 Full per-build notes, QA and open issues for every build since Build 02 are in `docs/builds/`.
 
+## 09.3 Weapon art fixes, immersive-sim phase 1b: search, witnesses who run, stealth cue (2026-11-22)
+
+Builds on GPT's `feature/weapon-art-092-20261122` (PR #11, 05ac4d0) and includes it.
+
+**Merged to `main`** on the owner's instruction (PRs #5 → #13 in order), so `main` is now the playable 09.3 game.
+- CI now also runs on pushes to `main` and on PRs into it.
+- GPT's brief for working against `main`: `docs/handover/GPT_HANDOVER_093_MAIN.md`.
+- Brin and Ossa play a `flee` animation, when one is painted, while running to report.
+
+**Fixes to the 09.2 weapon delivery** (details for GPT in `docs/handover/GPT_WEAPON_ART_CORRECTIONS_093.md`):
+- **Muzzle anchors** are measured on each weapon's idle frame. Covenant still carried the brief's placeholder (404, 214); Nail and Choir were about 75 px off the barrel, so the flash floated in the air. They are now (422, 197), (284, 250) and (288, 208), and Coil is (238, 206).
+- **Coil `fire` held back.** All six frames lose the glove. The strip is moved byte-identical to `art/production_sources/weapons_092/held_back_093/` and recorded in the manifest; Coil fires on its idle frames with full code recoil until it's repainted.
+- **`tests/godot_weapon_art_092.gd`** counts failures and exits 1 (bare `assert` could pass), and checks that every muzzle anchor touches the weapon.
+- **The capture harness** no longer fails to compile in `--script` mode.
+- **README** says "not yet playtested" again. The rewording tripped `test_build063` and failed the last three package runs.
+
+**Immersive sim, phase 1b** (plan: Project doc "Immersive sim integration plan", phase 1):
+- **SEARCH, then HIGH ALERT.** A hostile patrol that hasn't seen you for 6 s drops out of combat, walks to where it last saw you and searches for 12 s. Afterwards it stays on high alert: sight range ×1.3, noticing ×1.4, a wider sweep. It never drops straight back to calm (Splinter Cell: Blacklist's rule). High alert is saved. Keepers still hold their post.
+- **Barks.** Each change of state speaks a fixed line chosen by its cause, with no randomness: "SOMEONE THERE?", "HEARD THAT.", "THAT WAS A WEAPON.", "WHO'S HURT?", "SHOW ME WHERE.", "THERE!", "I SAW THAT.", "LOST THEM. SEARCHING.", "STAYING SHARP.". They are drawn at a constant screen size so they read at 15 m.
+- **Witnesses run to report** (bible L1398: knowledge travels only through surviving runners or radios):
+  - When no office-holder sees or hears Brin or Ossa being threatened, they run along a real route to the Millwright or the Cantor.
+  - **On arrival** they tell the keeper, which writes `witness.093.<who>.reported_to_<keeper>` (channel TOLD, written by a living witness). The keeper then watches for the attacker and turns on them on sight.
+  - **Killed on the way**, they deliver nothing and the pending report is dropped (dead NPCs are silent).
+  - **With no working keeper**, they hide.
+  - The run, the place they reached and the outcome all survive a reload.
+- **Threatened witnesses pause their arc.** A threatened Brin or Ossa will not continue their story, or testify at their council, with the person who hurt them. A deterministic apology (Speech 5 or Insight 5) calms them and stops a run in progress; a report already delivered stays delivered. Other Writ routes are unaffected.
+- **Walking grid.** `walk_grid_093.gd` is a 0.5 m A* grid sampled from collision once per district (lifted from the playbot), with `path_follower_093.gd` on top, so searching guards and running witnesses go round walls. It stands in for a navmesh until phase 2.
+- **HUD stealth cue**, above the vitals: five lamp pips for how visible you are (the same light and movement factors the guards use), and one word for the most alarmed guard within 30 m: UNNOTICED, HIGH ALERT, NOTICED ?, SEARCHING ?!, CLOSING IN ?! or SPOTTED !.
+
+**Tests and CI**
+- New `tests/godot_immersive_093.tscn` (36 checks): search and high alert, barks, the grid, delivery, killed on the way, calming, reload, and the HUD cue.
+- New `tests/test_build093_immersive.py`: tripwires for no randomness, records only on delivery, and dialogue gates.
+- `godot_perception_092` now resets the witness run between its two scenarios.
+- The playbot's witness check covers 09.3 reports and requires that the witness was alive when the record was written.
+- GPT's regression and full-campaign workflows now also run on `feature/build-093-*` branches, and the regression workflow includes the immersive and witness suites.
+
+**Not in this phase:**
+- a room/portal sound graph (an occlusion ray stands in)
+- a navmesh
+- patrol radios or runners for optional enemies (only Brin and Ossa run)
+- Nix's memory of what she witnessed
+- the F9 quicksave ruling
+- the sprint-speed ruling (bible 6.2 m/s cap versus code 8.5 m/s)
+- whether Hearth Nine should be enemy-free; GPT's gap register calls it P0, but the bible gives Hearth Nine "1 safe station" and puts a simple enemy there in milestone G1
+
 ## 09.2 GPT HUD art in game, immersive-sim phase 1, animation drop-ins (2026-11-22)
 
 This build sits on top of GPT's branch `feature/hud-091-art-assets-weapon-wip-20261121` (commit 8fc5e6f, the new HUD art in `assets/ui/hud_091/`) and includes its commits. Plan: `docs/research/` and the Project doc "Immersive sim integration plan".

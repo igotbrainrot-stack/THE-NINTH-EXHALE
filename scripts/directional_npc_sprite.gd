@@ -101,6 +101,10 @@ func _process(delta: float) -> void:
     var selected: int = 0 if rotation_mode == 0 else Rotation8.view_from_world(view_camera.global_position, actor.global_transform)
     if anim_092 != null:
         var wanted: String = "hurt" if hurt_flash_079z > 0.0 else ("talk" if talk_time_079x > 0.0 else ("listen" if listen_time_080 > 0.0 else ("threatened" if threatened_085 else "idle")))
+        # 09.3: a witness running to report plays "flee" when it is painted.
+        var runner: Node = actor.get_node_or_null("WitnessRunner093")
+        if wanted != "hurt" and runner != null and str(runner.get("status")) == "running":
+            wanted = "flee"
         if not anim_092.has_state(wanted) and wanted != "idle": wanted = "threatened" if threatened_085 and anim_092.has_state("threatened") else "idle"
         if anim_092.has_state(wanted):
             if wanted != anim_state_092:
