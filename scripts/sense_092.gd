@@ -99,10 +99,13 @@ func setup(enemy: Node, mode: String) -> void:
     bark_label.position = Vector3(0, 2.12, 0)
     bark_label.visible = false
     add_child(bark_label)
+    if bool(enemy.get("hostile")):
+        # Loaded already fighting: not a new sighting for the district record.
+        state = "HOSTILE"
     if Game.has_attempt():
         var saved: Dictionary = Game.state.get("actors", {}).get(str(enemy.get("actor_key")), {})
         high_alert = bool(saved.get("high_alert_093", false))
-        if high_alert:
+        if high_alert and state != "HOSTILE":
             state = "HIGH_ALERT"
 
 func facing() -> Vector3:
@@ -143,7 +146,7 @@ func tick(delta: float) -> void:
     if seen:
         var distance: float = owner_enemy.global_position.distance_to(player.global_position)
         var world_root: Node = owner_enemy.get_parent()
-        var light: float = P.light_at(world_root, player.global_position + Vector3(0, 0.2, 0))
+        var light: float = P.player_light(world_root, player.global_position + Vector3(0, 0.2, 0))
         var view_range: float = _view_range()
         var rate: float = P.sight_rate(distance, view_range, light, _player_motion())
         if state == "SEARCH": rate *= P.SEARCH_RISE_SCALE
@@ -254,7 +257,7 @@ func hear_092(at: Vector3, radius: float, kind: String, violent: bool) -> bool:
     var player: Node3D = owner_enemy.get("player")
     var exclude: Array = [owner_enemy.get_rid()]
     if is_instance_valid(player): exclude.append(player.get_rid())
-    var travelled: float = P.heard_distance(space, at, owner_enemy.global_position, exclude)
+    var travelled: float = P.heard_distance(space, at, owner_enemy.global_position, exclude, owner_enemy.get_parent() as Node3D, radius)
     if travelled > radius: return false
     last_known = at
     has_lead = true
@@ -282,7 +285,7 @@ func witness_assault_092(victim: String, at: Vector3, attacker_pos: Vector3) -> 
     if is_instance_valid(player): exclude.append(player.get_rid())
     if sees_player() or (P.in_cones(eye(), facing(), at + Vector3(0, 1.0, 0), P.CIVIC_RANGE) and P.clear_line(space, eye(), at + Vector3(0, 1.0, 0), exclude)):
         channel = "SIGHT"
-    elif P.heard_distance(space, at, owner_enemy.global_position, exclude) <= P.NOISE_CRY:
+    elif P.heard_distance(space, at, owner_enemy.global_position, exclude, owner_enemy.get_parent() as Node3D, P.NOISE_CRY) <= P.NOISE_CRY:
         channel = "SOUND"
     if channel == "": return ""
     assault_alert = 9.0
@@ -359,6 +362,8 @@ func _set_state(next: String) -> void:
     if next != state:
         var previous: String = state
         state = next
+        if next == "HOSTILE":
+            preload("res://scripts/district_record_095.gd").bump("spotted")
         var line: String = P.bark_for(next, last_cause)
         if next in ["UNAWARE"] and previous in ["SUSPICIOUS", "INVESTIGATE"]:
             line = P.bark_for("UNAWARE", "CALM")

@@ -63,6 +63,12 @@ func _run() -> void:
 ## Every HUD text label and bar must sit inside the 640x400 viewport, and must not
 ## overlap any other HUD text, bar or panel it does not belong to.
 func _check_hud_layout(tag: String) -> void:
+    # 09.5: the stealth cue sizes its text on refresh; measure it after one,
+    # so the check does not depend on whether a refresh has happened yet.
+    var cue = scene.hud.get("awareness_cue_093")
+    if cue != null and cue.has_method("refresh"):
+        cue.refresh()
+        await get_tree().process_frame
     var view := Rect2(Vector2.ZERO, Vector2(640, 400))
     var leaves: Array[Control] = []
     var panels: Array[Control] = []

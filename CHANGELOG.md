@@ -2,6 +2,34 @@
 
 Full per-build notes, QA and open issues for every build since Build 02 are in `docs/builds/`.
 
+## 09.5 DOOM-era techniques: route-based sound, muzzle flash, pain thresholds, district record (2026-11-22)
+
+From a review of DOOM-like RPGs and RPG-leaning retro shooters: Strife, Hexen, Doom, Doom RPG, Doom (2016), Ultima Underworld, Dusk, Project Warlock, Nightmare Reaper, Cultic and F.E.A.R. The review is the Claude doc "DOOM-like RPG techniques for THE NINTH EXHALE", also summarised in `docs/research/DOOM_LIKE_RPG_TECHNIQUES_095.md`. Builds on 09.4 (PR #15).
+
+- **Sound follows the route** (after Doom's sector flood). A noise behind a wall is heard only if the walking route round it is within range, and a sealed room hears nothing. This replaces the 09.2 guess that a wall multiplies the distance by 1.9.
+  - Example: a pistol shot 6 m away through a wall, with the doorway 15 m along, travels a 32.7 m route and is not heard. The old rule said 11.4 m, heard.
+  - It uses `walk_grid_093` and only searches when the sound could carry that far.
+- **The muzzle flash lights you** (Doom's flash frames, Cultic's light). Each shot lights Ninth for 0.22 s: Coil 0.9, Covenant 0.55, Nail 0.45, Choir 0.25, on the 0.4–1.0 light scale. A short shadowless lamp flashes in the room. Guards and the HUD cue now read the same light: they used to sample from different roots.
+- **Pain thresholds** (Doom's pain chance without dice). Before, every hit staggered and cancelled the enemy's attack, so the Nail Storm stun-locked anything.
+  - Damage now builds toward a role threshold: 10% of max HP for rushers up to 30% for bosses, kept between 8 and 45.
+  - Crossing it flinches the enemy, followed by 0.7 s without another flinch.
+  - Interrupting a wind-up takes double.
+  - A held Nail Storm flinches a Slag Sifter 4 times in 3 s instead of 31.
+- **District record** (Doom's intermission, Dusk's stats). Each district's return-rail docket now ends with a tally: time spent, enemies put down and still standing (office-holders apart), times spotted, the named witness's state, and records written there. An unseen, bloodless visit says so.
+- **Combat callouts** (F.E.A.R.'s combat dialogue: "if the AI didn't say it, it didn't happen"). Enemies shout what they are really doing, at the moment they do it, so a fight explains itself:
+  - the wind-up before a strike, by attack role ("STAND CLEAR!" before a heavy blow), alongside the warning light;
+  - a flinch, when damage crosses the pain threshold;
+  - "MAN DOWN!" when an ally **sees** a death. It goes to the body and stays on high alert. A death nobody sees raises nothing;
+  - "RELOADING — PUSH!" when a hostile within 12 m sees Ninth start a reload. Its next attack comes within 0.3 s, so reloading in the open costs something.
+  - Deterministic (lines rotate in a fixed order) and paced: at most one callout about every 0.9 s, and the same enemy waits 3.5 s, though "man down" and "reload" may cut in. Dead enemies never speak. No line gives Ninth a pronoun.
+  - New `scripts/callouts_095.gd`, hooked into `enemy.gd` (wind-up, flinch, death) and `player.gd` (reload).
+- **Fix: stealth cue layout** (from 09.3). The cue's labels were sized before their font was set, so Godot clamped them to the default font's 23 px height and they spilled onto the vitals panel and the cue's own frame. The HUD layout test caught it only when the cue had already refreshed, so it failed intermittently. Labels are now sized after their font is set. The cue is 24 px tall at (8, 314), so its text keeps the 5 px frame inset and still ends above the vitals panel. The layout test now refreshes the cue before measuring.
+- **Tests:**
+  - `tests/godot_doom_095.tscn` (14 checks) and `tests/godot_callouts_095.tscn` (11 checks), both added to CI;
+  - `tests/test_build095_doom_techniques.py`.
+- **Next, from the review:** infighting, an automap with notes, secrets that pay out and posted "ambush" guards.
+- **Rejected:** glory-kill refills (they break finite resources) and random loot (it breaks deterministic, authored outcomes).
+
 ## 09.4 Runway audio in game, stealth-safe combat music (2026-11-22)
 
 Builds on GPT's PR #14 (the four original Runway MP3s recovered byte-identical from the owner's archive) and includes it. Details and measurements: `docs/handover/AUDIO_INTEGRATION_093.md`.

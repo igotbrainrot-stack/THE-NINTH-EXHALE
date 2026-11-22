@@ -136,6 +136,7 @@ func record_event(event_id: String, kind: String, details: Dictionary = {}) -> b
         return false
     state["event_ids"][event_id] = true
     state["events"].append({"id":event_id,"kind":kind,"details":details.duplicate(true)})
+    preload("res://scripts/district_record_095.gd").bump("records")
     state_changed.emit()
     return true
 

@@ -13,6 +13,12 @@ const AssemblyBuilder078 = preload("res://scripts/assembly_builder_078.gd")
 const LiftBuilder = preload("res://scripts/lift_builder.gd")
 const OfficeEnforcer = preload("res://scripts/enemy.gd")
 const NamedWitness093 = preload("res://scripts/named_witness_093.gd")
+const DistrictRecord095 = preload("res://scripts/district_record_095.gd")
+
+## 09.5: a district's return-rail docket ends with what Ninth did there.
+func _with_record_095(text: String) -> String:
+    var record: String = DistrictRecord095.text(str(Game.state.get("zone", "")), get_tree())
+    return text if record == "" else text + "\n\n" + record
 const Perception092 = preload("res://scripts/perception_092.gd")
 const CombatTracer079X = preload("res://scripts/combat_tracer_079x.gd")
 const EnemyRoster068 = preload("res://scripts/enemy_roster_068.gd")
@@ -537,6 +543,8 @@ func _nav_target() -> Dictionary:
 func _process(delta: float) -> void:
     # Compact compass to actual physical machines; advisory, never a gate.
     if not is_instance_valid(hud) or not Game.has_attempt(): return
+    if not hud.modal_open and bool(player.get("active")):
+        DistrictRecord095.bump("seconds", delta)
     nav_refresh_clock -= delta
     if nav_refresh_clock > 0.0: return
     nav_refresh_clock = 0.20
@@ -1070,7 +1078,7 @@ func orchard_interaction_077(interaction_id: String) -> void:
         "orchard_supplies":
             show_choice("NURSERY PUBLIC MEDICINE", "A single sealed Breath Ampoule is allocated here. Re-entering the district does not restock it.",[{"label":"CLAIM ONE FINITE MEDICAL ISSUE","action":"orchard:supplies"},go_back()])
         "hearth_return":
-            show_choice("GLASS ORCHARD / SERVICE RAIL", "Return to Hearth Nine without losing growth, testimony, original samples or the rescued ward record.",[{"label":"RETURN TO HEARTH NINE","action":"travel:hearth"},go_back()])
+            show_choice("GLASS ORCHARD / SERVICE RAIL", _with_record_095("Return to Hearth Nine without losing growth, testimony, original samples or the rescued ward record."),[{"label":"RETURN TO HEARTH NINE","action":"travel:hearth"},go_back()])
         _:
             show_choice("UNREGISTERED ORCHARD SERVICE","No authored decision is attached here.",[go_back()])
 
@@ -1103,7 +1111,7 @@ func barracks_interaction_077(interaction_id: String) -> void:
         "barracks_supplies":
             show_choice("PUBLIC DEFENCE ISSUE / FINITE", "One existing Breath Ampoule; not infinite consumables unlocked by crossing a district border.",[{"label":"ISSUE ONE SEALED AMPOULE","action":"barracks:supplies"},go_back()])
         "hearth_return":
-            show_choice("QUIET BARRACKS / SERVICE RAIL", "Return to Hearth Nine. The Commandant's regional Defence Writ and Marshal Voss's central authority remain different legal stations.",[{"label":"RETURN TO HEARTH NINE","action":"travel:hearth"},go_back()])
+            show_choice("QUIET BARRACKS / SERVICE RAIL", _with_record_095("Return to Hearth Nine. The Commandant's regional Defence Writ and Marshal Voss's central authority remain different legal stations."),[{"label":"RETURN TO HEARTH NINE","action":"travel:hearth"},go_back()])
         _:
             show_choice("UNREGISTERED BARRACKS SERVICE","No authored decision is attached here.",[go_back()])
 
@@ -1230,7 +1238,7 @@ func ashmarket_interaction(interaction_id: String) -> void:
         "market_porter":
             show_choice("MISNAMED PORTER / THE BORROWED VERDICT", "'It isn't my name on the sentence. They issued me somebody else's punishment. Find the originals before you say I agreed.' He can testify independently at the buyers' counter.",[go_back()])
         "hearth_return":
-            show_choice("MUNICIPAL RAIL / HEARTH NINE", "The Trade Writ and evidence persist when the rail returns to the clinic.",[{"label":"TRAVEL TO HEARTH NINE","action":"travel:hearth"},go_back()])
+            show_choice("MUNICIPAL RAIL / HEARTH NINE", _with_record_095("The Trade Writ and evidence persist when the rail returns to the clinic."),[{"label":"TRAVEL TO HEARTH NINE","action":"travel:hearth"},go_back()])
         "sootworks_transfer":
             show_choice("MUNICIPAL RAIL / SOOTWORKS", "Trade and Labour offices remain independently staffed.",[{"label":"TRAVEL TO SOOTWORKS","action":"travel:sootworks"},go_back()])
         "basilica_transfer":
@@ -1261,7 +1269,7 @@ func sootworks_interaction(interaction_id: String) -> void:
         "ashmarket_transfer":
             show_choice("SERVICE RAIL / ASHMARKET", "The Trade office is reachable through a separate staffed rail line.",[{"label":"TRAVEL TO ASHMARKET","action":"travel:ashmarket"},go_back()])
         "hearth_return":
-            show_choice("SERVICE RAIL / HEARTH NINE", "The municipal transfer remains open. The current district, quest events and enemy damage will be saved before departing.",[{"label":"RETURN TO HEARTH NINE","action":"travel:hearth"},go_back()])
+            show_choice("SERVICE RAIL / HEARTH NINE", _with_record_095("The municipal transfer remains open. The current district, quest events and enemy damage will be saved before departing."),[{"label":"RETURN TO HEARTH NINE","action":"travel:hearth"},go_back()])
         "brin":
             var gate_brin: Dictionary = _witness_gate_093("brin") if bool(brin["alive"]) else {}
             if not bool(brin["alive"]):
@@ -1425,7 +1433,7 @@ func basilica_interaction(interaction_id: String) -> void:
         "ashmarket_transfer":
             show_choice("BASILICA SERVICE RAIL / ASHMARKET", "The Trade Writ and original contracts remain accessible in the municipal market.",[{"label":"TRAVEL TO ASHMARKET","action":"travel:ashmarket"},go_back()])
         "hearth_return":
-            show_choice("MUNICIPAL TRANSFER / HEARTH NINE","Your recorded Faith Writ, Ossa outcome and hearing transcript persist.",[{"label":"RETURN TO HEARTH NINE","action":"travel:hearth"},go_back()])
+            show_choice("MUNICIPAL TRANSFER / HEARTH NINE",_with_record_095("Your recorded Faith Writ, Ossa outcome and hearing transcript persist."),[{"label":"RETURN TO HEARTH NINE","action":"travel:hearth"},go_back()])
         "sootworks_transfer":
             show_choice("MUNICIPAL TRANSFER / SOOTWORKS","The service rail remains open; no false district closure is implied.",[{"label":"TRAVEL TO SOOTWORKS","action":"travel:sootworks"},go_back()])
         _:

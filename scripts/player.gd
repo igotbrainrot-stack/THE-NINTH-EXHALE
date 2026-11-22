@@ -50,6 +50,19 @@ func _ready() -> void:
     add_to_group("player_controller")
     weapon_audio_093 = WeaponAudio093.new()
     add_child(weapon_audio_093)
+    # 09.5: a short, shadowless flash lamp in front of the camera.
+    muzzle_light_095 = OmniLight3D.new()
+    muzzle_light_095.name = "MuzzleLight095"
+    muzzle_light_095.omni_range = 7.0
+    muzzle_light_095.light_color = Color("#ffd08a")
+    muzzle_light_095.light_energy = 0.0
+    muzzle_light_095.shadow_enabled = false
+    muzzle_light_095.visible = false
+    muzzle_light_095.position = Vector3(0.25, -0.15, -0.8)
+    if is_instance_valid(camera):
+        camera.add_child(muzzle_light_095)
+    else:
+        add_child(muzzle_light_095)
 
 func set_control_active(enabled: bool) -> void:
     active = enabled
@@ -102,6 +115,9 @@ func _input(event: InputEvent) -> void:
         elif event.keycode==KEY_ESCAPE:escape_requested.emit()
 
 func _physics_process(delta: float) -> void:
+    if is_instance_valid(muzzle_light_095):
+        muzzle_light_095.light_energy = maxf(0.0, muzzle_light_095.light_energy - delta * 12.0)
+        muzzle_light_095.visible = muzzle_light_095.light_energy > 0.02
     if not active or not Game.has_attempt():
         return
     prompt_refresh=maxf(0.0,prompt_refresh-delta)
@@ -169,6 +185,7 @@ func select_weapon(id: String) -> void:
 const ACTION_AUDIO_VOICES: int = 8
 const WeaponAudio093 = preload("res://scripts/weapon_audio_093.gd")
 var weapon_audio_093: Node
+var muzzle_light_095: OmniLight3D
 var _action_voices: Array[AudioStreamPlayer] = []
 var _action_voice_next: int = 0
 
@@ -237,6 +254,10 @@ func fire_equipped() -> void:
         return
     current_fire_cooldown=maxf(0.09,float(spec["interval"])*0.88)
     weapon_anim.emit("fire",0.10)
+    # 09.5: the flash lights Ninth up for the guards (and the room for you).
+    Perception092.register_shot(id)
+    if is_instance_valid(muzzle_light_095):
+        muzzle_light_095.light_energy = 1.8 * float(Perception092.MUZZLE_FLASH.get(id, 0.5))
     if camera_impulse_enabled_080:
         var impulse: float = 0.013 if Game.equipped_weapon() == "nail" else (0.038 if Game.equipped_weapon() == "coil" else 0.024)
         camera_impulse_080 = clampf(camera_impulse_080-impulse*camera_impulse_strength_080,-0.055,0.0)
@@ -309,6 +330,8 @@ func reload_weapon() -> void:
     reload_zone=str(Game.state.get("zone","hearth"))
     weapon_anim.emit("reload",reload_remaining)
     weapon_message.emit(str(spec["name"])+" / CYCLING SERVICE MAGAZINE")
+    # 09.5: a hostile that sees the reload calls it and presses the attack.
+    preload("res://scripts/callouts_095.gd").player_reloading(get_tree(), self)
 
 
 func _emit_prompt(message: String) -> void:
