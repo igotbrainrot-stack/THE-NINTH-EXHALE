@@ -1,0 +1,45 @@
+{
+  "_about": "Build 09.3 audio routing. Swap sources or levels here without code changes. Source files are never edited; all shaping (gain, start offset, loop points, voice limits) happens at playback. Measurements: docs/handover/AUDIO_INTEGRATION_093.md.",
+  "weapons": {
+    "covenant": {"source": "fallback"},
+    "coil": {
+      "source": "runway",
+      "path": "res://assets/audio/runway_20261122/coil_shotgun_fire.mp3",
+      "mode": "one_shot",
+      "volume_db": -11.0,
+      "start_offset": 0.12,
+      "attack_layer_db": -16.0,
+      "_why": "The Runway coil swells for 330 ms before its peak. Skipping the first 0.12 s and layering the short fallback crack keeps the shot instant."
+    },
+    "nail": {
+      "source": "runway",
+      "path": "res://assets/audio/runway_20261122/nail_storm_fire.mp3",
+      "mode": "burst",
+      "volume_db": -17.0,
+      "retrigger": 0.5,
+      "release": 0.12,
+      "attack_layer_db": -14.0,
+      "_why": "The file is itself a 0.6 s burst of rivets; the gun fires every 0.09 s. It plays as a bed retriggered every 0.5 s while firing, faded on release, with the short fallback tick on each shot."
+    },
+    "choir": {
+      "source": "runway",
+      "path": "res://assets/audio/runway_20261122/choirbreaker_fire.mp3",
+      "mode": "mono",
+      "volume_db": -9.0,
+      "_why": "A sustained 1 s tone; each shot cuts the previous one so refires every 0.44 s never stack."
+    }
+  },
+  "music": {
+    "combat": {
+      "source": "runway",
+      "path": "res://assets/music/runway_20261122/pneumatic_verdict_combat.mp3",
+      "trim_db": -2.5,
+      "bpm": 144.98,
+      "loop_start": 1.6854,
+      "loop_end": 29.8272,
+      "crossfade": 0.06,
+      "_why": "145 BPM, first downbeat at 0.030 s. Bar 1 (a quieter intro) plays once; bars 2-18 loop on bar lines with a 60 ms crossfade, because the file ends mid-phrase at full level."
+    },
+    "combat_fallback": "res://assets/music/pressure_breach_combat.ogg"
+  }
+}

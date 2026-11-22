@@ -6,8 +6,8 @@
   "pr": 11,
   "credits_spent": 7,
   "credits_remaining_after_submission": 0,
-  "source_auth_status": "Runway API token revoked during follow-up asset retrieval (401)",
-  "note": "Generation requests accepted; binary MP3 outputs could not be retrieved, verified, or pushed to GitHub. Task IDs are authoritative for retrieval after reconnection. Do not mark assets as bundled.",
+  "source_auth_status": "Runway account deleted by owner; retained local exports are the source of truth",
+  "note": "Four original Runway MP3 exports recovered byte-identical from owner-provided archive and committed to development branch, not yet runtime-integrated. Verify sound and runtime behavior before using.",
   "assets": [
     {
       "key": "combat_music",
@@ -19,9 +19,24 @@
       "target_path": "assets/music/runway_20261122/pneumatic_verdict_combat.mp3",
       "prompt": "Original instrumental short combat music cue for THE NINTH EXHALE, a grim retro-futurist industrial biohorror first-person action RPG. Relentless 1980s analog techno-industrial energy with the aggression and urgency of heavy metal, 145 BPM. Hammering gated drum machine and distorted industrial percussion, sinister pulsing analog bass sequencer, razor-edged FM synth stabs, detuned minor-key arpeggios, brief menacing machine-choir textures, pounding tom fills, high tension and kinetic forward momentum. Sounds like a brutal mechanical tribunal activating; oppressive, strange, memorable, polished game soundtrack. Strong beat and bass, immediately actionable battle cue, ending with a clean rhythmic phrase that can be edited into a loop. No vocals, no spoken words, no recognizable melodies, no guitar solos, no cinematic orchestra.",
       "submission_status": "accepted_by_runway",
-      "completion_status": "unverified_due_to_revoked_runway_token",
-      "binary_committed": false,
-      "runtime_integrated": false
+      "completion_status": "source_export_verified",
+      "binary_committed": true,
+      "runtime_integrated": true,
+      "sha256": "9694fd00f6144c885f0e6c169a7839106fe9e03ac1db5bd92e09982ba37d845f",
+      "size_bytes": 746250,
+      "duration_seconds": 30.772167,
+      "sample_rate_hz": 44100,
+      "channels": 2,
+      "source_archive_member": "ninth exhale assets 01/THE NINTH EXHALE _ Combat_ Pneumatic Verdict.mp3",
+      "technical_qa": "mp3_decode_ffprobe_sha256_passed",
+      "human_listening_qa": "not_yet_performed",
+      "runtime_integration_093": {
+        "how": "Combat layer via data/audio_mix_093.json: 145 BPM, bar 1 plays once, bars 2-18 loop (1.6854-29.8272 s) with a 60 ms equal-power handover; -2.5 dB trim. Original Ogg kept as fallback.",
+        "config": "data/audio_mix_093.json",
+        "source_unmodified": true,
+        "verified": "tests/godot_audio_093.tscn (routing, modes, loop handover), tests/test_build093_audio_mix.py (hashes, bar-aligned loop), offline render of the in-game behaviour in docs/handover/audio_previews_093/",
+        "human_listening": "pending"
+      }
     },
     {
       "key": "coil_shotgun_fire",
@@ -34,9 +49,24 @@
       "fallback_path": "assets/audio/coil_fire.wav",
       "prompt": "One powerful close-range discharge from a retro-industrial electromagnetic coil shotgun: rising capacitor snap, brutal low-frequency metallic THOOM, crackling blue-white electrical arc, quick sizzling decay and heavy mechanical bolt recoil. Dry and punchy, designed as a single FPS weapon firing sound, no music, no voices.",
       "submission_status": "accepted_by_runway",
-      "completion_status": "unverified_due_to_revoked_runway_token",
-      "binary_committed": false,
-      "runtime_integrated": false
+      "completion_status": "source_export_verified",
+      "binary_committed": true,
+      "runtime_integrated": true,
+      "sha256": "c0a9bb3caf38949697de3cab6280ba3dd30a5895ef0acea20a7f23778b9f2bfe",
+      "size_bytes": 17179,
+      "duration_seconds": 1.044898,
+      "sample_rate_hz": 44100,
+      "channels": 2,
+      "source_archive_member": "ninth exhale assets 01/THE NINTH EXHALE _ Coil Shotgun Fire _1s_.mp3",
+      "technical_qa": "mp3_decode_ffprobe_sha256_passed",
+      "human_listening_qa": "not_yet_performed",
+      "runtime_integration_093": {
+        "how": "one_shot from 0.12 s at -11 dB, fallback crack layered at -16 dB (the source swells 330 ms before its peak).",
+        "config": "data/audio_mix_093.json",
+        "source_unmodified": true,
+        "verified": "tests/godot_audio_093.tscn (routing, modes, loop handover), tests/test_build093_audio_mix.py (hashes, bar-aligned loop), offline render of the in-game behaviour in docs/handover/audio_previews_093/",
+        "human_listening": "pending"
+      }
     },
     {
       "key": "nail_storm_fire",
@@ -49,9 +79,24 @@
       "fallback_path": "assets/audio/nail_fire.wav",
       "prompt": "One vicious burst from a heavy bio-industrial pneumatic nail launcher: rapid compressed-air piston hammer CLACK-CHUFF, three tightly spaced steel rivet impacts, metallic feed-rack chatter and a short pressure-release hiss. Distinct from a conventional gunshot, aggressive close-up first-person shooter weapon effect, no music, no voices.",
       "submission_status": "accepted_by_runway",
-      "completion_status": "unverified_due_to_revoked_runway_token",
-      "binary_committed": false,
-      "runtime_integrated": false
+      "completion_status": "source_export_verified",
+      "binary_committed": true,
+      "runtime_integrated": true,
+      "sha256": "065c74be8319ec5a7df753263637e1c9b77b39f7e892bed6b58d98356b74b1a2",
+      "size_bytes": 17179,
+      "duration_seconds": 1.044898,
+      "sample_rate_hz": 44100,
+      "channels": 2,
+      "source_archive_member": "ninth exhale assets 01/THE NINTH EXHALE _ Nail Storm Fire _1s_.mp3",
+      "technical_qa": "mp3_decode_ffprobe_sha256_passed",
+      "human_listening_qa": "not_yet_performed",
+      "runtime_integration_093": {
+        "how": "burst bed at -17 dB retriggered every 0.5 s while firing, 0.12 s release fade; fallback tick at -14 dB per shot (fires every 0.09 s).",
+        "config": "data/audio_mix_093.json",
+        "source_unmodified": true,
+        "verified": "tests/godot_audio_093.tscn (routing, modes, loop handover), tests/test_build093_audio_mix.py (hashes, bar-aligned loop), offline render of the in-game behaviour in docs/handover/audio_previews_093/",
+        "human_listening": "pending"
+      }
     },
     {
       "key": "choirbreaker_fire",
@@ -64,9 +109,27 @@
       "fallback_path": "assets/audio/choir_fire.wav",
       "prompt": "One terrifying shot from a biomechanical acoustic cannon: guttural sub-bass pressure-wave BWAAAM, resonant metallic throat shutters snapping open, distorted choral harmonic overtone without any words, brief air-ripping shockwave decay. Singular heavy FPS weapon attack, otherworldly industrial horror, no music or speech.",
       "submission_status": "accepted_by_runway",
-      "completion_status": "unverified_due_to_revoked_runway_token",
-      "binary_committed": false,
-      "runtime_integrated": false
+      "completion_status": "source_export_verified",
+      "binary_committed": true,
+      "runtime_integrated": true,
+      "sha256": "0954c8a944243771c5b200862a59d30b800b820f25750ed53bc0f1f921949740",
+      "size_bytes": 17179,
+      "duration_seconds": 1.044898,
+      "sample_rate_hz": 44100,
+      "channels": 2,
+      "source_archive_member": "ninth exhale assets 01/THE NINTH EXHALE _ Choirbreaker Fire _1s_.mp3",
+      "technical_qa": "mp3_decode_ffprobe_sha256_passed",
+      "human_listening_qa": "not_yet_performed",
+      "runtime_integration_093": {
+        "how": "mono at -9 dB: each shot cuts the previous tone (1 s tone, 0.44 s refire).",
+        "config": "data/audio_mix_093.json",
+        "source_unmodified": true,
+        "verified": "tests/godot_audio_093.tscn (routing, modes, loop handover), tests/test_build093_audio_mix.py (hashes, bar-aligned loop), offline render of the in-game behaviour in docs/handover/audio_previews_093/",
+        "human_listening": "pending"
+      }
     }
-  ]
+  ],
+  "source_archive": "ninth exhale assets 01.zip",
+  "source_archive_sha256": "e780e31ccec6fbdd9a0741067c750edaba788b76530090b387434acc2cf955ad",
+  "recovery_branch": "art/recovered-runway-audio-20261122"
 }

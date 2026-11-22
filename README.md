@@ -4,7 +4,10 @@ Original retro first-person civic-horror RPG / roguelite set in Vesper. Built in
 
 **Current development build on `main`: 09.3, immersive-sim phase 1b on top of the 09.2 weapon art.** Work happens on branches off `main` with draft PRs; CI runs on every PR. GPT's working brief: `docs/handover/GPT_HANDOVER_093_MAIN.md`.
 - 09.2 added deterministic sight and hearing, witnessed responses, first-person weapon animation strips and a runnable Linux package.
-- 09.3 adds guards that search and stay on high alert, threatened witnesses who run to report, cause-specific barks and a HUD stealth cue. It is playable, but **not the finished game or final content release**. The master game bible remains the production target; the current Godot build is still a development slice and has not had human full-campaign playtesting.
+- 09.3 adds guards that search and stay on high alert, threatened witnesses who run to report, cause-specific barks and a HUD stealth cue.
+- 09.4 wires in the recovered Runway combat music and weapon sounds (`data/audio_mix_093.json`). Combat music now plays only when something is actually fighting you.
+
+It is playable, but **not the finished game or final content release**. The master game bible remains the production target; the current Godot build is still a development slice and has not had human full-campaign playtesting.
 
 ## Run
 
@@ -30,11 +33,12 @@ Controls: WASD move · mouse look · LMB fire · R reload · 2–5 switch weapon
 
 ## Verified checks (Build 09.3)
 
-- **297** Python tests passed
+- **302** Python tests passed
 - **14** project validations passed
 - Godot animation tests **18/18**
 - Perception tests **25/25**
 - Immersive-sim tests **36/36**
+- Audio integration tests **17/17**
 - Weapon art tests **31/31**, including muzzle anchors on the weapon
 - HUD art override tests **8/8**
 - Project import, district scene smoke and weapon-art loader checks passed
@@ -46,7 +50,7 @@ Automated playbot results are not human QA: the game is **not yet playtested by 
 
 - **Hearth Nine safe hub (needs the owner's ruling):** Hearth Nine still spawns an enforcer, a crawler, optional hostiles and a hazard. The 09.2 gap register calls this P0 and proposes moving them to a separate Intake Annex. The bible gives Hearth Nine "1 safe station" and puts a simple enemy there in milestone G1, so the change needs a decision first.
 - Only Liberation has been fully verified by automated playbots; Dominion, Crown and True Dawn require direct testing.
-- Human full-campaign, endings, audio and performance testing have not been signed off.
+- Human full-campaign, endings, audio and performance testing have not been signed off. The Runway audio is measured and wired but not yet heard by a person (`docs/handover/audio_previews_093/`).
 - Weapon idle strips are small breathing variations from a master frame. Reload, dry, draw and intervene states are still procedural fallbacks; Nail Storm piston/vent animation and Choirbreaker shutter ripple are incomplete.
 - Nail Storm and Choirbreaker art is drawn side-on (barrel pointing left), and the Coil `fire` strip is held back because the hand disappears. Repaints are requested in `docs/handover/GPT_WEAPON_ART_CORRECTIONS_093.md`. Muzzle anchors were checked in game in 09.3.
 - NPC/enemy animation, voice and ambience assets still need completion/integration; procedural fallbacks remain.

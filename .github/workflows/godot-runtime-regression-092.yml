@@ -4,6 +4,7 @@ on:
     branches:
       - feature/build-092-completion-qa-20261122
       - 'feature/build-093-*'
+      - 'feature/build-094-*'
       - main
     paths:
       - 'tests/godot_*'
@@ -38,6 +39,7 @@ jobs:
             res://tests/godot_anim_092.tscn \
             res://tests/godot_perception_092.tscn \
             res://tests/godot_immersive_093.tscn \
+            res://tests/godot_audio_093.tscn \
             res://tests/godot_witness_threat_085.tscn \
             res://tests/godot_hud_override_091.tscn \
             res://tests/godot_scene_smoke_084.tscn; do
